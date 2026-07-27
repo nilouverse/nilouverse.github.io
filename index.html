@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&family=Creepster&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -23,9 +23,15 @@
   --ease:cubic-bezier(.22,.61,.36,1); --ease-soft:cubic-bezier(.16,.84,.44,1);
   --f-logo:'Metal Mania', cursive; --f-disp:'Syne', sans-serif;
   --f-serif:'Instrument Serif', serif; --f-body:'Space Grotesk', sans-serif;
+  --f-egg:'Creepster', cursive;   /* the hidden voice — all easter-egg text */
 
   /* >>> GLASS KNOBS — blur = frostiness, glass/glass2 = tint darkness <<< */
-  --blur:12px; --glass:rgba(22,16,15,.40); --glass2:rgba(12,9,10,.30);
+  --blur:18px; --glass:rgba(22,16,15,.40); --glass2:rgba(12,9,10,.30);
+  --rad:clamp(14px,2.2vw,22px);
+  /* a reusable "smooth glass" paint: diagonal sheen + frosted tint */
+  --glass-paint:linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,0) 32%), linear-gradient(160deg, rgba(255,255,255,.05), rgba(13,9,10,.30));
+  --glass-edge:1px solid rgba(255,255,255,.12);
+  --glass-shadow:inset 0 1px 0 rgba(255,255,255,.18), inset 0 0 34px rgba(255,255,255,.035), 0 30px 70px -42px rgba(0,0,0,.78);
 
   /* >>> IMAGE LIST — edit ONLY here <<< */
   --art-hero:url('art/hero.jpg');
@@ -33,13 +39,12 @@
   --art-album:url('art/adown.png');
   --art-deluxe:url('art/ablank.png');
   --art-single:url('art/acdown.jpg');
-  /* art/aadown.png parked */
+  /* art/aadown.png parked · art/button.png = the backdoor key (used in HTML) */
 }
 
 *{box-sizing:border-box; margin:0; padding:0}
 html{scroll-behavior:smooth; scroll-padding-top:74px; -webkit-text-size-adjust:100%}
 body{background:var(--ink); color:var(--bone); font-family:var(--f-body); line-height:1.6; overflow-x:hidden; -webkit-font-smoothing:antialiased}
-/* main/footer sit ABOVE the pulse so the glow stays a backdrop, not a cover */
 main{position:relative; z-index:1}
 img{max-width:100%; display:block}
 a{color:inherit; text-decoration:none}
@@ -54,12 +59,7 @@ body::before{content:""; position:fixed; inset:-12%; z-index:0; pointer-events:n
     radial-gradient(42% 42% at 50% 104%, rgba(255,45,126,.10), transparent 62%),
     radial-gradient(46% 40% at 8% 90%, rgba(52,227,214,.05), transparent 60%);
   animation:gloom 7.5s ease-in-out infinite alternate}
-/* KNOB: the opacity values below = how loud the pulse breathes (raise = more dramatic) */
-@keyframes gloom{
-  0%{opacity:.42; transform:scale(1) translate3d(0,0,0)}
-  50%{opacity:.74}
-  100%{opacity:.95; transform:scale(1.07) translate3d(1.5%,-1%,0)}
-}
+@keyframes gloom{0%{opacity:.42; transform:scale(1) translate3d(0,0,0)}50%{opacity:.74}100%{opacity:.95; transform:scale(1.07) translate3d(1.5%,-1%,0)}}
 
 body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:none;
   background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
@@ -94,7 +94,6 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
     radial-gradient(60% 50% at 70% 38%, rgba(255,45,126,.07), transparent 60%),
     radial-gradient(150% 120% at 50% 122%, rgba(0,0,0,.92), transparent 60%),
     linear-gradient(180deg,#0a0708,#0c0809 58%,#070405)}
-/* KNOBS (desktop): 124% = zoom, 76% = vertical pan */
 .photo{position:absolute; inset:0; background-image:var(--art-hero); background-repeat:no-repeat;
   background-size:auto 124%; background-position:50% 76%; opacity:.96; will-change:transform;
   -webkit-mask-image:radial-gradient(150% 125% at 50% 44%, #000 64%, transparent 100%);
@@ -136,10 +135,6 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 @keyframes flick{0%,100%{opacity:1}42%{opacity:.72}47%{opacity:.95}52%{opacity:.66}58%{opacity:.9}}
 .wm-sub{display:block; font-family:var(--f-body); font-weight:500; -webkit-text-stroke:0; text-shadow:none; letter-spacing:.78em;
   font-size:clamp(.62rem,2.4vw,1rem); color:var(--bone-dim); margin-top:.5em; padding-left:.25em}
-.wm-secret{font-family:var(--f-serif); font-style:italic; color:var(--magenta-soft); font-size:clamp(.82rem,2.8vw,1.1rem);
-  letter-spacing:.04em; margin-top:.7em; opacity:0; max-height:0; overflow:hidden;
-  transition:opacity .9s var(--ease), max-height .9s var(--ease); text-shadow:0 0 16px rgba(255,45,126,.45)}
-.wm-secret.show{opacity:.92; max-height:3em}
 @keyframes fadeUp{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
 .socials{display:flex; gap:8px; margin-top:1.7rem; opacity:0; animation:fadeUp .9s .7s both}
 .socials a{--ac:var(--blood-bright); width:42px; height:42px; display:grid; place-items:center; color:var(--bone-dim); border:1px solid var(--line); transition:.3s var(--ease)}
@@ -154,20 +149,18 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 @keyframes drip{0%{top:-40%}100%{top:110%}}
 @media(max-width:820px){
   .hero,.hero-inner{min-height:112svh}
-  /* MOBILE KNOBS: 150% = zoom, 82% = vertical pan */
   .photo{background-size:auto 150%; background-position:50% 82%;
     -webkit-mask-image:radial-gradient(135% 110% at 50% 40%, #000 58%, transparent 100%);
     mask-image:radial-gradient(135% 110% at 50% 40%, #000 58%, transparent 100%)}
 }
 
-/* ============ INTRO — glass ticket ============ */
+/* ============ INTRO — smooth glass ============ */
 .intro{position:relative; z-index:1; padding:clamp(40px,7vh,84px) clamp(18px,5vw,40px);
   background:linear-gradient(180deg, rgba(10,7,8,.34), rgba(10,7,8,.5))}
-.ticket{position:relative; max-width:1000px; margin:0 auto;
-  background:linear-gradient(160deg,var(--glass),var(--glass2));
-  -webkit-backdrop-filter:blur(var(--blur)) saturate(1.2); backdrop-filter:blur(var(--blur)) saturate(1.2);
-  border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:clamp(30px,6vw,58px) clamp(26px,6vw,64px);
-  display:grid; grid-template-columns:1fr; gap:clamp(26px,5vw,52px); box-shadow:inset 0 1px 0 var(--edge), 0 30px 70px -40px rgba(0,0,0,.7)}
+.ticket{position:relative; max-width:1000px; margin:0 auto; background:var(--glass-paint);
+  -webkit-backdrop-filter:blur(var(--blur)) saturate(1.5); backdrop-filter:blur(var(--blur)) saturate(1.5);
+  border:var(--glass-edge); border-radius:var(--rad); overflow:hidden;
+  padding:clamp(30px,6vw,58px) clamp(26px,6vw,64px); display:grid; grid-template-columns:1fr; gap:clamp(26px,5vw,52px); box-shadow:var(--glass-shadow)}
 .ticket-head .eyebrow{display:flex; align-items:center; gap:12px; font-size:.72rem; letter-spacing:.34em; text-transform:uppercase; color:var(--blood-bright); margin-bottom:14px}
 .ticket-head .eyebrow .ln{height:1px; width:42px; background:var(--blood-deep)}
 .ticket-head h2{font-family:var(--f-disp); font-weight:800; line-height:.9; font-size:clamp(2.6rem,10vw,5.4rem); letter-spacing:-.01em}
@@ -196,12 +189,11 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 .listen-head h2{font-family:var(--f-disp); font-weight:800; line-height:.86; font-size:clamp(2.8rem,11vw,6rem); letter-spacing:-.01em}
 .listen-head h2 .per{color:var(--blood-bright)}
 
+/* featured = smooth glass */
 .feat{position:relative; display:grid; grid-template-columns:1fr; gap:clamp(22px,4vw,40px); padding:clamp(20px,4vw,34px);
-  border:1px solid var(--line); background:linear-gradient(160deg,var(--glass),var(--glass2));
-  -webkit-backdrop-filter:blur(var(--blur)) saturate(1.2); backdrop-filter:blur(var(--blur)) saturate(1.2);
-  margin-bottom:clamp(40px,7vw,80px); box-shadow:inset 0 1px 0 var(--edge), 0 30px 70px -40px rgba(0,0,0,.7)}
-.feat::after{content:""; position:absolute; inset:0; pointer-events:none; box-shadow:inset 0 0 60px rgba(0,0,0,.22)}
-.feat-media{position:relative; aspect-ratio:16/9; overflow:hidden; border:1px solid var(--line); background:#000;
+  background:var(--glass-paint); -webkit-backdrop-filter:blur(var(--blur)) saturate(1.5); backdrop-filter:blur(var(--blur)) saturate(1.5);
+  border:var(--glass-edge); border-radius:var(--rad); overflow:hidden; box-shadow:var(--glass-shadow); margin-bottom:clamp(40px,7vw,80px)}
+.feat-media{position:relative; aspect-ratio:16/9; overflow:hidden; border:1px solid var(--line); border-radius:14px; background:#000;
   box-shadow:0 30px 70px -30px rgba(209,20,48,.5); transition:box-shadow .6s var(--ease)}
 .feat:hover .feat-media{box-shadow:0 40px 90px -30px rgba(209,20,48,.65)}
 .feat-media iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
@@ -219,7 +211,7 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 .feat-body .progress::after{content:""; position:absolute; left:0; top:0; bottom:0; width:38%; background:linear-gradient(90deg,var(--blood-bright),var(--ember)); box-shadow:0 0 12px rgba(255,39,71,.6)}
 .feat-body .times{display:flex; justify-content:space-between; font-size:.66rem; letter-spacing:.16em; color:var(--bone-faint)}
 .stream-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px}
-.pill{display:inline-flex; align-items:center; gap:9px; padding:11px 16px; border:1px solid var(--line); font-size:.7rem; letter-spacing:.2em;
+.pill{display:inline-flex; align-items:center; gap:9px; padding:11px 16px; border:1px solid var(--line); border-radius:999px; font-size:.7rem; letter-spacing:.2em;
   text-transform:uppercase; font-weight:700; color:var(--bone-dim); transition:.3s var(--ease)}
 .pill svg{width:16px; height:16px}
 .pill:hover{color:var(--bone); transform:translateY(-2px)}
@@ -228,13 +220,14 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 .pill-tg:hover{border-color:var(--cyan-soft); box-shadow:0 0 20px -4px var(--cyan-soft)}
 @media(min-width:860px){ .feat{grid-template-columns:1.05fr 1fr; align-items:center} }
 
-/* ============ ALBUM — glass over the cover art ============ */
+/* album = smooth glass over the cover art */
 .album{position:relative; z-index:1; overflow:hidden; margin-bottom:clamp(40px,7vw,80px);
-  padding:clamp(34px,6vw,64px) clamp(18px,4vw,44px); border:1px solid var(--line); background:var(--glass);
-  -webkit-backdrop-filter:blur(var(--blur)) saturate(1.2); backdrop-filter:blur(var(--blur)) saturate(1.2); box-shadow:inset 0 1px 0 var(--edge)}
-.album::before{content:""; position:absolute; inset:0; background-image:var(--art-cover); background-size:cover; background-position:center 30%;
+  padding:clamp(34px,6vw,64px) clamp(18px,4vw,44px); background:var(--glass-paint);
+  -webkit-backdrop-filter:blur(var(--blur)) saturate(1.5); backdrop-filter:blur(var(--blur)) saturate(1.5);
+  border:var(--glass-edge); border-radius:var(--rad); box-shadow:var(--glass-shadow)}
+.album::before{content:""; position:absolute; inset:0; border-radius:inherit; background-image:var(--art-cover); background-size:cover; background-position:center 30%;
   opacity:.16; filter:blur(3px) saturate(1.15); transform:scale(1.06)}
-.album::after{content:""; position:absolute; inset:0; pointer-events:none;
+.album::after{content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
   background:
     radial-gradient(70% 60% at 22% 30%, rgba(209,20,48,.22), transparent 60%),
     radial-gradient(60% 60% at 88% 80%, rgba(52,227,214,.10), transparent 60%),
@@ -280,9 +273,9 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 .cover-btn[aria-expanded="true"] .cl-close{display:inline}
 
 .player-panel{position:relative}
-.pp-closed{position:relative; overflow:hidden; border:1px solid var(--line); padding:clamp(20px,4vw,30px);
-  background:linear-gradient(135deg,var(--glass),var(--glass2));
-  -webkit-backdrop-filter:blur(var(--blur)) saturate(1.2); backdrop-filter:blur(var(--blur)) saturate(1.2); box-shadow:inset 0 1px 0 var(--edge)}
+/* player card = smooth glass */
+.pp-closed{position:relative; overflow:hidden; border:var(--glass-edge); border-radius:var(--rad); padding:clamp(20px,4vw,30px);
+  background:var(--glass-paint); -webkit-backdrop-filter:blur(var(--blur)) saturate(1.5); backdrop-filter:blur(var(--blur)) saturate(1.5); box-shadow:var(--glass-shadow)}
 .pp-closed::before{content:""; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright),var(--ember))}
 .pp-closed::after{content:""; position:absolute; right:-30px; bottom:-30px; width:160px; height:160px; border-radius:50%;
   background:radial-gradient(circle, rgba(209,20,48,.22), transparent 70%); pointer-events:none}
@@ -295,13 +288,13 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 .ppc-list li span{color:var(--bone-faint); font-variant-numeric:tabular-nums; width:1.6em}
 .ppc-list li.more{color:var(--bone-faint); font-style:italic; font-family:var(--f-serif); font-size:.95rem}
 .ppc-cta{appearance:none; cursor:pointer; display:inline-flex; align-items:center; gap:10px; font-family:var(--f-body); font-weight:700;
-  letter-spacing:.2em; text-transform:uppercase; font-size:.7rem; color:var(--bone); background:var(--blood); border:1px solid var(--blood);
+  letter-spacing:.2em; text-transform:uppercase; font-size:.7rem; color:var(--bone); background:var(--blood); border:1px solid var(--blood); border-radius:999px;
   padding:13px 20px; transition:.3s var(--ease); box-shadow:0 0 26px -8px var(--blood)}
 .ppc-cta:hover{background:var(--blood-bright); box-shadow:0 0 34px -6px var(--blood-bright); transform:translateY(-2px)}
 .ppc-cta .tri{width:0;height:0;border-left:9px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent}
 
 .pp-open{display:none; flex-direction:column; gap:14px}
-.ppo-frame{position:relative; border:1px solid var(--line); background:#0c0809; overflow:hidden; box-shadow:0 30px 70px -34px rgba(209,20,48,.5)}
+.ppo-frame{position:relative; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:#0c0809; box-shadow:0 30px 70px -34px rgba(209,20,48,.5)}
 .ppo-frame iframe{width:100%; height:440px; border:0; display:block; background:#0c0809}
 .ppo-load{position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
   background-image:var(--art-cover); background-size:cover; background-position:center; transition:opacity .6s ease, visibility .6s}
@@ -311,7 +304,7 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 .ppo-load span:last-child{position:relative; z-index:1; font-size:.64rem; letter-spacing:.3em; text-transform:uppercase; color:var(--bone-dim)}
 .ppo-load.gone{opacity:0; visibility:hidden; pointer-events:none}
 .ppo-foot{display:flex; flex-wrap:wrap; align-items:center; gap:12px; justify-content:space-between}
-.pp-close{appearance:none; background:none; border:1px solid var(--line); color:var(--bone-dim); cursor:pointer; padding:11px 16px;
+.pp-close{appearance:none; background:none; border:1px solid var(--line); border-radius:999px; color:var(--bone-dim); cursor:pointer; padding:11px 16px;
   font-size:.64rem; letter-spacing:.2em; text-transform:uppercase; font-family:var(--f-body); transition:.3s var(--ease)}
 .pp-close:hover{border-color:var(--blood-bright); color:var(--bone)}
 .album-stage.open .pp-closed{display:none}
@@ -325,7 +318,9 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
   background:radial-gradient(50% 60% at 12% 30%, rgba(209,20,48,.16), transparent 60%), radial-gradient(45% 50% at 92% 70%, rgba(52,227,214,.10), transparent 60%)}
 .deluxe-inner{position:relative; max-width:1080px; margin:0 auto; display:grid; grid-template-columns:1fr; gap:clamp(26px,5vw,52px); align-items:center}
 .dlx-art{position:relative; display:flex; align-items:center; justify-content:center; min-height:280px}
-.dlx-stack{position:relative; width:min(72%,300px); aspect-ratio:1/1; transform:rotate(6deg); transition:transform .9s var(--ease-soft)}
+/* the sealed case IS the easter-egg trigger now */
+.dlx-stack{position:relative; width:min(72%,300px); aspect-ratio:1/1; transform:rotate(6deg); transition:transform .9s var(--ease-soft); cursor:help}
+.dlx-stack:focus-visible{outline:2px solid var(--cyan); outline-offset:6px; border-radius:8px}
 .deluxe-inner:hover .dlx-stack{transform:rotate(2deg)}
 .dlx-case{position:absolute; inset:0; background-image:var(--art-deluxe); background-size:contain; background-repeat:no-repeat; background-position:center;
   filter:grayscale(.6) brightness(.62) contrast(1.05) drop-shadow(0 24px 50px rgba(0,0,0,.7)); transition:filter .9s var(--ease-soft)}
@@ -344,12 +339,27 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 .deluxe-inner:hover .glitch::after{opacity:.65; color:var(--blood-bright); transform:translate(2px,0); animation:gl2 .6s steps(2) infinite; mix-blend-mode:screen}
 @keyframes gl1{0%{clip-path:inset(0 0 70% 0)}50%{clip-path:inset(40% 0 30% 0)}100%{clip-path:inset(70% 0 0 0)}}
 @keyframes gl2{0%{clip-path:inset(60% 0 10% 0)}50%{clip-path:inset(10% 0 60% 0)}100%{clip-path:inset(30% 0 40% 0)}}
-.dlx-lock{position:absolute; top:8%; right:6%; transform:rotate(-12deg); font-family:var(--f-disp); font-weight:800; letter-spacing:.2em;
+/* the whisper that burns onto the black cover when the egg fires */
+.dlx-egg{position:absolute; z-index:5; left:41%; top:52%; transform:translate(-50%,-50%) scale(.9); width:44%; box-sizing:border-box;
+  text-align:center; font-family:var(--f-egg); font-style:normal; letter-spacing:.03em; line-height:1.2;
+  font-size:clamp(.82rem,3vw,1.25rem); color:var(--blood-bright);
+  text-shadow:0 0 14px rgba(255,39,71,.75),0 0 30px rgba(209,20,48,.5),0 2px 4px #000;
+  background:rgba(6,3,4,.34); -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); padding:8px 6px; border-radius:8px;
+  opacity:0; pointer-events:none; transition:opacity .5s var(--ease), transform .5s var(--ease)}
+.dlx-egg.show{opacity:1; transform:translate(-50%,-50%) scale(1)}
+/* the [ locked ] tag is now purely decorative (the case takes the clicks) */
+.dlx-lock{position:absolute; top:8%; right:6%; transform:rotate(-12deg); pointer-events:none; font-family:var(--f-disp); font-weight:800; letter-spacing:.2em;
   text-transform:uppercase; font-size:clamp(.66rem,2.4vw,.9rem); color:var(--cyan-soft); border:1.5px solid var(--cyan); padding:6px 12px;
-  background:rgba(8,5,6,.5); box-shadow:0 0 22px -6px var(--cyan); transition:box-shadow .3s var(--ease)}
-.dlx-lock:hover{box-shadow:0 0 30px -4px var(--cyan)}
-.dlx-lock.crack{animation:crack .6s steps(2) 1}
-@keyframes crack{0%{transform:rotate(-12deg) translate(0,0)}20%{transform:rotate(-12deg) translate(-3px,1px)}40%{transform:rotate(-12deg) translate(3px,-1px)}60%{transform:rotate(-12deg) translate(-2px,0)}100%{transform:rotate(-12deg)}}
+  background:rgba(8,5,6,.5); box-shadow:0 0 22px -6px var(--cyan)}
+/* the whole deluxe block rattles when you hammer the sealed case */
+@keyframes lockShake{
+  0%,100%{transform:translate(0,0) rotate(0)}
+  10%{transform:translate(-4px,2px) rotate(-.4deg)} 20%{transform:translate(5px,-2px) rotate(.5deg)}
+  30%{transform:translate(-6px,1px) rotate(-.6deg)} 40%{transform:translate(6px,-1px) rotate(.5deg)}
+  50%{transform:translate(-4px,2px) rotate(-.3deg)} 60%{transform:translate(4px,-2px) rotate(.4deg)}
+  70%{transform:translate(-3px,1px) rotate(-.2deg)} 80%{transform:translate(3px,-1px) rotate(.2deg)}
+  90%{transform:translate(-1px,0) rotate(0)}}
+.deluxe-inner.shaking{animation:lockShake .7s cubic-bezier(.36,.07,.19,.97) both}
 .dlx-body .eyebrow{display:flex; align-items:center; gap:12px; font-size:.72rem; letter-spacing:.34em; text-transform:uppercase; color:var(--blood-bright); margin-bottom:14px}
 .dlx-body .eyebrow .ln{height:1px; width:42px; background:var(--blood-deep)}
 .dlx-cta{display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-top:6px}
@@ -364,7 +374,7 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 .singles-head h3{font-family:var(--f-disp); font-weight:800; font-size:clamp(1.5rem,5vw,2.4rem)}
 .singles-head .more{font-size:.68rem; letter-spacing:.24em; text-transform:uppercase; color:var(--bone-faint)}
 .singles{display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(10px,2.4vw,18px)}
-.single{position:relative; aspect-ratio:1/1; overflow:hidden; border:1px solid var(--line); background-image:var(--art-single);
+.single{position:relative; aspect-ratio:1/1; overflow:hidden; border:1px solid var(--line); border-radius:14px; background-image:var(--art-single);
   background-size:cover; background-position:center; transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
 .single::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 40%,rgba(7,4,5,.92))}
 .single::before{content:""; position:absolute; top:0; left:0; right:0; height:0; background:var(--blood); transition:height .3s var(--ease); z-index:3}
@@ -390,15 +400,16 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 @media(min-width:680px){ .singles{grid-template-columns:repeat(4,1fr)} }
 
 .platforms{display:grid; grid-template-columns:1fr; gap:14px; margin-top:clamp(40px,7vw,72px)}
-.pcard{position:relative; display:flex; align-items:center; gap:16px; padding:20px clamp(18px,4vw,28px); border:1px solid var(--line);
-  background:linear-gradient(120deg,var(--glass),var(--glass2));
-  -webkit-backdrop-filter:blur(10px) saturate(1.15); backdrop-filter:blur(10px) saturate(1.15); overflow:hidden; transition:.4s var(--ease)}
+/* platform cards = smooth glass */
+.pcard{position:relative; display:flex; align-items:center; gap:16px; padding:20px clamp(18px,4vw,28px); overflow:hidden;
+  background:var(--glass-paint); -webkit-backdrop-filter:blur(var(--blur)) saturate(1.5); backdrop-filter:blur(var(--blur)) saturate(1.5);
+  border:var(--glass-edge); border-radius:var(--rad); box-shadow:var(--glass-shadow); transition:.4s var(--ease)}
 .pcard::after{content:""; position:absolute; inset:0; opacity:0; transition:opacity .4s var(--ease); pointer-events:none}
 .pcard-am::after{background:radial-gradient(80% 120% at 100% 0%,rgba(255,122,26,.16),transparent 60%)}
 .pcard-yt::after{background:radial-gradient(80% 120% at 100% 0%,rgba(255,39,71,.16),transparent 60%)}
 .pcard:hover::after{opacity:1}
 .pcard:hover{transform:translateY(-3px)}
-.pcard .ic{width:46px; height:46px; flex:none; display:grid; place-items:center; border:1px solid var(--line)}
+.pcard .ic{width:46px; height:46px; flex:none; display:grid; place-items:center; border:1px solid var(--line); border-radius:10px}
 .pcard .ic svg{width:22px; height:22px}
 .pcard-am .ic{color:var(--ember)} .pcard-yt .ic{color:var(--blood-bright)}
 .pcard .tx{flex:1}
@@ -408,19 +419,41 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 .pcard:hover .arrow{color:var(--bone); transform:translateX(4px)}
 @media(min-width:680px){ .platforms{grid-template-columns:1fr 1fr} }
 
-/* ============ OUTRO — glass stub ============ */
+/* ============ OUTRO — smooth glass ============ */
 .outro{position:relative; z-index:1; padding:clamp(40px,7vh,84px) clamp(18px,5vw,40px);
   background:linear-gradient(180deg, rgba(8,5,6,.34), rgba(10,7,8,.46)); border-top:1px solid var(--line)}
 .stub{position:relative; max-width:840px; margin:0 auto; text-align:center; padding:clamp(34px,7vw,64px) clamp(26px,6vw,64px);
-  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
-  background:linear-gradient(160deg,var(--glass),var(--glass2));
-  -webkit-backdrop-filter:blur(var(--blur)) saturate(1.2); backdrop-filter:blur(var(--blur)) saturate(1.2); box-shadow:inset 0 1px 0 var(--edge)}
+  background:var(--glass-paint); -webkit-backdrop-filter:blur(var(--blur)) saturate(1.5); backdrop-filter:blur(var(--blur)) saturate(1.5);
+  border:var(--glass-edge); border-radius:var(--rad); overflow:hidden; box-shadow:var(--glass-shadow)}
 .stub .eyebrow{display:flex; align-items:center; justify-content:center; gap:12px; font-size:.72rem; letter-spacing:.34em; text-transform:uppercase; color:var(--blood-bright); margin-bottom:18px}
 .stub .eyebrow .ln{height:1px; width:42px; background:var(--blood-deep)}
 .stub .voice{font-family:var(--f-serif); font-size:clamp(1.3rem,4.4vw,2.05rem); line-height:1.4; color:var(--bone); max-width:30ch; margin:0 auto}
 .stub .voice .nm{color:var(--blood-bright); font-style:italic; text-shadow:0 0 18px rgba(255,39,71,.35)}
 .stub .voice .dag{color:var(--bone-faint)}
 .stub .cta{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:26px}
+
+/* ============ JOIN — the fake signup that is secretly the backdoor ============ */
+.join{position:relative; z-index:1; padding:clamp(40px,7vh,80px) clamp(18px,5vw,40px);
+  background:linear-gradient(180deg, rgba(10,7,8,.34), rgba(8,5,6,.5)); border-top:1px solid var(--line)}
+.join-card{position:relative; max-width:680px; margin:0 auto; text-align:center; overflow:hidden;
+  background:var(--glass-paint); -webkit-backdrop-filter:blur(var(--blur)) saturate(1.5); backdrop-filter:blur(var(--blur)) saturate(1.5);
+  border:var(--glass-edge); border-radius:var(--rad); box-shadow:var(--glass-shadow); padding:clamp(26px,5vw,44px) clamp(20px,5vw,40px)}
+.join-card .eyebrow{display:flex; align-items:center; justify-content:center; gap:12px; font-size:.72rem; letter-spacing:.34em; text-transform:uppercase; color:var(--blood-bright); margin-bottom:14px}
+.join-card .eyebrow .ln{height:1px; width:42px; background:var(--blood-deep)}
+.join-card h3{font-family:var(--f-disp); font-weight:800; font-size:clamp(1.5rem,5vw,2.4rem); line-height:1}
+.join-card .sub{font-family:var(--f-serif); font-style:italic; color:var(--bone-dim); margin-top:10px; font-size:clamp(.95rem,3vw,1.2rem)}
+.join-form{display:flex; gap:10px; margin-top:22px; flex-wrap:wrap; justify-content:center}
+.join-form input{flex:1 1 220px; min-width:0; background:rgba(8,5,6,.5); border:1px solid var(--line); border-radius:12px; color:var(--bone);
+  padding:13px 16px; font-family:var(--f-body); font-size:.9rem; letter-spacing:.04em; transition:.3s var(--ease)}
+.join-form input::placeholder{color:var(--bone-faint)}
+.join-form input:focus{outline:none; border-color:var(--blood-bright); box-shadow:0 0 0 3px rgba(255,39,71,.18)}
+.join-form button{appearance:none; cursor:pointer; display:inline-flex; align-items:center; gap:10px; font-family:var(--f-body); font-weight:700;
+  letter-spacing:.2em; text-transform:uppercase; font-size:.7rem; color:var(--bone); background:var(--blood); border:1px solid var(--blood); border-radius:12px;
+  padding:13px 20px; transition:.3s var(--ease); box-shadow:0 0 26px -8px var(--blood)}
+.join-form button:hover{background:var(--blood-bright); box-shadow:0 0 34px -6px var(--blood-bright); transform:translateY(-2px)}
+.join-form button .tri{width:0;height:0;border-left:9px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent}
+.join-ok{margin-top:14px; min-height:1.2em; font-family:var(--f-serif); font-style:italic; color:var(--cyan-soft); opacity:0; transition:opacity .4s var(--ease)}
+.join-ok.show{opacity:1}
 
 /* ============ FOOTER ============ */
 .foot{position:relative; z-index:1; overflow:hidden; padding:clamp(40px,7vw,72px) clamp(18px,5vw,46px) 26px;
@@ -444,13 +477,14 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
   text-shadow:0 0 24px rgba(209,20,48,.55),0 0 60px rgba(209,20,48,.3),0 0 90px rgba(52,227,214,.18);
   animation:markGlow 6s ease-in-out infinite alternate}
 @keyframes markGlow{0%{text-shadow:0 0 18px rgba(209,20,48,.4),0 0 50px rgba(209,20,48,.22),0 0 80px rgba(52,227,214,.12)}100%{text-shadow:0 0 30px rgba(209,20,48,.7),0 0 70px rgba(209,20,48,.4),0 0 110px rgba(52,227,214,.26)}}
-.foot-whisper{position:absolute; left:clamp(6px,2vw,18px); bottom:-1.7em; font-family:var(--f-serif); font-style:italic; font-size:.82rem;
-  letter-spacing:.05em; color:var(--magenta-soft); opacity:0; transition:opacity .6s var(--ease); text-shadow:0 0 14px rgba(255,45,126,.4);
+/* footer whisper now speaks in the hidden voice */
+.foot-whisper{position:absolute; left:clamp(6px,2vw,18px); bottom:-1.9em; font-family:var(--f-egg); font-style:normal; font-size:clamp(1rem,3.4vw,1.35rem);
+  letter-spacing:.04em; color:var(--magenta-soft); opacity:0; transition:opacity .6s var(--ease); text-shadow:0 0 14px rgba(255,45,126,.45);
   pointer-events:none; white-space:nowrap}
 .foot-whisper.show{opacity:.92}
 .foot-soc{display:flex; gap:10px}
 .foot-soc a{--ac:var(--blood-bright); width:44px; height:44px; display:grid; place-items:center; color:var(--bone-dim);
-  border:1px solid var(--line); transition:.3s var(--ease)}
+  border:1px solid var(--line); border-radius:10px; transition:.3s var(--ease)}
 .foot-soc a:hover{color:var(--bone); border-color:var(--ac); box-shadow:0 0 18px -2px var(--ac); transform:translateY(-3px)}
 .foot-soc svg{width:19px; height:19px}
 .foot-soc .ig-am:hover{--ac:var(--ember)} .foot-soc .ig-yt:hover{--ac:var(--blood-bright)}
@@ -462,17 +496,23 @@ body::after{content:""; position:fixed; inset:-60%; z-index:60; pointer-events:n
 .foot-top-link{font-size:.64rem; letter-spacing:.26em; text-transform:uppercase; color:var(--bone-faint); transition:.3s var(--ease); white-space:nowrap}
 .foot-top-link:hover{color:var(--blood-bright)}
 
-/* ============ EASTER-EGG OVERLAYS ============ */
-#egg{position:fixed; left:50%; bottom:26px; transform:translate(-50%,20px); z-index:90; font-family:var(--f-serif); font-style:italic;
-  font-size:.95rem; letter-spacing:.06em; color:var(--bone); background:rgba(8,5,6,.84); border:1px solid var(--blood); padding:10px 18px;
-  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); box-shadow:0 0 30px -8px var(--blood); opacity:0; pointer-events:none; transition:opacity .5s var(--ease), transform .5s var(--ease)}
-#egg.show{opacity:1; transform:translate(-50%,0)}
-#veil{position:fixed; inset:0; z-index:85; pointer-events:none; opacity:0; transition:opacity .25s ease; mix-blend-mode:screen;
-  background:radial-gradient(60% 60% at 50% 40%, rgba(209,20,48,.35), rgba(124,11,27,.12) 50%, transparent 75%)}
-#veil.show{opacity:1}
-body.unhinged .wash{animation-duration:1.1s}
-body.unhinged .fog{filter:saturate(1.45) brightness(1.12)}
-body.unhinged::before{animation-duration:1.6s}
+/* ============ BACKDOOR — the room behind the wall ============ */
+#backdoor{position:fixed; inset:0; z-index:300; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:clamp(20px,4.5vh,38px); padding:24px; text-align:center; background:#040203; cursor:pointer;
+  opacity:0; visibility:hidden; transition:opacity .6s ease, visibility .6s}
+#backdoor.show{opacity:1; visibility:visible}
+#backdoor::before{content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(60% 50% at 50% 45%, rgba(124,11,27,.5), transparent 70%); animation:gloom 5s ease-in-out infinite alternate}
+#backdoor .bd-text{position:relative; z-index:1; font-family:var(--f-egg); font-style:normal; color:var(--blood-bright);
+  font-size:clamp(1.7rem,7.5vw,4.4rem); line-height:1.02; letter-spacing:.03em; max-width:16ch;
+  text-shadow:0 0 18px rgba(255,39,71,.7),0 0 50px rgba(209,20,48,.5),0 0 90px rgba(124,11,27,.5); animation:bdFlick 3.2s steps(1) infinite}
+#backdoor .bd-sub{position:relative; z-index:1; font-family:var(--f-serif); font-style:italic; color:var(--bone-dim); font-size:clamp(.9rem,3vw,1.2rem); letter-spacing:.05em}
+#backdoor .bd-btn{position:relative; z-index:1; display:inline-block; cursor:pointer; line-height:0;
+  filter:drop-shadow(0 0 24px rgba(209,20,48,.55)); transition:transform .35s var(--ease), filter .35s var(--ease)}
+#backdoor .bd-btn:hover{transform:scale(1.06); filter:drop-shadow(0 0 42px rgba(255,39,71,.85))}
+#backdoor .bd-btn img{width:clamp(150px,42vw,260px); height:auto; display:block}
+#backdoor .bd-hint{position:relative; z-index:1; font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; color:var(--bone-faint)}
+@keyframes bdFlick{0%,100%{opacity:1}43%{opacity:.78}47%{opacity:.95}52%{opacity:.6}57%{opacity:.92}}
 
 @keyframes pulse{0%,100%{opacity:.3; transform:scale(.8)}50%{opacity:1; transform:scale(1.2)}}
 @media(prefers-reduced-motion:reduce){ *{animation:none !important; scroll-behavior:auto !important} [data-reveal]{opacity:1; transform:none} }
@@ -510,8 +550,7 @@ body.unhinged::before{animation-duration:1.6s}
     <div class="hero-inner">
       <div class="hero-bottom">
         <p class="kicker">Nilouverse Music</p>
-        <h1 class="wordmark" id="wordmark">Nilouverse<span class="wm-sub">M U S I C</span></h1>
-        <p class="wm-secret" id="wmSecret">† NilouZila is watching.</p>
+        <h1 class="wordmark">Nilouverse<span class="wm-sub">M U S I C</span></h1>
         <nav class="socials" aria-label="Social links">
           <a class="ig-am" href="https://audiomack.com/nilouversemusic" target="_blank" rel="noopener" aria-label="Audiomack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></a>
           <a class="ig-yt" href="https://youtube.com/@nilouverse_music" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2 15 12l-5 2.8z" fill="currentColor" stroke="none"/></svg></a>
@@ -620,12 +659,14 @@ body.unhinged::before{animation-duration:1.6s}
   <section class="deluxe" id="deluxe">
     <div class="deluxe-inner" data-reveal>
       <div class="dlx-art">
-        <div class="dlx-stack">
+        <!-- tap the sealed case: it rattles; after a few taps the whisper burns onto the cover -->
+        <div class="dlx-stack" id="dlxStack" role="button" tabindex="0" aria-label="sealed edition">
           <div class="dlx-case"></div>
           <div class="dlx-scanlines"></div>
           <span class="dlx-title glitch" data-text="DOWN — DELUXE" aria-hidden="true">DOWN — DELUXE</span>
+          <span class="dlx-egg" id="dlxEgg" aria-hidden="true">the lock is too strong. † not yet Paul :)</span>
         </div>
-        <span class="dlx-lock" id="dlxLock" role="button" tabindex="0" aria-label="locked">[ locked ]</span>
+        <span class="dlx-lock" aria-hidden="true">[ locked ]</span>
       </div>
       <div class="dlx-body">
         <h2 class="sr-only">Down — Deluxe</h2>
@@ -673,6 +714,20 @@ body.unhinged::before{animation-duration:1.6s}
       </div>
     </div>
   </section>
+
+  <!-- ============ JOIN — looks like a signup, is actually the backdoor ============ -->
+  <section class="join" id="join">
+    <div class="join-card" data-reveal>
+      <p class="eyebrow"><span class="ln"></span>the inner circle</p>
+      <h3>be there when it drops.</h3>
+      <p class="sub">one email — only when the floor gives out again.</p>
+      <form class="join-form" id="joinForm" novalidate>
+        <input id="joinEmail" type="text" inputmode="email" autocomplete="email" placeholder="your@email.com" aria-label="email address" />
+        <button type="submit"><span class="tri"></span>notify me</button>
+      </form>
+      <p class="join-ok" id="joinOk" role="status"></p>
+    </div>
+  </section>
 </main>
 
 <footer class="foot">
@@ -693,8 +748,13 @@ body.unhinged::before{animation-duration:1.6s}
   </div>
 </footer>
 
-<div id="veil" aria-hidden="true"></div>
-<div id="egg" role="status" aria-live="polite"></div>
+<!-- the backdoor room (kept empty + unlinked in the source on purpose) -->
+<div id="backdoor" aria-hidden="true">
+  <p class="bd-text">the door was never locked for you</p>
+  <p class="bd-sub">† step through, keeper</p>
+  <a class="bd-btn" id="bdLink" rel="nofollow noopener" aria-label="enter the back door"><img src="art/button.png" alt="" draggable="false"></a>
+  <span class="bd-hint">tap the dark to leave · esc</span>
+</div>
 
 <script>
 /* drifting embers (hero) */
@@ -759,27 +819,31 @@ body.unhinged::before{animation-duration:1.6s}
 })();
 
 /* ============================================================
-   EASTER EGGS  (all hidden at rest — go find them)
+   EASTER EGGS  — three left: sealed case · footer · backdoor
    ============================================================ */
+
+/* (1) DELUXE sealed case — tap the black cover; the whole block rattles;
+       after a few taps a whisper burns onto the cover itself. */
 (function(){
-  var egg=document.getElementById('egg'), eggT;
-  function showEgg(t){ if(!egg) return; egg.textContent=t; egg.classList.add('show'); clearTimeout(eggT); eggT=setTimeout(function(){egg.classList.remove('show');},3400); }
-
-  /* (1) wordmark × 5 → hidden signature */
-  var wm=document.getElementById('wordmark'), secret=document.getElementById('wmSecret'), wc=0;
-  if(wm&&secret){ wm.style.cursor='pointer'; wm.addEventListener('click',function(){ wc++; if(wc>=5){wc=0; secret.classList.toggle('show');} }); }
-
-  /* (2) [ locked ] × 3 → it cracks + a whisper */
-  var lock=document.getElementById('dlxLock'), lc=0;
-  if(lock){
-    lock.style.cursor='help';
-    function crack(){ lc++; if(lc>=3){ lc=0; showEgg('the lock is too strong. † not yet Paul :)'); lock.classList.add('crack'); setTimeout(function(){lock.classList.remove('crack');},700); } }
-    lock.addEventListener('click',crack);
-    lock.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); crack(); } });
+  var stack=document.getElementById('dlxStack'), inner=document.querySelector('.deluxe-inner'),
+      egg=document.getElementById('dlxEgg'), n=0, t;
+  if(!stack||!inner||!egg) return;
+  function hit(){
+    n++;
+    inner.classList.remove('shaking'); void inner.offsetWidth; inner.classList.add('shaking');   /* restart the rattle every tap */
+    setTimeout(function(){ inner.classList.remove('shaking'); },720);
+    if(n>=3){
+      n=0; egg.classList.add('show'); clearTimeout(t); t=setTimeout(function(){ egg.classList.remove('show'); },3600);
+    }
   }
+  stack.addEventListener('click',hit);
+  stack.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); hit(); } });
+})();
 
-  /* (3) footer wordmark → cycling whispers in the mist  (DOUBLE QUOTES on purpose — the text has apostrophes) */
+/* (2) FOOTER wordmark — cycles whispers in the mist (the hidden voice) */
+(function(){
   var fm=document.getElementById('footMark'), fw=document.getElementById('footWhisper'), wi=0;
+  /* DOUBLE QUOTES on purpose — these lines contain apostrophes */
   var whispers=["Yeah, Nilouverse! Don't ever forget it.","Don't touch my footer Paul.","uk it's a long way down!","† She's around, better not linger."];
   if(fm&&fw){
     fm.style.pointerEvents='auto'; fm.style.cursor='help';
@@ -788,32 +852,35 @@ body.unhinged::before{animation-duration:1.6s}
       clearTimeout(fw._t); fw._t=setTimeout(function(){fw.classList.remove('show');},2600);
     });
   }
+})();
 
-  /* (4) Konami code → UNHINGED MODE (desktop) */
-  var veil=document.getElementById('veil');
-  function burst(){
-    var box=document.getElementById('embers'); if(!box) return;
-    var cols=['#ff7a1a','#ffb24d','#ff2d7e','#ff86b6','#ff2747'];
-    for(var i=0;i<34;i++){
-      var s=document.createElement('span'); var size=(Math.random()*3+2).toFixed(1);
-      s.style.left=(Math.random()*100).toFixed(2)+'%'; s.style.width=size+'px'; s.style.height=size+'px';
-      s.style.setProperty('--c',cols[i%cols.length]); s.style.setProperty('--dur',(Math.random()*3+2.5).toFixed(1)+'s');
-      s.style.setProperty('--delay',(-Math.random()*1.5).toFixed(1)+'s'); s.style.setProperty('--sway',((Math.random()*120)-60).toFixed(0)+'px');
-      box.appendChild(s); setTimeout((function(n){return function(){ n.remove(); };})(s),5200);
-    }
+/* (3) BACKDOOR — the fake signup at the bottom IS the lock.
+       type the secret word instead of an email → the room opens. */
+(function(){
+  var form=document.getElementById('joinForm'), input=document.getElementById('joinEmail'),
+      ok=document.getElementById('joinOk'), bd=document.getElementById('backdoor'), link=document.getElementById('bdLink');
+  var SECRET='bd289'+'kouw.html';   /* the hidden page — split so the full name never sits in the source as one string */
+  function openDoor(){
+    if(link) link.href=SECRET;       /* the link only exists once the door is open */
+    if(bd){ bd.classList.add('show'); bd.setAttribute('aria-hidden','false'); }
+    document.body.style.overflow='hidden';
   }
-  function unhinged(){
-    showEgg('Shi†! you found the back door.');
-    if(veil){ veil.classList.add('show'); setTimeout(function(){veil.classList.remove('show');},1100); }
-    document.body.classList.add('unhinged'); setTimeout(function(){document.body.classList.remove('unhinged');},4000);
-    burst();
+  function closeDoor(){
+    if(bd){ bd.classList.remove('show'); bd.setAttribute('aria-hidden','true'); }
+    document.body.style.overflow='';
   }
-  var seq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'], ki=0;
-  addEventListener('keydown',function(e){
-    var k=e.key;
-    if(k===seq[ki]){ ki++; if(ki===seq.length){ ki=0; unhinged(); } }
-    else { ki = (k===seq[0]) ? 1 : 0; }
-  });
+  if(form){
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      var v=(input.value||'').trim();
+      if(/^nilouzila$/i.test(v)){ if(ok) ok.classList.remove('show'); openDoor(); }     /* the backdoor key */
+      else if(v){ ok.textContent="you’re in. watch your inbox †"; ok.classList.add('show'); }   /* believable fake confirmation */
+    });
+  }
+  if(bd){
+    bd.addEventListener('click',function(e){ if(e.target===bd) closeDoor(); });           /* tap the dark to leave */
+    addEventListener('keydown',function(e){ if(e.key==='Escape' && bd.classList.contains('show')) closeDoor(); });
+  }
 })();
 </script>
 </body>
