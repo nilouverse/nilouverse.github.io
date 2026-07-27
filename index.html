@@ -791,9 +791,9 @@ body.unhinged .fog{filter:saturate(1.45) brightness(1.12)}
     lock.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); crack(); } });
   }
 
-  /* (3) footer wordmark → cycling whispers in the mist */
+  /* (3) footer wordmark → cycling whispers in the mist  (DOUBLE QUOTES here on purpose — the text has apostrophes) */
   var fm=document.getElementById('footMark'), fw=document.getElementById('footWhisper'), wi=0;
-  var whispers=['Yeah, Nilouverse! Don't ever forget it.','Don't touch my footer Paul.','uk it's a long way down!','† She's around, better not linger.'];
+  var whispers=["Yeah, Nilouverse! Don't ever forget it.","Don't touch my footer Paul.","uk it's a long way down!","† She's around, better not linger."];
   if(fm&&fw){
     fm.style.pointerEvents='auto'; fm.style.cursor='help';
     fm.addEventListener('click',function(){
