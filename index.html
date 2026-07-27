@@ -1,1 +1,405 @@
-Okeh!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>NILOUVERSE — the gentle thing shows its teeth</title>
+<meta name="description" content="Nilouverse Music — dark, heavy, unhinged. Debut LP ‘DOWN’." />
+
+<!-- Fonts: Metal Mania (logo) · Syne (loud headings) · Instrument Serif (the gentle voice) · Space Grotesk (body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   NILOUVERSE  ·  section 1 (hero + intro)
+   Palette: warm-black + blood crimson + cold cyan + ember + magenta
+   ============================================================ */
+:root{
+  --ink:#0a0708; --ink2:#100b0c; --panel:#15100f; --panel2:#1d1514;
+  --blood:#d11430; --blood-deep:#7c0b1b; --blood-bright:#ff2747;
+  --ember:#ff7a1a; --ember-soft:#ffb24d;
+  --cyan:#34e3d6; --cyan-soft:#9bf3ea;
+  --magenta:#ff2d7e; --magenta-soft:#ff86b6;
+  --bone:#efe6dd; --bone-dim:#b7aaa2; --bone-faint:#7d716b;
+  --line:rgba(239,230,221,.12);
+  --f-logo:'Metal Mania', cursive;
+  --f-disp:'Syne', sans-serif;
+  --f-serif:'Instrument Serif', serif;
+  --f-body:'Space Grotesk', sans-serif;
+}
+
+*{box-sizing:border-box; margin:0; padding:0}
+html{scroll-behavior:smooth; scroll-padding-top:74px; -webkit-text-size-adjust:100%}
+body{
+  background:var(--ink); color:var(--bone);
+  font-family:var(--f-body); line-height:1.6;
+  overflow-x:hidden; -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%; display:block}
+a{color:inherit; text-decoration:none}
+::selection{background:var(--blood); color:var(--bone)}
+
+/* film grain over everything */
+body::after{
+  content:""; position:fixed; inset:-60%; z-index:60; pointer-events:none;
+  background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity:.06; mix-blend-mode:overlay; animation:grain .55s steps(2) infinite;
+}
+@keyframes grain{
+  0%{transform:translate(0,0)} 25%{transform:translate(-3%,2%)}
+  50%{transform:translate(2%,-3%)} 75%{transform:translate(-2%,-2%)} 100%{transform:translate(3%,2%)}
+}
+
+:focus-visible{outline:2px solid var(--cyan); outline-offset:3px; border-radius:2px}
+
+/* ---------- top bleed / scroll progress ---------- */
+.scroll-progress{
+  position:fixed; top:0; left:0; height:2px; width:0%; z-index:80;
+  background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright),var(--ember));
+  box-shadow:0 0 12px rgba(255,39,71,.6);
+}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:fixed; inset:0 0 auto 0; z-index:70;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px clamp(16px,5vw,46px);
+  transition:background .4s ease, backdrop-filter .4s ease, border-color .4s ease, padding .4s ease;
+  border-bottom:1px solid transparent;
+}
+.topbar.scrolled{
+  background:rgba(8,5,6,.72); backdrop-filter:blur(10px);
+  border-bottom-color:var(--line); padding-top:12px; padding-bottom:12px;
+}
+.brand-mini{display:flex; align-items:center; gap:10px; font-weight:700;
+  letter-spacing:.34em; text-transform:uppercase; font-size:.74rem}
+.brand-mini .gem{width:8px; height:8px; background:var(--blood-bright);
+  transform:rotate(45deg); box-shadow:0 0 10px var(--blood-bright)}
+.topnav{display:flex; align-items:center; gap:clamp(14px,3vw,30px)}
+.topnav a{font-size:.72rem; letter-spacing:.26em; text-transform:uppercase;
+  color:var(--bone-dim); transition:color .25s}
+.topnav a:hover{color:var(--bone)}
+.listen-pill{
+  border:1px solid var(--blood); color:var(--bone); padding:8px 16px;
+  letter-spacing:.2em; text-transform:uppercase; font-size:.68rem; font-weight:700;
+  display:inline-flex; align-items:center; gap:8px; transition:.25s;
+}
+.listen-pill:hover{background:var(--blood); box-shadow:0 0 22px rgba(209,20,48,.5)}
+.listen-pill .tri{width:0;height:0;border-left:7px solid currentColor;
+  border-top:5px solid transparent;border-bottom:5px solid transparent}
+@media(max-width:560px){ .topnav .nav-link{display:none} }
+
+/* ============================================================
+   HERO  — the stage
+   ============================================================ */
+.hero{position:relative; min-height:100svh; overflow:hidden; isolation:isolate}
+.scene{position:absolute; inset:0; z-index:0; pointer-events:none}
+
+/* red fog + base light (the generated-look, rebuilt in CSS) */
+.fog{position:absolute; inset:0;
+  background:
+    radial-gradient(120% 95% at 16% 6%, rgba(209,20,48,.42), transparent 56%),
+    radial-gradient(95% 75% at 88% -4%, rgba(52,227,214,.12), transparent 52%),
+    radial-gradient(60% 50% at 70% 38%, rgba(255,45,126,.07), transparent 60%),
+    radial-gradient(150% 120% at 50% 122%, rgba(0,0,0,.92), transparent 60%),
+    linear-gradient(180deg,#0a0708,#0c0809 58%,#070405);
+}
+
+/* OPTIONAL artist photo hook — uncomment the <div class="photo"> in the HTML and paste a URL */
+.photo{position:absolute; inset:0; background-position:center 18%; background-size:cover;
+  opacity:.82; -webkit-mask-image:radial-gradient(120% 90% at 60% 35%, #000 35%, transparent 88%);
+  mask-image:radial-gradient(120% 90% at 60% 35%, #000 35%, transparent 88%);}
+
+/* the cold cyan blade of light */
+.beam{position:absolute; top:-25%; right:-12%; width:55vw; height:150vh;
+  transform:rotate(33deg); transform-origin:top right; mix-blend-mode:screen;
+  background:linear-gradient(90deg,transparent,rgba(52,227,214,0) 8%,
+    rgba(52,227,214,.16) 44%,rgba(155,243,234,.24) 50%,rgba(52,227,214,.12) 60%,transparent 92%);
+  filter:blur(26px); animation:beam 9s ease-in-out infinite alternate;
+}
+.beam.b2{top:-10%; right:6%; width:22vw; height:120vh; transform:rotate(40deg);
+  background:linear-gradient(90deg,transparent,rgba(255,45,126,.10) 50%,transparent);
+  filter:blur(30px); animation-duration:12s; animation-delay:-3s; opacity:.7}
+@keyframes beam{
+  0%{opacity:.55; transform:rotate(33deg) translateX(-2%)}
+  100%{opacity:.95; transform:rotate(31deg) translateX(3%)}
+}
+
+/* black pine silhouette along the floor (inline SVG, no external file) */
+.treeline{position:absolute; left:0; right:0; bottom:0; height:40vh;
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'><path fill='%23040209' d='M0,320 L0,210 L30,150 L55,235 L95,120 L130,250 L170,170 L210,90 L250,240 L300,140 L340,250 L380,60 L420,250 L470,160 L520,250 L560,110 L610,240 L660,180 L700,70 L740,250 L800,150 L850,250 L900,100 L950,240 L1000,170 L1050,80 L1100,250 L1150,150 L1200,240 L1250,120 L1300,250 L1350,160 L1400,210 L1440,250 L1440,320 Z'/></svg>") no-repeat bottom center / 100% 100%;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 38%);
+  mask-image:linear-gradient(180deg,transparent,#000 38%);
+}
+
+/* drifting embers (spawned by JS) */
+.embers{position:absolute; inset:0; overflow:hidden}
+.embers span{position:absolute; bottom:-12px; border-radius:50%;
+  background:var(--c,var(--ember)); box-shadow:0 0 8px 1px var(--c,var(--ember));
+  animation:rise var(--dur,10s) linear infinite; animation-delay:var(--delay,0s);
+  opacity:0}
+@keyframes rise{
+  0%{transform:translateY(0) translateX(0); opacity:0}
+  10%{opacity:.9} 50%{opacity:.5} 90%{opacity:.8}
+  100%{transform:translateY(-112vh) translateX(var(--sway,20px)); opacity:0}
+}
+
+.vignette{position:absolute; inset:0;
+  background:radial-gradient(120% 100% at 50% 38%,transparent 38%,rgba(0,0,0,.6) 100%),
+  linear-gradient(0deg,rgba(7,4,5,.96),transparent 32%);}
+
+/* hero content */
+.hero-inner{position:relative; z-index:2; max-width:1240px; margin:0 auto;
+  min-height:100svh; display:flex; flex-direction:column; justify-content:space-between;
+  padding:clamp(86px,12vh,120px) clamp(20px,6vw,64px) clamp(70px,12vh,104px);}
+
+.hero-top{display:flex; flex-wrap:wrap; align-items:center; gap:14px;
+  font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--bone-dim)}
+.hero-top .dot{width:5px;height:5px;background:var(--bone-faint);transform:rotate(45deg)}
+.hero-top .live{color:var(--blood-bright)}
+
+.hero-bottom{max-width:18ch}
+.kicker{font-size:.74rem; letter-spacing:.4em; text-transform:uppercase;
+  color:var(--cyan-soft); margin-bottom:14px; opacity:0; animation:fadeUp .9s .25s both}
+
+.wordmark{font-family:var(--f-logo); color:var(--bone); line-height:.8;
+  font-size:clamp(3.4rem,17vw,12.5rem); letter-spacing:.01em; display:inline-block;
+  -webkit-text-stroke:1.4px rgba(124,11,27,.95);
+  text-shadow:0 0 1px rgba(255,39,71,.5),0 2px 30px rgba(209,20,48,.35),0 12px 60px rgba(0,0,0,.65);
+  animation:wmIn 1.15s cubic-bezier(.2,.7,.2,1) both;}
+.wordmark:hover{animation:flick .9s steps(1) 1}
+@keyframes wmIn{
+  0%{opacity:0; filter:blur(16px); transform:translateY(26px) scaleY(1.08); clip-path:inset(0 0 100% 0)}
+  100%{opacity:1; filter:blur(0); transform:none; clip-path:inset(0 0 0 0)}
+}
+@keyframes flick{0%,100%{opacity:1}42%{opacity:.72}47%{opacity:.95}52%{opacity:.66}58%{opacity:.9}}
+.wm-sub{display:block; font-family:var(--f-body); font-weight:500; -webkit-text-stroke:0;
+  text-shadow:none; letter-spacing:.78em; font-size:clamp(.62rem,2.4vw,1rem);
+  color:var(--bone-dim); margin-top:.5em; padding-left:.25em}
+
+.tagline{font-family:var(--f-serif); font-style:italic; margin-top:1.2rem;
+  font-size:clamp(1.15rem,4.6vw,1.95rem); color:var(--bone); max-width:24ch; line-height:1.25;
+  opacity:0; animation:fadeUp .9s .5s both}
+.tagline em{color:var(--blood-bright); font-style:italic; text-shadow:0 0 18px rgba(255,39,71,.4)}
+
+@keyframes fadeUp{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
+
+/* social rail — vertical on desktop, row on mobile */
+.socials{display:flex; gap:8px; margin-top:1.7rem; opacity:0; animation:fadeUp .9s .7s both}
+.socials a{--ac:var(--blood-bright); width:42px; height:42px; display:grid; place-items:center;
+  color:var(--bone-dim); border:1px solid var(--line); transition:.25s}
+.socials a:hover{color:var(--bone); border-color:var(--ac);
+  box-shadow:0 0 18px -2px var(--ac); transform:translateY(-3px)}
+.socials svg{width:19px; height:19px}
+.ig-am:hover{--ac:var(--ember)} .ig-tg:hover{--ac:var(--cyan)}
+.ig-yt:hover{--ac:var(--blood-bright)} .ig-ig:hover{--ac:var(--magenta)}
+.ig-sc:hover{--ac:var(--ember-soft)}
+
+@media(min-width:980px){
+  .socials{position:fixed; left:clamp(16px,3vw,40px); top:50%; transform:translateY(-50%);
+    flex-direction:column; gap:12px; margin:0; z-index:40; animation:fadeUp .9s .7s both}
+}
+
+/* scroll cue */
+.scroll-cue{position:absolute; left:50%; bottom:20px; transform:translateX(-50%);
+  z-index:3; display:flex; flex-direction:column; align-items:center; gap:10px;
+  font-size:.6rem; letter-spacing:.34em; text-transform:uppercase; color:var(--bone-faint)}
+.scroll-cue .track{position:relative; width:1px; height:46px; background:var(--line); overflow:hidden}
+.scroll-cue .track::after{content:""; position:absolute; top:-40%; left:0; width:100%; height:40%;
+  background:linear-gradient(var(--blood-bright),transparent); animation:drip 1.9s ease-in-out infinite}
+@keyframes drip{0%{top:-40%}100%{top:110%}}
+
+/* ============================================================
+   INTRO  — the ticket stub
+   ============================================================ */
+.intro{position:relative; z-index:1; padding:clamp(64px,12vh,130px) clamp(18px,5vw,40px);
+  background:linear-gradient(180deg,#070405,#0a0708)}
+.ticket{position:relative; max-width:1000px; margin:0 auto;
+  background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  padding:clamp(30px,6vw,58px) clamp(26px,6vw,64px);
+  display:grid; grid-template-columns:1fr; gap:clamp(26px,5vw,52px);}
+/* perforated film-strip edges */
+.ticket::before,.ticket::after{content:""; position:absolute; top:0; bottom:0; width:14px;
+  background:radial-gradient(circle at 7px 11px,#070405 0 4px,transparent 4.6px) 0 0/14px 22px repeat-y;}
+.ticket::before{left:-7px} .ticket::after{right:-7px}
+
+.ticket-head .eyebrow{display:flex; align-items:center; gap:12px; font-size:.72rem;
+  letter-spacing:.34em; text-transform:uppercase; color:var(--blood-bright); margin-bottom:14px}
+.ticket-head .eyebrow .ln{height:1px; width:42px; background:var(--blood-deep)}
+.ticket-head h2{font-family:var(--f-disp); font-weight:800; line-height:.9;
+  font-size:clamp(2.6rem,10vw,5.4rem); letter-spacing:-.01em}
+.ticket-head h2 .per{color:var(--blood-bright)}
+.ticket-head .meta{margin-top:22px; display:flex; flex-direction:column; gap:4px;
+  font-size:.74rem; letter-spacing:.18em; text-transform:uppercase; color:var(--bone-dim)}
+.ticket-head .meta b{color:var(--bone); font-weight:700}
+.ticket-head .meta .whisper{color:var(--bone-faint); letter-spacing:.12em; text-transform:none;
+  font-family:var(--f-serif); font-style:italic; font-size:1rem; margin-top:8px}
+
+.poem{font-family:var(--f-serif); font-size:clamp(1.2rem,3.7vw,1.78rem); line-height:1.5;
+  color:var(--bone); display:flex; flex-direction:column; gap:.7em}
+.poem .ln{max-width:34ch}
+.poem .dead{color:var(--bone-faint); text-decoration:line-through;
+  text-decoration-color:var(--blood-deep); text-decoration-thickness:1px}
+.poem .teeth{color:var(--blood-bright); font-style:italic; text-shadow:0 0 20px rgba(255,39,71,.35)}
+.poem .redline{color:var(--bone); text-shadow:0 0 26px rgba(209,20,48,.3)}
+
+@media(min-width:820px){
+  .ticket{grid-template-columns:.85fr 1.15fr; align-items:start}
+  .ticket-head{position:sticky; top:96px}
+}
+
+/* reveal-on-scroll */
+[data-reveal]{opacity:0; transform:translateY(20px);
+  transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); transition-delay:var(--d,0s)}
+[data-reveal].in{opacity:1; transform:none}
+
+/* ---------- "next section" seam ---------- */
+.next-seam{text-align:center; padding:54px 20px 70px; border-top:1px solid var(--line);
+  color:var(--bone-faint); font-size:.72rem; letter-spacing:.3em; text-transform:uppercase}
+.next-seam .pulse{display:inline-block; width:7px; height:7px; border-radius:50%;
+  background:var(--blood-bright); margin-right:10px; vertical-align:middle;
+  box-shadow:0 0 10px var(--blood-bright); animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3; transform:scale(.8)}50%{opacity:1; transform:scale(1.2)}}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none !important; scroll-behavior:auto !important}
+  [data-reveal]{opacity:1; transform:none}
+}
+</style>
+</head>
+
+<body>
+<div class="scroll-progress" id="progress"></div>
+
+<header class="topbar" id="topbar">
+  <a class="brand-mini" href="#top"><span class="gem"></span>Nilouverse</a>
+  <nav class="topnav">
+    <a class="nav-link" href="#intro">Intro</a>
+    <a class="listen-pill" href="#listen"><span class="tri"></span>Listen</a>
+  </nav>
+</header>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <div class="scene" aria-hidden="true">
+      <div class="fog"></div>
+      <!-- OPTIONAL: paste your artist photo URL between the quotes below, then delete the two comment marks around this line:
+      <div class="photo" style="background-image:url('PASTE_YOUR_PHOTO_URL_HERE')"></div> -->
+      <div class="beam"></div>
+      <div class="beam b2"></div>
+      <div class="treeline"></div>
+      <div class="embers" id="embers"></div>
+      <div class="vignette"></div>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-top">
+        <span class="live">Debut LP — ‘Down’</span>
+        <span class="dot"></span>
+        <span>Dark · Heavy · Unhinged</span>
+      </div>
+
+      <div class="hero-bottom">
+        <p class="kicker">Nilouverse Music</p>
+        <h1 class="wordmark">Nilouverse<span class="wm-sub">M U S I C</span></h1>
+        <p class="tagline">the gentle thing shows its <em>teeth</em>.</p>
+
+        <nav class="socials" aria-label="Social links">
+          <!-- TODO: replace each href with your real profile URL -->
+          <a class="ig-am" href="https://audiomack.com/nilouverse" target="_blank" rel="noopener" aria-label="Audiomack">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg>
+          </a>
+          <a class="ig-tg" href="https://t.me/nilouverse" target="_blank" rel="noopener" aria-label="Telegram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M21 4 3 11l5 2 2 6 3-3 5 3 3-15z"/><path d="m8 13 9-6-6 8"/></svg>
+          </a>
+          <a class="ig-yt" href="https://youtube.com/@nilouverse" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2 15 12l-5 2.8z" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a class="ig-ig" href="https://instagram.com/nilouverse" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a class="ig-sc" href="https://soundcloud.com/nilouverse" target="_blank" rel="noopener" aria-label="SoundCloud">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 14v3M7 11v6M10 9v8"/><path d="M13 17V8.5a4.5 4.5 0 0 1 8 2.8 3 3 0 0 1-.5 5.7z"/></svg>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <a class="scroll-cue" href="#intro" aria-label="Scroll to intro">
+      <span>Scroll</span><span class="track"></span>
+    </a>
+  </section>
+
+  <!-- ============ INTRO ============ -->
+  <section class="intro" id="intro">
+    <div class="ticket" data-reveal>
+      <div class="ticket-head">
+        <p class="eyebrow"><span class="ln"></span>[ 01 ] — The Opening</p>
+        <h2>Intro<span class="per">.</span></h2>
+        <div class="meta">
+          <span>Debut LP</span>
+          <span><b>‘Down’</b> · out now</span>
+          <span class="whisper">headphones recommended.</span>
+        </div>
+      </div>
+
+      <div class="poem">
+        <p class="ln" data-reveal style="--d:.05s">It was so <span class="dead">quiet</span> at first.</p>
+        <p class="ln" data-reveal style="--d:.15s">Then the floor gives out.</p>
+        <p class="ln" data-reveal style="--d:.25s">The gentle thing shows its <span class="teeth">teeth, horns.</span></p>
+        <p class="ln" data-reveal style="--d:.35s">And when the riff pins you to the wall before you’ve finished deciding if you liked it, a shadow looms, bending the light the wrong way—</p>
+        <p class="ln redline" data-reveal style="--d:.45s">a red that no lamp in the room is casting.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2 (LISTEN) GOES HERE NEXT ============ -->
+  <div class="next-seam"><span class="pulse"></span>Next up — the Listen room is being built</div>
+</main>
+
+<script>
+/* drifting embers */
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var box=document.getElementById('embers'); if(!box) return;
+  var cols=['#ff7a1a','#ffb24d','#ff2d7e','#ff86b6'];
+  for(var i=0;i<16;i++){
+    var s=document.createElement('span');
+    var size=(Math.random()*2.4+1.6).toFixed(1);
+    s.style.left=(Math.random()*100).toFixed(2)+'%';
+    s.style.width=size+'px'; s.style.height=size+'px';
+    s.style.setProperty('--c',cols[i%cols.length]);
+    s.style.setProperty('--dur',(Math.random()*9+7).toFixed(1)+'s');
+    s.style.setProperty('--delay',(-Math.random()*16).toFixed(1)+'s');
+    s.style.setProperty('--sway',((Math.random()*60)-30).toFixed(0)+'px');
+    box.appendChild(s);
+  }
+})();
+
+/* scroll progress + topbar solidify */
+(function(){
+  var bar=document.getElementById('progress'), top=document.getElementById('topbar');
+  function onScroll(){
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    bar.style.width=(h>0?(window.scrollY/h*100):0)+'%';
+    top.classList.toggle('scrolled', window.scrollY>30);
+  }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+
+/* reveal on scroll */
+(function(){
+  var els=document.querySelectorAll('[data-reveal]');
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.18});
+  els.forEach(function(e){io.observe(e)});
+})();
+</script>
+</body>
+</html>
