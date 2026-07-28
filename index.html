@@ -28,7 +28,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Nilouverse">
-<link rel="apple-touch-icon" href="art/icon-192.png">
+<link rel="apple-touch-icon" href="art/adown.png">
 
 <!-- no-js fallback -->
 <noscript><style>
@@ -158,7 +158,25 @@ body::after{
   transition:background var(--dur-1) var(--ease),border-color var(--dur-1) var(--ease),padding var(--dur-1) var(--ease)}
 .topbar.scrolled{background:rgba(8,5,6,.82);border-bottom-color:var(--line);padding-top:12px;padding-bottom:12px}
 .brand-mini{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;font-size:.74rem}
-.brand-mini .gem{width:8px;height:8px;background:var(--blood-bright);transform:rotate(45deg);box-shadow:0 0 8px var(--blood-bright)}
+.brand-mini .gem{width:8px;height:8px;background:var(--blood-bright);transform:rotate(45deg);box-shadow:0 0 8px var(--blood-bright);
+  transition:opacity var(--dur-1) var(--ease)}
+/* the trophy key that replaces the diamond once the grip is won */
+.brand-key{position:absolute;left:clamp(16px,5vw,46px);top:50%;transform:translateY(-50%);z-index:5;
+  width:16px;height:16px;display:grid;place-items:center;cursor:pointer;
+  filter:drop-shadow(0 0 8px rgba(209,20,48,.5));transition:transform var(--dur-1) var(--ease),filter var(--dur-1) var(--ease)}
+.brand-key img{width:100%;height:100%;object-fit:contain;display:block;animation:keyPulse 2.4s ease-in-out infinite}
+@keyframes keyPulse{0%,100%{filter:drop-shadow(0 0 5px rgba(209,20,48,.4));transform:translateY(0)}50%{filter:drop-shadow(0 0 13px rgba(255,39,71,.85));transform:translateY(-2px)}}
+.brand-key:hover{transform:translateY(-50%) scale(1.18)}
+.brand-key:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:3px}
+body:not(.key-won) .brand-key{display:none}
+body.key-won .brand-mini .gem{opacity:0}
+.brand-key-hint{position:absolute;left:clamp(16px,5vw,46px);top:calc(100% + 6px);z-index:5;
+  font-family:var(--f-serif);font-style:italic;font-size:.72rem;color:var(--cyan-soft);white-space:nowrap;
+  background:rgba(8,5,6,.85);border:1px solid var(--line);border-radius:8px;padding:5px 9px;
+  opacity:0;pointer-events:none;transition:opacity .4s var(--ease);max-width:70vw;overflow:hidden;text-overflow:ellipsis}
+.brand-key-hint.show{opacity:1}
+.brand-key-hint::before{content:"";position:absolute;left:10px;top:-5px;width:8px;height:8px;background:rgba(8,5,6,.85);
+  border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
 .topnav{display:flex;align-items:center;gap:clamp(14px,3vw,30px)}
 .topnav a{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--bone-dim);transition:color var(--dur-1) var(--ease)}
 .topnav a.nav-link{position:relative}
@@ -581,39 +599,85 @@ body::after{
 @media(min-width:680px){.cform{grid-template-columns:1fr 1fr}.cfield.full{grid-column:1/-1}.cfoot{grid-column:1/-1}}
 
 /* ============ GRIP PUZZLE ============ */
-#puzzle{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
-  padding:24px;background:rgba(4,2,3,.94);opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s}
+#puzzle{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  padding:24px;background:rgba(4,2,3,.95);opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s}
 #puzzle::before{content:"";position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(60% 50% at 50% 45%,rgba(124,11,27,.4),transparent 70%)}
 #puzzle.show{opacity:1;visibility:visible}
-.pz-close{position:absolute;top:18px;right:18px;z-index:2;appearance:none;background:none;border:1px solid var(--line);border-radius:999px;
+.pz-close{position:absolute;top:18px;right:18px;z-index:4;appearance:none;background:none;border:1px solid var(--line);border-radius:999px;
   color:var(--bone-dim);cursor:pointer;width:40px;height:40px;font-size:1.1rem;line-height:1;font-family:var(--f-body);transition:var(--dur-1) var(--ease)}
 .pz-close:hover{border-color:var(--blood-bright);color:var(--bone)}
-.pz-kicker{position:relative;z-index:1;font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:var(--blood-bright)}
-.pz-stage{position:relative;z-index:1;width:clamp(220px,70vw,300px);aspect-ratio:1/1;display:grid;place-items:center}
-.palm{position:absolute;left:50%;top:50%;width:80%;height:80%;transform:translate(-50%,-50%);border-radius:46% 46% 42% 42%;
-  background:radial-gradient(circle at 50% 40%,#3a2620,#160d0a 72%);filter:blur(7px);opacity:.85;z-index:0}
-.pz-btn{position:relative;z-index:1;width:62%;line-height:0;cursor:pointer;
+.pz-kicker{position:relative;z-index:1;font-family:var(--f-egg);font-style:normal;letter-spacing:.04em;
+  font-size:clamp(1.3rem,5vw,2rem);color:var(--blood-bright);
+  text-shadow:0 0 14px rgba(255,39,71,.6),0 0 30px rgba(209,20,48,.4)}
+.pz-stage{position:relative;z-index:1;width:clamp(240px,76vw,340px);aspect-ratio:5/4;overflow:hidden;border-radius:12px;
+  background:radial-gradient(120% 90% at 50% 30%, #1a0d0c 0%, #0a0505 70%, #050202 100%);
+  box-shadow: inset 0 0 70px 14px rgba(0,0,0,.9), 0 24px 60px -24px rgba(0,0,0,.8)}
+.pz-stage.recoil{animation:recoil .3s}
+@keyframes recoil{0%,100%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-1px)}}
+/* grimy tiled wall band behind the hand */
+.pz-wall{position:absolute;left:5%;right:5%;top:30%;height:42%;z-index:0;opacity:.5;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.55) 0 1px, transparent 1px 19px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.55) 0 1px, transparent 1px 19px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 2px, transparent 2px 4px),
+    linear-gradient(90deg,#6b4a2a 0%,#8a6a3e 28%,#6a5a44 55%,#4a4a4a 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+/* faint dark window, top-left */
+.pz-window{position:absolute;left:8%;top:5%;width:22%;height:24%;z-index:0;border:2px solid rgba(124,11,27,.3);border-radius:3px;opacity:.45}
+/* wrist shadow at the bottom */
+.palm{position:absolute;left:0;right:0;bottom:0;height:26%;z-index:0;
+  background:linear-gradient(0deg,#120a08 0 38%,transparent);filter:blur(2px)}
+/* grip counter */
+.pz-grip{position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:6px}
+.gi{width:6px;height:14px;border-radius:3px;background:rgba(239,230,221,.16);transition:background .3s var(--ease),box-shadow .3s var(--ease)}
+.gi.on{background:var(--blood-bright);box-shadow:0 0 8px var(--blood-bright)}
+/* the key, held in the fist */
+.pz-btn{position:absolute;top:15%;left:24%;right:24%;z-index:1;line-height:0;cursor:pointer;
   filter:drop-shadow(0 10px 24px rgba(0,0,0,.6));transition:filter .4s var(--ease)}
 .pz-btn img{width:100%;height:auto;display:block}
-.pz-stage.free .pz-btn{filter:drop-shadow(0 0 26px rgba(209,20,48,.6));animation:pzFloat 2.4s ease-in-out infinite alternate}
+.pz-stage.free .pz-btn{filter:drop-shadow(0 0 26px rgba(209,20,48,.65));animation:pzFloat 2.4s ease-in-out infinite alternate}
 @keyframes pzFloat{from{transform:translateY(-3px)}to{transform:translateY(3px)}}
 .pz-btn.shake{animation:pzShake .4s}
-@keyframes pzShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-/* fingers: wrapper (.fpos) places the grip; inner (.finger) flies out on release */
-.fpos{position:absolute;z-index:2;width:34px;height:96px}
-.fpos.fh{width:96px;height:34px}
-.finger{position:absolute;inset:0;border-radius:17px;cursor:pointer;
-  background:linear-gradient(100deg,#e3bda6,#b07e64 60%,#8a5d47);
-  box-shadow:inset 0 2px 3px rgba(255,255,255,.25),inset 0 -3px 6px rgba(0,0,0,.35),0 6px 14px rgba(0,0,0,.5);
-  transition:transform .42s var(--ease-soft),opacity .42s var(--ease-soft);transform:translate(0,0)}
-.finger::after{content:"";position:absolute;left:var(--nx,7px);top:var(--ny,8px);width:18px;height:13px;border-radius:50% 50% 45% 45%;
-  background:linear-gradient(180deg,#f3d8c8,#d8a98f);box-shadow:inset 0 1px 1px rgba(255,255,255,.4)}
-.finger:active{filter:brightness(1.12)}
-.finger.out{transform:translate(var(--ox,0),var(--oy,0)) rotate(var(--or,0deg));opacity:0;pointer-events:none}
-.pz-msg{position:relative;z-index:1;min-height:1.3em;max-width:30ch;text-align:center;
+@keyframes pzShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+/* bloody severed fingers gripping the key */
+.fpos{position:absolute;bottom:0;width:clamp(26px,9vw,42px);z-index:2;transform-origin:bottom center}
+.f0{left:7%;height:44%;transform:rotate(-20deg)}
+.f1{left:28%;height:80%}
+.f2{left:46%;height:94%}
+.f3{left:64%;height:82%}
+.f4{left:83%;height:48%;transform:rotate(22deg)}
+.finger{position:absolute;inset:0;border-radius:8px 8px 4px 4px;cursor:pointer;
+  background:
+    linear-gradient(#7c0b1b,#7c0b1b) top 0 left 28% / 3px 34% no-repeat,
+    linear-gradient(#a31024,#a31024) top 0 left 60% / 2px 52% no-repeat,
+    linear-gradient(#7c0b1b,#7c0b1b) top 0 left 76% / 3px 22% no-repeat,
+    repeating-linear-gradient(0deg, rgba(0,0,0,.06) 0 2px, transparent 2px 4px),
+    linear-gradient(90deg,#a9785c 0 16%,#e7c4ab 16% 52%,#d2a98e 52% 84%,#9c6c50 84% 100%);
+  box-shadow: inset 0 0 0 2px rgba(40,15,10,.5), 0 6px 14px rgba(0,0,0,.55);
+  transition: transform .45s var(--ease-soft), opacity .45s var(--ease-soft), filter .2s var(--ease)}
+/* blood-soaked tip */
+.finger::before{content:"";position:absolute;left:-2px;right:-2px;top:-6px;height:30%;border-radius:46% 46% 30% 30%;
+  background:radial-gradient(70% 60% at 50% 35%, #ff2747 0 18%, #d11430 30%, #7c0b1b 72%);
+  box-shadow: inset 0 2px 3px rgba(255,120,120,.4), inset 0 -4px 6px rgba(0,0,0,.4), 0 2px 6px rgba(124,11,27,.6)}
+/* a hanging drip */
+.finger::after{content:"";position:absolute;left:46%;top:18%;width:3px;height:30%;border-radius:2px;
+  background:linear-gradient(#7c0b1b, rgba(124,11,27,0))}
+.finger:active{filter:brightness(1.15)}
+.finger.out{transform:translateY(118%) rotate(4deg);opacity:0;pointer-events:none}
+.finger.crack{filter:brightness(.7) saturate(.7);animation:crackShake .35s}
+.finger.crack::before{background:radial-gradient(70% 60% at 50% 35%, #b3102a 0 18%, #7c0b1b 40%, #3a0710 80%)}
+@keyframes crackShake{0%,100%{transform:translateX(0) rotate(0)}20%{transform:translateX(-3px) rotate(-2deg)}40%{transform:translateX(3px) rotate(2deg)}60%{transform:translateX(-2px) rotate(-1deg)}80%{transform:translateX(2px) rotate(1deg)}}
+.finger.claw{animation:claw .4s}
+@keyframes claw{0%,100%{filter:brightness(1)}40%{filter:brightness(1.6) drop-shadow(0 0 6px #ff2747)}}
+.pz-stage.twitch .finger:not(.out):not(.crack){animation:twitch .2s}
+@keyframes twitch{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.pz-msg{position:relative;z-index:1;min-height:1.3em;max-width:32ch;text-align:center;
   font-family:var(--f-serif);font-style:italic;font-size:clamp(.95rem,3vw,1.15rem);color:var(--bone-dim)}
 .pz-msg.err{color:var(--blood-bright)}
+.pz-sub{position:relative;z-index:1;min-height:1.1em;max-width:34ch;text-align:center;
+  font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan-soft);opacity:.92}
 
 /* ============ FOOTER ============ */
 .foot{position:relative;z-index:1;padding:clamp(28px,5vw,46px) clamp(18px,5vw,46px) clamp(20px,3vw,28px);
@@ -681,6 +745,8 @@ body::after{
 
 <header class="topbar" id="topbar">
   <a class="brand-mini" href="#top"><span class="gem"></span>Nilouverse</a>
+  <span class="brand-key" id="brandKey" role="button" tabindex="0" aria-label="the key"><img src="art/button.png" alt="" draggable="false"></span>
+  <span class="brand-key-hint" id="brandKeyHint" aria-hidden="true"></span>
   <nav class="topnav">
     <a class="nav-link" href="#intro">Intro</a>
     <a class="nav-link" href="#listen">Listen</a>
@@ -931,19 +997,25 @@ body::after{
 <!-- ============ GRIP PUZZLE ============ -->
 <div id="puzzle" aria-hidden="true">
   <button class="pz-close" id="pzClose" type="button" aria-label="close">✕</button>
-  <p class="pz-kicker">the grip</p>
+  <p class="pz-kicker" id="pzKicker">the grasp of the dead</p>
   <div class="pz-stage" id="pzStage">
+    <span class="pz-window" aria-hidden="true"></span>
+    <span class="pz-wall" aria-hidden="true"></span>
     <span class="palm" aria-hidden="true"></span>
+    <div class="pz-grip" id="pzGrip" aria-hidden="true">
+      <span class="gi on"></span><span class="gi on"></span><span class="gi on"></span><span class="gi on"></span><span class="gi on"></span>
+    </div>
     <a class="pz-btn" id="pzBtn" href="#" aria-label="the key">
       <img src="art/button.png" alt="" draggable="false">
     </a>
-    <span class="fpos" style="left:46%;top:1%"><span class="finger" role="button" tabindex="0" aria-label="finger" style="--ox:0px;--oy:-150px;--or:-6deg;--nx:8px;--ny:66px"></span></span>
-    <span class="fpos fh" style="left:72%;top:46%"><span class="finger" role="button" tabindex="0" aria-label="finger" style="--ox:150px;--oy:0px;--or:6deg;--nx:8px;--ny:9px"></span></span>
-    <span class="fpos" style="left:38%;top:72%"><span class="finger" role="button" tabindex="0" aria-label="finger" style="--ox:0px;--oy:150px;--or:5deg;--nx:8px;--ny:8px"></span></span>
-    <span class="fpos fh" style="left:1%;top:38%"><span class="finger" role="button" tabindex="0" aria-label="finger" style="--ox:-150px;--oy:0px;--or:-6deg;--nx:66px;--ny:9px"></span></span>
-    <span class="fpos" style="left:62%;top:6%;transform:rotate(40deg)"><span class="finger" role="button" tabindex="0" aria-label="finger" style="--ox:110px;--oy:-110px;--or:30deg;--nx:8px;--ny:66px"></span></span>
+    <span class="fpos f0"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+    <span class="fpos f1"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+    <span class="fpos f2"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+    <span class="fpos f3"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+    <span class="fpos f4"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
   </div>
   <p class="pz-msg" id="pzMsg"></p>
+  <p class="pz-sub" id="pzSub"></p>
 </div>
 
 <script>
@@ -985,7 +1057,7 @@ body::after{
   function mark(id){
     if(SECRETS.indexOf(id)<0 || set.has(id)) return;
     set.add(id); save(); render();
-    if(complete()){ if(loreEl) loreEl.classList.add('done'); toastMsg('every secret found — the key is yours †'); }
+    if(complete()){ if(loreEl) loreEl.classList.add('done'); toastMsg('every corner turned. the door\'s open, keeper †'); if(window.__loreComplete) window.__loreComplete(); }
   }
   render();
   window.__lore={ mark:mark, has:function(id){ return set.has(id); }, isComplete:complete };
@@ -1256,74 +1328,160 @@ body::after{
     clearTimeout(fw._t); fw._t=setTimeout(function(){fw.classList.remove('show');},2600);
     var now=Date.now();
     taps.push(now); taps=taps.filter(function(x){ return now-x<1400; });
-    if(taps.length>=6){ taps=[]; if(window.__openPuzzle) window.__openPuzzle(); }
+    if(taps.length>=6){ taps=[]; if(window.__openPuzzle) window.__openPuzzle(true); }
   });
 })();
 
 /* ============ GRIP PUZZLE ============ */
-/* release every finger at once to free the key; the freed key is gated by lore completion */
+/* free every finger to loosen the key; the last one is a keeper that must be cracked then killed.
+   the dead claw freed fingers back, but a mercy cap guarantees it always ends. */
 (function(){
   var ov=document.getElementById('puzzle'); if(!ov) return;
   var stage=document.getElementById('pzStage');
   var btn=document.getElementById('pzBtn');
   var msg=document.getElementById('pzMsg');
+  var sub=document.getElementById('pzSub');
+  var kicker=document.getElementById('pzKicker');
   var closeBtn=document.getElementById('pzClose');
+  var gi=Array.prototype.slice.call(document.querySelectorAll('#pzGrip .gi'));
   var fingers=Array.prototype.slice.call(ov.querySelectorAll('.finger'));
+  var state=fingers.map(function(){return 'grip';});
   var freed=false;
+  var clawbacks=0, mercyShown=false, firstFreeDone=false;
+  var MERCY=4;
   var SECRET='bd289'+'kouw.html';
 
+  var REVEAL=["shit — you found the grip †","the dead are holding it. pry it loose †","oh, you found it. now drag it from cold fingers †"];
+  var FREE=["one lets go…","a finger uncurls.","cold flesh — but it yields.","the grip loosens.","you feel it tire."];
+  var KEEPER_SOON=["last one. and it's angry.","one left — the keeper.","the dead hold their breath."];
+  var KEEPER_CRACK=["it cracks — again, harder.","the bone gives. hit it once more.","nearly. don't you stop."];
+  var KEEPER_FREE=["the keeper falls †","pried from cold fingers. respect †","the last one lets go †"];
+  var REGRIP=["nope — it clawed back.","the dead don't let go easy.","it reaches back. keep going.","cold fingers, stubborn grip."];
+  var MERCY_LINE="even the dead grow tired †";
+  var WIN=["the key is yours †","dragged from the grasp of the dead †","loose. the door remembers you †"];
+  var WIN_REST=["the key is yours †","dragged from cold fingers †","loose — and the door remembers you †"];
+  var GATE="the key's loose — but the door's still shut. find the rest, you're close †";
+  var GATE_SUB="every hidden corner, then come back";
+  var COMPLETE_MSG="the door is open † take the key";
+  var COMPLETE_SUB="this opens the secret page — click it →";
+  var INSTR="free the key — tap the fingers. the dead will fight you †";
+
+  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function countGrip(){ var n=0; state.forEach(function(s){ if(s==='grip') n++; }); return n; }
+  function countHolding(){ var n=0; state.forEach(function(s){ if(s!=='out') n++; }); return n; }
+  function allOut(){ return state.every(function(s){ return s==='out'; }); }
+  function freedIdx(){ var a=[]; state.forEach(function(s,i){ if(s==='out') a.push(i); }); return a; }
+  function applyVisual(i){ fingers[i].classList.toggle('out', state[i]==='out'); fingers[i].classList.toggle('crack', state[i]==='crack'); }
+  function updateGrip(){ gi.forEach(function(g,i){ g.classList.toggle('on', state[i]!=='out'); }); }
+  function setMsg(t,err){ if(msg){ msg.textContent=t; msg.classList.toggle('err',!!err); } }
+  function setSub(t){ if(sub) sub.textContent=t||''; }
+  function twitch(){ stage.classList.remove('twitch'); void stage.offsetWidth; stage.classList.add('twitch'); setTimeout(function(){ stage.classList.remove('twitch'); },220); }
+  function recoil(){ stage.classList.remove('recoil'); void stage.offsetWidth; stage.classList.add('recoil'); }
   function lockScroll(){ document.body.style.overflow='hidden'; if(window.__lenis) window.__lenis.stop(); }
   function unlockScroll(){ document.body.style.overflow=''; if(window.__lenis) window.__lenis.start(); }
 
-  function syncMsg(){
-    if(!msg) return;
-    if(!freed){ msg.textContent='free the key — tap the fingers'; msg.classList.remove('err'); }
-    else if(window.__lore && window.__lore.isComplete()){ msg.textContent='step through †'; msg.classList.remove('err'); }
-    else { msg.textContent=''; msg.classList.remove('err'); }
+  function regrip(){
+    if(clawbacks>=MERCY) return false;
+    var fr=freedIdx(); if(!fr.length) return false;
+    var i=fr[Math.floor(Math.random()*fr.length)];
+    state[i]='grip'; applyVisual(i); updateGrip(); clawbacks++;
+    fingers[i].classList.add('claw'); setTimeout(function(){ fingers[i].classList.remove('claw'); },420);
+    recoil();
+    return true;
   }
-  function setFingers(solved){ fingers.forEach(function(f){ f.classList.toggle('out', !!solved); }); }
+  /* returns the line to show after a fight roll */
+  function decideFight(baseLine, chance){
+    var want = chance>0 && Math.random()<chance;
+    if(!want) return baseLine;
+    if(clawbacks>=MERCY){ if(!mercyShown){ mercyShown=true; return MERCY_LINE; } return baseLine; }
+    if(regrip()) return pick(REGRIP);
+    return baseLine;
+  }
+  function onFree(i, isKeeperKill){
+    state[i]='out'; applyVisual(i); updateGrip();
+    if(allOut()){ win(); return; }
+    var holding=countHolding();
+    var chance = !firstFreeDone ? 0 : (holding>=4?0.25 : holding===3?0.4 : holding===2?0.6 : 0.7);
+    var base = isKeeperKill ? pick(KEEPER_FREE) : (holding===1 ? pick(KEEPER_SOON) : pick(FREE));
+    setMsg(decideFight(base, chance)); setSub('');
+    firstFreeDone=true; twitch();
+  }
   function win(){
-    freed=true; stage.classList.add('free');
+    freed=true; stage.classList.add('free'); updateGrip();
     if(window.__lore) window.__lore.mark('puzzle');
-    syncMsg();
+    setMsg(pick(WIN));
+    setSub(window.__lore && window.__lore.isComplete() ? COMPLETE_SUB : GATE_SUB);
+    if(window.__keyWon) window.__keyWon();
   }
-  function openPuzzle(){
-    var solved = !!(window.__lore && window.__lore.has('puzzle'));
-    freed=solved; stage.classList.toggle('free',freed); setFingers(solved); syncMsg();
+  function tap(i){
+    if(state[i]==='out') return;
+    if(state[i]==='crack'){ onFree(i, true); return; }
+    /* grip */
+    if(countGrip()===1){
+      state[i]='crack'; applyVisual(i); updateGrip();
+      setMsg(decideFight(pick(KEEPER_CRACK), 0.7)); setSub('');
+      twitch();
+      return;
+    }
+    onFree(i, false);
+  }
+  function openPuzzle(fromReveal){
+    var won = !!(window.__lore && window.__lore.has('puzzle'));
+    if(won){ freed=true; state=fingers.map(function(){return 'out';}); }
+    else { freed=false; state=fingers.map(function(){return 'grip';}); clawbacks=0; mercyShown=false; firstFreeDone=false; }
+    fingers.forEach(function(f,i){ applyVisual(i); });
+    updateGrip();
+    stage.classList.toggle('free', freed);
+    if(kicker) kicker.textContent = fromReveal ? pick(REVEAL) : 'the grasp of the dead';
+    if(freed){
+      if(window.__lore && window.__lore.isComplete()){ setMsg(pick(WIN_REST)); setSub(COMPLETE_SUB); }
+      else { setMsg(GATE); setSub(GATE_SUB); }
+    } else { setMsg(INSTR); setSub(''); }
     ov.classList.add('show'); ov.setAttribute('aria-hidden','false'); lockScroll();
   }
   function closePuzzle(){ ov.classList.remove('show'); ov.setAttribute('aria-hidden','true'); unlockScroll(); }
   window.__openPuzzle=openPuzzle;
 
-  fingers.forEach(function(f){
-    function release(){
-      if(f.classList.contains('out')) return;
-      f.classList.add('out');
-      var gripped=fingers.filter(function(x){ return !x.classList.contains('out'); });
-      if(gripped.length===0){ win(); return; }
-      var released=fingers.filter(function(x){ return x.classList.contains('out') && x!==f; });
-      if(released.length>=1 && gripped.length>=1 && Math.random()<0.45){
-        var r=released[Math.floor(Math.random()*released.length)];
-        r.classList.remove('out');
-      }
-    }
-    f.addEventListener('click',release);
-    f.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); release(); } });
+  fingers.forEach(function(f,i){
+    f.addEventListener('click',function(){ tap(i); });
+    f.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); tap(i); } });
   });
 
   if(btn) btn.addEventListener('click',function(e){
     e.preventDefault();
     if(!freed){ btn.classList.remove('shake'); void btn.offsetWidth; btn.classList.add('shake'); return; }
-    if(!(window.__lore && window.__lore.isComplete())){
-      if(msg){ msg.textContent='find every hidden corner here first †'; msg.classList.add('err'); }
-      return;
-    }
+    if(!(window.__lore && window.__lore.isComplete())){ setMsg(GATE, true); setSub(GATE_SUB); return; }
     window.location.href=SECRET;
   });
 
   if(closeBtn) closeBtn.addEventListener('click',closePuzzle);
   ov.addEventListener('click',function(e){ if(e.target===ov) closePuzzle(); });
   addEventListener('keydown',function(e){ if(e.key==='Escape' && ov.classList.contains('show')) closePuzzle(); });
+})();
+
+/* ============ BRAND KEY (nav trophy) ============ */
+/* the diamond becomes the key once the grip is won; tapping it opens the grip screen */
+(function(){
+  var key=document.getElementById('brandKey');
+  var hint=document.getElementById('brandKeyHint');
+  if(!key) return;
+  var ht;
+  function hintText(){
+    if(window.__lore && window.__lore.isComplete()) return "the door is open † tap the key";
+    return "you hold the key † but the door's shut — finish the hunt, then tap it";
+  }
+  function showHint(dur){
+    if(!hint) return;
+    hint.textContent=hintText(); hint.classList.add('show');
+    clearTimeout(ht); ht=setTimeout(function(){ hint.classList.remove('show'); }, dur||6000);
+  }
+  function applyWon(){ document.body.classList.add('key-won'); }
+  window.__keyWon=function(){ applyWon(); showHint(7000); };
+  window.__loreComplete=function(){ if(document.body.classList.contains('key-won')) showHint(6000); };
+  function go(e){ if(e){ e.preventDefault(); e.stopPropagation(); } if(window.__openPuzzle) window.__openPuzzle(false); }
+  key.addEventListener('click',go);
+  key.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+  if(window.__lore && window.__lore.has('puzzle')){ applyWon(); showHint(4000); }
 })();
 
 /* ============ CONTACT FORM ============ */
