@@ -1,0 +1,16 @@
+{
+  "name": "Nilouverse — the gentle thing shows its teeth",
+  "short_name": "Nilouverse",
+  "description": "Independent nu-metal. Debut LP 'DOWN', out now.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070405",
+  "theme_color": "#0a0708",
+  "icons": [
+    { "src": "art/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "art/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "art/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
