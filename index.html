@@ -71,6 +71,7 @@
   --panel-shadow:0 24px 60px -36px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.07);
 
   --keyw:clamp(52px,12vw,72px);
+  --coin:clamp(17px,4.6vw,21px);
 
   --art-hero:url('art/hero.jpg');
   --art-cover:url('art/cdown.jpg');
@@ -131,17 +132,18 @@ body::after{
   background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright),var(--ember));
   box-shadow:0 0 10px rgba(255,39,71,.5)}
 
-/* ============ LORE — transient caption + flying gem (the persistent tracker lives in the topbar) ============ */
+/* ============ LORE — transient caption + flying coin ============ */
 .lore-toast{position:fixed;left:50%;bottom:18px;z-index:340;max-width:80vw;transform:translateX(-50%) translateY(8px);
   font-family:var(--f-serif);font-style:italic;font-size:.9rem;color:var(--cyan-soft);text-align:center;
   background:rgba(8,5,6,.9);border:1px solid var(--line);border-radius:10px;padding:8px 14px;
   box-shadow:0 12px 30px -14px rgba(0,0,0,.8);
   opacity:0;transition:opacity .4s var(--ease),transform .4s var(--ease);pointer-events:none}
 .lore-toast.show{opacity:1;transform:translateX(-50%)}
-.lore-fly{position:fixed;z-index:450;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:2px;
-  background:var(--blood-bright);box-shadow:0 0 16px var(--blood-bright),0 0 4px #fff inset;
-  transform:rotate(45deg);pointer-events:none;
-  transition:transform .9s cubic-bezier(.55,-0.25,.5,1.2),opacity .9s ease}
+.lore-fly{position:fixed;z-index:450;width:var(--coin);height:var(--coin);margin:calc(var(--coin)/-2) 0 0 calc(var(--coin)/-2);
+  border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 35% 30%, #f6e0ad, #d8ab58 46%, #9a6f2c 76%, #5e4017);
+  box-shadow:0 0 12px rgba(255,190,90,.7),inset 0 0 0 1px rgba(0,0,0,.35);
+  transition:transform .85s cubic-bezier(.5,-0.2,.5,1.15),opacity .85s ease}
 
 /* ============ TOPBAR ============ */
 .topbar{position:fixed;inset:0 0 auto 0;z-index:70;display:flex;align-items:center;justify-content:space-between;
@@ -150,19 +152,38 @@ body::after{
 .topbar.scrolled{background:rgba(8,5,6,.82);border-bottom-color:var(--line);padding-top:12px;padding-bottom:12px}
 .brand-mini{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;font-size:.74rem;
   transition:padding var(--dur-1) var(--ease)}
-.brand-mini .gem{width:8px;height:8px;background:var(--blood-bright);transform:rotate(45deg);box-shadow:0 0 8px var(--blood-bright)}
-/* extracted diamonds accumulate beside the corner mark; empty until the first find, so the logo reads normal first */
-.brand-pips{display:inline-flex;align-items:center}
-.brand-pip{width:7px;height:7px;border-radius:1px;background:var(--blood-bright);box-shadow:0 0 8px var(--blood-bright);
-  margin-left:5px;transform:rotate(45deg);animation:pipIn .45s var(--ease) both}
-.brand-pip:first-child{margin-left:0}
-.brand-pip.noanim{animation:none}
-.brand-pips.done .brand-pip{animation:pipCelebrate .7s var(--ease) both}
-.brand-pips.done .brand-pip:nth-child(2){animation-delay:.07s}
-.brand-pips.done .brand-pip:nth-child(3){animation-delay:.14s}
-.brand-pips.done .brand-pip:nth-child(4){animation-delay:.21s}
-@keyframes pipIn{0%{transform:rotate(45deg) scale(0);opacity:0}60%{transform:rotate(45deg) scale(1.6);opacity:1}100%{transform:rotate(45deg) scale(1)}}
-@keyframes pipCelebrate{0%,100%{transform:rotate(45deg) scale(1)}40%{transform:rotate(45deg) scale(1.8);box-shadow:0 0 14px var(--blood-bright)}}
+/* the corner coin stack: the brand token is the base coin; each found secret topples another onto the pile */
+.brand-stack{position:relative;width:var(--coin);height:var(--coin);flex:none;align-self:center}
+.coin-slot{position:absolute;left:0;bottom:0;width:var(--coin);height:var(--coin);transform-origin:50% 100%}
+.coin-slot:nth-of-type(1){transform:translate(0,0) rotate(0)}
+.coin-slot:nth-of-type(2){transform:translate(-2px,-4px) rotate(-7deg)}
+.coin-slot:nth-of-type(3){transform:translate(2px,-8px) rotate(5deg)}
+.coin-slot:nth-of-type(4){transform:translate(-1px,-12px) rotate(-4deg)}
+.coin-slot:nth-of-type(5){transform:translate(1px,-16px) rotate(6deg)}
+.coin{position:absolute;inset:0;display:block}
+.coin img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+/* worn-bronze fallback token when coin.png is absent */
+.coin.nocoin{border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #f3d9a0, #c79a4e 45%, #8a6326 75%, #5e4017);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.4),inset 0 1px 2px rgba(255,255,255,.4),inset 0 -2px 3px rgba(0,0,0,.4),0 2px 3px rgba(0,0,0,.55)}
+.coin.nocoin img{display:none}
+.coin.nocoin::after{content:"";position:absolute;left:50%;top:50%;width:34%;height:34%;transform:translate(-50%,-50%) rotate(45deg);
+  background:var(--blood-bright);box-shadow:0 0 4px rgba(255,39,71,.7),inset 0 0 1px rgba(0,0,0,.5)}
+/* a freshly dropped coin falls + settles with an overshoot; an impact ring blooms on landing */
+.coin-slot.drop .coin{animation:coinDrop .55s cubic-bezier(.34,1.45,.5,1) both}
+@keyframes coinDrop{0%{transform:translateY(-44px) rotate(-24deg);opacity:0}52%{opacity:1}78%{transform:translateY(2px) rotate(3deg)}100%{transform:translateY(0) rotate(0)}}
+.coin-slot.drop::after{content:"";position:absolute;inset:0;border-radius:50%;
+  border:1px solid rgba(255,210,120,.75);box-shadow:0 0 8px rgba(255,180,80,.5);
+  opacity:0;transform:scale(.5);pointer-events:none;animation:coinImpact .5s .34s ease-out both}
+@keyframes coinImpact{0%{opacity:.85;transform:scale(.5)}100%{opacity:0;transform:scale(1.75)}}
+/* case closed: the whole pile gives a one-time gold cheer */
+.brand-stack.done .coin-slot{animation:coinCheer .7s var(--ease) both}
+.brand-stack.done .coin-slot:nth-of-type(2){animation-delay:.06s}
+.brand-stack.done .coin-slot:nth-of-type(3){animation-delay:.12s}
+.brand-stack.done .coin-slot:nth-of-type(4){animation-delay:.18s}
+.brand-stack.done .coin-slot:nth-of-type(5){animation-delay:.24s}
+@keyframes coinCheer{0%,100%{filter:none}45%{filter:drop-shadow(0 0 9px rgba(255,200,90,.95)) brightness(1.2)}}
+
 .brand-key{position:absolute;left:clamp(16px,5vw,46px);top:50%;transform:translateY(-50%);z-index:5;
   width:var(--keyw);line-height:0;cursor:pointer;filter:drop-shadow(0 0 10px rgba(209,20,48,.55));
   transition:transform var(--dur-1) var(--ease)}
@@ -171,7 +192,7 @@ body::after{
 .brand-key:hover{transform:translateY(-50%) scale(1.1)}
 .brand-key:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:4px}
 body:not(.key-won) .brand-key{display:none}
-body.key-won .brand-mini .gem{display:none}
+body.key-won .brand-stack{display:none}
 body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .brand-key-hint{position:absolute;left:clamp(16px,5vw,46px);top:calc(100% + 8px);z-index:5;
   font-family:var(--f-serif);font-style:italic;font-size:.74rem;color:var(--cyan-soft);white-space:nowrap;
@@ -239,7 +260,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     radial-gradient(125% 105% at 50% 42%,transparent 52%,rgba(0,0,0,.42) 100%),
     linear-gradient(0deg,rgba(7,4,5,.98) 0%,rgba(7,4,5,.94) 12%,rgba(7,4,5,.66) 30%,rgba(7,4,5,.28) 50%,transparent 72%)}
 
-/* hero ignition: a red glow that flickers up then settles to a static halo; an ember burst fires at ignition */
 .hero-glow{position:absolute;left:0;right:0;bottom:0;height:62%;z-index:1;pointer-events:none;opacity:0;
   mix-blend-mode:screen;filter:blur(4px);
   background:
@@ -283,7 +303,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .ig-am:hover{--ac:var(--ember)}.ig-yt:hover{--ac:var(--blood-bright)}.ig-tg:hover{--ac:var(--cyan-soft)}.ig-ig:hover{--ac:var(--magenta)}
 @media(min-width:980px){.socials{position:fixed;left:clamp(16px,3vw,40px);top:50%;transform:translateY(-50%);flex-direction:column;gap:12px;margin:0;z-index:40}}
 
-/* scroll cue: in normal flow, brighter cyan, a mouse + bouncing chevron */
 .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:clamp(22px,4.5vh,38px);
   color:var(--cyan-soft);font-size:.56rem;letter-spacing:.34em;text-transform:uppercase;opacity:.9}
 .sc-mouse{width:20px;height:32px;border:1.5px solid rgba(155,243,234,.55);border-radius:11px;position:relative;
@@ -596,7 +615,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .contact-head h3{font-family:var(--f-disp);font-weight:800;font-size:clamp(1.7rem,6vw,2.6rem);line-height:1}
 .contact-head .sub{font-family:var(--f-serif);font-style:italic;color:var(--bone-dim);margin-top:12px;font-size:clamp(1rem,3.2vw,1.2rem);line-height:1.5;max-width:46ch}
 
-/* envelope: clean line art, no wax */
 .seal{position:relative;width:clamp(64px,16vw,84px);aspect-ratio:1/1;margin:0 0 18px auto}
 .seal-img{position:absolute;inset:0;background-repeat:no-repeat;background-position:center;background-size:contain;
   filter:drop-shadow(0 8px 18px rgba(0,0,0,.5));transition:opacity .3s var(--ease),transform .5s var(--ease);
@@ -711,7 +729,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .gf-tag{position:absolute;right:7px;top:50%;transform:translateY(-50%);font-family:var(--f-mono);font-size:.42rem;letter-spacing:.12em;
   text-transform:uppercase;color:var(--blood-bright);border:1px solid rgba(209,20,48,.4);border-radius:3px;padding:2px 5px}
 
-/* the grip sensor viewport */
 .feed{position:relative;isolation:isolate;border:1px solid rgba(209,20,48,.3);border-radius:6px;overflow:hidden;background:#040202;
   box-shadow:inset 0 0 44px 8px rgba(0,0,0,.9),0 0 24px -14px rgba(209,20,48,.5)}
 .feed::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;
@@ -732,10 +749,8 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .cb-br{bottom:4px;right:4px;border-bottom:1px solid;border-right:1px solid}
 .pz-stage{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;
   background:radial-gradient(120% 90% at 50% 30%, #1a0d0c 0%, #0a0505 64%, #050202 100%)}
-/* transparent hand photo sits in a dim specimen spotlight — no blend trick, just seated on darkness */
-.has-hand .pz-stage{background:
-  radial-gradient(72% 64% at 50% 80%, rgba(74,34,30,.55), rgba(20,10,9,.25) 52%, transparent 78%),
-  radial-gradient(120% 90% at 50% 40%, #140a09 0%, #0a0505 60%, #050302 100%)}
+/* transparent hand seated on plain dark — no glow behind it, so the gaps read clean */
+.has-hand .pz-stage{background:radial-gradient(120% 95% at 50% 42%, #120a09 0%, #0a0505 58%, #050302 100%)}
 .pz-stage.recoil{animation:recoil .3s}
 @keyframes recoil{0%,100%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-1px)}}
 .pz-wall{position:absolute;left:4%;right:4%;top:32%;height:40%;z-index:0;opacity:.6;
@@ -748,16 +763,16 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .pz-window{position:absolute;left:7%;top:5%;width:20%;height:22%;z-index:0;border:2px solid rgba(124,11,27,.28);border-radius:2px;opacity:.5}
 .palm{position:absolute;left:0;right:0;bottom:0;height:26%;z-index:0;background:linear-gradient(0deg,#120a08 0 38%,transparent);filter:blur(2px)}
 .has-hand .pz-wall,.has-hand .pz-window,.has-hand .palm{display:none}
-/* the prize key sits above the hand + scan columns */
-.pz-btn{position:absolute;top:13%;left:24%;right:24%;z-index:5;line-height:0;pointer-events:none;
+/* the prize gem sits BEHIND the hand; the hand's opaque flesh covers it, the gaps reveal it */
+.pz-btn{position:absolute;top:13%;left:24%;right:24%;z-index:1;line-height:0;pointer-events:none;
   filter:drop-shadow(0 10px 24px rgba(0,0,0,.6));transition:filter .4s var(--ease)}
 .pz-btn img{width:100%;height:auto;display:block}
 .pz-stage.free .pz-btn{filter:drop-shadow(0 0 26px rgba(209,20,48,.65));animation:pzFloat 2.4s ease-in-out infinite alternate}
 @keyframes pzFloat{from{transform:translateY(-3px)}to{transform:translateY(3px)}}
-/* the hand photo: composited normally over the spotlight; a soft shadow seats it */
-.pz-hand{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;z-index:3;
-  pointer-events:none;filter:contrast(1.06) saturate(1.12) drop-shadow(0 6px 26px rgba(0,0,0,.7))}
-/* invisible tap zones always present; when the photo shows they carry no art */
+/* the hand photo: fully opaque, in front of the gem, casting its own shadow onto it */
+.pz-hand{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;z-index:2;
+  pointer-events:none;opacity:1;filter:contrast(1.08) saturate(1.14) drop-shadow(0 5px 16px rgba(0,0,0,.55))}
+/* invisible tap zones on top of the hand; when the photo shows they carry no art */
 .fpos{position:absolute;bottom:0;width:13%;z-index:4;transform-origin:bottom center}
 .f0{left:19%;height:50%;transform:rotate(-16deg)}
 .f1{left:33%;height:84%}
@@ -791,12 +806,10 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 @keyframes claw{0%,100%{filter:brightness(1)}40%{filter:brightness(1.6) drop-shadow(0 0 6px #ff2747)}}
 .f0 .finger{border-radius:46% 54% 5px 5px / 34% 30% 5px 5px}
 .f4 .finger{border-radius:54% 46% 5px 5px / 30% 34% 5px 5px}
-/* curled-knuckle art lives on the wrapper; hide it (and the finger art) once the photo loads */
 .has-hand .finger{background:none;box-shadow:none}
 .has-hand .finger::before,.has-hand .finger::after,.has-hand .fpos::before,.has-hand .fpos::after{display:none}
 .pz-stage.twitch .finger:not(.out):not(.crack){animation:twitch .2s}
 @keyframes twitch{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-/* forensic clear-scan per column — the feedback that a finger was freed over the static photo */
 .scan-col{position:absolute;inset:0;display:none;pointer-events:none;opacity:0;transition:opacity .3s var(--ease);
   background:linear-gradient(180deg,rgba(8,12,13,.0),rgba(8,12,13,.62) 70%,rgba(8,12,13,.78))}
 .has-hand .scan-col{display:block}
@@ -920,7 +933,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 <div class="lore-toast" id="loreToast" aria-hidden="true"></div>
 
 <header class="topbar" id="topbar">
-  <a class="brand-mini" href="#top"><span class="gem"></span>Nilouverse<span class="brand-pips" id="brandPips" aria-hidden="true"></span></a>
+  <a class="brand-mini" href="#top"><span class="brand-stack" id="brandStack" aria-hidden="true"></span>Nilouverse</a>
   <span class="brand-key" id="brandKey" role="button" tabindex="0" aria-label="the key"><img src="art/button.png" alt="" draggable="false"></span>
   <span class="brand-key-hint" id="brandKeyHint" aria-hidden="true"></span>
   <nav class="topnav">
@@ -1244,17 +1257,17 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 </div>
 
 <script>
-/* ============ LORE — diamonds fold into the top-left corner mark ============ */
+/* ============ LORE — coins topple onto the corner stack ============ */
 /* four secrets: footer whisper, the backdoor grasp, the held logo, the outro name.
-   persisted per browser via localStorage. before the first find the corner reads as the
-   normal logo; each extracted secret flies a diamond up to join the corner cluster. */
+   persisted per browser via localStorage. the brand coin is the base of the stack; each
+   found secret drops another coin onto the pile (with a settle bounce + impact ring). */
 (function(){
   var KEY='nv_lore_v1';
   var SECRETS=['whisper','grasp','wordmark','name'];
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var set=new Set();
   try{(JSON.parse(localStorage.getItem(KEY))||[]).forEach(function(id){ if(SECRETS.indexOf(id)>=0) set.add(id); });}catch(e){}
-  var cluster=document.getElementById('brandPips');
+  var stack=document.getElementById('brandStack');
   var toast=document.getElementById('loreToast');
   var tT;
   function save(){ try{ localStorage.setItem(KEY,JSON.stringify(Array.from(set))); }catch(e){} }
@@ -1264,36 +1277,38 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     clearTimeout(tT); tT=setTimeout(function(){ toast.classList.remove('show'); },3200);
   }
   function complete(){ return set.size>=SECRETS.length; }
-  function addPip(animate){
-    var i=document.createElement('span');
-    i.className='brand-pip'+(animate?'':' noanim');
-    cluster.appendChild(i);
-    return i;
+  function coinEl(animate){
+    var slot=document.createElement('span'); slot.className='coin-slot'+(animate?' drop':'');
+    var coin=document.createElement('span'); coin.className='coin';
+    var img=document.createElement('img'); img.src='art/coin.png'; img.alt=''; img.draggable=false;
+    img.onerror=function(){ coin.classList.add('nocoin'); };
+    coin.appendChild(img); slot.appendChild(coin); return slot;
   }
-  function flyGem(from,to){
-    if(reduce||!from||!to) return;
-    var a=from.getBoundingClientRect(), b=to.getBoundingClientRect();
+  function flyCoin(from){
+    if(reduce||!from||!stack) return;
+    var a=from.getBoundingClientRect(), b=stack.getBoundingClientRect();
     var g=document.createElement('span'); g.className='lore-fly';
     g.style.left=(a.left+a.width/2)+'px'; g.style.top=(a.top+a.height/2)+'px';
     document.body.appendChild(g);
     var dx=(b.left+b.width/2)-(a.left+a.width/2), dy=(b.top+b.height/2)-(a.top+a.height/2);
     requestAnimationFrame(function(){requestAnimationFrame(function(){
-      g.style.transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) rotate(45deg) scale(.5)';
+      g.style.transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale(.6) rotate(140deg)';
       g.style.opacity='0';
     });});
-    setTimeout(function(){ if(g.parentNode) g.parentNode.removeChild(g); },950);
+    setTimeout(function(){ if(g.parentNode) g.parentNode.removeChild(g); },900);
   }
   function render(){
-    cluster.innerHTML='';
-    SECRETS.forEach(function(s){ if(set.has(s)) addPip(false); });
-    cluster.classList.toggle('done', complete());
+    stack.innerHTML='';
+    stack.appendChild(coinEl(false)); /* the brand coin — always the base */
+    SECRETS.forEach(function(s){ if(set.has(s)) stack.appendChild(coinEl(false)); });
+    stack.classList.toggle('done', complete());
   }
   function mark(id, fromEl){
     if(SECRETS.indexOf(id)<0 || set.has(id)) return;
     set.add(id); save();
-    var pip=addPip(true); void pip.offsetWidth;
-    flyGem(fromEl, pip);
-    if(complete()){ cluster.classList.add('done'); toastMsg('every corner turned — the door\'s open, keeper †'); if(window.__loreComplete) window.__loreComplete(); }
+    var slot=coinEl(true); stack.appendChild(slot); void slot.offsetWidth;
+    flyCoin(fromEl);
+    if(complete()){ stack.classList.add('done'); toastMsg('every corner turned — the door\'s open, keeper †'); if(window.__loreComplete) window.__loreComplete(); }
     else { toastMsg(set.size+' of 4 — keep digging †'); }
   }
   render();
@@ -1611,9 +1626,10 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 
 /* ============ GRIP PUZZLE — restricted admin console ============ */
 /* the grip is the credential; the AUTHENTICATE button is the submit. a freed finger the dead claw
-   back reads as a rejected credential. the photo is a static specimen; per-finger feedback comes from
-   the clear-scan columns + the auth bar + the readout. the console closes ONLY via the ✕. the boot log
-   is typed once and the session clock ticks only while open — both cancelled the instant it closes. */
+   back reads as a rejected credential. the photo is a static specimen in front of the gem; per-finger
+   feedback comes from the clear-scan columns + the auth bar + the readout. the console closes ONLY
+   via the ✕. the boot log is typed once and the session clock ticks only while open — both cancelled
+   the instant it closes. */
 (function(){
   var ov=document.getElementById('puzzle'); if(!ov) return;
   var stage=document.getElementById('pzStage');
@@ -1915,7 +1931,7 @@ window.addEventListener('load',function(){
 window.addEventListener('load',function(){
   var pf=function(u){ var l=document.createElement('link'); l.rel='prefetch'; l.href=u; document.head.appendChild(l); };
   var idle=window.requestIdleCallback||function(cb){ setTimeout(cb,1200); };
-  idle(function(){ ['art/ablank.png','art/adown.png','art/button.png','art/grip.png'].forEach(pf); });
+  idle(function(){ ['art/ablank.png','art/adown.png','art/button.png','art/grip.png','art/coin.png'].forEach(pf); });
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('./sw.js').catch(function(){});
   }
