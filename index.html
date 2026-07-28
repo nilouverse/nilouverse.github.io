@@ -65,8 +65,9 @@
   --panel-edge:1px solid rgba(255,255,255,.09);
   --panel-shadow:0 24px 60px -36px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.07);
 
-  --logow:clamp(78px,24vw,96px);
-  --keyw2:clamp(44px,19vw,64px);
+  /* logo box = ring + coin-orbit reference; the key image is larger and bleeds through the transparent canvas */
+  --logow:clamp(60px,19vw,88px);
+  --keyw2:clamp(80px,32vw,124px);
   --coin2:clamp(12px,3.4vw,16px);
 
   --art-hero:url('art/hero.jpg');
@@ -77,7 +78,7 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:92px;-webkit-text-size-adjust:100%;overflow-x:hidden}
+html{scroll-behavior:smooth;scroll-padding-top:90px;-webkit-text-size-adjust:100%;overflow-x:hidden}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-stopped{overflow:hidden}
@@ -88,6 +89,11 @@ img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--blood);color:var(--bone)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* kill the grey tap-rectangle mobile browsers paint over tapped elements */
+.brand-key,.finger,.pz-auth,.gate-threshold,.cover-btn,.ppc-cta,.cbtn,.foot-mark,.dlx-stack,
+.pill,.pcard,.single,.listen-pill,.topnav a,.foot-soc a,.socials a,.brand-name,.foot-top-link,
+.pz-close,.pp-close,.nm{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 
 .nm{color:var(--blood-bright);font-style:italic;cursor:pointer;border-radius:3px;
   text-shadow:0 0 14px rgba(255,39,71,.3);transition:text-shadow var(--dur-1) var(--ease)}
@@ -146,12 +152,13 @@ body::after{
   transition:transform .85s cubic-bezier(.5,-0.2,.5,1.15),opacity .85s ease}
 
 .topbar{position:fixed;inset:0 0 auto 0;z-index:70;display:flex;align-items:center;justify-content:space-between;
-  padding:12px clamp(12px,4vw,46px);border-bottom:1px solid transparent;
+  gap:clamp(10px,2vw,20px);padding:12px clamp(12px,4vw,46px);border-bottom:1px solid transparent;
   transition:background var(--dur-1) var(--ease),border-color var(--dur-1) var(--ease),padding var(--dur-1) var(--ease)}
 .topbar.scrolled{background:rgba(8,5,6,.82);border-bottom-color:var(--line);padding-top:8px;padding-bottom:8px;
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  --logow:clamp(46px,12vw,64px); --keyw2:clamp(27px,7vw,40px); --coin2:clamp(10px,2.6vw,13px)}
-.brand-cluster{display:flex;align-items:center;gap:clamp(9px,2.4vw,15px);min-width:0}
+  --logow:clamp(44px,12vw,60px); --keyw2:clamp(62px,17vw,82px); --coin2:clamp(10px,2.6vw,13px)}
+/* cluster yields space (and the wordmark truncates as a last resort) so it can never collide with the nav */
+.brand-cluster{display:flex;align-items:center;gap:clamp(12px,3vw,18px);min-width:0;flex:1 1 auto}
 .brand-logo{position:relative;width:var(--logow);height:var(--logow);flex:none;align-self:center;
   transition:width .42s var(--ease),height .42s var(--ease)}
 .key-ring{position:absolute;inset:3%;border-radius:50%;border:1px dashed rgba(239,230,221,.18);
@@ -162,12 +169,14 @@ body::after{
   background:radial-gradient(circle,rgba(255,190,90,.10),transparent 70%);
   box-shadow:0 0 16px -4px rgba(255,190,90,.6),inset 0 0 12px -5px rgba(255,190,90,.5)}
 .brand-key{position:absolute;left:50%;top:50%;width:var(--keyw2);transform:translate(-50%,-50%);line-height:0;cursor:pointer;
-  filter:drop-shadow(0 0 9px rgba(209,20,48,.5));
+  filter:drop-shadow(0 0 10px rgba(209,20,48,.55));
   transition:width .42s var(--ease),transform .35s var(--ease),filter var(--dur-1) var(--ease)}
-.brand-key img{width:100%;height:auto;display:block;animation:keyBob 2.8s ease-in-out infinite}
+.brand-key img{width:100%;height:auto;display:block;animation:keyBob 2.8s ease-in-out infinite;pointer-events:none}
 @keyframes keyBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-2px) rotate(2deg)}}
-.brand-key:hover{transform:translate(-50%,-50%) scale(1.12);filter:drop-shadow(0 0 14px rgba(255,39,71,.7))}
-.brand-key:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:6px}
+.brand-key:hover{transform:translate(-50%,-50%) scale(1.1);filter:drop-shadow(0 0 16px rgba(255,39,71,.75))}
+/* focus cue is a glow + lift, never a boxy outline around the square canvas */
+.brand-key:focus-visible{outline:none;transform:translate(-50%,-50%) scale(1.12);
+  filter:drop-shadow(0 0 10px rgba(52,227,214,.85)) drop-shadow(0 0 20px rgba(52,227,214,.5))}
 .brand-key.deny{animation:keyDeny .5s var(--ease)}
 @keyframes keyDeny{0%,100%{transform:translate(-50%,-50%) rotate(0)}20%{transform:translate(-50%,-50%) rotate(-9deg)}45%{transform:translate(-50%,-50%) rotate(8deg)}70%{transform:translate(-50%,-50%) rotate(-5deg)}}
 .coin-orbit{position:absolute;width:var(--coin2);height:var(--coin2);transform:translate(-50%,-50%);pointer-events:none;
@@ -193,21 +202,23 @@ body::after{
 @keyframes coinCheer{0%,100%{filter:none}45%{filter:drop-shadow(0 0 8px rgba(255,200,90,.95)) brightness(1.2)}}
 .brand-name{display:flex;flex-direction:column;line-height:1;min-width:0;text-decoration:none}
 .brand-name .bn-main{font-family:var(--f-disp);font-weight:800;text-transform:uppercase;letter-spacing:.02em;
-  font-size:clamp(1.05rem,4.6vw,1.6rem);color:var(--bone);white-space:nowrap;
+  font-size:clamp(.95rem,3.6vw,1.25rem);color:var(--bone);white-space:nowrap;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;
   text-shadow:0 0 14px rgba(209,20,48,.28);transition:text-shadow var(--dur-1) var(--ease)}
 .brand-name:hover .bn-main{text-shadow:0 0 18px rgba(255,39,71,.5)}
 .brand-name .bn-main .bn-dot{color:var(--blood-bright)}
 .brand-name .bn-sub{font-family:var(--f-mono);font-size:clamp(.44rem,1.7vw,.56rem);letter-spacing:.3em;text-transform:uppercase;
   color:var(--bone-faint);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand-key-hint{position:absolute;left:50%;top:calc(100% + 9px);transform:translateX(-50%) translateY(-4px);z-index:5;
-  font-family:var(--f-serif);font-style:italic;font-size:.72rem;line-height:1.35;color:var(--cyan-soft);text-align:center;
+/* anchored to the logo's left edge so the tooltip never bleeds off-screen on the left */
+.brand-key-hint{position:absolute;left:0;top:calc(100% + 9px);transform:translateY(-4px);z-index:5;
+  font-family:var(--f-serif);font-style:italic;font-size:.72rem;line-height:1.35;color:var(--cyan-soft);text-align:left;
   background:rgba(8,5,6,.94);border:1px solid var(--line);border-radius:8px;padding:7px 11px;
   box-shadow:0 10px 30px -12px rgba(0,0,0,.8);width:max-content;max-width:min(74vw,300px);
   opacity:0;pointer-events:none;transition:opacity .4s var(--ease),transform .4s var(--ease)}
-.brand-key-hint.show{opacity:1;transform:translateX(-50%)}
-.brand-key-hint::before{content:"";position:absolute;left:50%;top:-5px;width:8px;height:8px;background:rgba(8,5,6,.94);
-  border-left:1px solid var(--line);border-top:1px solid var(--line);transform:translateX(-50%) rotate(45deg)}
-.topnav{display:flex;align-items:center;gap:clamp(14px,3vw,30px)}
+.brand-key-hint.show{opacity:1;transform:translateY(0)}
+.brand-key-hint::before{content:"";position:absolute;left:18px;top:-5px;width:8px;height:8px;background:rgba(8,5,6,.94);
+  border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
+.topnav{display:flex;align-items:center;gap:clamp(14px,3vw,30px);flex:0 0 auto}
 .topnav a{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--bone-dim);transition:color var(--dur-1) var(--ease)}
 .topnav a.nav-link{position:relative}
 .topnav a.nav-link::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--blood-bright);
@@ -215,17 +226,17 @@ body::after{
 .topnav a.nav-link:hover{color:var(--bone)}
 .topnav a.nav-link:hover::after{transform:scaleX(1)}
 .listen-pill{border:1px solid var(--blood);color:var(--bone);padding:8px 16px;letter-spacing:.2em;text-transform:uppercase;
-  font-size:.68rem;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:var(--dur-1) var(--ease)}
+  font-size:.68rem;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:var(--dur-1) var(--ease);white-space:nowrap}
 .listen-pill:hover{background:var(--blood);box-shadow:0 0 18px rgba(209,20,48,.4)}
 .listen-pill .tri{width:0;height:0;border-left:7px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent}
 @media(max-width:820px){.topnav .nav-link{display:none}}
 @media(max-width:430px){
-  .brand-cluster{gap:8px}
+  .brand-cluster{gap:10px}
   .brand-name .bn-sub{display:none}
   .listen-pill{padding:7px 11px;letter-spacing:.14em}
 }
 @media(max-width:360px){
-  .brand-name .bn-main{font-size:.95rem;letter-spacing:0}
+  .brand-name .bn-main{font-size:.9rem;letter-spacing:0}
 }
 
 .hero{position:relative;min-height:100svh;overflow:hidden;isolation:isolate;contain:layout style paint}
@@ -337,7 +348,7 @@ body::after{
 .poem .dead{color:var(--bone-faint);text-decoration:line-through;text-decoration-color:var(--blood-deep);text-decoration-thickness:1px}
 .poem .teeth{color:var(--blood-bright);font-style:italic;text-shadow:0 0 16px rgba(255,39,71,.3)}
 .poem .redline{color:var(--bone);text-shadow:0 0 20px rgba(209,20,48,.25)}
-@media(min-width:820px){.ticket{grid-template-columns:.85fr 1.15fr;align-items:start}.ticket-head{position:sticky;top:100px}}
+@media(min-width:820px){.ticket{grid-template-columns:.85fr 1.15fr;align-items:start}.ticket-head{position:sticky;top:98px}}
 
 .listen{position:relative;z-index:1;padding:clamp(40px,7vh,84px) clamp(18px,5vw,48px);
   border-top:1px solid var(--line);overflow:hidden;content-visibility:auto;contain-intrinsic-size:auto 1200px;contain:layout style}
@@ -580,7 +591,11 @@ body::after{
   background:var(--panel-bg);border:var(--panel-edge);border-radius:var(--rad);overflow:hidden;box-shadow:var(--panel-shadow)}
 .stub .eyebrow{display:flex;align-items:center;justify-content:center;gap:12px;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--blood-bright);margin-bottom:18px}
 .stub .eyebrow .ln{height:1px;width:42px;background:var(--blood-deep)}
-.stub .voice{font-family:var(--f-serif);font-size:clamp(1.3rem,4.4vw,2.05rem);line-height:1.4;color:var(--bone);max-width:30ch;margin:0 auto}
+.stub .voice{font-family:var(--f-serif);font-size:clamp(1.3rem,4.4vw,2.05rem);line-height:1.4;color:var(--bone);max-width:34ch;margin:0 auto}
+.stub .voice .vo-lead{display:block;font-family:var(--f-disp);font-weight:800;font-style:normal;line-height:.92;letter-spacing:-.01em;
+  font-size:clamp(1.9rem,7.5vw,3.2rem);color:var(--bone);margin-bottom:.42em;
+  text-shadow:0 0 24px rgba(209,20,48,.4),0 2px 10px rgba(0,0,0,.5)}
+.stub .voice .vo-lead .bang{color:var(--blood-bright);text-shadow:0 0 22px rgba(255,39,71,.6)}
 .stub .cta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
 
 .contact{position:relative;z-index:1;padding:clamp(40px,7vh,84px) clamp(18px,5vw,40px);
@@ -657,15 +672,16 @@ body::after{
 .con-bar .con-rec i{width:5px;height:5px;border-radius:50%;background:var(--blood-bright)}
 .con-bar .con-clock{color:var(--bone-faint);font-variant-numeric:tabular-nums;flex:none}
 
-/* denial / status banner — flows under the bar so it is never clipped */
+/* inset status banner — breathes on all sides, collapses cleanly when idle */
 .con-err{display:flex;align-items:center;gap:8px;flex:none;
+  margin:0 12px;border-radius:6px;
   font-family:var(--f-mono);font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:#ffd2d8;
-  background:linear-gradient(90deg,rgba(124,11,27,.55),rgba(124,11,27,.2));
-  border-bottom:1px solid transparent;
-  max-height:0;opacity:0;overflow:hidden;padding:0 12px;
-  transition:max-height .32s var(--ease),opacity .32s var(--ease),padding .32s var(--ease),border-color .32s var(--ease)}
+  background:linear-gradient(90deg,rgba(124,11,27,.6),rgba(124,11,27,.22));
+  border:1px solid transparent;
+  max-height:0;opacity:0;overflow:hidden;padding:0 14px;
+  transition:max-height .32s var(--ease),opacity .32s var(--ease),padding .32s var(--ease),margin .32s var(--ease),border-color .32s var(--ease)}
 .con-err::before{content:"\2715";color:#fff;font-weight:700;flex:none}
-.con-err.show{max-height:54px;opacity:1;padding:9px 12px;border-bottom-color:var(--blood-bright)}
+.con-err.show{max-height:60px;opacity:1;padding:9px 14px;margin:8px 12px 6px;border-color:var(--blood-bright)}
 
 .con-body{position:relative;z-index:2;display:grid;grid-template-columns:1fr;gap:0;flex:1;min-height:0}
 @media(min-width:720px){.con-body{grid-template-columns:minmax(0,210px) 1fr}}
@@ -774,7 +790,6 @@ body::after{
 @keyframes thrPulse{0%,100%{box-shadow:0 0 22px -6px var(--blood-bright),inset 0 0 14px -6px rgba(255,255,255,.4)}50%{box-shadow:0 0 40px -2px var(--blood-bright),inset 0 0 18px -4px rgba(255,255,255,.6)}}
 .gate-threshold:hover{filter:brightness(1.16)}
 .gate-threshold .gt-tri{width:0;height:0;border-left:7px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent}
-/* re-lock flicker on a denied attempt */
 .pz-stage.denied .gate-shutter{animation:irisDeny .9s var(--ease) both}
 .pz-stage.denied .gate-light{animation:lightFlick .9s steps(2,end) both}
 .pz-stage.denied .pz-btn img{animation:coreDeny .9s steps(2,end) both}
@@ -1161,7 +1176,7 @@ body::after{
   <section class="outro" id="outro">
     <div class="stub" data-reveal>
       <p class="eyebrow"><span class="ln"></span>[ 03 ] — The Outro<span class="ln"></span></p>
-      <p class="voice">Ten tracks, one long fall — press play, and let the floor give out. <span class="dag">†</span></p>
+      <p class="voice"><span class="vo-lead">There's no way out<span class="bang">!</span></span>Go ahead and taste our brutal-melodic pain over heavy riffs — the raw energy of early-2000s aggression.</p>
       <div class="cta">
         <a class="pill pill-am" href="https://audiomack.com/nilouversemusic/album/down" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg>Stream 'Down'</a>
         <a class="pill pill-yt" href="https://youtube.com/playlist?list=PLBZZGekBTa3s" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2 15 12l-5 2.8z" fill="currentColor" stroke="none"/></svg>YouTube</a>
