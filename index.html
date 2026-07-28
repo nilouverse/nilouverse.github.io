@@ -29,6 +29,7 @@
   #preloader{display:none!important}
   body.loading{overflow:auto!important}
   .wordmark,.socials{opacity:1!important;transform:none!important;animation:none!important}
+  .photo{opacity:.97!important}
   [data-reveal]{opacity:1!important;transform:none!important}
 </style></noscript>
 
@@ -241,9 +242,11 @@ body::after{
     linear-gradient(180deg,#0a0708,#0c0809 58%,#070405)}
 
 .photo{position:absolute;inset:0;background-image:var(--art-hero);background-repeat:no-repeat;
-  background-size:100% auto;background-position:50% 0%;opacity:.97;will-change:transform;backface-visibility:hidden;
+  background-size:100% auto;background-position:50% 0%;opacity:0;transition:opacity .9s var(--ease);
+  will-change:transform,opacity;backface-visibility:hidden;
   -webkit-mask-image:radial-gradient(135% 110% at 50% 38%,#000 70%,transparent 100%);
   mask-image:radial-gradient(135% 110% at 50% 38%,#000 70%,transparent 100%)}
+.photo.loaded{opacity:.97}
 
 .wash{position:absolute;inset:0;pointer-events:none;opacity:.6;will-change:transform;
   background:
@@ -948,6 +951,7 @@ body::after{
   [data-reveal]{opacity:1;transform:none}
   #preloader{display:none}
   .wordmark,.socials{opacity:1!important;transform:none!important}
+  .photo{opacity:.97;transition:none}
   .pz-stage.free .pz-hand{opacity:0}
   .pz-stage.free .gate{opacity:1}
   .pz-stage.free .gate-grid,.pz-stage.free .gate-wall{opacity:1}
@@ -1001,7 +1005,7 @@ body::after{
   <section class="hero" id="top">
     <div class="scene" aria-hidden="true">
       <div class="fog"></div>
-      <div class="photo"></div>
+      <div class="photo" id="photo"></div>
       <div class="wash"></div>
       <div class="beam"></div>
       <div class="beam b2"></div>
@@ -1266,8 +1270,7 @@ body::after{
               <span class="gate-readout" id="gateReadout">aperture // standby</span>
             </div>
             <span class="pz-btn" aria-hidden="true"><img src="art/button.png" alt="" draggable="false" decoding="async"></span>
-            <img class="pz-hand" id="pzHand" src="art/grip.png" alt="" draggable="false" decoding="async"
-              onload="document.getElementById('pzStage').classList.add('has-hand')" onerror="this.style.display='none'">
+            <img class="pz-hand" id="pzHand" alt="" draggable="false" decoding="async">
             <span class="fpos f0"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
             <span class="fpos f1"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
             <span class="fpos f2"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
@@ -1347,13 +1350,22 @@ body::after{
       fill=document.getElementById('preFill'),
       pct=document.getElementById('prePct'),
       status=document.getElementById('preStatus'),
+      photo=document.getElementById('photo'),
       reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function heroIn(){ if(photo) photo.classList.add('loaded'); }
+  var him=new Image();
+  him.onload=heroIn; him.onerror=heroIn;
+  him.src='art/hero.jpg';
+  if(him.complete && him.naturalWidth>0) heroIn();
+  if(reduce) heroIn();
 
   function reveal(){
     document.documentElement.classList.add('is-ready');
     document.body.classList.remove('loading');
     if(window.__lenis) window.__lenis.start();
     if(window.__smoothKick) window.__smoothKick();
+    setTimeout(heroIn, 2200);
   }
   if(!pre){ reveal(); return; }
 
@@ -1362,35 +1374,20 @@ body::after{
     li=(li+1)%lines.length; if(status) status.textContent=lines[li];
   }, 820);
 
-  var imgs=[{src:'art/hero.jpg',done:false},{src:'art/button.png',done:false}];
-  var imgTotal=imgs.length, imgDone=0;
-  function imgTick(){ imgDone++; update(); }
-  imgs.forEach(function(o){
-    var im=new Image();
-    im.onload=im.onerror=function(){ if(!o.done){o.done=true;imgTick();} };
-    im.src=o.src;
-    if(im.complete){ if(!o.done){o.done=true;imgTick();} }
-  });
+  var reqs=['400 1em "Metal Mania"','700 1em "Syne"','800 1em "Syne"','400 1em "Space Grotesk"','700 1em "Space Grotesk"','1em "Instrument Serif"','italic 1em "Instrument Serif"'];
+  var fontTotal=reqs.length, fontDone=0, fontsReady=false;
+  function fontTick(){ fontDone++; if(fontDone>=fontTotal) fontsReady=true; update(); }
+  if(document.fonts && document.fonts.load){
+    reqs.forEach(function(f){ document.fonts.load(f).then(fontTick, fontTick); });
+  } else { fontsReady=true; }
 
-  var fontsReady=false;
-  function markFonts(){ fontsReady=true; update(); }
-  if(document.fonts && document.fonts.ready){
-    var reqs=['400 1em "Metal Mania"','800 1em "Syne"','400 1em "Space Grotesk"','700 1em "Space Grotesk"','1em "Instrument Serif"','italic 1em "Instrument Serif"'];
-    Promise.all(reqs.map(function(f){return document.fonts.load(f).catch(function(){});}))
-      .then(function(){return document.fonts.ready;}).then(markFonts).catch(markFonts);
-  } else { markFonts(); }
-
-  var started=performance.now(), MIN_MS= reduce?0:600, finished=false;
-  function pctVal(){
-    var ip= imgTotal? (imgDone/imgTotal):1;
-    var fp= fontsReady?1:0;
-    return Math.round((ip*0.8 + fp*0.2)*100);
-  }
+  var started=performance.now(), MIN_MS=reduce?0:500, finished=false;
+  function pctVal(){ return fontsReady?100:Math.round((fontDone/fontTotal)*100); }
   function update(){
     var p=pctVal();
     if(fill) fill.style.width=p+'%';
     if(pct) pct.textContent=p;
-    if(p>=100) tryFinish();
+    if(fontsReady) tryFinish();
   }
   function tryFinish(){
     if(finished) return;
@@ -1407,9 +1404,9 @@ body::after{
   update();
   setTimeout(function(){
     if(finished) return;
-    imgs.forEach(function(o){ if(!o.done){o.done=true;imgDone++;} });
     fontsReady=true; finished=true;
     if(lineTimer) clearInterval(lineTimer);
+    if(fill) fill.style.width='100%'; if(pct) pct.textContent='100';
     reveal(); pre.classList.add('done');
     setTimeout(function(){ pre.style.display='none'; },700);
   }, 6000);
@@ -1445,7 +1442,7 @@ body::after{
   var bar=document.getElementById('progress'),
       top=document.getElementById('topbar'),
       hero=document.querySelector('.hero'),
-      photo=document.querySelector('.photo'),
+      photo=document.getElementById('photo'),
       wash=document.querySelector('.wash'),
       heroBottom=document.querySelector('.hero-bottom');
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1648,11 +1645,12 @@ body::after{
       authBtn=document.getElementById('pzAuth'),
       paLbl=document.getElementById('paLbl'),
       paState=document.getElementById('paState'),
-      closeBtn=document.getElementById('pzClose');
+      closeBtn=document.getElementById('pzClose'),
+      hand=document.getElementById('pzHand');
   var fpos=Array.prototype.slice.call(ov.querySelectorAll('.fpos'));
   var fingers=Array.prototype.slice.call(ov.querySelectorAll('.finger'));
   var state=fingers.map(function(){return 'grip';});
-  var freed=false, busy=false, puzzleWon=false, pendingRegrip=false;
+  var freed=false, busy=false, puzzleWon=false, pendingRegrip=false, handSet=false;
   var clawbacks=0, firstFreeDone=false;
   var MERCY=4, gen=0, clock=null, clockStart=0, errT=null;
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1760,8 +1758,16 @@ body::after{
   function startClock(){clockStart=Date.now();tickClock();clock=setInterval(tickClock,1000);}
   function tickClock(){var s=Math.floor((Date.now()-clockStart)/1000);var mm=String(Math.floor(s/60)).padStart(2,'0');var ss=String(s%60).padStart(2,'0');if(clockEl)clockEl.textContent='link '+mm+':'+ss;}
   function stopClock(){if(clock){clearInterval(clock);clock=null;}}
+  function ensureHand(){
+    if(!hand||handSet) return;
+    handSet=true;
+    hand.onload=function(){ stage.classList.add('has-hand'); };
+    hand.onerror=function(){ hand.style.display='none'; };
+    hand.src='art/grip.png';
+  }
   function openPuzzle(){
     gen++;busy=false;pendingRegrip=false;
+    ensureHand();
     freed=puzzleWon||pWon(); if(freed) puzzleWon=true;
     stage.classList.remove('free','unlocked','sealed','denied','recoil','twitch'); void stage.offsetWidth;
     state=fingers.map(function(){return freed?'out':'grip';});
@@ -1850,9 +1856,10 @@ body::after{
   });
 })();
 
-window.addEventListener('load',function(){
-  measureSafe();
-  if(!matchMedia('(prefers-reduced-motion: reduce)').matches && window.Lenis){
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function initLenis(){
+    if(reduce||!window.Lenis) return;
     var lenis=new Lenis({duration:1.15,smoothWheel:true,easing:function(t){return 1-Math.pow(1-t,4);}});
     window.__lenis=lenis;
     document.documentElement.classList.add('lenis','lenis-smooth');
@@ -1861,27 +1868,23 @@ window.addEventListener('load',function(){
     function raf(time){lenis.raf(time);rafId=requestAnimationFrame(raf);}
     rafId=requestAnimationFrame(raf);
     document.addEventListener('visibilitychange',function(){
-      if(document.hidden){cancelAnimationFrame(rafId);}
-      else{rafId=requestAnimationFrame(raf);}
+      if(document.hidden){cancelAnimationFrame(rafId);} else {rafId=requestAnimationFrame(raf);}
     });
     document.querySelectorAll('a[href^="#"]').forEach(function(a){
       a.addEventListener('click',function(e){
         var id=a.getAttribute('href');
-        if(id&&id.length>1){
-          var el=document.querySelector(id);
-          if(el){e.preventDefault();lenis.scrollTo(el,{offset:-70,duration:1.3});}
-        }
+        if(id&&id.length>1){var el=document.querySelector(id); if(el){e.preventDefault();lenis.scrollTo(el,{offset:-70,duration:1.3});}}
       });
     });
   }
-  function measureSafe(){ if(window.__smoothKick) window.__smoothKick(); }
-  var pf=function(u){ var l=document.createElement('link'); l.rel='prefetch'; l.href=u; document.head.appendChild(l); };
-  var idle=window.requestIdleCallback||function(cb){ setTimeout(cb,1200); };
-  idle(function(){ ['art/cdown.jpg','art/coin.png','art/adown.png','art/ablank.png','art/acdown.jpg','art/grip.png'].forEach(pf); });
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('./sw.js').catch(function(){});
-  }
-});
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initLenis); else initLenis();
+
+  window.addEventListener('load',function(){
+    var pf=function(u){ var l=document.createElement('link'); l.rel='prefetch'; l.href=u; document.head.appendChild(l); };
+    ['art/cdown.jpg','art/coin.png','art/adown.png','art/ablank.png','art/acdown.jpg','art/grip.png'].forEach(pf);
+    if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(function(){}); }
+  });
+})();
 </script>
 </body>
 </html>
