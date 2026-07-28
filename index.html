@@ -9,6 +9,8 @@
 
 <link rel="preload" as="image" href="art/hero.jpg" fetchpriority="high">
 <link rel="preload" as="image" href="art/cdown.jpg">
+<link rel="preload" as="image" href="art/coin.png">
+<link rel="preload" as="image" href="art/button.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,6 +88,13 @@ a{color:inherit;text-decoration:none}
 ::selection{background:var(--blood);color:var(--bone)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
+.nm{color:var(--blood-bright);font-style:italic;cursor:pointer;border-radius:3px;
+  text-shadow:0 0 14px rgba(255,39,71,.3);transition:text-shadow var(--dur-1) var(--ease)}
+.nm:hover{text-shadow:0 0 20px rgba(255,39,71,.6)}
+.nm.ping{animation:nmPing .85s var(--ease)}
+@keyframes nmPing{0%{text-shadow:0 0 14px rgba(255,39,71,.3)}25%{text-shadow:0 0 30px rgba(255,39,71,.95),0 0 6px #fff}50%{text-shadow:0 0 8px rgba(255,39,71,.4)}75%{text-shadow:0 0 26px rgba(255,39,71,.85)}100%{text-shadow:0 0 14px rgba(255,39,71,.3)}}
+.dag{color:var(--bone-faint)}
+
 body::before{
   content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
@@ -129,10 +138,10 @@ body::after{
   box-shadow:0 12px 30px -14px rgba(0,0,0,.8);
   opacity:0;transition:opacity .4s var(--ease),transform .4s var(--ease);pointer-events:none}
 .lore-toast.show{opacity:1;transform:translateX(-50%)}
-.lore-fly{position:fixed;z-index:450;width:var(--coin);height:var(--coin);margin:calc(var(--coin)/-2) 0 0 calc(var(--coin)/-2);
-  border-radius:50%;pointer-events:none;
-  background:radial-gradient(circle at 35% 30%, #f6e0ad, #d8ab58 46%, #9a6f2c 76%, #5e4017);
-  box-shadow:0 0 12px rgba(255,190,90,.7),inset 0 0 0 1px rgba(0,0,0,.35);
+.lore-fly{position:fixed;z-index:450;width:calc(var(--coin)*1.25);height:calc(var(--coin)*1.25);
+  margin:calc(var(--coin)*-0.625) 0 0 calc(var(--coin)*-0.625);
+  background:url('art/coin.png') center/contain no-repeat;pointer-events:none;
+  filter:drop-shadow(0 0 8px rgba(255,190,90,.55));
   transition:transform .85s cubic-bezier(.5,-0.2,.5,1.15),opacity .85s ease}
 
 .topbar{position:fixed;inset:0 0 auto 0;z-index:70;display:flex;align-items:center;justify-content:space-between;
@@ -166,23 +175,21 @@ body::after{
 .brand-stack.done .coin-slot{animation:coinCheer .7s var(--ease) both}
 .brand-stack.done .coin-slot:nth-of-type(2){animation-delay:.06s}
 .brand-stack.done .coin-slot:nth-of-type(3){animation-delay:.12s}
-.brand-stack.done .coin-slot:nth-of-type(4){animation-delay:.18s}
-.brand-stack.done .coin-slot:nth-of-type(5){animation-delay:.24s}
 @keyframes coinCheer{0%,100%{filter:none}45%{filter:drop-shadow(0 0 9px rgba(255,200,90,.95)) brightness(1.2)}}
-.brand-key{position:relative;width:var(--keyw);line-height:0;flex:none;cursor:pointer;display:none;
+.brand-key{position:relative;width:var(--keyw);line-height:0;flex:none;cursor:pointer;
   filter:drop-shadow(0 0 10px rgba(209,20,48,.55));transition:transform var(--dur-1) var(--ease)}
 .brand-key img{width:100%;height:auto;display:block;animation:keyBob 2.6s ease-in-out infinite}
 @keyframes keyBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-3px) rotate(2deg)}}
 .brand-key:hover{transform:scale(1.1)}
 .brand-key:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:4px}
-body.key-won .brand-key{display:block}
-body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left:-3px}
+.brand-key.deny{animation:keyDeny .45s var(--ease)}
+@keyframes keyDeny{0%,100%{transform:rotate(0)}20%{transform:rotate(-7deg)}45%{transform:rotate(6deg)}70%{transform:rotate(-4deg)}}
 .brand-key-hint{position:absolute;left:0;top:calc(100% + 8px);z-index:5;
-  font-family:var(--f-serif);font-style:italic;font-size:.74rem;color:var(--cyan-soft);white-space:nowrap;
-  background:rgba(8,5,6,.92);border:1px solid var(--line);border-radius:8px;padding:6px 10px;
-  box-shadow:0 10px 30px -12px rgba(0,0,0,.8);
-  opacity:0;pointer-events:none;transition:opacity .4s var(--ease);max-width:78vw;overflow:hidden;text-overflow:ellipsis}
-.brand-key-hint.show{opacity:1}
+  font-family:var(--f-serif);font-style:italic;font-size:.74rem;line-height:1.35;color:var(--cyan-soft);
+  background:rgba(8,5,6,.92);border:1px solid var(--line);border-radius:8px;padding:7px 11px;
+  box-shadow:0 10px 30px -12px rgba(0,0,0,.8);width:max-content;max-width:min(72vw,320px);
+  opacity:0;pointer-events:none;transition:opacity .4s var(--ease),transform .4s var(--ease);transform:translateY(-4px)}
+.brand-key-hint.show{opacity:1;transform:none}
 .brand-key-hint::before{content:"";position:absolute;left:14px;top:-5px;width:8px;height:8px;background:rgba(8,5,6,.92);
   border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
 .topnav{display:flex;align-items:center;gap:clamp(14px,3vw,30px)}
@@ -556,12 +563,6 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
 .stub .eyebrow{display:flex;align-items:center;justify-content:center;gap:12px;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--blood-bright);margin-bottom:18px}
 .stub .eyebrow .ln{height:1px;width:42px;background:var(--blood-deep)}
 .stub .voice{font-family:var(--f-serif);font-size:clamp(1.3rem,4.4vw,2.05rem);line-height:1.4;color:var(--bone);max-width:30ch;margin:0 auto}
-.stub .voice .nm{color:var(--blood-bright);font-style:italic;text-shadow:0 0 14px rgba(255,39,71,.3);
-  cursor:pointer;border-radius:3px;transition:text-shadow var(--dur-1) var(--ease)}
-.stub .voice .nm:hover{text-shadow:0 0 20px rgba(255,39,71,.6)}
-.stub .voice .nm.ping{animation:nmPing .85s var(--ease)}
-@keyframes nmPing{0%{text-shadow:0 0 14px rgba(255,39,71,.3)}25%{text-shadow:0 0 30px rgba(255,39,71,.95),0 0 6px #fff}50%{text-shadow:0 0 8px rgba(255,39,71,.4)}75%{text-shadow:0 0 26px rgba(255,39,71,.85)}100%{text-shadow:0 0 14px rgba(255,39,71,.3)}}
-.stub .voice .dag{color:var(--bone-faint)}
 .stub .cta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
 
 .contact{position:relative;z-index:1;padding:clamp(40px,7vh,84px) clamp(18px,5vw,40px);
@@ -876,7 +877,7 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
 
 <header class="topbar" id="topbar">
   <div class="brand-cluster">
-    <span class="brand-key" id="brandKey" role="button" tabindex="0" aria-label="the key"><img src="art/button.png" alt="" draggable="false"></span>
+    <span class="brand-key" id="brandKey" role="button" tabindex="0" aria-label="the key — log in"><img src="art/button.png" alt="" draggable="false"></span>
     <a class="brand-mini" href="#top"><span class="brand-stack" id="brandStack" aria-hidden="true"></span>Nilouverse</a>
     <span class="brand-key-hint" id="brandKeyHint" aria-hidden="true"></span>
   </div>
@@ -929,6 +930,7 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
         <p class="ln" data-reveal style="--d:.25s">The gentle thing shows its <span class="teeth">teeth, horns.</span></p>
         <p class="ln" data-reveal style="--d:.35s">And when the riff pins you to the wall before you've finished deciding if you liked it, a shadow looms, bending the light the wrong way—</p>
         <p class="ln redline" data-reveal style="--d:.45s">a red that no lamp in the room is casting.</p>
+        <p class="ln" data-reveal style="--d:.55s"><span class="dag">†</span> <span class="nm" id="introName" role="button" tabindex="0">NilouZila</span> welcomes you.</p>
       </div>
     </div>
   </section>
@@ -1055,7 +1057,7 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
   <section class="outro" id="outro">
     <div class="stub" data-reveal>
       <p class="eyebrow"><span class="ln"></span>[ 03 ] — The Outro<span class="ln"></span></p>
-      <p class="voice">Go ahead and taste our brutal-melodic pain over heavy riffs — the raw energy of early-2000s aggression. <span class="dag">†</span> <span class="nm" id="outroName" role="button" tabindex="0">NilouZila</span> welcomes you.</p>
+      <p class="voice">Ten tracks, one long fall — press play, and let the floor give out. <span class="dag">†</span></p>
       <div class="cta">
         <a class="pill pill-am" href="https://audiomack.com/nilouversemusic/album/down" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg>Stream 'Down'</a>
         <a class="pill pill-yt" href="https://youtube.com/playlist?list=PLBZZGekBTa3s" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2 15 12l-5 2.8z" fill="currentColor" stroke="none"/></svg>YouTube</a>
@@ -1173,7 +1175,7 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
 <script>
 (function(){
   var KEY='nv_lore_v1';
-  var SECRETS=['whisper','grasp','wordmark','name'];
+  var SECRETS=['whisper','wordmark','name'];
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var set=new Set();
   try{(JSON.parse(localStorage.getItem(KEY))||[]).forEach(function(id){ if(SECRETS.indexOf(id)>=0) set.add(id); });}catch(e){}
@@ -1209,7 +1211,6 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
   }
   function render(){
     stack.innerHTML='';
-    stack.appendChild(coinEl(false));
     SECRETS.forEach(function(s){ if(set.has(s)) stack.appendChild(coinEl(false)); });
     stack.classList.toggle('done', complete());
   }
@@ -1218,11 +1219,11 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
     set.add(id); save();
     var slot=coinEl(true); stack.appendChild(slot); void slot.offsetWidth;
     flyCoin(fromEl);
-    if(complete()){ stack.classList.add('done'); toastMsg('every corner turned — the door\'s open, keeper †'); if(window.__loreComplete) window.__loreComplete(); }
-    else { toastMsg(set.size+' of 4 — keep digging †'); }
+    if(complete()){ stack.classList.add('done'); toastMsg('all '+SECRETS.length+' found — the key turns †'); if(window.__loreComplete) window.__loreComplete(); }
+    else { toastMsg(set.size+' of '+SECRETS.length+' — keep digging †'); }
   }
   render();
-  window.__lore={ mark:mark, has:function(id){ return set.has(id); }, isComplete:complete, count:function(){ return set.size; } };
+  window.__lore={ mark:mark, has:function(id){ return set.has(id); }, isComplete:complete, count:function(){ return set.size; }, total:SECRETS.length };
 })();
 
 (function(){
@@ -1245,7 +1246,7 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
     li=(li+1)%lines.length; if(status) status.textContent=lines[li];
   }, 820);
 
-  var imgs=[{src:'art/hero.jpg',done:false},{src:'art/cdown.jpg',done:false}];
+  var imgs=[{src:'art/hero.jpg',done:false},{src:'art/cdown.jpg',done:false},{src:'art/coin.png',done:false},{src:'art/button.png',done:false}];
   var imgTotal=imgs.length, imgDone=0;
   function imgTick(){ imgDone++; update(); }
   imgs.forEach(function(o){
@@ -1469,20 +1470,38 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
 })();
 
 (function(){
-  var fm=document.getElementById('footMark'),
-      fw=document.getElementById('footWhisper'),wi=0;
-  var whispers=["Yeah, Nilouverse! Don't ever forget it.","Don't touch my footer Paul.","uk it's a long way down!","† She's around, better not linger."];
-  if(!fm||!fw) return;
-  var taps=[];
-  fm.addEventListener('click',function(){
-    if(window.__lore) window.__lore.mark('whisper', fm);
-    fw.textContent=whispers[wi%whispers.length]; wi++;
-    fw.classList.add('show');
-    clearTimeout(fw._t); fw._t=setTimeout(function(){fw.classList.remove('show');},2600);
-    var now=Date.now();
-    taps.push(now); taps=taps.filter(function(x){ return now-x<1400; });
-    if(taps.length>=6){ taps=[]; if(window.__lore) window.__lore.mark('grasp', fm); if(window.__openPuzzle) window.__openPuzzle(true); }
-  });
+  var key=document.getElementById('brandKey');
+  var hint=document.getElementById('brandKeyHint');
+  if(!key) return;
+  var ht;
+  function hintText(){
+    var total=(window.__lore&&window.__lore.total)||3;
+    var found=window.__lore?window.__lore.count():0;
+    if(window.__lore&&window.__lore.isComplete()) return "all "+total+" secrets found † tap the key to log in";
+    if(found>0) return found+"/"+total+" secrets found — find them all to log in †";
+    return "there are "+total+" secrets hidden in this page — find them all to log in †";
+  }
+  function showHint(dur){
+    if(!hint) return;
+    hint.textContent=hintText();
+    hint.classList.add('show');
+    clearTimeout(ht);
+    ht=setTimeout(function(){ hint.classList.remove('show'); },dur||4200);
+  }
+  function deny(){
+    key.classList.remove('deny'); void key.offsetWidth; key.classList.add('deny');
+    showHint(4200);
+  }
+  function go(e){
+    if(e){ e.preventDefault(); e.stopPropagation(); }
+    if(window.__lore&&window.__lore.isComplete()){
+      if(hint) hint.classList.remove('show');
+      if(window.__openPuzzle) window.__openPuzzle();
+    } else { deny(); }
+  }
+  key.addEventListener('click',go);
+  key.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+  window.__loreComplete=function(){ showHint(6500); };
 })();
 
 (function(){
@@ -1511,7 +1530,7 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
 })();
 
 (function(){
-  var nm=document.getElementById('outroName'); if(!nm) return;
+  var nm=document.getElementById('introName'); if(!nm) return;
   function fire(){
     if(window.__lore) window.__lore.mark('name', nm);
     nm.classList.remove('ping'); void nm.offsetWidth; nm.classList.add('ping');
@@ -1519,6 +1538,19 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
   }
   nm.addEventListener('click',fire);
   nm.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); fire(); } });
+})();
+
+(function(){
+  var fm=document.getElementById('footMark'),
+      fw=document.getElementById('footWhisper'),wi=0;
+  var whispers=["Yeah, Nilouverse! Don't ever forget it.","Don't touch my footer Paul.","uk it's a long way down!","† She's around, better not linger."];
+  if(!fm||!fw) return;
+  fm.addEventListener('click',function(){
+    if(window.__lore) window.__lore.mark('whisper', fm);
+    fw.textContent=whispers[wi%whispers.length]; wi++;
+    fw.classList.add('show');
+    clearTimeout(fw._t); fw._t=setTimeout(function(){fw.classList.remove('show');},2600);
+  });
 })();
 
 (function(){
@@ -1540,15 +1572,13 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
   var fpos=Array.prototype.slice.call(ov.querySelectorAll('.fpos'));
   var fingers=Array.prototype.slice.call(ov.querySelectorAll('.finger'));
   var state=fingers.map(function(){return 'grip';});
-  var freed=false, busy=false;
+  var freed=false, busy=false, puzzleWon=false;
   var clawbacks=0, mercyShown=false, firstFreeDone=false;
   var MERCY=4, gen=0, clock=null, clockStart=0, errT=null;
   var SECRET='bd289'+'kouw.html';
 
   var INSTR_SYS="physical_override engaged — extract the key";
   var INSTR_FLV="the dead resists to Let It Go †";
-  var REVEAL_SYS=["breach logged — you found the backdoor †","the backdoor's guarded by the dead †","backdoor open — take it from cold hands †"];
-  var REVEAL_FLV=INSTR_FLV;
   var SYS_FREE=["credential fragment logged — %/5","partial match held — %/5","the lock reads you — %/5","fragment verified — %/5","byte accepted — %/5"];
   var FLV_FREE=["one lets go…","cold flesh — but it yields.","the grip loosens.","you feel it tire.","a finger uncurls."];
   var SYS_KSOON=["final fragment guarded — 1 left","last byte protected — locked hard","one of five remains"];
@@ -1563,10 +1593,10 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
   var FLV_MERCY=["even the dead grow tired †"];
   var WIN_SYS_C=["access granted — channel ready","override accepted — authenticate to enter"];
   var WIN_FLV_C=["the key is yours †","dragged from the grasp of the dead †"];
-  var WIN_SYS_L=["access granted // clearance low — %a/4","override accepted // %a/4 artifacts"];
-  var WIN_FLV_L=["the door needs all four secrets †","four secrets open it — keep digging †"];
+  var WIN_SYS_L=["access granted // clearance low — %a/3","override accepted // %a/3 artifacts"];
+  var WIN_FLV_L=["the door needs all three secrets †","three secrets open it — keep digging †"];
   var ERR_NOCRED="free the key first";
-  var ERR_CLEAR="the door needs all four secrets — you have %a";
+  var ERR_CLEAR="the door needs all three secrets — you have %a";
   var BUSY="establishing secure channel…";
 
   function pick(a){return a[Math.floor(Math.random()*a.length)];}
@@ -1630,9 +1660,8 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
     setReadout(r.s,r.f);firstFreeDone=true;twitch();
   }
   function win(){
-    freed=true;stage.classList.add('free');syncAuth();
+    freed=true;puzzleWon=true;stage.classList.add('free');syncAuth();
     if(idOp){idOp.textContent='authenticated';idOp.className='granted';}
-    if(window.__winGrasp)window.__winGrasp();
     if(loreDone()){setReadout(pick(WIN_SYS_C),pick(WIN_FLV_C));setAuthState('cleared');}
     else {setReadout(fmt(pick(WIN_SYS_L),freedN(),loreN()),pick(WIN_FLV_L));setAuthState('ready');}
   }
@@ -1648,18 +1677,21 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
   function tickClock(){var s=Math.floor((Date.now()-clockStart)/1000);var mm=String(Math.floor(s/60)).padStart(2,'0');var ss=String(s%60).padStart(2,'0');if(clockEl)clockEl.textContent='link '+mm+':'+ss;}
   function stopClock(){if(clock){clearInterval(clock);clock=null;}}
 
-  function openPuzzle(fromReveal){
+  function openPuzzle(){
     gen++;busy=false;
-    var won=!!(window.__graspWon&&window.__graspWon());
-    if(won){freed=true;state=fingers.map(function(){return 'out';});}
-    else {freed=false;state=fingers.map(function(){return 'grip';});clawbacks=0;mercyShown=false;firstFreeDone=false;}
+    freed=puzzleWon;
+    state=fingers.map(function(){return freed?'out':'grip';});
+    if(!freed){clawbacks=0;mercyShown=false;firstFreeDone=false;}
     fingers.forEach(function(f,i){applyVisual(i);});
     syncAuth();
     stage.classList.toggle('free',freed);
     if(idOp){if(freed){idOp.textContent='authenticated';idOp.className='granted';}else{idOp.textContent='unauthenticated';idOp.className='denied';}}
-    if(freed){ if(loreDone()){setReadout(pick(WIN_SYS_C),pick(WIN_FLV_C));setAuthState('cleared');} else {setReadout(fmt(pick(WIN_SYS_L),freedN(),loreN()),pick(WIN_FLV_L));setAuthState('ready');} }
-    else if(fromReveal){setReadout(pick(REVEAL_SYS),REVEAL_FLV);setAuthState('locked');}
-    else {setReadout(INSTR_SYS,INSTR_FLV);setAuthState('locked');}
+    if(freed){
+      if(loreDone()){setReadout(pick(WIN_SYS_C),pick(WIN_FLV_C));setAuthState('cleared');}
+      else {setReadout(fmt(pick(WIN_SYS_L),freedN(),loreN()),pick(WIN_FLV_L));setAuthState('ready');}
+    } else {
+      setReadout(INSTR_SYS,INSTR_FLV);setAuthState('locked');
+    }
     if(paLbl)paLbl.textContent='authenticate';
     if(errEl)errEl.classList.remove('show');
     ov.classList.add('show');ov.setAttribute('aria-hidden','false');lockScroll();
@@ -1683,33 +1715,6 @@ body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left
   });
 
   if(closeBtn)closeBtn.addEventListener('click',closePuzzle);
-})();
-
-(function(){
-  var KEYWON='nv_grasp_won';
-  var key=document.getElementById('brandKey');
-  var hint=document.getElementById('brandKeyHint');
-  if(!key) return;
-  var ht;
-  function won(){ try{ return localStorage.getItem(KEYWON)==='1'; }catch(e){ return false; } }
-  function setWon(){ try{ localStorage.setItem(KEYWON,'1'); }catch(e){} }
-  window.__graspWon=won;
-  function hintText(){
-    if(window.__lore && window.__lore.isComplete()) return "the door is open † tap the key";
-    return "you hold the key † but the door's shut — finish the hunt, then tap it";
-  }
-  function showHint(dur){
-    if(!hint) return;
-    hint.textContent=hintText(); hint.classList.add('show');
-    clearTimeout(ht); ht=setTimeout(function(){ hint.classList.remove('show'); }, dur||6000);
-  }
-  function applyWon(){ document.body.classList.add('key-won'); }
-  window.__winGrasp=function(){ setWon(); applyWon(); showHint(7000); };
-  window.__loreComplete=function(){ if(document.body.classList.contains('key-won')) showHint(6000); };
-  function go(e){ if(e){ e.preventDefault(); e.stopPropagation(); } if(window.__openPuzzle) window.__openPuzzle(false); }
-  key.addEventListener('click',go);
-  key.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
-  if(won()) applyWon();
 })();
 
 (function(){
@@ -1804,7 +1809,7 @@ window.addEventListener('load',function(){
 window.addEventListener('load',function(){
   var pf=function(u){ var l=document.createElement('link'); l.rel='prefetch'; l.href=u; document.head.appendChild(l); };
   var idle=window.requestIdleCallback||function(cb){ setTimeout(cb,1200); };
-  idle(function(){ ['art/ablank.png','art/adown.png','art/button.png','art/grip.png','art/coin.png'].forEach(pf); });
+  idle(function(){ ['art/ablank.png','art/adown.png','art/grip.png'].forEach(pf); });
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('./sw.js').catch(function(){});
   }
