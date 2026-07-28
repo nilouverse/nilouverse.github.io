@@ -10,8 +10,6 @@
 <!-- critical art -->
 <link rel="preload" as="image" href="art/hero.jpg" fetchpriority="high">
 <link rel="preload" as="image" href="art/cdown.jpg">
-<link rel="preload" as="image" href="art/contact.svg">
-<link rel="preload" as="image" href="art/contact-open.svg">
 
 <!-- font stylesheet preloaded to cut fallback/swap time -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap">
@@ -69,7 +67,7 @@
   --panel-edge:1px solid rgba(255,255,255,.09);
   --panel-shadow:0 24px 60px -36px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.07);
 
-  /* nav trophy key width (≈3×+ the old diamond) */
+  /* nav trophy key width */
   --keyw:clamp(52px,12vw,72px);
 
   /* art asset map */
@@ -78,8 +76,6 @@
   --art-album:url('art/adown.png');
   --art-deluxe:url('art/ablank.png');
   --art-single:url('art/acdown.jpg');
-  --art-contact:url('art/contact.svg');
-  --art-contact-open:url('art/contact-open.svg');
 }
 
 /* ============ RESET + BASE ============ */
@@ -136,28 +132,43 @@ body::after{
   background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright),var(--ember));
   box-shadow:0 0 10px rgba(255,39,71,.5)}
 
-/* ============ LORE METER ============ */
+/* ============ LORE / CASE FILE ============ */
 /* hidden until the first secret is found; persisted per browser via localStorage (no server profile) */
-.lore{position:fixed;right:14px;bottom:14px;z-index:65;display:flex;align-items:center;gap:7px;
-  padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:rgba(8,5,6,.6);
-  box-shadow:0 8px 24px -12px rgba(0,0,0,.7);
-  opacity:0;visibility:hidden;transform:translateY(8px);
-  transition:opacity .5s var(--ease),transform .5s var(--ease),visibility .5s}
+.lore{position:fixed;right:14px;bottom:14px;z-index:65;display:flex;align-items:center;gap:10px;
+  padding:8px 12px 8px 10px;font-family:var(--f-mono);
+  background:linear-gradient(180deg,rgba(10,6,7,.92),rgba(6,3,4,.92));
+  border:1px solid rgba(209,20,48,.4);border-radius:4px;
+  box-shadow:0 12px 30px -12px rgba(0,0,0,.8),inset 0 0 0 1px rgba(0,0,0,.5),0 0 22px -10px rgba(209,20,48,.5);
+  opacity:0;visibility:hidden;transform:translateY(10px) scale(.96);
+  transition:opacity .5s var(--ease),transform .5s var(--ease),visibility .5s,border-color .4s var(--ease),box-shadow .4s var(--ease)}
 .lore.show{opacity:1;visibility:visible;transform:none}
-.lore-gem{width:9px;height:9px;transform:rotate(45deg);border:1px solid var(--bone-faint);background:transparent;
+.lore::before,.lore::after{content:"";position:absolute;width:7px;height:7px;pointer-events:none}
+.lore::before{top:-1px;left:-1px;border-top:1px solid var(--blood-bright);border-left:1px solid var(--blood-bright);opacity:.7}
+.lore::after{bottom:-1px;right:-1px;border-bottom:1px solid var(--blood-bright);border-right:1px solid var(--blood-bright);opacity:.7}
+.lore-tag{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-faint)}
+.lore-pips{display:flex;gap:6px}
+.lore-pips i{width:9px;height:9px;transform:rotate(45deg);border:1px solid var(--bone-faint);border-radius:1px;
   transition:background .4s var(--ease),box-shadow .4s var(--ease),border-color .4s var(--ease)}
-.lore-gem.filled{background:var(--blood-bright);border-color:var(--blood-bright);box-shadow:0 0 10px var(--blood-bright)}
-.lore-count{font-size:.6rem;letter-spacing:.2em;color:var(--bone-faint);font-variant-numeric:tabular-nums}
-.lore.done .lore-gem.filled{animation:lorePop .6s var(--ease) both}
-.lore.done .lore-gem.filled:nth-child(2){animation-delay:.08s}
-.lore.done .lore-gem.filled:nth-child(3){animation-delay:.16s}
-@keyframes lorePop{0%{transform:rotate(45deg) scale(1)}40%{transform:rotate(45deg) scale(1.7)}100%{transform:rotate(45deg) scale(1)}}
-.lore-toast{position:fixed;right:14px;bottom:54px;z-index:340;max-width:62vw;
+.lore-pips i.filled{background:var(--blood-bright);border-color:var(--blood-bright);box-shadow:0 0 10px var(--blood-bright)}
+.lore-count{font-size:.56rem;letter-spacing:.14em;color:var(--blood-bright);font-variant-numeric:tabular-nums}
+.lore.done{border-color:var(--blood-bright);box-shadow:0 12px 30px -12px rgba(0,0,0,.8),0 0 26px -6px rgba(255,39,71,.6)}
+.lore.done .lore-pips i.filled{animation:lorePop .6s var(--ease) both}
+.lore.done .lore-pips i.filled:nth-child(2){animation-delay:.08s}
+.lore.done .lore-pips i.filled:nth-child(3){animation-delay:.16s}
+.lore.done .lore-pips i.filled:nth-child(4){animation-delay:.24s}
+@keyframes lorePop{0%{transform:rotate(45deg) scale(1)}40%{transform:rotate(45deg) scale(1.8)}100%{transform:rotate(45deg) scale(1)}}
+.lore-toast{position:fixed;right:14px;bottom:56px;z-index:340;max-width:64vw;
   font-family:var(--f-serif);font-style:italic;font-size:.9rem;color:var(--cyan-soft);
-  background:rgba(8,5,6,.85);border:1px solid var(--line);border-radius:10px;padding:8px 12px;
+  background:rgba(8,5,6,.9);border:1px solid var(--line);border-radius:10px;padding:8px 12px;
+  box-shadow:0 12px 30px -14px rgba(0,0,0,.8);
   opacity:0;transform:translateY(6px);transition:opacity .4s var(--ease),transform .4s var(--ease);pointer-events:none}
 .lore-toast.show{opacity:1;transform:none}
-@media(max-width:680px){.lore{right:10px;bottom:10px;padding:6px 9px}.lore-toast{right:10px;bottom:48px}}
+/* a discovered diamond arcing into the case file */
+.lore-fly{position:fixed;z-index:450;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:2px;
+  background:var(--blood-bright);box-shadow:0 0 16px var(--blood-bright),0 0 4px #fff inset;
+  transform:rotate(45deg);pointer-events:none;
+  transition:transform .9s cubic-bezier(.55,-0.25,.5,1.2),opacity .9s ease}
+@media(max-width:680px){.lore{right:10px;bottom:10px;padding:7px 10px}.lore-toast{right:10px;bottom:50px}}
 
 /* ============ TOPBAR ============ */
 .topbar{position:fixed;inset:0 0 auto 0;z-index:70;display:flex;align-items:center;justify-content:space-between;
@@ -167,7 +178,7 @@ body::after{
 .brand-mini{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;font-size:.74rem;
   transition:padding var(--dur-1) var(--ease)}
 .brand-mini .gem{width:8px;height:8px;background:var(--blood-bright);transform:rotate(45deg);box-shadow:0 0 8px var(--blood-bright)}
-/* nav trophy: replaces the diamond once the grip is won; opens the grip screen */
+/* nav trophy: replaces the diamond once the key is pried loose; opens the console */
 .brand-key{position:absolute;left:clamp(16px,5vw,46px);top:50%;transform:translateY(-50%);z-index:5;
   width:var(--keyw);line-height:0;cursor:pointer;filter:drop-shadow(0 0 10px rgba(209,20,48,.55));
   transition:transform var(--dur-1) var(--ease)}
@@ -243,13 +254,32 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     radial-gradient(125% 105% at 50% 42%,transparent 52%,rgba(0,0,0,.42) 100%),
     linear-gradient(0deg,rgba(7,4,5,.98) 0%,rgba(7,4,5,.94) 12%,rgba(7,4,5,.66) 30%,rgba(7,4,5,.28) 50%,transparent 72%)}
 
+/* hero ignition: a time-limited flame burst that settles to a static glow (no permanent loop) */
+.hero-flame{position:absolute;left:0;right:0;bottom:0;height:48%;z-index:1;pointer-events:none;opacity:0;mix-blend-mode:screen;filter:blur(2px);
+  background:
+    radial-gradient(60% 80% at 50% 122%, rgba(255,39,71,.55), transparent 60%),
+    radial-gradient(40% 60% at 30% 132%, rgba(255,122,26,.4), transparent 60%),
+    radial-gradient(40% 60% at 72% 132%, rgba(209,20,48,.45), transparent 60%)}
+.hero-flame .ft{position:absolute;bottom:-8%;width:14%;height:70%;border-radius:50% 50% 42% 42%;opacity:0;transform-origin:bottom center;
+  background:radial-gradient(60% 70% at 50% 82%, rgba(255,178,77,.8), rgba(255,39,71,.4) 45%, transparent 72%);filter:blur(3px)}
+.hero-flame .ft.t1{left:18%}
+.hero-flame .ft.t2{left:43%;height:92%}
+.hero-flame .ft.t3{left:66%}
+.hero.ignited .hero-flame{animation:flameBurst 3.8s var(--ease) forwards}
+.hero.ignited .hero-flame .ft{animation:tongue 1.6s ease-in-out 2}
+.hero.ignited.settled .hero-flame{opacity:.5;animation:none}
+.hero.ignited.settled .hero-flame .ft{animation:none;opacity:.5;transform:scaleY(.82)}
+@keyframes flameBurst{0%{opacity:0}12%{opacity:1}55%{opacity:.92}100%{opacity:.5}}
+@keyframes tongue{0%,100%{transform:scaleY(.7) scaleX(1);opacity:.5}30%{transform:scaleY(1.18) scaleX(.9) translateX(-4%);opacity:.95}60%{transform:scaleY(.95) scaleX(1.06) translateX(3%);opacity:.8}}
+
 .hero-inner{position:relative;z-index:2;max-width:1240px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;
   align-items:center;text-align:center;justify-content:flex-end;
   padding:clamp(96px,14vh,132px) clamp(20px,6vw,64px) clamp(96px,17vh,150px)}
 .hero-bottom{width:100%;max-width:none;display:flex;flex-direction:column;align-items:center;text-align:center}
 
 .wordmark{font-family:var(--f-logo);color:var(--bone);line-height:.82;font-size:clamp(2.8rem,13vw,8rem);letter-spacing:.01em;
-  display:inline-block;text-align:center;opacity:0;
+  display:inline-block;text-align:center;opacity:0;position:relative;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;
   -webkit-text-stroke:1.2px rgba(124,11,27,.95);text-shadow:0 0 1px rgba(255,39,71,.5),0 2px 18px rgba(209,20,48,.32),0 8px 36px rgba(0,0,0,.55)}
 .is-ready .wordmark{animation:wmIn 1s cubic-bezier(.2,.7,.2,1) both}
 .wordmark:hover{animation:flick .9s steps(1) 1}
@@ -257,6 +287,14 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 @keyframes flick{0%,100%{opacity:1}42%{opacity:.72}47%{opacity:.95}52%{opacity:.66}58%{opacity:.9}}
 .wm-sub{display:block;font-family:var(--f-body);font-weight:500;-webkit-text-stroke:0;text-shadow:none;letter-spacing:.62em;
   font-size:clamp(.62rem,2.4vw,1rem);color:var(--bone-dim);margin-top:.5em;padding-left:.62em}
+/* hold-to-ignite charge bar */
+.wm-charge{position:absolute;left:8%;right:8%;bottom:-.16em;height:2px;border-radius:2px;overflow:hidden;opacity:0;
+  background:rgba(255,39,71,.16);transition:opacity .2s var(--ease)}
+.wm-charge::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--ember),var(--blood-bright));
+  box-shadow:0 0 12px var(--blood-bright);transform:scaleX(0);transform-origin:left}
+.wordmark.charging .wm-charge{opacity:1}
+.wordmark.charging .wm-charge::after{animation:charge 1.2s linear forwards}
+@keyframes charge{to{transform:scaleX(1)}}
 
 .socials{display:flex;justify-content:center;gap:8px;margin-top:1.5rem;opacity:0}
 .is-ready .socials{animation:socIn .8s .55s both}
@@ -320,6 +358,8 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 
 .feat{position:relative;display:grid;grid-template-columns:1fr;gap:clamp(22px,4vw,40px);padding:clamp(20px,4vw,34px);
   background:var(--panel-bg);border:var(--panel-edge);border-radius:var(--rad);overflow:hidden;box-shadow:var(--panel-shadow);margin-bottom:clamp(40px,7vw,80px)}
+.feat.shook{animation:featShake .6s}
+@keyframes featShake{0%,100%{transform:none}15%{transform:translate(-4px,2px) rotate(-.4deg)}30%{transform:translate(5px,-2px) rotate(.5deg)}45%{transform:translate(-5px,1px) rotate(-.5deg)}60%{transform:translate(4px,-1px) rotate(.4deg)}75%{transform:translate(-2px,1px)}}
 .feat-media{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#000;
   box-shadow:0 24px 50px -24px rgba(209,20,48,.4);transition:box-shadow var(--dur-2) var(--ease)}
 .feat:hover .feat-media{box-shadow:0 30px 70px -24px rgba(209,20,48,.55)}
@@ -372,7 +412,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 
 .sleeve{display:flex;align-items:center;justify-content:center;min-height:280px}
 .cover-btn{appearance:none;background:none;border:0;cursor:pointer;position:relative;width:min(78%,330px);aspect-ratio:1/1;padding:0;color:var(--bone)}
-/* vinyl: outer ring handles the slide; inner disc (.vd) carries grooves + sheen and spins while open */
 .vinyl{position:absolute;top:50%;left:50%;width:84%;height:84%;border-radius:50%;transform:translate(-30%,-50%);
   background:#0c0809;box-shadow:0 14px 34px rgba(0,0,0,.5),inset 0 0 24px rgba(0,0,0,.7);
   transition:transform var(--dur-2) var(--ease);z-index:0;overflow:hidden}
@@ -571,17 +610,13 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .contact-head h3{font-family:var(--f-disp);font-weight:800;font-size:clamp(1.7rem,6vw,2.6rem);line-height:1}
 .contact-head .sub{font-family:var(--f-serif);font-style:italic;color:var(--bone-dim);margin-top:12px;font-size:clamp(1rem,3.2vw,1.2rem);line-height:1.5;max-width:46ch}
 
+/* envelope: inline SVG, closed with a small flat wax seal; swaps to open-flap on focus */
 .seal{position:relative;width:clamp(64px,16vw,84px);aspect-ratio:1/1;margin:0 0 18px auto}
-.seal-img{position:absolute;inset:0;background-image:var(--art-contact);background-size:contain;background-repeat:no-repeat;background-position:center;
-  filter:drop-shadow(0 8px 18px rgba(0,0,0,.5));transition:opacity .3s var(--ease),transform .5s var(--ease)}
-.seal-img.open{background-image:var(--art-contact-open)}
-/* small flat wax seal on the flap seam */
-.seal .wax{position:absolute;left:50%;top:55%;width:15%;height:11%;transform:translate(-50%,-50%);border-radius:50%;
-  background:radial-gradient(circle at 42% 38%,#c01430,#7c0b1b 70%);
-  box-shadow:inset 0 -1px 2px rgba(0,0,0,.4);opacity:.92;
-  transition:transform .45s var(--ease),opacity .3s var(--ease)}
-.seal.broke .seal-img{opacity:.4;transform:scale(.96)}
-.seal.broke .wax{transform:translate(-50%,-50%) rotate(18deg) scale(.5);opacity:0}
+.seal-img{position:absolute;inset:0;background-repeat:no-repeat;background-position:center;background-size:contain;
+  filter:drop-shadow(0 8px 18px rgba(0,0,0,.5));transition:opacity .3s var(--ease),transform .5s var(--ease);
+  background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none'><rect x='7' y='19' width='50' height='30' rx='4' fill='%2315100f' stroke='%23efe6dd' stroke-width='2.4'/><path d='M8 21 L32 36 L56 21' stroke='%23efe6dd' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'/><path d='M9 47 L24 35' stroke='%23b7aaa2' stroke-width='1.6' opacity='.5' stroke-linecap='round'/><path d='M55 47 L40 35' stroke='%23b7aaa2' stroke-width='1.6' opacity='.5' stroke-linecap='round'/><path d='M32 32 l4.5 4.5 -4.5 4.5 -4.5 -4.5 z' fill='%23b3102a'/></svg>")}
+.seal-img.open{transform:translateY(-3px) scale(1.04);
+  background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none'><path d='M9 31 L32 13 L55 31' fill='%23100b0c' stroke='%23efe6dd' stroke-width='2.4' stroke-linejoin='round'/><rect x='16' y='15' width='32' height='24' rx='2' fill='%231d1514' stroke='%23efe6dd' stroke-width='2.2'/><path d='M22 22 H42' stroke='%23b7aaa2' stroke-width='1.6' stroke-linecap='round'/><path d='M22 27 H36' stroke='%23b7aaa2' stroke-width='1.6' stroke-linecap='round'/><path d='M8 31 H56 V49 a4 4 0 0 1 -4 4 H12 a4 4 0 0 1 -4 -4 Z' fill='%2315100f' stroke='%23efe6dd' stroke-width='2.4' stroke-linejoin='round'/></svg>")}
 
 .cform{display:grid;grid-template-columns:1fr;gap:14px}
 .cfield{display:flex;flex-direction:column;gap:7px}
@@ -608,94 +643,142 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .cstatus.err{color:var(--blood-bright)}
 @media(min-width:680px){.cform{grid-template-columns:1fr 1fr}.cfield.full{grid-column:1/-1}.cfoot{grid-column:1/-1}}
 
-/* ============ GRIP PUZZLE — classified terminal ============ */
-/* all motion here is transform/opacity and only runs while #puzzle.show, so a closed puzzle costs nothing */
-#puzzle{position:fixed;inset:0;z-index:320;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;
+/* ============ GRIP PUZZLE — restricted admin console ============ */
+/* the grip replaces username/password: extract the physical key to authenticate.
+   all motion is transform/opacity and runs only while #puzzle.show (the boot log and the
+   session clock are finite/interval and are torn down on close), so a closed console costs nothing. */
+#puzzle{position:fixed;inset:0;z-index:320;display:flex;align-items:center;justify-content:center;padding:18px;overflow-y:auto;
   background:
     repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0 1px, transparent 1px 3px),
-    radial-gradient(70% 60% at 50% 42%, rgba(124,11,27,.22), transparent 70%),
-    rgba(4,2,3,.96);
+    radial-gradient(80% 70% at 50% 30%, rgba(20,40,46,.5), transparent 70%),
+    radial-gradient(70% 60% at 50% 90%, rgba(124,11,27,.18), transparent 70%),
+    rgba(3,4,5,.97);
   opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s}
 #puzzle.show{opacity:1;visibility:visible}
-.pz-close{position:absolute;top:8px;right:8px;z-index:4;appearance:none;cursor:pointer;
-  width:30px;height:30px;display:grid;place-items:center;border-radius:6px;
-  background:rgba(8,5,6,.6);border:1px solid var(--line);color:var(--bone-faint);
-  font-family:var(--f-mono);font-size:.9rem;line-height:1;transition:var(--dur-1) var(--ease)}
+.console{position:relative;width:min(96vw,880px);display:flex;flex-direction:column;
+  background:linear-gradient(180deg,#0a0e10,#07090a);
+  border:1px solid rgba(52,227,214,.22);border-radius:8px;overflow:hidden;
+  box-shadow:0 50px 120px -40px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05),0 0 70px -24px rgba(52,227,214,.25)}
+.console::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:7;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.7}
+/* static crt scanlines over the whole console */
+.console::after{content:"";position:absolute;inset:0;z-index:8;pointer-events:none;border-radius:8px;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, transparent 1px 3px);mix-blend-mode:multiply;opacity:.5}
+/* moving scan beam — only while open */
+.crt{position:absolute;left:0;right:0;top:0;height:24%;z-index:8;pointer-events:none;opacity:0;
+  background:linear-gradient(180deg,transparent,rgba(52,227,214,.06) 45%,rgba(155,243,234,.12) 50%,rgba(52,227,214,.06) 55%,transparent)}
+#puzzle.show .crt{opacity:1;animation:scanY 4.2s linear infinite}
+@keyframes scanY{0%{transform:translateY(-100%)}100%{transform:translateY(420%)}}
+
+.pz-close{position:absolute;top:9px;right:9px;z-index:9;appearance:none;cursor:pointer;
+  width:30px;height:30px;display:grid;place-items:center;border-radius:5px;
+  background:rgba(8,12,13,.7);border:1px solid rgba(52,227,214,.25);color:var(--cyan-soft);
+  font-family:var(--f-mono);font-size:.85rem;line-height:1;transition:var(--dur-1) var(--ease)}
 .pz-close:hover{border-color:var(--blood-bright);color:var(--blood-bright);box-shadow:0 0 14px -4px var(--blood-bright)}
-.console{position:relative;width:min(94vw,540px);background:linear-gradient(180deg,#0c0707,#080505);
-  border:1px solid rgba(209,20,48,.35);border-radius:10px;overflow:hidden;
-  box-shadow:0 40px 90px -30px rgba(0,0,0,.85),0 0 0 1px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05),0 0 60px -20px rgba(209,20,48,.4)}
-.console::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--blood-bright),transparent)}
-.con-bar{display:flex;align-items:center;gap:9px;padding:9px 44px 9px 12px;border-bottom:1px solid var(--line);
-  font-family:var(--f-mono);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bone-dim)}
-.con-dot{width:8px;height:8px;border-radius:50%;background:var(--blood-bright);box-shadow:0 0 8px var(--blood-bright);opacity:.85}
-.con-title{flex:1;color:var(--bone-dim)}
-.con-rec{display:inline-flex;align-items:center;gap:5px;color:var(--blood-bright)}
-.con-rec i{width:6px;height:6px;border-radius:50%;background:var(--blood-bright);opacity:1}
-.con-stripe{height:6px;opacity:.5;
-  background:repeating-linear-gradient(45deg, var(--blood-deep) 0 7px, transparent 7px 14px)}
-.con-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:7px 12px;border-bottom:1px solid var(--edge);
-  font-family:var(--f-mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-faint)}
-.con-meta b{color:var(--blood-bright);font-weight:700}
-.con-cursor{margin-left:auto;color:var(--cyan-soft);font-weight:700}
-.con-body{position:relative;padding:clamp(14px,4vw,22px);text-align:center}
-/* worn rubber-stamp threat label */
-.stamp{display:inline-block;font-family:var(--f-egg);font-style:normal;letter-spacing:.06em;line-height:1;
-  font-size:clamp(1.1rem,4.6vw,1.7rem);color:var(--blood-bright);
-  border:2px solid var(--blood-bright);border-radius:4px;padding:5px 13px;margin:2px auto 14px;
-  transform:rotate(-4deg);opacity:.92;text-shadow:0 0 12px rgba(255,39,71,.5);
-  box-shadow:0 0 0 1px rgba(255,39,71,.4) inset,0 0 18px -6px rgba(209,20,48,.6);
-  -webkit-mask-image:repeating-linear-gradient(92deg,#000 0 3px,rgba(0,0,0,.5) 3px 4px);
-  mask-image:repeating-linear-gradient(92deg,#000 0 3px,rgba(0,0,0,.5) 3px 4px)}
-/* surveillance feed frame */
-.feed{position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#050303;
-  box-shadow:inset 0 0 40px 6px rgba(0,0,0,.85)}
-.feed-tag{position:absolute;z-index:3;pointer-events:none;font-family:var(--f-mono);font-size:.5rem;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--cyan-soft);opacity:.72;padding:5px 7px}
+
+/* header bar */
+.con-bar{position:relative;z-index:2;display:flex;align-items:center;gap:10px;padding:10px 46px 10px 14px;
+  border-bottom:1px solid rgba(52,227,214,.14);font-family:var(--f-mono);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan-soft)}
+.con-bar .con-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.con-bar .con-title{color:var(--bone-dim)}
+.con-bar .con-title b{color:var(--bone);font-weight:700}
+.con-bar .con-rec{margin-left:auto;display:inline-flex;align-items:center;gap:5px;color:var(--blood-bright)}
+.con-bar .con-rec i{width:6px;height:6px;border-radius:50%;background:var(--blood-bright)}
+.con-bar .con-clock{color:var(--bone-faint);font-variant-numeric:tabular-nums}
+
+/* hazard tape */
+.con-hazard{position:relative;z-index:2;display:flex;align-items:center;overflow:hidden;
+  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;
+  background:repeating-linear-gradient(45deg, var(--blood-bright) 0 12px, #1a0608 12px 24px)}
+.con-hazard span{padding:3px 14px;white-space:nowrap;background:rgba(255,39,71,.92);color:#1a0608}
+.con-hazard .hz-gap{background:transparent;color:transparent}
+
+/* body: identity + auth */
+.con-body{position:relative;z-index:2;display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:720px){.con-body{grid-template-columns:minmax(0,268px) 1fr}}
+
+/* left: system identity (cold) */
+.con-id{position:relative;padding:16px 16px 18px;border-bottom:1px solid rgba(52,227,214,.12);
+  background:linear-gradient(180deg, rgba(52,227,214,.05), transparent 60%)}
+@media(min-width:720px){.con-id{border-bottom:0;border-right:1px solid rgba(52,227,214,.12)}}
+.id-seal{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.id-diamond{position:relative;width:30px;height:30px;flex:none;display:grid;place-items:center}
+.id-diamond::before{content:"";position:absolute;inset:0;border:1.5px solid var(--cyan);transform:rotate(45deg);border-radius:4px;box-shadow:0 0 12px -2px var(--cyan)}
+.id-diamond::after{content:"";width:8px;height:8px;background:var(--blood-bright);transform:rotate(45deg);box-shadow:0 0 8px var(--blood-bright)}
+.id-name{font-family:var(--f-mono);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--bone);font-size:.82rem;line-height:1.1}
+.id-name small{display:block;font-weight:400;letter-spacing:.3em;font-size:.5rem;color:var(--cyan-soft);margin-top:2px}
+.id-class{font-family:var(--f-mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blood-bright);
+  border:1px solid rgba(209,20,48,.4);border-radius:3px;padding:4px 8px;margin-bottom:14px;text-align:center;background:rgba(124,11,27,.12)}
+.id-status{list-style:none;display:grid;gap:7px;margin-bottom:14px}
+.id-status li{display:flex;justify-content:space-between;gap:10px;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase}
+.id-status li span{color:var(--bone-faint)}
+.id-status li b{color:var(--cyan-soft);font-weight:700;text-align:right}
+.id-status li b.warn{color:var(--ember-soft)}
+.id-status li b.redact{color:var(--bone-faint);letter-spacing:.04em}
+.id-status li b.denied{color:var(--blood-bright)}
+.id-status li b.granted{color:var(--cyan)}
+.boot{font-family:var(--f-mono);font-size:.56rem;line-height:1.55;color:rgba(155,243,234,.7);
+  min-height:7.6em;border-top:1px dashed rgba(52,227,214,.18);padding-top:9px;white-space:pre-wrap;word-break:break-word}
+.boot-line{min-height:1.55em}
+.boot .cur{color:var(--cyan);animation:blink 1s steps(1) infinite}
+@media(max-width:720px){.boot{display:none}.id-status li:nth-child(n+4){display:none}}
+
+/* right: authentication (hot) */
+.con-auth{position:relative;padding:16px clamp(14px,3vw,22px) 18px}
+.auth-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px}
+.auth-k{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--blood-bright)}
+.auth-mode{font-family:var(--f-mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-faint)}
+/* struck-through legacy credentials */
+.ghost-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.ghost-field{position:relative;display:flex;flex-direction:column;gap:4px;padding:8px 58px 8px 10px;border:1px solid var(--edge);border-radius:5px;background:rgba(255,255,255,.02)}
+.gf-l{font-family:var(--f-mono);font-size:.48rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bone-faint)}
+.gf-v{font-family:var(--f-mono);font-size:.74rem;color:var(--bone-dim);text-decoration:line-through;text-decoration-color:rgba(209,20,48,.6);opacity:.6}
+.gf-tag{position:absolute;right:7px;top:50%;transform:translateY(-50%);font-family:var(--f-mono);font-size:.42rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--blood-bright);border:1px solid rgba(209,20,48,.4);border-radius:3px;padding:2px 5px}
+
+/* the grip sensor viewport */
+.feed{position:relative;isolation:isolate;border:1px solid rgba(209,20,48,.3);border-radius:6px;overflow:hidden;background:#040202;
+  box-shadow:inset 0 0 44px 8px rgba(0,0,0,.9),0 0 24px -14px rgba(209,20,48,.5)}
+.feed::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 42%,transparent 32%,rgba(0,0,0,.78) 100%)}
+.feed-tag{position:absolute;z-index:6;pointer-events:none;font-family:var(--f-mono);font-size:.5rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cyan-soft);opacity:.78;padding:5px 7px}
 .feed-tag.tl{top:0;left:0}
+.feed.extracted .feed-tag.tl{color:var(--cyan)}
 .feed-tag.tr{top:0;right:0;display:inline-flex;align-items:center;gap:5px;color:var(--blood-bright)}
 .feed-tag.bl{bottom:0;left:0;color:var(--bone-faint)}
 .recdot{width:5px;height:5px;border-radius:50%;background:var(--blood-bright)}
-.feed-scan{position:absolute;left:0;right:0;top:0;height:30%;z-index:3;pointer-events:none;transform:translateY(-100%);
-  background:linear-gradient(180deg,transparent,rgba(52,227,214,.08) 45%,rgba(155,243,234,.16) 50%,rgba(52,227,214,.08) 55%,transparent)}
-.cb{position:absolute;width:12px;height:12px;z-index:3;pointer-events:none;border-color:rgba(155,243,234,.4)}
+.feed-scan{position:absolute;left:0;right:0;top:0;height:30%;z-index:6;pointer-events:none;transform:translateY(-100%);
+  background:linear-gradient(180deg,transparent,rgba(52,227,214,.07) 45%,rgba(155,243,234,.14) 50%,rgba(52,227,214,.07) 55%,transparent)}
+.cb{position:absolute;width:12px;height:12px;z-index:6;pointer-events:none;border-color:rgba(155,243,234,.4)}
 .cb-tl{top:4px;left:4px;border-top:1px solid;border-left:1px solid}
 .cb-tr{top:4px;right:4px;border-top:1px solid;border-right:1px solid}
 .cb-bl{bottom:4px;left:4px;border-bottom:1px solid;border-left:1px solid}
 .cb-br{bottom:4px;right:4px;border-bottom:1px solid;border-right:1px solid}
-/* the cold-storage room */
-.pz-stage{position:relative;width:100%;aspect-ratio:5/4;overflow:hidden;
-  background:
-    linear-gradient(180deg,#040202 0 16%, transparent 42%),
-    radial-gradient(120% 90% at 50% 30%, #1a0d0c 0%, #0a0505 64%, #050202 100%)}
+.pz-stage{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 30%, #1a0d0c 0%, #0a0505 64%, #050202 100%)}
+.has-hand .pz-stage{background:radial-gradient(120% 95% at 50% 62%, #0c0606, #040202 72%)}
 .pz-stage.recoil{animation:recoil .3s}
 @keyframes recoil{0%,100%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-1px)}}
-.pz-wall{position:absolute;left:4%;right:4%;top:32%;height:40%;z-index:0;opacity:.62;
+.pz-wall{position:absolute;left:4%;right:4%;top:32%;height:40%;z-index:0;opacity:.6;
   background:
     repeating-linear-gradient(90deg, rgba(0,0,0,.6) 0 1px, transparent 1px 17px),
     repeating-linear-gradient(0deg, rgba(0,0,0,.6) 0 1px, transparent 1px 17px),
-    repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 2px, transparent 2px 4px),
     linear-gradient(90deg,#7a532c 0%,#9a7240 24%,#7d6a4c 52%,#565656 78%,#3f3f3f 100%);
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
   mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
-.pz-window{position:absolute;left:7%;top:5%;width:20%;height:22%;z-index:0;border:2px solid rgba(124,11,27,.28);border-radius:2px;opacity:.5;
-  background:linear-gradient(180deg, rgba(124,11,27,.06), transparent)}
-.pz-window::after{content:"";position:absolute;inset:0;
-  background:
-    linear-gradient(90deg,transparent 48%,rgba(124,11,27,.2) 49% 51%,transparent 52%),
-    linear-gradient(0deg,transparent 48%,rgba(124,11,27,.2) 49% 51%,transparent 52%)}
-.palm{position:absolute;left:0;right:0;bottom:0;height:26%;z-index:0;
-  background:linear-gradient(0deg,#120a08 0 38%,transparent);filter:blur(2px)}
-.pz-btn{position:absolute;top:15%;left:24%;right:24%;z-index:1;line-height:0;cursor:pointer;
+.pz-window{position:absolute;left:7%;top:5%;width:20%;height:22%;z-index:0;border:2px solid rgba(124,11,27,.28);border-radius:2px;opacity:.5}
+.palm{position:absolute;left:0;right:0;bottom:0;height:26%;z-index:0;background:linear-gradient(0deg,#120a08 0 38%,transparent);filter:blur(2px)}
+.has-hand .pz-wall,.has-hand .pz-window,.has-hand .palm{display:none}
+.pz-btn{position:absolute;top:13%;left:24%;right:24%;z-index:2;line-height:0;pointer-events:none;
   filter:drop-shadow(0 10px 24px rgba(0,0,0,.6));transition:filter .4s var(--ease)}
 .pz-btn img{width:100%;height:auto;display:block}
 .pz-stage.free .pz-btn{filter:drop-shadow(0 0 26px rgba(209,20,48,.65));animation:pzFloat 2.4s ease-in-out infinite alternate}
 @keyframes pzFloat{from{transform:translateY(-3px)}to{transform:translateY(3px)}}
-.pz-btn.shake{animation:pzShake .4s}
-@keyframes pzShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-/* bloody severed fingers */
-.fpos{position:absolute;bottom:0;width:clamp(28px,9.5vw,46px);z-index:2;transform-origin:bottom center}
+.pz-hand{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;z-index:3;
+  mix-blend-mode:screen;pointer-events:none;filter:saturate(1.1) contrast(1.05)}
+.has-hand .fpos{display:none}
+.fpos{position:absolute;bottom:0;width:clamp(26px,8.5vw,42px);z-index:3;transform-origin:bottom center}
 .f0{left:6%;height:40%;transform:rotate(-16deg)}
 .f1{left:27%;height:78%}
 .f2{left:46%;height:90%}
@@ -729,38 +812,68 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .f0 .finger{border-radius:46% 54% 5px 5px / 34% 30% 5px 5px}
 .f4 .finger{border-radius:54% 46% 5px 5px / 30% 34% 5px 5px}
 .f0::after{content:"";position:absolute;top:-3%;right:-46%;width:62%;height:30%;border-radius:0 70% 70% 0;
-  background:linear-gradient(90deg,#d8b196,#a9785c);transform:rotate(10deg);
-  box-shadow:inset 0 0 0 2px rgba(40,15,10,.4), inset -2px 0 4px rgba(0,0,0,.3)}
-.f0::before{content:"";position:absolute;top:-6%;right:-50%;width:30%;height:18%;border-radius:50%;z-index:1;
-  background:radial-gradient(circle at 40% 40%,#d11430,#7c0b1b 75%)}
+  background:linear-gradient(90deg,#d8b196,#a9785c);transform:rotate(10deg);box-shadow:inset 0 0 0 2px rgba(40,15,10,.4), inset -2px 0 4px rgba(0,0,0,.3)}
+.f0::before{content:"";position:absolute;top:-6%;right:-50%;width:30%;height:18%;border-radius:50%;z-index:1;background:radial-gradient(circle at 40% 40%,#d11430,#7c0b1b 75%)}
 .f4::after{content:"";position:absolute;top:6%;left:-44%;width:58%;height:30%;border-radius:70% 0 0 70%;
-  background:linear-gradient(270deg,#d8b196,#a9785c);transform:rotate(-12deg);
-  box-shadow:inset 0 0 0 2px rgba(40,15,10,.4), inset 2px 0 4px rgba(0,0,0,.3)}
-.f4::before{content:"";position:absolute;top:2%;left:-46%;width:28%;height:18%;border-radius:50%;z-index:1;
-  background:radial-gradient(circle at 60% 40%,#d11430,#7c0b1b 75%)}
+  background:linear-gradient(270deg,#d8b196,#a9785c);transform:rotate(-12deg);box-shadow:inset 0 0 0 2px rgba(40,15,10,.4), inset 2px 0 4px rgba(0,0,0,.3)}
+.f4::before{content:"";position:absolute;top:2%;left:-46%;width:28%;height:18%;border-radius:50%;z-index:1;background:radial-gradient(circle at 60% 40%,#d11430,#7c0b1b 75%)}
 .pz-stage.twitch .finger:not(.out):not(.crack){animation:twitch .2s}
 @keyframes twitch{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-/* lock integrity readout */
-.integ{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:12px}
-.integ-k{font-family:var(--f-mono);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bone-faint)}
-.pz-grip{display:flex;gap:5px}
-.gi{width:14px;height:8px;border-radius:2px;background:rgba(239,230,221,.14);transition:background .3s var(--ease),box-shadow .3s var(--ease)}
-.gi.on{background:var(--blood-bright);box-shadow:0 0 8px var(--blood-bright)}
-/* terminal output */
-.term{display:flex;gap:8px;align-items:flex-start;text-align:left;margin-top:14px;min-height:1.3em}
+
+/* auth progress meter */
+.auth-meter{display:flex;align-items:center;gap:10px;margin-top:12px}
+.am-k{font-family:var(--f-mono);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bone-faint);white-space:nowrap}
+.am-bar{flex:1;height:6px;border-radius:3px;background:rgba(239,230,221,.1);overflow:hidden;border:1px solid var(--edge)}
+.am-bar i{display:block;height:100%;width:0%;border-radius:3px;
+  background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright));box-shadow:0 0 10px rgba(255,39,71,.5);transition:width .35s var(--ease)}
+.am-pct{font-family:var(--f-mono);font-size:.56rem;color:var(--blood-bright);font-variant-numeric:tabular-nums;width:3ch;text-align:right}
+
+/* system readout */
+.term{display:flex;gap:8px;align-items:flex-start;text-align:left;margin-top:13px;min-height:2.4em}
 .pz-prompt{font-family:var(--f-mono);font-weight:700;color:var(--cyan);line-height:1.5}
-.pz-msg{font-family:var(--f-mono);font-size:.8rem;line-height:1.5;color:var(--bone);letter-spacing:.01em}
-.pz-sub{margin-top:7px;min-height:1em;text-align:center;
-  font-family:var(--f-mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-faint)}
+.pz-msg{font-family:var(--f-mono);font-size:.74rem;line-height:1.5;color:var(--bone);letter-spacing:.01em}
+.pz-sub{margin-top:6px;min-height:1em;text-align:center;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-faint)}
 .pz-sub:not(:empty)::before{content:"// ";color:var(--blood-bright)}
-/* scoped life — only while the terminal is open */
-#puzzle.show .con-dot{animation:conPulse 1.4s ease-in-out infinite}
-#puzzle.show .con-rec i,#puzzle.show .recdot{animation:conPulse 1s steps(1) infinite}
-#puzzle.show .con-cursor{animation:blink 1s steps(1) infinite}
-#puzzle.show .feed-scan{animation:scanY 3.4s linear infinite}
+
+/* the AUTHENTICATE button — the grip is the credential; this is the submit */
+.pz-auth{position:relative;appearance:none;cursor:pointer;width:100%;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.18em;border-radius:6px;padding:13px 16px;
+  border:1px solid rgba(239,230,221,.16);background:rgba(255,255,255,.03);color:var(--bone-faint);transition:var(--dur-1) var(--ease)}
+.pz-auth .pa-glyph{font-size:.8rem;line-height:1;opacity:.7}
+.pz-auth .pa-lbl{font-size:.72rem;font-weight:700}
+.pz-auth .pa-state{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:.46rem;letter-spacing:.12em;color:var(--bone-faint);opacity:.8}
+.pz-auth.locked{cursor:not-allowed}
+.pz-auth.locked .pa-state::before{content:"⊘ ";color:var(--blood-bright)}
+.pz-auth.ready{border-color:rgba(255,122,26,.5);color:var(--ember-soft);background:rgba(255,122,26,.07)}
+.pz-auth.ready:hover{border-color:var(--ember);box-shadow:0 0 22px -8px var(--ember);transform:translateY(-1px)}
+.pz-auth.cleared{border-color:var(--blood-bright);color:var(--bone);background:linear-gradient(180deg,rgba(209,20,48,.22),rgba(124,11,27,.16));
+  box-shadow:0 0 26px -8px var(--blood-bright),inset 0 0 0 1px rgba(255,39,71,.3)}
+.pz-auth.cleared:hover{background:linear-gradient(180deg,rgba(255,39,71,.3),rgba(209,20,48,.2));transform:translateY(-1px)}
+.pz-auth.cleared .pa-glyph{animation:conPulse 1.2s ease-in-out infinite}
+.pz-auth.busy{color:var(--cyan-soft);border-color:rgba(52,227,214,.4);cursor:default}
+.pz-auth.busy .pa-state{display:none}
+.pz-auth.shake{animation:pzShake .4s}
+@keyframes pzShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+
+/* inline error banner */
+.con-err{position:absolute;left:14px;right:14px;top:8px;z-index:9;display:flex;align-items:center;gap:8px;
+  font-family:var(--f-mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:#ffd2d8;
+  background:rgba(124,11,27,.92);border:1px solid var(--blood-bright);border-radius:5px;padding:7px 10px;
+  box-shadow:0 10px 26px -12px rgba(0,0,0,.8);
+  opacity:0;transform:translateY(-8px);transition:opacity .3s var(--ease),transform .3s var(--ease);pointer-events:none}
+.con-err::before{content:"✕";color:#fff;font-weight:700}
+.con-err.show{opacity:1;transform:none}
+
+/* footer strip */
+.con-foot{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  padding:8px 14px;border-top:1px solid rgba(52,227,214,.12);
+  font-family:var(--f-mono);font-size:.46rem;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-faint)}
+.con-foot b{color:var(--cyan-soft);font-weight:700}
+
+#puzzle.show .con-bar .con-dot{animation:conPulse 1.4s ease-in-out infinite}
+#puzzle.show .con-bar .con-rec i,#puzzle.show .recdot{animation:conPulse 1s steps(1) infinite}
 @keyframes conPulse{0%,100%{opacity:.3}50%{opacity:1}}
 @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
-@keyframes scanY{0%{transform:translateY(-100%)}100%{transform:translateY(333%)}}
 
 /* ============ FOOTER ============ */
 .foot{position:relative;z-index:1;padding:clamp(28px,5vw,46px) clamp(18px,5vw,46px) clamp(20px,3vw,28px);
@@ -817,12 +930,11 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 
 <div class="scroll-progress" id="progress"></div>
 
-<!-- ============ LORE METER ============ -->
+<!-- ============ CASE FILE ============ -->
 <div class="lore" id="lore" aria-hidden="true">
-  <span class="lore-gem"></span>
-  <span class="lore-gem"></span>
-  <span class="lore-gem"></span>
-  <span class="lore-count" id="loreCount">0/3</span>
+  <span class="lore-tag">case file</span>
+  <span class="lore-pips"><i></i><i></i><i></i><i></i></span>
+  <span class="lore-count" id="loreCount">0/4</span>
 </div>
 <div class="lore-toast" id="loreToast" aria-hidden="true"></div>
 
@@ -851,11 +963,12 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
       <div class="treeline"></div>
       <div class="embers" id="embers"></div>
       <div class="vignette"></div>
+      <div class="hero-flame" aria-hidden="true"><span class="ft t1"></span><span class="ft t2"></span><span class="ft t3"></span></div>
     </div>
 
     <div class="hero-inner">
       <div class="hero-bottom">
-        <h1 class="wordmark">Nilouverse<span class="wm-sub">M U S I C</span></h1>
+        <h1 class="wordmark">Nilouverse<span class="wm-sub">M U S I C</span><span class="wm-charge" aria-hidden="true"></span></h1>
         <nav class="socials" aria-label="Social links">
           <a class="ig-am" href="https://audiomack.com/nilouversemusic" target="_blank" rel="noopener" aria-label="Audiomack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></a>
           <a class="ig-yt" href="https://youtube.com/@nilouverse_music" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2 15 12l-5 2.8z" fill="currentColor" stroke="none"/></svg></a>
@@ -1025,7 +1138,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
       <div class="contact-head">
         <div class="seal" id="seal" aria-hidden="true">
           <span class="seal-img" id="sealImg"></span>
-          <span class="wax"></span>
         </div>
         <p class="eyebrow"><span class="ln"></span>the line is open</p>
         <h3>say something.</h3>
@@ -1077,43 +1189,76 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
   </div>
 </footer>
 
-<!-- ============ GRIP PUZZLE ============ -->
+<!-- ============ GRIP PUZZLE — restricted admin console ============ -->
 <div id="puzzle" aria-hidden="true">
   <div class="console">
-    <button class="pz-close" id="pzClose" type="button" aria-label="close terminal">✕</button>
+    <span class="crt" aria-hidden="true"></span>
+    <button class="pz-close" id="pzClose" type="button" aria-label="close console">✕</button>
+
     <div class="con-bar">
       <span class="con-dot"></span>
-      <span class="con-title">NIL//SECURE_TERMINAL</span>
-      <span class="con-rec"><i></i>LIVE</span>
+      <span class="con-title"><b>NIL//SEC</b> · secure_console</span>
+      <span class="con-rec"><i></i>REC</span>
+      <span class="con-clock" id="pzClock">link 00:00</span>
     </div>
-    <div class="con-stripe" aria-hidden="true"></div>
-    <div class="con-meta"><span>access: <b>UNAUTHORISED</b></span><span>session 0xDEAD</span><span class="con-cursor">_</span></div>
+
+    <div class="con-hazard" aria-hidden="true"><span>restricted</span><span class="hz-gap">/</span><span>eyes only</span><span class="hz-gap">/</span><span>nil-sec</span><span class="hz-gap">/</span><span>restricted</span><span class="hz-gap">/</span><span>eyes only</span></div>
+
     <div class="con-body">
-      <span class="stamp" id="pzKicker">the grasp of the dead</span>
-      <div class="feed">
-        <span class="feed-tag tl">FEED_03 // COLD_STORAGE</span>
-        <span class="feed-tag tr"><span class="recdot"></span>REC 03:17:42</span>
-        <span class="feed-tag bl">SIGNAL: DEGRADED</span>
-        <span class="feed-scan" aria-hidden="true"></span>
-        <span class="cb cb-tl"></span><span class="cb cb-tr"></span><span class="cb cb-bl"></span><span class="cb cb-br"></span>
-        <div class="pz-stage" id="pzStage">
-          <span class="pz-window" aria-hidden="true"></span>
-          <span class="pz-wall" aria-hidden="true"></span>
-          <span class="palm" aria-hidden="true"></span>
-          <a class="pz-btn" id="pzBtn" href="#" aria-label="the key">
-            <img src="art/button.png" alt="" draggable="false">
-          </a>
-          <span class="fpos f0"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
-          <span class="fpos f1"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
-          <span class="fpos f2"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
-          <span class="fpos f3"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
-          <span class="fpos f4"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+      <aside class="con-id">
+        <div class="id-seal"><span class="id-diamond"></span><span class="id-name">NIL//SEC<small>secure systems</small></span></div>
+        <div class="id-class">clearance level — unverified</div>
+        <ul class="id-status">
+          <li><span>node</span><b>cold_storage_03</b></li>
+          <li><span>uplink</span><b class="warn">degraded</b></li>
+          <li><span>clearance</span><b class="redact">████████</b></li>
+          <li><span>method</span><b>physical_override</b></li>
+          <li><span>operator</span><b id="idOp" class="denied">unauthenticated</b></li>
+        </ul>
+        <div class="boot" id="pzBoot" aria-hidden="true"></div>
+      </aside>
+
+      <div class="con-auth">
+        <div class="con-err" id="pzErr" aria-hidden="true"></div>
+        <div class="auth-head"><span class="auth-k">authentication</span><span class="auth-mode">legacy creds disabled</span></div>
+        <div class="ghost-row" aria-hidden="true">
+          <div class="ghost-field"><span class="gf-l">username</span><span class="gf-v">operator</span><span class="gf-tag">deprecated</span></div>
+          <div class="ghost-field"><span class="gf-l">password</span><span class="gf-v">••••••••</span><span class="gf-tag">deprecated</span></div>
         </div>
+
+        <div class="feed" id="pzFeed">
+          <span class="feed-tag tl" id="pzSensorTag">grip_sensor // engaged</span>
+          <span class="feed-tag tr"><span class="recdot"></span>REC 03:17</span>
+          <span class="feed-tag bl">signal: degraded</span>
+          <span class="feed-scan" aria-hidden="true"></span>
+          <span class="cb cb-tl"></span><span class="cb cb-tr"></span><span class="cb cb-bl"></span><span class="cb cb-br"></span>
+          <div class="pz-stage" id="pzStage">
+            <span class="pz-window" aria-hidden="true"></span>
+            <span class="pz-wall" aria-hidden="true"></span>
+            <span class="palm" aria-hidden="true"></span>
+            <a class="pz-btn" id="pzBtn" aria-label="the key"><img src="art/button.png" alt="" draggable="false"></a>
+            <img class="pz-hand" id="pzHand" src="art/grip.png" alt="" draggable="false"
+              onload="document.getElementById('pzStage').classList.add('has-hand')" onerror="this.style.display='none'">
+            <span class="fpos f0"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+            <span class="fpos f1"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+            <span class="fpos f2"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+            <span class="fpos f3"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+            <span class="fpos f4"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+          </div>
+        </div>
+
+        <div class="auth-meter"><span class="am-k">auth progress</span><div class="am-bar"><i id="amFill"></i></div><span class="am-pct" id="amPct">0%</span></div>
+
+        <div class="term"><span class="pz-prompt">&gt;</span><span class="pz-msg" id="pzMsg"></span></div>
+        <p class="pz-sub" id="pzSub"></p>
+
+        <button class="pz-auth locked" id="pzAuth" type="button">
+          <span class="pa-glyph">▸</span><span class="pa-lbl" id="paLbl">authenticate</span><span class="pa-state" id="paState">awaiting credential</span>
+        </button>
       </div>
-      <div class="integ"><span class="integ-k">lock integrity</span><span class="pz-grip" id="pzGrip" aria-hidden="true"><span class="gi on"></span><span class="gi on"></span><span class="gi on"></span><span class="gi on"></span><span class="gi on"></span></span></div>
-      <div class="term"><span class="pz-prompt">&gt;</span><span class="pz-msg" id="pzMsg"></span></div>
-      <p class="pz-sub" id="pzSub"></p>
     </div>
+
+    <div class="con-foot"><span>© nil-sec systems · unauthorised access is logged</span><span>build <b>3.1.7-cold</b></span></div>
   </div>
 </div>
 
@@ -1130,22 +1275,23 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
   };
 })();
 
-/* ============ LORE PROGRESS ============ */
-/* persisted per browser via localStorage; there is no server-side profile.
-   the meter stays hidden until the first secret is found. */
+/* ============ LORE / CASE FILE ============ */
+/* four secrets, persisted per browser via localStorage; the bar stays hidden until the first is found.
+   a discovered secret throws a diamond from its source into the case file. */
 (function(){
   var KEY='nv_lore_v1';
-  var SECRETS=['deluxe','whisper','puzzle'];
+  var SECRETS=['whisper','grasp','wordmark','shake'];
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var set=new Set();
   try{(JSON.parse(localStorage.getItem(KEY))||[]).forEach(function(id){ if(SECRETS.indexOf(id)>=0) set.add(id); });}catch(e){}
-  var gems=document.querySelectorAll('.lore-gem');
+  var pips=document.querySelectorAll('.lore-pips i');
   var count=document.getElementById('loreCount');
   var loreEl=document.getElementById('lore');
   var toast=document.getElementById('loreToast');
   var tT;
   function save(){ try{ localStorage.setItem(KEY,JSON.stringify(Array.from(set))); }catch(e){} }
   function render(){
-    gems.forEach(function(g,i){ g.classList.toggle('filled', set.has(SECRETS[i])); });
+    pips.forEach(function(g,i){ g.classList.toggle('filled', set.has(SECRETS[i])); });
     if(count) count.textContent=set.size+'/'+SECRETS.length;
     if(loreEl) loreEl.classList.toggle('show', set.size>0);
   }
@@ -1155,15 +1301,28 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     clearTimeout(tT); tT=setTimeout(function(){ toast.classList.remove('show'); },3200);
   }
   function complete(){ return set.size>=SECRETS.length; }
-  function mark(id){
+  function flyGem(fromEl){
+    if(reduce||!fromEl||!loreEl) return;
+    var a=fromEl.getBoundingClientRect(), b=loreEl.getBoundingClientRect();
+    var g=document.createElement('span'); g.className='lore-fly';
+    g.style.left=(a.left+a.width/2)+'px'; g.style.top=(a.top+a.height/2)+'px';
+    document.body.appendChild(g);
+    var dx=(b.left+b.width/2)-(a.left+a.width/2), dy=(b.top+b.height/2)-(a.top+a.height/2);
+    requestAnimationFrame(function(){requestAnimationFrame(function(){
+      g.style.transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) rotate(45deg) scale(.35)';
+      g.style.opacity='0';
+    });});
+    setTimeout(function(){ if(g.parentNode) g.parentNode.removeChild(g); },950);
+  }
+  function mark(id, fromEl){
     if(SECRETS.indexOf(id)<0 || set.has(id)) return;
     var was=set.size;
-    set.add(id); save(); render();
-    if(was===0) toastMsg('you found one. there are three †');
-    if(complete()){ if(loreEl) loreEl.classList.add('done'); toastMsg('every corner turned. the door\'s open, keeper †'); if(window.__loreComplete) window.__loreComplete(); }
+    set.add(id); save(); render(); flyGem(fromEl);
+    if(was===0) toastMsg('you found one. there are four †');
+    if(complete()){ loreEl.classList.add('done'); toastMsg('every corner turned. the door\'s open, keeper †'); if(window.__loreComplete) window.__loreComplete(); }
   }
   render();
-  window.__lore={ mark:mark, has:function(id){ return set.has(id); }, isComplete:complete };
+  window.__lore={ mark:mark, has:function(id){ return set.has(id); }, isComplete:complete, count:function(){ return set.size; } };
 })();
 
 /* ============ PRELOADER ============ */
@@ -1190,9 +1349,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 
   var imgs=[
     {src:'art/hero.jpg',done:false},
-    {src:'art/cdown.jpg',done:false},
-    {src:'art/contact.svg',done:false},
-    {src:'art/contact-open.svg',done:false}
+    {src:'art/cdown.jpg',done:false}
   ];
   var imgTotal=imgs.length, imgDone=0;
   function imgTick(){ imgDone++; update(); }
@@ -1400,6 +1557,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 })();
 
 /* ============ DELUXE TRIGGER ============ */
+/* the sealed-case tease; deliberately not counted among the secrets */
 (function(){
   var stack=document.getElementById('dlxStack'),
       inner=document.querySelector('.deluxe-inner'),
@@ -1410,14 +1568,14 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     n++;
     inner.classList.remove('shaking');void inner.offsetWidth;inner.classList.add('shaking');
     setTimeout(function(){inner.classList.remove('shaking');},720);
-    if(n>=3){ n=0; egg.classList.add('show'); clearTimeout(t); t=setTimeout(function(){egg.classList.remove('show');},3600); if(window.__lore) window.__lore.mark('deluxe'); }
+    if(n>=3){ n=0; egg.classList.add('show'); clearTimeout(t); t=setTimeout(function(){egg.classList.remove('show');},3600); }
   }
   stack.addEventListener('click',hit);
   stack.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); hit(); } });
 })();
 
 /* ============ FOOTER TRIGGER ============ */
-/* tap cycles whispers; six rapid taps open the grip terminal */
+/* one tap = a whisper (secret 1); six rapid taps = the backdoor console (secret 2) */
 (function(){
   var fm=document.getElementById('footMark'),
       fw=document.getElementById('footWhisper'),wi=0;
@@ -1425,149 +1583,264 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
   if(!fm||!fw) return;
   var taps=[];
   fm.addEventListener('click',function(){
-    if(window.__lore) window.__lore.mark('whisper');
+    if(window.__lore) window.__lore.mark('whisper', fm);
     fw.textContent=whispers[wi%whispers.length]; wi++;
     fw.classList.add('show');
     clearTimeout(fw._t); fw._t=setTimeout(function(){fw.classList.remove('show');},2600);
     var now=Date.now();
     taps.push(now); taps=taps.filter(function(x){ return now-x<1400; });
-    if(taps.length>=6){ taps=[]; if(window.__openPuzzle) window.__openPuzzle(true); }
+    if(taps.length>=6){ taps=[]; if(window.__lore) window.__lore.mark('grasp', fm); if(window.__openPuzzle) window.__openPuzzle(true); }
   });
 })();
 
-/* ============ GRIP PUZZLE ============ */
-/* free every finger to loosen the key; the last one is a keeper that must be cracked then killed.
-   the dead claw freed fingers back, but a mercy cap guarantees it always ends.
-   the terminal closes ONLY via the ✕ — no backdrop or Escape, so it can't be lost by accident. */
+/* ============ WORDMARK HOLD ============ */
+/* hold the logo to ignite the base of the hero (secret 3); a charge bar gives feedback,
+   releasing early cancels. the burst is time-limited and settles to a static glow. */
+(function(){
+  var wm=document.querySelector('.wordmark'); if(!wm) return;
+  var charge=wm.querySelector('.wm-charge');
+  var charging=false, done=false;
+  function cancel(){ if(!charging) return; charging=false; wm.classList.remove('charging'); }
+  function ignite(){
+    if(done) return; done=true; charging=false;
+    wm.classList.remove('charging');
+    var hero=document.querySelector('.hero');
+    if(hero){ hero.classList.add('ignited'); setTimeout(function(){ hero.classList.add('settled'); },3800); }
+    if(window.__lore) window.__lore.mark('wordmark', wm);
+  }
+  if(charge) charge.addEventListener('animationend',ignite);
+  wm.addEventListener('pointerdown',function(e){ if(done) return; e.preventDefault(); charging=true; wm.classList.add('charging'); });
+  wm.addEventListener('pointerup',cancel);
+  wm.addEventListener('pointercancel',cancel);
+  wm.addEventListener('pointerleave',cancel);
+  wm.addEventListener('contextmenu',function(e){ e.preventDefault(); });
+})();
+
+/* ============ DEVICE SHAKE ============ */
+/* shaking the phone over the featured track logs secret 4; iOS arms on first tap (permission). */
+(function(){
+  var feat=document.querySelector('.feat');
+  var featMedia=document.querySelector('.feat-media');
+  var featVisible=false;
+  if(feat && 'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ featVisible=es[0].isIntersecting; },{threshold:.3});
+    io.observe(feat);
+  } else { featVisible=true; }
+  if(!window.DeviceMotionEvent) return;
+  var attached=false, last=null, lastShake=0, hits=0, hitT=0, COOLDOWN=3500;
+  function onMotion(e){
+    var a=e.accelerationIncludingGravity; if(!a||a.x==null) return;
+    if(last){
+      var dx=a.x-last.x, dy=a.y-last.y, dz=a.z-last.z;
+      var mag=Math.sqrt(dx*dx+dy*dy+dz*dz);
+      var now=Date.now();
+      if(mag>16){ if(now-hitT>700) hits=0; hits++; hitT=now; }
+      if(hits>=2 && now-lastShake>COOLDOWN && featVisible && window.__lore && !window.__lore.has('shake')){
+        lastShake=now; hits=0;
+        if(feat){ feat.classList.remove('shook'); void feat.offsetWidth; feat.classList.add('shook'); setTimeout(function(){feat.classList.remove('shook');},650); }
+        window.__lore.mark('shake', featMedia||feat);
+      }
+    }
+    last={x:a.x,y:a.y,z:a.z};
+  }
+  function attach(){ if(attached) return; attached=true; addEventListener('devicemotion',onMotion,{passive:true}); }
+  if(typeof DeviceMotionEvent.requestPermission!=='function'){ attach(); }
+  else {
+    document.addEventListener('pointerdown',function req(){
+      document.removeEventListener('pointerdown',req);
+      try{ DeviceMotionEvent.requestPermission().then(function(r){ if(r==='granted') attach(); }).catch(function(){}); }catch(e){}
+    },{once:true});
+  }
+})();
+
+/* ============ GRIP PUZZLE — restricted admin console ============ */
+/* the grip is the credential; the AUTHENTICATE button is the submit. a freed finger that the dead
+   claw back reads as a rejected credential. the console closes ONLY via the ✕. the boot log is typed
+   once and the session clock ticks only while open — both are cancelled the instant it closes. */
 (function(){
   var ov=document.getElementById('puzzle'); if(!ov) return;
   var stage=document.getElementById('pzStage');
-  var btn=document.getElementById('pzBtn');
   var msg=document.getElementById('pzMsg');
   var sub=document.getElementById('pzSub');
-  var kicker=document.getElementById('pzKicker');
+  var feed=document.getElementById('pzFeed');
+  var sensorTag=document.getElementById('pzSensorTag');
+  var amFill=document.getElementById('amFill');
+  var amPct=document.getElementById('amPct');
+  var idOp=document.getElementById('idOp');
+  var bootEl=document.getElementById('pzBoot');
+  var clockEl=document.getElementById('pzClock');
+  var errEl=document.getElementById('pzErr');
+  var authBtn=document.getElementById('pzAuth');
+  var paLbl=document.getElementById('paLbl');
+  var paState=document.getElementById('paState');
   var closeBtn=document.getElementById('pzClose');
-  var gi=Array.prototype.slice.call(document.querySelectorAll('#pzGrip .gi'));
   var fingers=Array.prototype.slice.call(ov.querySelectorAll('.finger'));
   var state=fingers.map(function(){return 'grip';});
-  var freed=false;
+  var freed=false, busy=false;
   var clawbacks=0, mercyShown=false, firstFreeDone=false;
-  var MERCY=4;
+  var MERCY=4, gen=0, clock=null, clockStart=0, errT=null;
   var SECRET='bd289'+'kouw.html';
 
-  var REVEAL=["shit — you found the backdoor †","the backdoor's guarded by the dead †","you found the backdoor — now take it from cold hands †"];
-  var FREE=["one lets go…","a finger uncurls.","cold flesh — but it yields.","the grip loosens.","you feel it tire."];
-  var KEEPER_SOON=["last one. and it's angry.","one left — the keeper.","the dead hold their breath."];
-  var KEEPER_CRACK=["it cracks — again, harder.","the bone gives. hit it once more.","nearly. don't you stop."];
-  var KEEPER_FREE=["the keeper falls †","pried from cold fingers. respect †","the last one lets go †"];
-  var REGRIP=["nope — it clawed back.","the dead don't let go easy.","it reaches back. keep going.","cold fingers, stubborn grip."];
-  var MERCY_LINE="even the dead grow tired †";
-  var WIN=["the key is yours †","dragged from the grasp of the dead †","loose. the door remembers you †"];
-  var WIN_REST=["the key is yours †","dragged from cold fingers †","loose — and the door remembers you †"];
-  var GATE="the key's loose — but the door's still shut. find the rest, you're close †";
-  var GATE_SUB="every hidden corner, then come back";
-  var COMPLETE_SUB="this opens the secret page — click it →";
-  var INSTR="tap the fingers — free the key. the dead resists to Let It Go †";
+  var INSTR_SYS="physical_override engaged — extract the key";
+  var INSTR_FLV="the dead resists to Let It Go †";
+  var REVEAL_SYS=["breach logged — you found the backdoor †","the backdoor's guarded by the dead †","backdoor open — take it from cold hands †"];
+  var REVEAL_FLV=INSTR_FLV;
+  var SYS_FREE=["credential fragment logged — %/5","partial match held — %/5","the lock reads you — %/5","fragment verified — %/5","byte accepted — %/5"];
+  var FLV_FREE=["one lets go…","cold flesh — but it yields.","the grip loosens.","you feel it tire.","a finger uncurls."];
+  var SYS_KSOON=["final fragment guarded — 1 left","last byte protected — locked hard","one of five remains"];
+  var FLV_KSOON=["last one. and it's angry.","the dead hold their breath.","the keeper wakes."];
+  var SYS_KCRACK=["fragment fracturing — strike again","byte corrupting — once more","almost — don't stop"];
+  var FLV_KCRACK=["the bone gives. hit it again.","nearly. don't you stop.","it cracks — harder."];
+  var SYS_KFREE=["credential complete — 5/5","full credential extracted","override accepted"];
+  var FLV_KFREE=["the keeper falls †","pried from cold fingers †","the last one lets go †"];
+  var SYS_REGRIP=["fragment rejected — re-enter","read error — retry","credential slipped — again","the lock fights back"];
+  var FLV_REGRIP=["nope — it clawed back.","the dead don't let go easy.","it reaches back. keep going."];
+  var SYS_MERCY=["sensor stabilising — keep going"];
+  var FLV_MERCY=["even the dead grow tired †"];
+  var WIN_SYS_C=["access granted — channel ready","override accepted — authenticate to enter"];
+  var WIN_FLV_C=["the key is yours †","dragged from the grasp of the dead †"];
+  var WIN_SYS_L=["access granted // clearance low — %a/4","override accepted // %a/4 artifacts"];
+  var WIN_FLV_L=["the door's shut — find the rest †","loose — but the door remembers you †"];
+  var ERR_NOCRED="no credential on file — extract the key first";
+  var ERR_CLEAR="insufficient clearance — %a/4 artifacts recovered";
+  var BUSY="establishing secure channel…";
+  var BOOT=["> boot NIL//OS v3.1.7-cold","> mount /dev/cold_storage ... ok","> handshake 0xDEAD ... ok","> biometric module ... OFFLINE","> legacy creds ... DISABLED","> fallback ... PHYSICAL_OVERRIDE","> awaiting operator ..."];
 
-  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
-  function freedIdx(){ var a=[]; state.forEach(function(s,i){ if(s==='out') a.push(i); }); return a; }
-  function applyVisual(i){ fingers[i].classList.toggle('out', state[i]==='out'); fingers[i].classList.toggle('crack', state[i]==='crack'); }
-  function updateGrip(){ gi.forEach(function(g,i){ g.classList.toggle('on', state[i]!=='out'); }); }
-  function setMsg(t,err){ if(msg){ msg.textContent=t; msg.classList.toggle('err',!!err); } }
-  function setSub(t){ if(sub) sub.textContent=t||''; }
-  function twitch(){ stage.classList.remove('twitch'); void stage.offsetWidth; stage.classList.add('twitch'); setTimeout(function(){ stage.classList.remove('twitch'); },220); }
-  function recoil(){ stage.classList.remove('recoil'); void stage.offsetWidth; stage.classList.add('recoil'); }
-  function lockScroll(){ document.body.style.overflow='hidden'; if(window.__lenis) window.__lenis.stop(); }
-  function unlockScroll(){ document.body.style.overflow=''; if(window.__lenis) window.__lenis.start(); }
-
+  function pick(a){return a[Math.floor(Math.random()*a.length)];}
+  function fmt(s,n,a){return String(s).replace('%',n).replace('%a',a);}
+  function loreN(){return window.__lore&&window.__lore.count?window.__lore.count():0;}
+  function loreDone(){return !!(window.__lore&&window.__lore.isComplete());}
+  function freedN(){var n=0;state.forEach(function(s){if(s==='out')n++;});return n;}
+  function applyVisual(i){fingers[i].classList.toggle('out',state[i]==='out');fingers[i].classList.toggle('crack',state[i]==='crack');}
+  function syncAuth(){
+    var n=freedN(),pct=Math.round(n/5*100),ex=n===5;
+    if(amFill)amFill.style.width=pct+'%';
+    if(amPct)amPct.textContent=pct+'%';
+    if(sensorTag)sensorTag.textContent=ex?'grip_sensor // extracted':'grip_sensor // engaged';
+    if(feed)feed.classList.toggle('extracted',ex);
+  }
+  function setReadout(s,f){if(msg)msg.textContent=s;if(sub)sub.textContent=f||'';}
+  function twitch(){stage.classList.remove('twitch');void stage.offsetWidth;stage.classList.add('twitch');setTimeout(function(){stage.classList.remove('twitch');},220);}
+  function recoil(){stage.classList.remove('recoil');void stage.offsetWidth;stage.classList.add('recoil');}
+  function lockScroll(){document.body.style.overflow='hidden';if(window.__lenis)window.__lenis.stop();}
+  function unlockScroll(){document.body.style.overflow='';if(window.__lenis)window.__lenis.start();}
+  function setAuthState(mode){
+    authBtn.classList.remove('locked','ready','cleared','busy');authBtn.classList.add(mode);
+    if(mode==='locked')paState.textContent='awaiting credential';
+    else if(mode==='ready')paState.textContent='clearance: low';
+    else if(mode==='cleared')paState.textContent='channel ready';
+  }
+  function panelErr(text){
+    if(!errEl)return;
+    errEl.textContent=text;errEl.classList.add('show');
+    clearTimeout(errT);var g=gen;errT=setTimeout(function(){if(g===gen)errEl.classList.remove('show');},2800);
+  }
   function regrip(){
-    if(clawbacks>=MERCY) return false;
-    var fr=freedIdx(); if(!fr.length) return false;
+    if(clawbacks>=MERCY)return false;
+    var fr=[];state.forEach(function(s,i){if(s==='out')fr.push(i);});if(!fr.length)return false;
     var i=fr[Math.floor(Math.random()*fr.length)];
-    state[i]='grip'; applyVisual(i); updateGrip(); clawbacks++;
-    fingers[i].classList.add('claw'); setTimeout(function(){ fingers[i].classList.remove('claw'); },420);
-    recoil();
-    return true;
+    state[i]='grip';applyVisual(i);syncAuth();clawbacks++;
+    fingers[i].classList.add('claw');setTimeout(function(){fingers[i].classList.remove('claw');},420);
+    recoil();return true;
   }
-  function decideFight(baseLine, chance){
-    var want = chance>0 && Math.random()<chance;
-    if(!want) return baseLine;
-    if(clawbacks>=MERCY){ if(!mercyShown){ mercyShown=true; return MERCY_LINE; } return baseLine; }
-    if(regrip()) return pick(REGRIP);
-    return baseLine;
+  function fight(baseSys,baseFlv,chance,n){
+    var want=chance>0&&Math.random()<chance;
+    if(!want)return {s:fmt(baseSys,n,loreN()),f:baseFlv};
+    if(clawbacks>=MERCY){if(!mercyShown){mercyShown=true;return {s:pick(SYS_MERCY),f:pick(FLV_MERCY)};}return {s:fmt(baseSys,n,loreN()),f:baseFlv};}
+    if(regrip())return {s:pick(SYS_REGRIP),f:pick(FLV_REGRIP)};
+    return {s:fmt(baseSys,n,loreN()),f:baseFlv};
   }
-  function onFree(i, isKeeperKill){
-    state[i]='out'; applyVisual(i); updateGrip();
-    if(state.every(function(s){ return s==='out'; })){ win(); return; }
-    var holding=0; state.forEach(function(s){ if(s!=='out') holding++; });
-    var chance = !firstFreeDone ? 0 : (holding>=4?0.25 : holding===3?0.4 : holding===2?0.6 : 0.7);
-    var base = isKeeperKill ? pick(KEEPER_FREE) : (holding===1 ? pick(KEEPER_SOON) : pick(FREE));
-    setMsg(decideFight(base, chance)); setSub('');
-    firstFreeDone=true; twitch();
+  function onFree(i,isKeeperKill){
+    state[i]='out';applyVisual(i);syncAuth();
+    if(state.every(function(s){return s==='out';})){win();return;}
+    var n=freedN(),holding=5-n;
+    var chance=!firstFreeDone?0:(holding>=4?0.25:holding===3?0.4:holding===2?0.6:0.7);
+    var bs,bf;
+    if(isKeeperKill){bs=pick(SYS_KFREE);bf=pick(FLV_KFREE);}
+    else if(holding===1){bs=pick(SYS_KSOON);bf=pick(FLV_KSOON);}
+    else {bs=pick(SYS_FREE);bf=pick(FLV_FREE);}
+    var r=fight(bs,bf,chance,n);
+    setReadout(r.s,r.f);firstFreeDone=true;twitch();
   }
   function win(){
-    freed=true; stage.classList.add('free'); updateGrip();
-    if(window.__lore) window.__lore.mark('puzzle');
-    setMsg(pick(WIN));
-    setSub(window.__lore && window.__lore.isComplete() ? COMPLETE_SUB : GATE_SUB);
-    if(window.__keyWon) window.__keyWon();
+    freed=true;stage.classList.add('free');syncAuth();
+    if(idOp){idOp.textContent='authenticated';idOp.className='granted';}
+    if(window.__winGrasp)window.__winGrasp();
+    if(loreDone()){setReadout(pick(WIN_SYS_C),pick(WIN_FLV_C));setAuthState('cleared');}
+    else {setReadout(fmt(pick(WIN_SYS_L),5,loreN()),pick(WIN_FLV_L));setAuthState('ready');}
   }
   function tap(i){
-    if(state[i]==='out') return;
-    if(state[i]==='crack'){ onFree(i, true); return; }
-    var grip=0; state.forEach(function(s){ if(s==='grip') grip++; });
-    if(grip===1){
-      state[i]='crack'; applyVisual(i); updateGrip();
-      setMsg(decideFight(pick(KEEPER_CRACK), 0.7)); setSub('');
-      twitch();
-      return;
-    }
-    onFree(i, false);
+    if(busy)return;
+    if(state[i]==='out')return;
+    if(state[i]==='crack'){onFree(i,true);return;}
+    var grip=0;state.forEach(function(s){if(s==='grip')grip++;});
+    if(grip===1){state[i]='crack';applyVisual(i);syncAuth();var r=fight(pick(SYS_KCRACK),pick(FLV_KCRACK),0.7,freedN());setReadout(r.s,r.f);twitch();return;}
+    onFree(i,false);
   }
+  /* boot log — typed once; a gen bump on close/reopen cancels any in-flight typing */
+  function typeBoot(){
+    if(!bootEl)return;bootEl.innerHTML='';
+    var g=gen,i=0;
+    function line(){
+      if(g!==gen)return;
+      if(i>=BOOT.length){var c=document.createElement('span');c.className='cur';c.textContent='_';bootEl.appendChild(c);return;}
+      var txt=BOOT[i++],p=document.createElement('div');p.className='boot-line';bootEl.appendChild(p);
+      var j=0;(function ch(){if(g!==gen)return;if(j<=txt.length){p.textContent=txt.slice(0,j);j++;setTimeout(ch,11);}else{setTimeout(line,150);}})();
+    }
+    line();
+  }
+  function startClock(){clockStart=Date.now();tickClock();clock=setInterval(tickClock,1000);}
+  function tickClock(){var s=Math.floor((Date.now()-clockStart)/1000);var mm=String(Math.floor(s/60)).padStart(2,'0');var ss=String(s%60).padStart(2,'0');if(clockEl)clockEl.textContent='link '+mm+':'+ss;}
+  function stopClock(){if(clock){clearInterval(clock);clock=null;}}
+
   function openPuzzle(fromReveal){
-    var won = !!(window.__lore && window.__lore.has('puzzle'));
-    if(won){ freed=true; state=fingers.map(function(){return 'out';}); }
-    else { freed=false; state=fingers.map(function(){return 'grip';}); clawbacks=0; mercyShown=false; firstFreeDone=false; }
-    fingers.forEach(function(f,i){ applyVisual(i); });
-    updateGrip();
-    stage.classList.toggle('free', freed);
-    if(kicker) kicker.textContent = fromReveal ? 'BACKDOOR' : 'THE GRASP';
-    var done = !!(window.__lore && window.__lore.isComplete());
-    if(freed){
-      if(done){ setMsg(pick(WIN_REST)); setSub(COMPLETE_SUB); }
-      else { setMsg(GATE); setSub(GATE_SUB); }
-    } else if(fromReveal){
-      setMsg(pick(REVEAL)); setSub(INSTR);
-    } else {
-      setMsg(INSTR); setSub('');
-    }
-    ov.classList.add('show'); ov.setAttribute('aria-hidden','false'); lockScroll();
+    gen++;busy=false;
+    var won=!!(window.__graspWon&&window.__graspWon());
+    if(won){freed=true;state=fingers.map(function(){return 'out';});}
+    else {freed=false;state=fingers.map(function(){return 'grip';});clawbacks=0;mercyShown=false;firstFreeDone=false;}
+    fingers.forEach(function(f,i){applyVisual(i);});
+    syncAuth();
+    stage.classList.toggle('free',freed);
+    if(idOp){if(freed){idOp.textContent='authenticated';idOp.className='granted';}else{idOp.textContent='unauthenticated';idOp.className='denied';}}
+    if(freed){ if(loreDone()){setReadout(pick(WIN_SYS_C),pick(WIN_FLV_C));setAuthState('cleared');} else {setReadout(fmt(pick(WIN_SYS_L),5,loreN()),pick(WIN_FLV_L));setAuthState('ready');} }
+    else if(fromReveal){setReadout(pick(REVEAL_SYS),REVEAL_FLV);setAuthState('locked');}
+    else {setReadout(INSTR_SYS,INSTR_FLV);setAuthState('locked');}
+    if(paLbl)paLbl.textContent='authenticate';
+    if(errEl)errEl.classList.remove('show');
+    ov.classList.add('show');ov.setAttribute('aria-hidden','false');lockScroll();
+    startClock();typeBoot();
   }
-  function closePuzzle(){ ov.classList.remove('show'); ov.setAttribute('aria-hidden','true'); unlockScroll(); }
+  function closePuzzle(){gen++;stopClock();ov.classList.remove('show');ov.setAttribute('aria-hidden','true');unlockScroll();}
   window.__openPuzzle=openPuzzle;
 
   fingers.forEach(function(f,i){
-    f.addEventListener('click',function(){ tap(i); });
-    f.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); tap(i); } });
+    f.addEventListener('click',function(){tap(i);});
+    f.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tap(i);}});
   });
 
-  if(btn) btn.addEventListener('click',function(e){
-    e.preventDefault();
-    if(!freed){ btn.classList.remove('shake'); void btn.offsetWidth; btn.classList.add('shake'); return; }
-    if(!(window.__lore && window.__lore.isComplete())){ setMsg(GATE, true); setSub(GATE_SUB); return; }
-    window.location.href=SECRET;
+  if(authBtn)authBtn.addEventListener('click',function(){
+    if(busy)return;
+    if(!freed){panelErr(ERR_NOCRED);authBtn.classList.remove('shake');void authBtn.offsetWidth;authBtn.classList.add('shake');return;}
+    if(!loreDone()){panelErr(fmt(ERR_CLEAR,0,loreN()));return;}
+    busy=true;authBtn.classList.remove('locked','ready','cleared');authBtn.classList.add('busy');
+    if(paLbl)paLbl.textContent=BUSY;
+    setTimeout(function(){window.location.href=SECRET;},720);
   });
 
-  if(closeBtn) closeBtn.addEventListener('click',closePuzzle);
+  if(closeBtn)closeBtn.addEventListener('click',closePuzzle);
 })();
 
 /* ============ BRAND KEY (nav trophy) ============ */
-/* the diamond becomes the key once the grip is won; tapping it opens the grip terminal */
+/* the diamond becomes the key once the grip is won; tapping it opens the console */
 (function(){
+  var KEYWON='nv_grasp_won';
   var key=document.getElementById('brandKey');
   var hint=document.getElementById('brandKeyHint');
   if(!key) return;
   var ht;
+  function won(){ try{ return localStorage.getItem(KEYWON)==='1'; }catch(e){ return false; } }
+  function setWon(){ try{ localStorage.setItem(KEYWON,'1'); }catch(e){} }
+  window.__graspWon=won;
   function hintText(){
     if(window.__lore && window.__lore.isComplete()) return "the door is open † tap the key";
     return "you hold the key † but the door's shut — finish the hunt, then tap it";
@@ -1578,12 +1851,12 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     clearTimeout(ht); ht=setTimeout(function(){ hint.classList.remove('show'); }, dur||6000);
   }
   function applyWon(){ document.body.classList.add('key-won'); }
-  window.__keyWon=function(){ applyWon(); showHint(7000); };
+  window.__winGrasp=function(){ setWon(); applyWon(); showHint(7000); };
   window.__loreComplete=function(){ if(document.body.classList.contains('key-won')) showHint(6000); };
   function go(e){ if(e){ e.preventDefault(); e.stopPropagation(); } if(window.__openPuzzle) window.__openPuzzle(false); }
   key.addEventListener('click',go);
   key.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
-  if(window.__lore && window.__lore.has('puzzle')){ applyWon(); showHint(4000); }
+  if(won()) applyWon();
 })();
 
 /* ============ CONTACT FORM ============ */
@@ -1597,7 +1870,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
       btn=document.getElementById('cBtn'),
       lbl=btn?btn.querySelector('.lbl'):null,
       status=document.getElementById('cStatus'),
-      seal=document.getElementById('seal'),
       sealImg=document.getElementById('sealImg');
   if(!form||!email||!msg||!btn||!status) return;
 
@@ -1615,7 +1887,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 
   form.addEventListener('focusin',function(){
     if(sealImg) sealImg.classList.add('open');
-    if(seal) seal.classList.add('broke');
   });
 
   form.addEventListener('submit',function(e){
@@ -1643,7 +1914,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
           show("got it. we'll write back soon †");
           form.reset();
           if(sealImg) sealImg.classList.remove('open');
-          if(seal) seal.classList.remove('broke');
         } else {
           var detail = (res.j && res.j.errors && res.j.errors[0] && res.j.errors[0].message) || (res.j && res.j.error) || (res.j && res.j.message);
           show(detail || "the line is dead — try again †", true);
@@ -1686,7 +1956,7 @@ window.addEventListener('load',function(){
 window.addEventListener('load',function(){
   var pf=function(u){ var l=document.createElement('link'); l.rel='prefetch'; l.href=u; document.head.appendChild(l); };
   var idle=window.requestIdleCallback||function(cb){ setTimeout(cb,1200); };
-  idle(function(){ ['art/ablank.png','art/adown.png','art/button.png'].forEach(pf); });
+  idle(function(){ ['art/ablank.png','art/adown.png','art/button.png','art/grip.png'].forEach(pf); });
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('./sw.js').catch(function(){});
   }
