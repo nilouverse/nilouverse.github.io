@@ -11,11 +11,14 @@
 <link rel="preload" as="image" href="art/hero.jpg" fetchpriority="high">
 <link rel="preload" as="image" href="art/cdown.jpg">
 
-<!-- font stylesheet preloaded to cut fallback/swap time -->
+<!-- core type -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Syne:wght@700;800&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- easter-egg display face: eager, block-swap so it never flashes a fallback cursive -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Creepster&display=block" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Creepster&display=block"></noscript>
 
 <!-- smooth scroll -->
 <script defer src="https://unpkg.com/lenis@1/dist/lenis.min.js"></script>
@@ -78,11 +81,11 @@
 
 /* ============ RESET + BASE ============ */
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:74px;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;scroll-padding-top:74px;-webkit-text-size-adjust:100%;overflow-x:hidden}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-stopped{overflow:hidden}
-body{background:var(--ink);color:var(--bone);font-family:var(--f-body);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:var(--ink);color:var(--bone);font-family:var(--f-body);line-height:1.6;overflow-x:hidden;overflow-y:auto;-webkit-font-smoothing:antialiased}
 body.loading{overflow:hidden}
 main{position:relative;z-index:1}
 img{max-width:100%;display:block}
@@ -128,41 +131,17 @@ body::after{
   background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright),var(--ember));
   box-shadow:0 0 10px rgba(255,39,71,.5)}
 
-/* ============ LORE / CASE FILE ============ */
-.lore{position:fixed;right:14px;bottom:14px;z-index:65;display:flex;align-items:center;gap:10px;
-  padding:8px 12px 8px 10px;font-family:var(--f-mono);
-  background:linear-gradient(180deg,rgba(10,6,7,.92),rgba(6,3,4,.92));
-  border:1px solid rgba(209,20,48,.4);border-radius:4px;
-  box-shadow:0 12px 30px -12px rgba(0,0,0,.8),inset 0 0 0 1px rgba(0,0,0,.5),0 0 22px -10px rgba(209,20,48,.5);
-  opacity:0;visibility:hidden;transform:translateY(10px) scale(.96);
-  transition:opacity .5s var(--ease),transform .5s var(--ease),visibility .5s,border-color .4s var(--ease),box-shadow .4s var(--ease)}
-.lore.show{opacity:1;visibility:visible;transform:none}
-.lore::before,.lore::after{content:"";position:absolute;width:7px;height:7px;pointer-events:none}
-.lore::before{top:-1px;left:-1px;border-top:1px solid var(--blood-bright);border-left:1px solid var(--blood-bright);opacity:.7}
-.lore::after{bottom:-1px;right:-1px;border-bottom:1px solid var(--blood-bright);border-right:1px solid var(--blood-bright);opacity:.7}
-.lore-tag{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-faint)}
-.lore-pips{display:flex;gap:6px}
-.lore-pips i{width:9px;height:9px;transform:rotate(45deg);border:1px solid var(--bone-faint);border-radius:1px;
-  transition:background .4s var(--ease),box-shadow .4s var(--ease),border-color .4s var(--ease)}
-.lore-pips i.filled{background:var(--blood-bright);border-color:var(--blood-bright);box-shadow:0 0 10px var(--blood-bright)}
-.lore-count{font-size:.56rem;letter-spacing:.14em;color:var(--blood-bright);font-variant-numeric:tabular-nums}
-.lore.done{border-color:var(--blood-bright);box-shadow:0 12px 30px -12px rgba(0,0,0,.8),0 0 26px -6px rgba(255,39,71,.6)}
-.lore.done .lore-pips i.filled{animation:lorePop .6s var(--ease) both}
-.lore.done .lore-pips i.filled:nth-child(2){animation-delay:.08s}
-.lore.done .lore-pips i.filled:nth-child(3){animation-delay:.16s}
-.lore.done .lore-pips i.filled:nth-child(4){animation-delay:.24s}
-@keyframes lorePop{0%{transform:rotate(45deg) scale(1)}40%{transform:rotate(45deg) scale(1.8)}100%{transform:rotate(45deg) scale(1)}}
-.lore-toast{position:fixed;right:14px;bottom:56px;z-index:340;max-width:64vw;
-  font-family:var(--f-serif);font-style:italic;font-size:.9rem;color:var(--cyan-soft);
-  background:rgba(8,5,6,.9);border:1px solid var(--line);border-radius:10px;padding:8px 12px;
+/* ============ LORE — transient caption + flying gem (the persistent tracker lives in the topbar) ============ */
+.lore-toast{position:fixed;left:50%;bottom:18px;z-index:340;max-width:80vw;transform:translateX(-50%) translateY(8px);
+  font-family:var(--f-serif);font-style:italic;font-size:.9rem;color:var(--cyan-soft);text-align:center;
+  background:rgba(8,5,6,.9);border:1px solid var(--line);border-radius:10px;padding:8px 14px;
   box-shadow:0 12px 30px -14px rgba(0,0,0,.8);
-  opacity:0;transform:translateY(6px);transition:opacity .4s var(--ease),transform .4s var(--ease);pointer-events:none}
-.lore-toast.show{opacity:1;transform:none}
-.lore-fly{position:fixed;z-index:450;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:2px;
+  opacity:0;transition:opacity .4s var(--ease),transform .4s var(--ease);pointer-events:none}
+.lore-toast.show{opacity:1;transform:translateX(-50%)}
+.lore-fly{position:fixed;z-index:450;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:2px;
   background:var(--blood-bright);box-shadow:0 0 16px var(--blood-bright),0 0 4px #fff inset;
   transform:rotate(45deg);pointer-events:none;
   transition:transform .9s cubic-bezier(.55,-0.25,.5,1.2),opacity .9s ease}
-@media(max-width:680px){.lore{right:10px;bottom:10px;padding:7px 10px}.lore-toast{right:10px;bottom:50px}}
 
 /* ============ TOPBAR ============ */
 .topbar{position:fixed;inset:0 0 auto 0;z-index:70;display:flex;align-items:center;justify-content:space-between;
@@ -172,6 +151,18 @@ body::after{
 .brand-mini{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;font-size:.74rem;
   transition:padding var(--dur-1) var(--ease)}
 .brand-mini .gem{width:8px;height:8px;background:var(--blood-bright);transform:rotate(45deg);box-shadow:0 0 8px var(--blood-bright)}
+/* extracted diamonds accumulate beside the corner mark; empty until the first find, so the logo reads normal first */
+.brand-pips{display:inline-flex;align-items:center}
+.brand-pip{width:7px;height:7px;border-radius:1px;background:var(--blood-bright);box-shadow:0 0 8px var(--blood-bright);
+  margin-left:5px;transform:rotate(45deg);animation:pipIn .45s var(--ease) both}
+.brand-pip:first-child{margin-left:0}
+.brand-pip.noanim{animation:none}
+.brand-pips.done .brand-pip{animation:pipCelebrate .7s var(--ease) both}
+.brand-pips.done .brand-pip:nth-child(2){animation-delay:.07s}
+.brand-pips.done .brand-pip:nth-child(3){animation-delay:.14s}
+.brand-pips.done .brand-pip:nth-child(4){animation-delay:.21s}
+@keyframes pipIn{0%{transform:rotate(45deg) scale(0);opacity:0}60%{transform:rotate(45deg) scale(1.6);opacity:1}100%{transform:rotate(45deg) scale(1)}}
+@keyframes pipCelebrate{0%,100%{transform:rotate(45deg) scale(1)}40%{transform:rotate(45deg) scale(1.8);box-shadow:0 0 14px var(--blood-bright)}}
 .brand-key{position:absolute;left:clamp(16px,5vw,46px);top:50%;transform:translateY(-50%);z-index:5;
   width:var(--keyw);line-height:0;cursor:pointer;filter:drop-shadow(0 0 10px rgba(209,20,48,.55));
   transition:transform var(--dur-1) var(--ease)}
@@ -248,8 +239,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     radial-gradient(125% 105% at 50% 42%,transparent 52%,rgba(0,0,0,.42) 100%),
     linear-gradient(0deg,rgba(7,4,5,.98) 0%,rgba(7,4,5,.94) 12%,rgba(7,4,5,.66) 30%,rgba(7,4,5,.28) 50%,transparent 72%)}
 
-/* hero ignition: a red glow that flickers up then settles to a static halo (no permanent loop);
-   an ember burst fires at the moment of ignition (finite, cleaned on animationend) */
+/* hero ignition: a red glow that flickers up then settles to a static halo; an ember burst fires at ignition */
 .hero-glow{position:absolute;left:0;right:0;bottom:0;height:62%;z-index:1;pointer-events:none;opacity:0;
   mix-blend-mode:screen;filter:blur(4px);
   background:
@@ -293,7 +283,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .ig-am:hover{--ac:var(--ember)}.ig-yt:hover{--ac:var(--blood-bright)}.ig-tg:hover{--ac:var(--cyan-soft)}.ig-ig:hover{--ac:var(--magenta)}
 @media(min-width:980px){.socials{position:fixed;left:clamp(16px,3vw,40px);top:50%;transform:translateY(-50%);flex-direction:column;gap:12px;margin:0;z-index:40}}
 
-/* scroll cue: in normal flow (always has air, never hides), brighter cyan, a mouse + bouncing chevron */
+/* scroll cue: in normal flow, brighter cyan, a mouse + bouncing chevron */
 .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:clamp(22px,4.5vh,38px);
   color:var(--cyan-soft);font-size:.56rem;letter-spacing:.34em;text-transform:uppercase;opacity:.9}
 .sc-mouse{width:20px;height:32px;border:1.5px solid rgba(155,243,234,.55);border-radius:11px;position:relative;
@@ -640,7 +630,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 @media(min-width:680px){.cform{grid-template-columns:1fr 1fr}.cfield.full{grid-column:1/-1}.cfoot{grid-column:1/-1}}
 
 /* ============ GRIP PUZZLE — restricted admin console ============ */
-#puzzle{position:fixed;inset:0;z-index:320;display:flex;align-items:center;justify-content:center;padding:18px;overflow-y:auto;
+#puzzle{position:fixed;inset:0;z-index:320;display:flex;align-items:center;justify-content:center;padding:18px;overflow-y:auto;overflow-x:hidden;
   background:
     repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0 1px, transparent 1px 3px),
     radial-gradient(80% 70% at 50% 30%, rgba(20,40,46,.5), transparent 70%),
@@ -742,8 +732,10 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .cb-br{bottom:4px;right:4px;border-bottom:1px solid;border-right:1px solid}
 .pz-stage{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;
   background:radial-gradient(120% 90% at 50% 30%, #1a0d0c 0%, #0a0505 64%, #050202 100%)}
-/* white-backed hand photo keys out over a dim specimen spotlight via multiply */
-.has-hand .pz-stage{background:radial-gradient(118% 96% at 50% 70%, #8a7e72 0%, #574d44 24%, #221a14 48%, #0a0705 70%, #050302 86%)}
+/* transparent hand photo sits in a dim specimen spotlight — no blend trick, just seated on darkness */
+.has-hand .pz-stage{background:
+  radial-gradient(72% 64% at 50% 80%, rgba(74,34,30,.55), rgba(20,10,9,.25) 52%, transparent 78%),
+  radial-gradient(120% 90% at 50% 40%, #140a09 0%, #0a0505 60%, #050302 100%)}
 .pz-stage.recoil{animation:recoil .3s}
 @keyframes recoil{0%,100%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-1px)}}
 .pz-wall{position:absolute;left:4%;right:4%;top:32%;height:40%;z-index:0;opacity:.6;
@@ -762,16 +754,16 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .pz-btn img{width:100%;height:auto;display:block}
 .pz-stage.free .pz-btn{filter:drop-shadow(0 0 26px rgba(209,20,48,.65));animation:pzFloat 2.4s ease-in-out infinite alternate}
 @keyframes pzFloat{from{transform:translateY(-3px)}to{transform:translateY(3px)}}
-/* the hand photo: multiply drops the white bg into the spotlight; brighten back up after */
+/* the hand photo: composited normally over the spotlight; a soft shadow seats it */
 .pz-hand{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;z-index:3;
-  mix-blend-mode:multiply;pointer-events:none;filter:brightness(1.35) contrast(1.12) saturate(1.25)}
-/* invisible tap zones always present, on top of the photo; when the photo shows they carry no art */
-.fpos{position:absolute;bottom:0;width:14%;z-index:4;transform-origin:bottom center}
-.f0{left:9%;height:46%;transform:rotate(-16deg)}
-.f1{left:25%;height:82%}
-.f2{left:42%;width:15%;height:94%}
-.f3{left:59%;height:84%}
-.f4{left:75%;width:15%;height:50%;transform:rotate(18deg)}
+  pointer-events:none;filter:contrast(1.06) saturate(1.12) drop-shadow(0 6px 26px rgba(0,0,0,.7))}
+/* invisible tap zones always present; when the photo shows they carry no art */
+.fpos{position:absolute;bottom:0;width:13%;z-index:4;transform-origin:bottom center}
+.f0{left:19%;height:50%;transform:rotate(-16deg)}
+.f1{left:33%;height:84%}
+.f2{left:43%;width:14%;height:96%}
+.f3{left:55%;height:86%}
+.f4{left:70%;width:14%;height:54%;transform:rotate(18deg)}
 .finger{position:absolute;inset:0;cursor:pointer;border-radius:9px 9px 5px 5px;
   background:
     linear-gradient(90deg, rgba(124,11,27,0) 30%, rgba(124,11,27,.85) 31% 33%, rgba(124,11,27,0) 34%) 0 14% / 100% 60% no-repeat,
@@ -799,17 +791,12 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 @keyframes claw{0%,100%{filter:brightness(1)}40%{filter:brightness(1.6) drop-shadow(0 0 6px #ff2747)}}
 .f0 .finger{border-radius:46% 54% 5px 5px / 34% 30% 5px 5px}
 .f4 .finger{border-radius:54% 46% 5px 5px / 30% 34% 5px 5px}
-.f0::after{content:"";position:absolute;top:-3%;right:-46%;width:62%;height:30%;border-radius:0 70% 70% 0;
-  background:linear-gradient(90deg,#d8b196,#a9785c);transform:rotate(10deg);box-shadow:inset 0 0 0 2px rgba(40,15,10,.4), inset -2px 0 4px rgba(0,0,0,.3)}
-.f0::before{content:"";position:absolute;top:-6%;right:-50%;width:30%;height:18%;border-radius:50%;z-index:1;background:radial-gradient(circle at 40% 40%,#d11430,#7c0b1b 75%)}
-.f4::after{content:"";position:absolute;top:6%;left:-44%;width:58%;height:30%;border-radius:70% 0 0 70%;
-  background:linear-gradient(270deg,#d8b196,#a9785c);transform:rotate(-12deg);box-shadow:inset 0 0 0 2px rgba(40,15,10,.4), inset 2px 0 4px rgba(0,0,0,.3)}
-.f4::before{content:"";position:absolute;top:2%;left:-46%;width:28%;height:18%;border-radius:50%;z-index:1;background:radial-gradient(circle at 60% 40%,#d11430,#7c0b1b 75%)}
+/* curled-knuckle art lives on the wrapper; hide it (and the finger art) once the photo loads */
+.has-hand .finger{background:none;box-shadow:none}
+.has-hand .finger::before,.has-hand .finger::after,.has-hand .fpos::before,.has-hand .fpos::after{display:none}
 .pz-stage.twitch .finger:not(.out):not(.crack){animation:twitch .2s}
 @keyframes twitch{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-/* when the photo shows, strip the CSS finger art but keep the hitbox; show a forensic clear-scan per column */
-.has-hand .finger{background:none;box-shadow:none}
-.has-hand .finger::before,.has-hand .finger::after{display:none}
+/* forensic clear-scan per column — the feedback that a finger was freed over the static photo */
 .scan-col{position:absolute;inset:0;display:none;pointer-events:none;opacity:0;transition:opacity .3s var(--ease);
   background:linear-gradient(180deg,rgba(8,12,13,.0),rgba(8,12,13,.62) 70%,rgba(8,12,13,.78))}
 .has-hand .scan-col{display:block}
@@ -818,7 +805,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
   background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transform:translateY(0)}
 .fpos.cleared .scan-col::before{animation:scanWipe .6s var(--ease) both}
 @keyframes scanWipe{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(340px)}}
-.scan-col::after{content:"\2713";position:absolute;top:7%;left:50%;transform:translateX(-50%);
+.scan-col::after{content:"\2713";position:absolute;top:14%;left:50%;transform:translateX(-50%);
   font-family:var(--f-mono);font-size:.7rem;color:var(--cyan);opacity:0;transition:opacity .3s .12s var(--ease);
   text-shadow:0 0 8px var(--cyan)}
 .fpos.cleared .scan-col::after{opacity:.92}
@@ -929,16 +916,11 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 
 <div class="scroll-progress" id="progress"></div>
 
-<!-- ============ CASE FILE ============ -->
-<div class="lore" id="lore" aria-hidden="true">
-  <span class="lore-tag">case file</span>
-  <span class="lore-pips"><i></i><i></i><i></i><i></i></span>
-  <span class="lore-count" id="loreCount">0/4</span>
-</div>
+<!-- ============ TRANSIENT LORE CAPTION ============ -->
 <div class="lore-toast" id="loreToast" aria-hidden="true"></div>
 
 <header class="topbar" id="topbar">
-  <a class="brand-mini" href="#top"><span class="gem"></span>Nilouverse</a>
+  <a class="brand-mini" href="#top"><span class="gem"></span>Nilouverse<span class="brand-pips" id="brandPips" aria-hidden="true"></span></a>
   <span class="brand-key" id="brandKey" role="button" tabindex="0" aria-label="the key"><img src="art/button.png" alt="" draggable="false"></span>
   <span class="brand-key-hint" id="brandKeyHint" aria-hidden="true"></span>
   <nav class="topnav">
@@ -1262,63 +1244,57 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 </div>
 
 <script>
-/* ============ LAZY DISPLAY FONT ============ */
-(function(){
-  var loaded=false;
-  window.__loadEggFont=function(){
-    if(loaded) return; loaded=true;
-    var l=document.createElement('link');
-    l.rel='stylesheet';
-    l.href='https://fonts.googleapis.com/css2?family=Creepster&display=swap';
-    document.head.appendChild(l);
-  };
-})();
-
-/* ============ LORE / CASE FILE ============ */
+/* ============ LORE — diamonds fold into the top-left corner mark ============ */
 /* four secrets: footer whisper, the backdoor grasp, the held logo, the outro name.
-   persisted per browser via localStorage; the bar stays hidden until the first is found. */
+   persisted per browser via localStorage. before the first find the corner reads as the
+   normal logo; each extracted secret flies a diamond up to join the corner cluster. */
 (function(){
   var KEY='nv_lore_v1';
   var SECRETS=['whisper','grasp','wordmark','name'];
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var set=new Set();
   try{(JSON.parse(localStorage.getItem(KEY))||[]).forEach(function(id){ if(SECRETS.indexOf(id)>=0) set.add(id); });}catch(e){}
-  var pips=document.querySelectorAll('.lore-pips i');
-  var count=document.getElementById('loreCount');
-  var loreEl=document.getElementById('lore');
+  var cluster=document.getElementById('brandPips');
   var toast=document.getElementById('loreToast');
   var tT;
   function save(){ try{ localStorage.setItem(KEY,JSON.stringify(Array.from(set))); }catch(e){} }
-  function render(){
-    pips.forEach(function(g,i){ g.classList.toggle('filled', set.has(SECRETS[i])); });
-    if(count) count.textContent=set.size+'/'+SECRETS.length;
-    if(loreEl) loreEl.classList.toggle('show', set.size>0);
-  }
   function toastMsg(m){
     if(!toast) return;
     toast.textContent=m; toast.classList.add('show');
     clearTimeout(tT); tT=setTimeout(function(){ toast.classList.remove('show'); },3200);
   }
   function complete(){ return set.size>=SECRETS.length; }
-  function flyGem(fromEl){
-    if(reduce||!fromEl||!loreEl) return;
-    var a=fromEl.getBoundingClientRect(), b=loreEl.getBoundingClientRect();
+  function addPip(animate){
+    var i=document.createElement('span');
+    i.className='brand-pip'+(animate?'':' noanim');
+    cluster.appendChild(i);
+    return i;
+  }
+  function flyGem(from,to){
+    if(reduce||!from||!to) return;
+    var a=from.getBoundingClientRect(), b=to.getBoundingClientRect();
     var g=document.createElement('span'); g.className='lore-fly';
     g.style.left=(a.left+a.width/2)+'px'; g.style.top=(a.top+a.height/2)+'px';
     document.body.appendChild(g);
     var dx=(b.left+b.width/2)-(a.left+a.width/2), dy=(b.top+b.height/2)-(a.top+a.height/2);
     requestAnimationFrame(function(){requestAnimationFrame(function(){
-      g.style.transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) rotate(45deg) scale(.35)';
+      g.style.transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) rotate(45deg) scale(.5)';
       g.style.opacity='0';
     });});
     setTimeout(function(){ if(g.parentNode) g.parentNode.removeChild(g); },950);
   }
+  function render(){
+    cluster.innerHTML='';
+    SECRETS.forEach(function(s){ if(set.has(s)) addPip(false); });
+    cluster.classList.toggle('done', complete());
+  }
   function mark(id, fromEl){
     if(SECRETS.indexOf(id)<0 || set.has(id)) return;
-    var was=set.size;
-    set.add(id); save(); render(); flyGem(fromEl);
-    if(was===0) toastMsg('you found one. there are four †');
-    if(complete()){ loreEl.classList.add('done'); toastMsg('every corner turned. the door\'s open, keeper †'); if(window.__loreComplete) window.__loreComplete(); }
+    set.add(id); save();
+    var pip=addPip(true); void pip.offsetWidth;
+    flyGem(fromEl, pip);
+    if(complete()){ cluster.classList.add('done'); toastMsg('every corner turned — the door\'s open, keeper †'); if(window.__loreComplete) window.__loreComplete(); }
+    else { toastMsg(set.size+' of 4 — keep digging †'); }
   }
   render();
   window.__lore={ mark:mark, has:function(id){ return set.has(id); }, isComplete:complete, count:function(){ return set.size; } };
@@ -1361,7 +1337,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
   var fontsReady=false;
   function markFonts(){ fontsReady=true; update(); }
   if(document.fonts && document.fonts.ready){
-    var reqs=['700 1em "Space Grotesk"','800 1em "Syne"','1em "Metal Mania"','1em "Instrument Serif"','italic 1em "Instrument Serif"'];
+    var reqs=['700 1em "Space Grotesk"','800 1em "Syne"','1em "Metal Mania"','1em "Instrument Serif"','italic 1em "Instrument Serif"','1em "Creepster"'];
     Promise.all(reqs.map(function(f){return document.fonts.load(f).catch(function(){});}))
       .then(function(){return document.fonts.ready;}).then(markFonts).catch(markFonts);
   } else { markFonts(); }
@@ -1402,7 +1378,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 })();
 
 /* ============ EMBERS ============ */
-/* ambient embers are permanent; an ignition fires a finite burst (cleaned on animationend) */
 (function(){
   if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var box=document.getElementById('embers'); if(!box) return;
@@ -1570,7 +1545,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
       egg=document.getElementById('dlxEgg'),n=0,t;
   if(!stack||!inner||!egg) return;
   function hit(){
-    window.__loadEggFont();
     n++;
     inner.classList.remove('shaking');void inner.offsetWidth;inner.classList.add('shaking');
     setTimeout(function(){inner.classList.remove('shaking');},720);
