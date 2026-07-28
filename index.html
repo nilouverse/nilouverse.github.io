@@ -65,13 +65,13 @@
   --f-mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,'Liberation Mono',monospace;
 
   --rad:clamp(14px,2.2vw,22px);
-  --panel-bg:rgba(18,13,12,.88);
-  --panel-bg2:rgba(14,10,9,.92);
+  --panel-bg:rgba(20,12,12,.88);
+  --panel-bg2:rgba(16,10,10,.92);
   --panel-edge:1px solid rgba(255,255,255,.09);
   --panel-shadow:0 24px 60px -36px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.07);
 
-  --keyw:clamp(52px,12vw,72px);
-  --coin:clamp(17px,4.6vw,21px);
+  --keyw:clamp(38px,10vw,64px);
+  --coin:clamp(15px,4vw,19px);
 
   --art-hero:url('art/hero.jpg');
   --art-cover:url('art/cdown.jpg');
@@ -100,7 +100,8 @@ body::before{
     radial-gradient(58% 48% at 22% 18%, rgba(124,11,27,.38), transparent 62%),
     radial-gradient(52% 44% at 82% 72%, rgba(209,20,48,.14), transparent 62%),
     radial-gradient(42% 42% at 50% 104%, rgba(255,45,126,.06), transparent 62%),
-    radial-gradient(46% 40% at 8% 90%, rgba(52,227,214,.03), transparent 60%);
+    radial-gradient(46% 40% at 8% 90%, rgba(52,227,214,.03), transparent 60%),
+    radial-gradient(80% 50% at 50% 120%, rgba(124,11,27,.10), transparent 70%);
 }
 body::after{
   content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.028;
@@ -150,16 +151,18 @@ body::after{
   padding:16px clamp(16px,5vw,46px);border-bottom:1px solid transparent;
   transition:background var(--dur-1) var(--ease),border-color var(--dur-1) var(--ease),padding var(--dur-1) var(--ease)}
 .topbar.scrolled{background:rgba(8,5,6,.82);border-bottom-color:var(--line);padding-top:12px;padding-bottom:12px}
-.brand-mini{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;font-size:.74rem;
-  transition:padding var(--dur-1) var(--ease)}
-/* the corner coin stack: the brand token is the base coin; each found secret topples another onto the pile */
-.brand-stack{position:relative;width:var(--coin);height:var(--coin);flex:none;align-self:center}
-.coin-slot{position:absolute;left:0;bottom:0;width:var(--coin);height:var(--coin);transform-origin:50% 100%}
-.coin-slot:nth-of-type(1){transform:translate(0,0) rotate(0)}
-.coin-slot:nth-of-type(2){transform:translate(-2px,-4px) rotate(-7deg)}
-.coin-slot:nth-of-type(3){transform:translate(2px,-8px) rotate(5deg)}
-.coin-slot:nth-of-type(4){transform:translate(-1px,-12px) rotate(-4deg)}
-.coin-slot:nth-of-type(5){transform:translate(1px,-16px) rotate(6deg)}
+/* left cluster: [trophy key] + [coin stack + wordmark] sit together as one mark */
+.brand-cluster{display:flex;align-items:center;gap:9px;min-width:0}
+.brand-mini{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;font-size:.74rem;min-width:0}
+/* the corner coin stack: the brand token is the base; each found secret piles another on, centred on the mark */
+.brand-stack{position:relative;width:var(--coin);height:var(--coin);flex:none;align-self:center;transition:transform var(--dur-1) var(--ease)}
+.coin-slot{position:absolute;left:50%;top:50%;width:var(--coin);height:var(--coin);
+  margin:calc(var(--coin)/-2) 0 0 calc(var(--coin)/-2);transform-origin:50% 50%}
+.coin-slot:nth-of-type(1){transform:translate(0,5px) rotate(0)}
+.coin-slot:nth-of-type(2){transform:translate(-2px,1px) rotate(-7deg)}
+.coin-slot:nth-of-type(3){transform:translate(2px,-3px) rotate(5deg)}
+.coin-slot:nth-of-type(4){transform:translate(-1px,-7px) rotate(-4deg)}
+.coin-slot:nth-of-type(5){transform:translate(1px,-11px) rotate(6deg)}
 .coin{position:absolute;inset:0;display:block}
 .coin img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
 .coin.nocoin{border-radius:50%;
@@ -180,18 +183,16 @@ body::after{
 .brand-stack.done .coin-slot:nth-of-type(4){animation-delay:.18s}
 .brand-stack.done .coin-slot:nth-of-type(5){animation-delay:.24s}
 @keyframes coinCheer{0%,100%{filter:none}45%{filter:drop-shadow(0 0 9px rgba(255,200,90,.95)) brightness(1.2)}}
-
-.brand-key{position:absolute;left:clamp(16px,5vw,46px);top:50%;transform:translateY(-50%);z-index:5;
-  width:var(--keyw);line-height:0;cursor:pointer;filter:drop-shadow(0 0 10px rgba(209,20,48,.55));
-  transition:transform var(--dur-1) var(--ease)}
+/* the trophy key: hidden until the grip is won, then it leads the cluster and the coins tuck to its bow */
+.brand-key{position:relative;width:var(--keyw);line-height:0;flex:none;cursor:pointer;display:none;
+  filter:drop-shadow(0 0 10px rgba(209,20,48,.55));transition:transform var(--dur-1) var(--ease)}
 .brand-key img{width:100%;height:auto;display:block;animation:keyBob 2.6s ease-in-out infinite}
 @keyframes keyBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-3px) rotate(2deg)}}
-.brand-key:hover{transform:translateY(-50%) scale(1.1)}
+.brand-key:hover{transform:scale(1.1)}
 .brand-key:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:4px}
-body:not(.key-won) .brand-key{display:none}
-body.key-won .brand-stack{display:none}
-body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
-.brand-key-hint{position:absolute;left:clamp(16px,5vw,46px);top:calc(100% + 8px);z-index:5;
+body.key-won .brand-key{display:block}
+body.key-won .brand-stack{transform:rotate(-8deg) translate(1px,2px);margin-left:-3px}
+.brand-key-hint{position:absolute;left:0;top:calc(100% + 8px);z-index:5;
   font-family:var(--f-serif);font-style:italic;font-size:.74rem;color:var(--cyan-soft);white-space:nowrap;
   background:rgba(8,5,6,.92);border:1px solid var(--line);border-radius:8px;padding:6px 10px;
   box-shadow:0 10px 30px -12px rgba(0,0,0,.8);
@@ -211,6 +212,11 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .listen-pill:hover{background:var(--blood);box-shadow:0 0 18px rgba(209,20,48,.4)}
 .listen-pill .tri{width:0;height:0;border-left:7px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent}
 @media(max-width:820px){.topnav .nav-link{display:none}}
+@media(max-width:430px){
+  .brand-mini{letter-spacing:.18em;font-size:.66rem;gap:7px}
+  .brand-cluster{gap:6px}
+  .listen-pill{padding:7px 11px;letter-spacing:.14em}
+}
 
 /* ============ HERO ============ */
 .hero{position:relative;min-height:100svh;overflow:hidden;isolation:isolate}
@@ -256,17 +262,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     linear-gradient(90deg,rgba(7,4,5,.82) 0%,transparent 22%,transparent 78%,rgba(7,4,5,.82) 100%),
     radial-gradient(125% 105% at 50% 42%,transparent 52%,rgba(0,0,0,.42) 100%),
     linear-gradient(0deg,rgba(7,4,5,.98) 0%,rgba(7,4,5,.94) 12%,rgba(7,4,5,.66) 30%,rgba(7,4,5,.28) 50%,transparent 72%)}
-
-.hero-glow{position:absolute;left:0;right:0;bottom:0;height:62%;z-index:1;pointer-events:none;opacity:0;
-  mix-blend-mode:screen;filter:blur(4px);
-  background:
-    radial-gradient(46% 60% at 50% 112%, rgba(255,90,40,.85), transparent 62%),
-    radial-gradient(70% 80% at 50% 118%, rgba(255,39,71,.6), transparent 66%),
-    radial-gradient(120% 90% at 50% 128%, rgba(209,20,48,.5), transparent 70%)}
-.hero.ignited .hero-glow{animation:glowUp 2.6s var(--ease) forwards}
-.hero.ignited.settled .hero-glow{opacity:.72;animation:none}
-@keyframes glowUp{0%{opacity:0;transform:scaleY(.7)}10%{opacity:1;transform:scaleY(1.06)}20%{opacity:.55}30%{opacity:1}44%{opacity:.72}62%{opacity:.95}100%{opacity:.72;transform:scaleY(1)}}
-.hero.ignited .wordmark{text-shadow:0 0 1px rgba(255,39,71,.6),0 2px 24px rgba(255,39,71,.5),0 12px 56px rgba(209,20,48,.6)}
 
 .hero-inner{position:relative;z-index:2;max-width:1240px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;
   align-items:center;text-align:center;justify-content:flex-end;
@@ -612,6 +607,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .contact-head h3{font-family:var(--f-disp);font-weight:800;font-size:clamp(1.7rem,6vw,2.6rem);line-height:1}
 .contact-head .sub{font-family:var(--f-serif);font-style:italic;color:var(--bone-dim);margin-top:12px;font-size:clamp(1rem,3.2vw,1.2rem);line-height:1.5;max-width:46ch}
 
+/* envelope tracks composition state: open while focused or non-empty, sealed otherwise */
 .seal{position:relative;width:clamp(64px,16vw,84px);aspect-ratio:1/1;margin:0 0 18px auto}
 .seal-img{position:absolute;inset:0;background-repeat:no-repeat;background-position:center;background-size:contain;
   filter:drop-shadow(0 8px 18px rgba(0,0,0,.5));transition:opacity .3s var(--ease),transform .5s var(--ease);
@@ -645,7 +641,10 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 @media(min-width:680px){.cform{grid-template-columns:1fr 1fr}.cfield.full{grid-column:1/-1}.cfoot{grid-column:1/-1}}
 
 /* ============ GRIP PUZZLE — restricted admin console ============ */
-#puzzle{position:fixed;inset:0;z-index:320;display:flex;align-items:center;justify-content:center;padding:18px;overflow-y:auto;overflow-x:hidden;
+/* column layout + safe top padding + auto margins: centres when it fits, scrolls from the top when it
+   doesn't, and never tucks its header under the browser bar / notch on mobile */
+#puzzle{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;align-items:center;
+  padding:max(20px,env(safe-area-inset-top)) 16px 20px;overflow-y:auto;overflow-x:hidden;
   background:
     repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0 1px, transparent 1px 3px),
     radial-gradient(80% 70% at 50% 30%, rgba(20,40,46,.5), transparent 70%),
@@ -653,8 +652,8 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     rgba(3,4,5,.97);
   opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s}
 #puzzle.show{opacity:1;visibility:visible}
-.console{position:relative;width:min(96vw,880px);display:flex;flex-direction:column;
-  background:linear-gradient(180deg,#0a0e10,#07090a);
+.console{position:relative;width:min(96vw,880px);margin-top:auto;margin-bottom:auto;display:flex;flex-direction:column;
+  background:linear-gradient(180deg,#080c0e 0%, #0a0809 60%, #0c0708 100%);
   border:1px solid rgba(52,227,214,.22);border-radius:8px;overflow:hidden;
   box-shadow:0 50px 120px -40px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05),0 0 70px -24px rgba(52,227,214,.25)}
 .console::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:7;
@@ -746,7 +745,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .cb-br{bottom:4px;right:4px;border-bottom:1px solid;border-right:1px solid}
 .pz-stage{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;
   background:radial-gradient(120% 90% at 50% 30%, #1a0d0c 0%, #0a0505 64%, #050202 100%)}
-/* transparent hand seated on plain dark — no glow behind it, so the gaps read clean */
 .has-hand .pz-stage{background:radial-gradient(120% 95% at 50% 42%, #120a09 0%, #0a0505 58%, #050302 100%)}
 .pz-stage.recoil{animation:recoil .3s}
 @keyframes recoil{0%,100%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-1px)}}
@@ -953,9 +951,11 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 <div class="lore-toast" id="loreToast" aria-hidden="true"></div>
 
 <header class="topbar" id="topbar">
-  <a class="brand-mini" href="#top"><span class="brand-stack" id="brandStack" aria-hidden="true"></span>Nilouverse</a>
-  <span class="brand-key" id="brandKey" role="button" tabindex="0" aria-label="the key"><img src="art/button.png" alt="" draggable="false"></span>
-  <span class="brand-key-hint" id="brandKeyHint" aria-hidden="true"></span>
+  <div class="brand-cluster">
+    <span class="brand-key" id="brandKey" role="button" tabindex="0" aria-label="the key"><img src="art/button.png" alt="" draggable="false"></span>
+    <a class="brand-mini" href="#top"><span class="brand-stack" id="brandStack" aria-hidden="true"></span>Nilouverse</a>
+    <span class="brand-key-hint" id="brandKeyHint" aria-hidden="true"></span>
+  </div>
   <nav class="topnav">
     <a class="nav-link" href="#intro">Intro</a>
     <a class="nav-link" href="#listen">Listen</a>
@@ -977,7 +977,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
       <div class="treeline"></div>
       <div class="embers" id="embers"></div>
       <div class="vignette"></div>
-      <div class="hero-glow" aria-hidden="true"></div>
     </div>
 
     <div class="hero-inner">
@@ -1609,7 +1608,8 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 })();
 
 /* ============ WORDMARK HOLD ============ */
-/* hold the logo: a charge bar fills, then the hero base ignites with a red glow + an ember burst (secret 3) */
+/* hold the logo: the charge bar fills, then a wave of embers erupts off the base (secret 3).
+   the heavy floor-glow was removed by design — the ember burst is the payoff now. */
 (function(){
   var wm=document.querySelector('.wordmark'); if(!wm) return;
   var charge=wm.querySelector('.wm-charge');
@@ -1618,8 +1618,6 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
   function ignite(){
     if(done) return; done=true; charging=false;
     wm.classList.remove('charging');
-    var hero=document.querySelector('.hero');
-    if(hero){ hero.classList.add('ignited'); setTimeout(function(){ hero.classList.add('settled'); },2600); }
     if(window.__emberBurst) window.__emberBurst(22);
     if(window.__lore) window.__lore.mark('wordmark', wm);
   }
@@ -1696,9 +1694,10 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
   var WIN_SYS_C=["access granted — channel ready","override accepted — authenticate to enter"];
   var WIN_FLV_C=["the key is yours †","dragged from the grasp of the dead †"];
   var WIN_SYS_L=["access granted // clearance low — %a/4","override accepted // %a/4 artifacts"];
-  var WIN_FLV_L=["the door's shut — find the rest †","loose — but the door remembers you †"];
-  var ERR_NOCRED="no credential on file — extract the key first";
-  var ERR_CLEAR="insufficient clearance — %a/4 artifacts recovered";
+  var WIN_FLV_L=["the door needs all four secrets †","four secrets open it — keep digging †"];
+  /* plain-language locks shown to a person (the machine readout above keeps its jargon on purpose) */
+  var ERR_NOCRED="free the key first";
+  var ERR_CLEAR="the door needs all four secrets — you have %a";
   var BUSY="establishing secure channel…";
   var BOOT=["> boot NIL//OS v3.1.7-cold","> mount /dev/cold_storage ... ok","> handshake 0xDEAD ... ok","> biometric module ... OFFLINE","> legacy creds ... DISABLED","> fallback ... PHYSICAL_OVERRIDE","> awaiting operator ..."];
 
@@ -1863,15 +1862,20 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
   var FORM_ENDPOINT = 'https://formspree.io/f/xaqrvwpd';
 
   var form=document.getElementById('contactForm'),
+      cName=document.getElementById('cName'),
       email=document.getElementById('cEmail'),
       msg=document.getElementById('cMsg'),
       btn=document.getElementById('cBtn'),
       lbl=btn?btn.querySelector('.lbl'):null,
       status=document.getElementById('cStatus'),
+      seal=document.getElementById('seal'),
       sealImg=document.getElementById('sealImg');
   if(!form||!email||!msg||!btn||!status) return;
 
   var EMAIL=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var focused=false;
+  function hasText(){ return !!(cName&&cName.value.trim()) || !!email.value.trim() || !!msg.value.trim(); }
+  function updateSeal(){ if(sealImg) sealImg.classList.toggle('open', focused || hasText()); }
 
   function show(text,isErr){
     status.textContent=text;
@@ -1883,9 +1887,10 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     if(lbl) lbl.textContent= on? (text||'sending…') : 'send it';
   }
 
-  form.addEventListener('focusin',function(){
-    if(sealImg) sealImg.classList.add('open');
-  });
+  /* the envelope follows composition: open on focus or content, sealed once empty and unfocused */
+  form.addEventListener('focusin',function(){ focused=true; updateSeal(); });
+  form.addEventListener('focusout',function(){ setTimeout(function(){ focused=false; updateSeal(); },0); });
+  [cName,email,msg].forEach(function(el){ if(el) el.addEventListener('input',updateSeal); });
 
   form.addEventListener('submit',function(e){
     e.preventDefault();
@@ -1893,7 +1898,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     var m=(msg.value||'').trim();
 
     var honey=form.querySelector('input[name="_gotcha"]');
-    if(honey && honey.value){ show("got it — we'll be in touch †"); form.reset(); return; }
+    if(honey && honey.value){ show("got it — we'll be in touch †"); form.reset(); updateSeal(); return; }
 
     if(!m){ show("write us a line first — even a short one.",true); msg.focus(); return; }
     if(!v){ show("leave an address so we can write back.",true); email.focus(); return; }
@@ -1911,7 +1916,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
         if(res.ok && !hasErr){
           show("got it. we'll write back soon †");
           form.reset();
-          if(sealImg) sealImg.classList.remove('open');
+          updateSeal();
         } else {
           var detail = (res.j && res.j.errors && res.j.errors[0] && res.j.errors[0].message) || (res.j && res.j.error) || (res.j && res.j.message);
           show(detail || "the line is dead — try again †", true);
