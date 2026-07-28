@@ -65,9 +65,9 @@
   --panel-edge:1px solid rgba(255,255,255,.09);
   --panel-shadow:0 24px 60px -36px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.07);
 
-  --logow:clamp(46px,11vw,64px);
-  --keyw2:clamp(26px,6.4vw,38px);
-  --coin2:clamp(12px,3.2vw,16px);
+  --logow:clamp(78px,24vw,96px);
+  --keyw2:clamp(44px,19vw,64px);
+  --coin2:clamp(12px,3.4vw,16px);
 
   --art-hero:url('art/hero.jpg');
   --art-cover:url('art/cdown.jpg');
@@ -77,7 +77,7 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:74px;-webkit-text-size-adjust:100%;overflow-x:hidden}
+html{scroll-behavior:smooth;scroll-padding-top:92px;-webkit-text-size-adjust:100%;overflow-x:hidden}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-stopped{overflow:hidden}
@@ -146,28 +146,35 @@ body::after{
   transition:transform .85s cubic-bezier(.5,-0.2,.5,1.15),opacity .85s ease}
 
 .topbar{position:fixed;inset:0 0 auto 0;z-index:70;display:flex;align-items:center;justify-content:space-between;
-  padding:14px clamp(16px,5vw,46px);border-bottom:1px solid transparent;
+  padding:12px clamp(12px,4vw,46px);border-bottom:1px solid transparent;
   transition:background var(--dur-1) var(--ease),border-color var(--dur-1) var(--ease),padding var(--dur-1) var(--ease)}
-.topbar.scrolled{background:rgba(8,5,6,.82);border-bottom-color:var(--line);padding-top:10px;padding-bottom:10px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.brand-cluster{display:flex;align-items:center;gap:clamp(10px,2.4vw,15px);min-width:0}
-.brand-logo{position:relative;width:var(--logow);height:var(--logow);flex:none;align-self:center}
-.key-ring{position:absolute;inset:5%;border-radius:50%;border:1px dashed rgba(239,230,221,.16);
-  transition:border-color var(--dur-2) var(--ease),box-shadow var(--dur-2) var(--ease),background var(--dur-2) var(--ease)}
+.topbar.scrolled{background:rgba(8,5,6,.82);border-bottom-color:var(--line);padding-top:8px;padding-bottom:8px;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  --logow:clamp(46px,12vw,64px); --keyw2:clamp(27px,7vw,40px); --coin2:clamp(10px,2.6vw,13px)}
+.brand-cluster{display:flex;align-items:center;gap:clamp(9px,2.4vw,15px);min-width:0}
+.brand-logo{position:relative;width:var(--logow);height:var(--logow);flex:none;align-self:center;
+  transition:width .42s var(--ease),height .42s var(--ease)}
+.key-ring{position:absolute;inset:3%;border-radius:50%;border:1px dashed rgba(239,230,221,.18);
+  opacity:0;transform:scale(.82);
+  transition:opacity .45s var(--ease),transform .45s var(--ease),border-color .5s var(--ease),box-shadow .5s var(--ease),background .5s var(--ease)}
+.brand-logo.has-coin .key-ring{opacity:1;transform:none}
 .brand-logo.done .key-ring{border-style:solid;border-color:rgba(255,210,120,.6);
   background:radial-gradient(circle,rgba(255,190,90,.10),transparent 70%);
   box-shadow:0 0 16px -4px rgba(255,190,90,.6),inset 0 0 12px -5px rgba(255,190,90,.5)}
 .brand-key{position:absolute;left:50%;top:50%;width:var(--keyw2);transform:translate(-50%,-50%);line-height:0;cursor:pointer;
-  filter:drop-shadow(0 0 8px rgba(209,20,48,.5));transition:transform var(--dur-1) var(--ease),filter var(--dur-1) var(--ease)}
+  filter:drop-shadow(0 0 9px rgba(209,20,48,.5));
+  transition:width .42s var(--ease),transform .35s var(--ease),filter var(--dur-1) var(--ease)}
 .brand-key img{width:100%;height:auto;display:block;animation:keyBob 2.8s ease-in-out infinite}
 @keyframes keyBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-2px) rotate(2deg)}}
-.brand-key:hover{transform:translate(-50%,-50%) scale(1.12);filter:drop-shadow(0 0 12px rgba(255,39,71,.7))}
+.brand-key:hover{transform:translate(-50%,-50%) scale(1.12);filter:drop-shadow(0 0 14px rgba(255,39,71,.7))}
 .brand-key:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:6px}
 .brand-key.deny{animation:keyDeny .5s var(--ease)}
 @keyframes keyDeny{0%,100%{transform:translate(-50%,-50%) rotate(0)}20%{transform:translate(-50%,-50%) rotate(-9deg)}45%{transform:translate(-50%,-50%) rotate(8deg)}70%{transform:translate(-50%,-50%) rotate(-5deg)}}
-.coin-orbit{position:absolute;width:var(--coin2);height:var(--coin2);transform:translate(-50%,-50%);pointer-events:none}
-.coin-orbit.o0{left:50%;top:2%}
-.coin-orbit.o1{left:10%;top:81%}
-.coin-orbit.o2{left:90%;top:81%}
+.coin-orbit{position:absolute;width:var(--coin2);height:var(--coin2);transform:translate(-50%,-50%);pointer-events:none;
+  transition:width .42s var(--ease),height .42s var(--ease)}
+.coin-orbit.o0{left:50%;top:1%}
+.coin-orbit.o1{left:8%;top:82%}
+.coin-orbit.o2{left:92%;top:82%}
 .coin{position:absolute;inset:0;display:block}
 .coin img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
 .coin.nocoin{border-radius:50%;
@@ -186,12 +193,12 @@ body::after{
 @keyframes coinCheer{0%,100%{filter:none}45%{filter:drop-shadow(0 0 8px rgba(255,200,90,.95)) brightness(1.2)}}
 .brand-name{display:flex;flex-direction:column;line-height:1;min-width:0;text-decoration:none}
 .brand-name .bn-main{font-family:var(--f-disp);font-weight:800;text-transform:uppercase;letter-spacing:.02em;
-  font-size:clamp(1.02rem,4.4vw,1.5rem);color:var(--bone);white-space:nowrap;
+  font-size:clamp(1.05rem,4.6vw,1.6rem);color:var(--bone);white-space:nowrap;
   text-shadow:0 0 14px rgba(209,20,48,.28);transition:text-shadow var(--dur-1) var(--ease)}
 .brand-name:hover .bn-main{text-shadow:0 0 18px rgba(255,39,71,.5)}
 .brand-name .bn-main .bn-dot{color:var(--blood-bright)}
 .brand-name .bn-sub{font-family:var(--f-mono);font-size:clamp(.44rem,1.7vw,.56rem);letter-spacing:.3em;text-transform:uppercase;
-  color:var(--bone-faint);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  color:var(--bone-faint);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brand-key-hint{position:absolute;left:50%;top:calc(100% + 9px);transform:translateX(-50%) translateY(-4px);z-index:5;
   font-family:var(--f-serif);font-style:italic;font-size:.72rem;line-height:1.35;color:var(--cyan-soft);text-align:center;
   background:rgba(8,5,6,.94);border:1px solid var(--line);border-radius:8px;padding:7px 11px;
@@ -216,6 +223,9 @@ body::after{
   .brand-cluster{gap:8px}
   .brand-name .bn-sub{display:none}
   .listen-pill{padding:7px 11px;letter-spacing:.14em}
+}
+@media(max-width:360px){
+  .brand-name .bn-main{font-size:.95rem;letter-spacing:0}
 }
 
 .hero{position:relative;min-height:100svh;overflow:hidden;isolation:isolate;contain:layout style paint}
@@ -327,7 +337,7 @@ body::after{
 .poem .dead{color:var(--bone-faint);text-decoration:line-through;text-decoration-color:var(--blood-deep);text-decoration-thickness:1px}
 .poem .teeth{color:var(--blood-bright);font-style:italic;text-shadow:0 0 16px rgba(255,39,71,.3)}
 .poem .redline{color:var(--bone);text-shadow:0 0 20px rgba(209,20,48,.25)}
-@media(min-width:820px){.ticket{grid-template-columns:.85fr 1.15fr;align-items:start}.ticket-head{position:sticky;top:96px}}
+@media(min-width:820px){.ticket{grid-template-columns:.85fr 1.15fr;align-items:start}.ticket-head{position:sticky;top:100px}}
 
 .listen{position:relative;z-index:1;padding:clamp(40px,7vh,84px) clamp(18px,5vw,48px);
   border-top:1px solid var(--line);overflow:hidden;content-visibility:auto;contain-intrinsic-size:auto 1200px;contain:layout style}
@@ -647,6 +657,16 @@ body::after{
 .con-bar .con-rec i{width:5px;height:5px;border-radius:50%;background:var(--blood-bright)}
 .con-bar .con-clock{color:var(--bone-faint);font-variant-numeric:tabular-nums;flex:none}
 
+/* denial / status banner — flows under the bar so it is never clipped */
+.con-err{display:flex;align-items:center;gap:8px;flex:none;
+  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:#ffd2d8;
+  background:linear-gradient(90deg,rgba(124,11,27,.55),rgba(124,11,27,.2));
+  border-bottom:1px solid transparent;
+  max-height:0;opacity:0;overflow:hidden;padding:0 12px;
+  transition:max-height .32s var(--ease),opacity .32s var(--ease),padding .32s var(--ease),border-color .32s var(--ease)}
+.con-err::before{content:"\2715";color:#fff;font-weight:700;flex:none}
+.con-err.show{max-height:54px;opacity:1;padding:9px 12px;border-bottom-color:var(--blood-bright)}
+
 .con-body{position:relative;z-index:2;display:grid;grid-template-columns:1fr;gap:0;flex:1;min-height:0}
 @media(min-width:720px){.con-body{grid-template-columns:minmax(0,210px) 1fr}}
 
@@ -688,79 +708,94 @@ body::after{
 .pz-stage.recoil{animation:recoil .3s}
 @keyframes recoil{0%,100%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-1px)}}
 
-.hand-glow{position:absolute;left:8%;right:8%;top:14%;bottom:6%;z-index:1;pointer-events:none;opacity:0;filter:blur(6px);
-  transition:opacity .5s var(--ease);
-  background:radial-gradient(60% 50% at 50% 60%,rgba(52,227,214,.16),transparent 70%),radial-gradient(50% 40% at 50% 80%,rgba(209,20,48,.18),transparent 72%)}
-.has-hand .hand-glow{opacity:1}
-.pz-stage.free .hand-glow{opacity:0}
-
-.pz-wall{position:absolute;left:4%;right:4%;top:32%;height:40%;z-index:0;opacity:.45;
+/* ---- the digital gate ---- */
+.gate{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .4s var(--ease)}
+.pz-stage.free .gate{opacity:1}
+.gate-grid{position:absolute;inset:0;opacity:0;transition:opacity .6s var(--ease) .5s;
   background:
-    repeating-linear-gradient(90deg,rgba(0,0,0,.5) 0 1px,transparent 1px 17px),
-    repeating-linear-gradient(0deg,rgba(0,0,0,.5) 0 1px,transparent 1px 17px),
-    linear-gradient(90deg,#7a532c 0%,#9a7240 24%,#7d6a4c 52%,#565656 78%,#3f3f3f 100%);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
-.pz-window{position:absolute;left:7%;top:5%;width:20%;height:22%;z-index:0;border:2px solid rgba(124,11,27,.22);border-radius:2px;opacity:.4}
-.palm{position:absolute;left:0;right:0;bottom:0;height:22%;z-index:0;background:linear-gradient(0deg,#120a08 0 38%,transparent);filter:blur(2px)}
-.has-hand .pz-wall,.has-hand .pz-window,.has-hand .palm{display:none}
+    repeating-linear-gradient(90deg, transparent 0 22px, rgba(52,227,214,.06) 22px 23px),
+    repeating-linear-gradient(0deg, transparent 0 22px, rgba(52,227,214,.06) 22px 23px);
+  -webkit-mask-image:radial-gradient(120% 92% at 50% 46%, transparent 26%, #000 80%);
+  mask-image:radial-gradient(120% 92% at 50% 46%, transparent 26%, #000 80%)}
+.pz-stage.free .gate-grid{opacity:1}
+.gate-wall{position:absolute;top:8%;bottom:18%;width:26%;opacity:0;transition:opacity .6s var(--ease) .6s;
+  background:repeating-linear-gradient(90deg, rgba(52,227,214,.12) 0 1px, transparent 1px 13px)}
+.gate-wall.l{left:0;transform:perspective(220px) rotateY(30deg);transform-origin:left center;
+  -webkit-mask-image:linear-gradient(90deg,#000,transparent);mask-image:linear-gradient(90deg,#000,transparent)}
+.gate-wall.r{right:0;transform:perspective(220px) rotateY(-30deg);transform-origin:right center;
+  -webkit-mask-image:linear-gradient(270deg,#000,transparent);mask-image:linear-gradient(270deg,#000,transparent)}
+.pz-stage.free .gate-wall{opacity:.7}
+.pz-stage.sealed .gate-wall{background:repeating-linear-gradient(90deg, rgba(255,122,26,.14) 0 1px, transparent 1px 13px)}
+.gate-light{position:absolute;left:50%;top:46%;width:48%;aspect-ratio:1/1;transform:translate(-50%,-50%);border-radius:50%;z-index:2;
+  background:radial-gradient(circle, rgba(255,244,224,.96), rgba(255,150,90,.55) 34%, rgba(209,20,48,.35) 60%, transparent 76%);
+  opacity:0;filter:blur(2px)}
+.pz-stage.unlocked .gate-light{animation:lightUp .8s var(--ease) .5s both}
+@keyframes lightUp{from{opacity:0;transform:translate(-50%,-50%) scale(.4)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.pz-stage.sealed .gate-light{animation:lightFlick 1.1s steps(2,end) .4s both}
+@keyframes lightFlick{0%{opacity:0}30%{opacity:.7}45%{opacity:.2}60%{opacity:.6}100%{opacity:.26}}
+.gate-shutter{position:absolute;left:50%;top:46%;width:48%;aspect-ratio:1/1;transform:translate(-50%,-50%);border-radius:50%;z-index:3;
+  background:radial-gradient(circle,#0a0505 60%, #140a09 100%);
+  clip-path:circle(50% at 50% 50%)}
+.pz-stage.unlocked .gate-shutter{animation:irisOpen 1s cubic-bezier(.7,0,.3,1) .55s both}
+@keyframes irisOpen{0%{clip-path:circle(50% at 50% 50%)}100%{clip-path:circle(0% at 50% 50%)}}
+.pz-stage.sealed .gate-shutter{animation:irisDeny 1.2s var(--ease) .45s both}
+@keyframes irisDeny{0%{clip-path:circle(50% at 50% 50%)}40%{clip-path:circle(13% at 50% 50%)}70%{clip-path:circle(20% at 50% 50%)}100%{clip-path:circle(40% at 50% 50%)}}
+.gate-ring{position:absolute;left:50%;top:46%;border-radius:50%;transform:translate(-50%,-50%);opacity:0;z-index:3;
+  background:conic-gradient(from 0deg, transparent 0 8%, var(--rc,rgba(52,227,214,.85)) 8% 14%, transparent 14% 30%, var(--rc,rgba(52,227,214,.5)) 30% 34%, transparent 34% 58%, var(--rc,rgba(52,227,214,.85)) 58% 64%, transparent 64% 84%, var(--rc,rgba(52,227,214,.5)) 84% 88%, transparent 88% 100%);
+  -webkit-mask:radial-gradient(circle, transparent 0 63%, #000 64% 70%, transparent 71%);
+  mask:radial-gradient(circle, transparent 0 63%, #000 64% 70%, transparent 71%)}
+.gate-ring.r1{width:64%;aspect-ratio:1/1}
+.gate-ring.r2{width:78%;aspect-ratio:1/1;--rc:rgba(155,243,234,.5)}
+.pz-stage.free .gate-ring{opacity:1}
+.pz-stage.unlocked .gate-ring.r1{animation:spin 6s linear .6s infinite}
+.pz-stage.unlocked .gate-ring.r2{animation:spinR 9s linear .6s infinite}
+.pz-stage.sealed .gate-ring{--rc:rgba(255,122,26,.75)}
+.pz-stage.sealed .gate-ring.r1{animation:spin 6s linear .5s infinite}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes spinR{to{transform:translate(-50%,-50%) rotate(-360deg)}}
+.gate-scan{position:absolute;left:6%;right:6%;top:6%;height:2px;z-index:3;opacity:0;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);box-shadow:0 0 10px var(--cyan)}
+.pz-stage.free .gate-scan{animation:gateScan 1.6s var(--ease) .3s 2}
+@keyframes gateScan{0%{opacity:0;top:8%}15%{opacity:1}85%{opacity:1}100%{opacity:0;top:84%}}
+.gate-readout{position:absolute;left:50%;top:6%;transform:translateX(-50%);z-index:5;white-space:nowrap;
+  font-family:var(--f-mono);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cyan-soft);background:rgba(8,5,6,.72);border:1px solid rgba(52,227,214,.3);border-radius:4px;padding:4px 9px;
+  opacity:0;transition:opacity .4s var(--ease) .8s,color .3s var(--ease),border-color .3s var(--ease)}
+.pz-stage.free .gate-readout{opacity:.92}
+.pz-stage.unlocked .gate-readout{color:var(--cyan);border-color:rgba(52,227,214,.6)}
+.pz-stage.sealed .gate-readout{color:var(--ember-soft);border-color:rgba(255,122,26,.6)}
+.gate-threshold{position:absolute;left:13%;right:13%;bottom:7%;z-index:5;display:flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:#fff;cursor:pointer;pointer-events:none;
+  padding:9px 12px;border-radius:5px;border:1px solid rgba(255,120,70,.6);
+  background:linear-gradient(180deg,rgba(209,20,48,.38),rgba(124,11,27,.26));
+  box-shadow:0 0 24px -6px var(--blood-bright),inset 0 0 14px -6px rgba(255,255,255,.4);
+  opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease),transform .4s var(--ease),filter .2s var(--ease)}
+.pz-stage.unlocked .gate-threshold{opacity:1;transform:none;pointer-events:auto;animation:thrPulse 1.8s ease-in-out 1.5s infinite}
+@keyframes thrPulse{0%,100%{box-shadow:0 0 22px -6px var(--blood-bright),inset 0 0 14px -6px rgba(255,255,255,.4)}50%{box-shadow:0 0 40px -2px var(--blood-bright),inset 0 0 18px -4px rgba(255,255,255,.6)}}
+.gate-threshold:hover{filter:brightness(1.16)}
+.gate-threshold .gt-tri{width:0;height:0;border-left:7px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent}
+/* re-lock flicker on a denied attempt */
+.pz-stage.denied .gate-shutter{animation:irisDeny .9s var(--ease) both}
+.pz-stage.denied .gate-light{animation:lightFlick .9s steps(2,end) both}
+.pz-stage.denied .pz-btn img{animation:coreDeny .9s steps(2,end) both}
 
-/* the door the key unlocks */
-.pz-portal{position:absolute;left:20%;right:20%;top:6%;bottom:24%;z-index:3;perspective:620px;
-  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s var(--ease)}
-.pz-stage.free .pz-portal{opacity:1;visibility:visible;pointer-events:auto;cursor:pointer}
-.portal-light{position:absolute;inset:6% 4%;border-radius:6px;opacity:0;
-  background:radial-gradient(80% 70% at 50% 40%,rgba(255,240,210,.95),rgba(255,120,70,.5) 38%,rgba(209,20,48,.35) 64%,transparent 86%)}
-.portal-light::before{content:"";position:absolute;inset:0;mix-blend-mode:screen;
-  background:repeating-linear-gradient(90deg,transparent 0 8%,rgba(255,255,255,.18) 8% 9%,transparent 9% 18%);
-  -webkit-mask-image:radial-gradient(60% 80% at 50% 30%,#000,transparent 80%);mask-image:radial-gradient(60% 80% at 50% 30%,#000,transparent 80%)}
-.portal-light::after{content:"\2020";position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
-  font-family:var(--f-serif);font-size:clamp(1.4rem,6vw,2.4rem);color:rgba(10,7,8,.5);text-shadow:0 0 18px rgba(255,255,255,.6)}
-.pz-stage.unlocked .portal-light{animation:lightIn .7s var(--ease) .82s both}
-@keyframes lightIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
-.pz-stage.unlocked .pz-portal:hover .portal-light{filter:brightness(1.16)}
-.door{position:absolute;top:0;bottom:0;background:linear-gradient(180deg,#1a1210,#0c0807);box-shadow:inset 0 0 30px rgba(0,0,0,.7)}
-.door::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 7px)}
-.door-l{left:0;right:50%;border-right:1px solid rgba(255,180,120,.25);transform-origin:left center;border-radius:4px 0 0 4px}
-.door-r{left:50%;right:0;border-left:1px solid rgba(255,180,120,.25);transform-origin:right center;border-radius:0 4px 4px 0}
-.pz-stage.unlocked .door-l{animation:doorL .85s cubic-bezier(.7,0,.3,1) .7s both}
-.pz-stage.unlocked .door-r{animation:doorR .85s cubic-bezier(.7,0,.3,1) .7s both}
-@keyframes doorL{0%{transform:rotateY(0)}100%{transform:rotateY(-105deg)}}
-@keyframes doorR{0%{transform:rotateY(0)}100%{transform:rotateY(105deg)}}
-.pz-stage.sealed .door-l{animation:slamL .7s ease .5s both}
-.pz-stage.sealed .door-r{animation:slamR .7s ease .5s both}
-@keyframes slamL{0%{transform:rotateY(0)}25%{transform:rotateY(-13deg)}45%{transform:rotateY(0)}62%{transform:rotateY(-5deg)}100%{transform:rotateY(0)}}
-@keyframes slamR{0%{transform:rotateY(0)}25%{transform:rotateY(13deg)}45%{transform:rotateY(0)}62%{transform:rotateY(5deg)}100%{transform:rotateY(0)}}
-.pz-stage.sealed .door{box-shadow:inset 0 0 30px rgba(0,0,0,.7),inset 0 0 22px rgba(255,122,26,.35)}
-.portal-frame{position:absolute;inset:0;border:2px solid rgba(255,180,120,.3);border-radius:6px;opacity:0;box-shadow:0 0 24px -8px rgba(255,120,70,.5)}
-.pz-stage.free .portal-frame{animation:frameIn .5s ease .55s both}
-@keyframes frameIn{from{opacity:0}to{opacity:1}}
-.pz-stage.sealed .portal-frame{border-color:rgba(255,122,26,.5);box-shadow:0 0 26px -6px rgba(255,122,26,.6)}
-.portal-lock{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);z-index:2;pointer-events:none;
-  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ember-soft);
-  background:rgba(8,5,6,.82);border:1px solid rgba(255,122,26,.5);border-radius:5px;padding:5px 9px;box-shadow:0 0 16px -6px var(--ember);opacity:0}
-.pz-stage.sealed .portal-lock{animation:lockIn .5s ease 1.1s both}
-@keyframes lockIn{from{opacity:0;transform:translate(-50%,-50%) scale(.8)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-
-.pz-btn{position:absolute;top:13%;left:24%;right:24%;z-index:1;line-height:0;pointer-events:none;
-  filter:drop-shadow(0 8px 20px rgba(0,0,0,.55));transition:filter .4s var(--ease)}
+/* the key — held gem in grip, aperture core once freed (no rotation) */
+.pz-btn{position:absolute;left:50%;top:33%;width:52%;z-index:3;line-height:0;pointer-events:none;
+  transform:translate(-50%,-50%);filter:drop-shadow(0 8px 20px rgba(0,0,0,.55));
+  transition:top .7s var(--ease-soft),width .7s var(--ease-soft),filter .5s var(--ease)}
 .pz-btn img{width:100%;height:auto;display:block}
-.pz-stage.free .pz-btn{z-index:4}
-.pz-stage.unlocked .pz-btn{animation:keyTurnOpen 1.15s var(--ease-soft) .2s both}
-@keyframes keyTurnOpen{
-  0%{transform:none;filter:drop-shadow(0 8px 20px rgba(0,0,0,.55))}
-  35%{transform:rotate(95deg) scale(1.12);filter:drop-shadow(0 0 26px rgba(255,120,70,.95))}
-  70%{transform:rotate(90deg) scale(.82);filter:drop-shadow(0 0 30px rgba(255,200,120,.95))}
-  100%{transform:rotate(90deg) scale(.7);filter:drop-shadow(0 0 22px rgba(255,220,150,.9))}}
-.pz-stage.sealed .pz-btn{animation:keyTurnSealed 1.1s var(--ease) .2s both}
-@keyframes keyTurnSealed{
-  0%{transform:none;filter:drop-shadow(0 8px 20px rgba(0,0,0,.55))}
-  30%{transform:rotate(70deg) scale(1.08);filter:drop-shadow(0 0 22px rgba(255,122,26,.9))}
-  55%{transform:rotate(70deg)}
-  75%{transform:rotate(8deg)}
-  100%{transform:rotate(0);filter:drop-shadow(0 0 12px rgba(255,122,26,.5))}}
+.pz-stage.free .pz-btn{top:46%;width:30%;filter:drop-shadow(0 0 22px rgba(255,120,70,.85))}
+.pz-stage.free .pz-btn img{animation:coreFloat 3.2s ease-in-out .9s infinite alternate}
+@keyframes coreFloat{from{transform:translateY(-2px)}to{transform:translateY(3px)}}
+.pz-stage.unlocked .pz-btn{filter:drop-shadow(0 0 30px rgba(255,200,120,.95))}
+.pz-stage.unlocked .pz-btn img{animation:coreFloat 3.2s ease-in-out .9s infinite alternate, coreGlow 2.2s ease-in-out 1s infinite}
+@keyframes coreGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
+.pz-stage.sealed .pz-btn{filter:drop-shadow(0 0 16px rgba(255,122,26,.6))}
+.pz-stage.sealed .pz-btn img{animation:coreDeny 1.4s steps(2,end) .5s both}
+@keyframes coreDeny{0%{filter:brightness(1)}30%{filter:brightness(1.5) sepia(.4) hue-rotate(-30deg)}60%{filter:brightness(.7)}100%{filter:brightness(.9) sepia(.3)}}
 
-.pz-hand{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;z-index:2;
+/* the dead hand sits above every gate layer */
+.pz-hand{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;z-index:6;
   pointer-events:none;opacity:1;filter:contrast(1.06) saturate(1.1) drop-shadow(0 4px 14px rgba(0,0,0,.5))}
 .pz-stage.free .pz-hand{animation:handFall .95s cubic-bezier(.55,.05,.6,.2) .12s both}
 @keyframes handFall{
@@ -775,7 +810,6 @@ body::after{
 .f3{left:55%;height:86%}
 .f4{left:70%;width:14%;height:54%;transform:rotate(18deg)}
 
-/* tap affordance — makes the grips the obvious thing to press */
 .tap-hint{position:absolute;left:50%;top:-13px;transform:translateX(-50%);width:22px;height:22px;pointer-events:none;opacity:0;
   background:radial-gradient(circle,rgba(52,227,214,.30),transparent 70%);transition:opacity .3s var(--ease)}
 .has-hand .fpos:not(.cleared) .tap-hint{opacity:1}
@@ -863,14 +897,6 @@ body::after{
 @keyframes pzShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
 @media(max-width:430px){.pz-auth .pa-state{display:none}.pz-auth .pa-lbl{letter-spacing:.1em;font-size:.58rem}}
 
-.con-err{position:absolute;left:12px;right:12px;top:6px;z-index:9;display:flex;align-items:center;gap:6px;
-  font-family:var(--f-mono);font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:#ffd2d8;
-  background:rgba(124,11,27,.88);border:1px solid var(--blood-bright);border-radius:4px;padding:6px 9px;
-  box-shadow:0 8px 22px -10px rgba(0,0,0,.75);
-  opacity:0;transform:translateY(-6px);transition:opacity .3s var(--ease),transform .3s var(--ease);pointer-events:none}
-.con-err::before{content:"\2715";color:#fff;font-weight:700}
-.con-err.show{opacity:1;transform:none}
-
 .con-foot{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;
   padding:7px 12px;border-top:1px solid rgba(52,227,214,.1);
   font-family:var(--f-mono);font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bone-faint);flex:none}
@@ -919,13 +945,16 @@ body::after{
   #preloader{display:none}
   .wordmark,.socials{opacity:1!important;transform:none!important}
   .pz-stage.free .pz-hand{opacity:0}
-  .pz-stage.free .pz-portal{opacity:1;visibility:visible}
-  .pz-stage.free .portal-frame{opacity:1}
-  .pz-stage.free .pz-btn{transform:rotate(90deg) scale(.7)}
-  .pz-stage.unlocked .portal-light{opacity:1}
-  .pz-stage.unlocked .door-l{transform:rotateY(-105deg)}
-  .pz-stage.unlocked .door-r{transform:rotateY(105deg)}
-  .pz-stage.sealed .portal-lock{opacity:1}
+  .pz-stage.free .gate{opacity:1}
+  .pz-stage.free .gate-grid,.pz-stage.free .gate-wall{opacity:1}
+  .pz-stage.free .gate-ring{opacity:1}
+  .pz-stage.free .gate-readout{opacity:.92}
+  .pz-stage.free .pz-btn{top:46%;width:30%}
+  .pz-stage.unlocked .gate-light{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .pz-stage.unlocked .gate-shutter{clip-path:circle(0% at 50% 50%)}
+  .pz-stage.unlocked .gate-threshold{opacity:1;transform:none;pointer-events:auto}
+  .pz-stage.sealed .gate-light{opacity:.26}
+  .pz-stage.sealed .gate-shutter{clip-path:circle(40% at 50% 50%)}
   .coin-orbit .coin{opacity:1}
 }
 </style>
@@ -1204,6 +1233,7 @@ body::after{
       <span class="con-rec"><i></i>REC</span>
       <span class="con-clock" id="pzClock">link 00:00</span>
     </div>
+    <div class="con-err" id="pzErr" role="alert" aria-hidden="true"></div>
     <div class="con-body">
       <aside class="con-id">
         <div class="id-seal"><span class="id-diamond"></span><span class="id-name">NIL//SEC<small>secure systems</small></span></div>
@@ -1216,22 +1246,22 @@ body::after{
         </ul>
       </aside>
       <div class="con-auth">
-        <div class="con-err" id="pzErr" aria-hidden="true"></div>
         <div class="auth-head"><span class="auth-k">authentication</span><span class="auth-mode">legacy creds disabled</span></div>
         <div class="feed" id="pzFeed">
           <span class="feed-tag tl" id="pzSensorTag">grip_sensor // engaged</span>
           <span class="feed-tag tr"><span class="recdot"></span>REC</span>
           <div class="pz-stage" id="pzStage">
-            <span class="hand-glow" aria-hidden="true"></span>
-            <span class="pz-window" aria-hidden="true"></span>
-            <span class="pz-wall" aria-hidden="true"></span>
-            <span class="palm" aria-hidden="true"></span>
-            <div class="pz-portal" id="pzPortal" role="button" tabindex="-1" aria-label="the door">
-              <span class="portal-light" aria-hidden="true"></span>
-              <span class="door door-l" aria-hidden="true"></span>
-              <span class="door door-r" aria-hidden="true"></span>
-              <span class="portal-frame" aria-hidden="true"></span>
-              <span class="portal-lock" aria-hidden="true">sealed †</span>
+            <div class="gate" aria-hidden="true">
+              <span class="gate-grid"></span>
+              <span class="gate-wall l"></span>
+              <span class="gate-wall r"></span>
+              <span class="gate-light"></span>
+              <span class="gate-shutter"></span>
+              <span class="gate-ring r1"></span>
+              <span class="gate-ring r2"></span>
+              <span class="gate-scan"></span>
+              <span class="gate-readout" id="gateReadout">aperture // standby</span>
+              <span class="gate-threshold" id="gateThreshold" role="button" tabindex="-1" aria-label="cross the threshold"><span class="gt-tri"></span>cross the threshold</span>
             </div>
             <a class="pz-btn" id="pzBtn" aria-label="the key"><img src="art/button.png" alt="" draggable="false"></a>
             <img class="pz-hand" id="pzHand" src="art/grip.png" alt="" draggable="false"
@@ -1293,17 +1323,17 @@ body::after{
     slot.appendChild(coinNode());
     if(animate&&from) flyTo(from,slot);
   }
+  function syncLogo(){ if(logo){ logo.classList.toggle('has-coin', set.size>=1); logo.classList.toggle('done', complete()); } }
   function render(){
     orbits.forEach(function(slot,i){ if(set.has(SECRETS[i])) fillSlot(i,false,null); });
-    if(logo) logo.classList.toggle('done',complete());
+    syncLogo();
   }
   function mark(id,fromEl){
     var i=SECRETS.indexOf(id); if(i<0||set.has(id)) return;
     set.add(id); save();
     fillSlot(i,true,fromEl);
-    var done=complete();
-    if(logo) logo.classList.toggle('done',done);
-    toastMsg(done? ('all '+SECRETS.length+' found — the key turns †') : (set.size+' of '+SECRETS.length+' — keep digging †'));
+    syncLogo();
+    toastMsg(complete()? ('all '+SECRETS.length+' found — the key turns †') : (set.size+' of '+SECRETS.length+' — keep digging †'));
     emit();
   }
   render(); emit();
@@ -1629,7 +1659,8 @@ body::after{
 (function(){
   var ov=document.getElementById('puzzle'); if(!ov) return;
   var stage=document.getElementById('pzStage');
-  var portal=document.getElementById('pzPortal');
+  var readout=document.getElementById('gateReadout');
+  var threshold=document.getElementById('gateThreshold');
   var sensorTag=document.getElementById('pzSensorTag');
   var amFill=document.getElementById('amFill');
   var amPct=document.getElementById('amPct');
@@ -1646,6 +1677,7 @@ body::after{
   var freed=false, busy=false, puzzleWon=false;
   var clawbacks=0, firstFreeDone=false;
   var MERCY=4, gen=0, clock=null, clockStart=0, errT=null;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var PWON='nv_puzzle_won';
   var SECRET='bd289'+'kouw.html';
 
@@ -1655,6 +1687,7 @@ body::after{
 
   function fmt(s,a){return String(s).split('%a').join(a);}
   function loreN(){return window.__lore&&window.__lore.count?window.__lore.count():0;}
+  function loreTotal(){return (window.__lore&&window.__lore.total)||3;}
   function loreDone(){return !!(window.__lore&&window.__lore.isComplete());}
   function pWon(){ try{ return localStorage.getItem(PWON)==='1'; }catch(e){ return false; } }
   function setPWon(){ try{ localStorage.setItem(PWON,'1'); }catch(e){} }
@@ -1675,20 +1708,17 @@ body::after{
   function recoil(){stage.classList.remove('recoil');void stage.offsetWidth;stage.classList.add('recoil');}
   function lockScroll(){document.body.style.overflow='hidden';if(window.__lenis)window.__lenis.stop();}
   function unlockScroll(){document.body.style.overflow='';if(window.__lenis)window.__lenis.start();}
-  function setAuthState(mode){
-    authBtn.classList.remove('locked','ready','cleared','busy');authBtn.classList.add(mode);
-  }
+  function setAuthState(mode){ authBtn.classList.remove('locked','ready','cleared','busy');authBtn.classList.add(mode); }
   function setLabels(mode){
     if(!paLbl||!paState) return;
-    if(mode==='cleared'){ paLbl.textContent='step through'; paState.textContent='door open'; }
-    else if(mode==='ready'){ paLbl.textContent='door is sealed'; paState.textContent='find all secrets'; }
-    else if(mode==='busy'){ /* label set by attempt() */ }
-    else { paLbl.textContent='authenticate'; paState.textContent='awaiting credential'; }
+    if(mode==='cleared'){ paLbl.textContent='cross the threshold'; paState.textContent='aperture open'; }
+    else if(mode==='ready'){ paLbl.textContent='access sealed'; paState.textContent='find all secrets'; }
+    else if(mode!=='busy'){ paLbl.textContent='authenticate'; paState.textContent='awaiting credential'; }
   }
   function panelErr(text){
     if(!errEl)return;
-    errEl.textContent=text;errEl.classList.add('show');
-    clearTimeout(errT);var g=gen;errT=setTimeout(function(){if(g===gen)errEl.classList.remove('show');},2800);
+    errEl.textContent=text;errEl.classList.add('show');errEl.setAttribute('aria-hidden','false');
+    clearTimeout(errT);var g=gen;errT=setTimeout(function(){if(g===gen){errEl.classList.remove('show');errEl.setAttribute('aria-hidden','true');}},3400);
   }
   function shakeAuth(){ authBtn.classList.remove('shake'); void authBtn.offsetWidth; authBtn.classList.add('shake'); }
   function regrip(){
@@ -1699,10 +1729,7 @@ body::after{
     fingers[i].classList.add('claw');setTimeout(function(){fingers[i].classList.remove('claw');},420);
     recoil();return true;
   }
-  function maybeRegrip(chance){
-    if(chance>0 && Math.random()<chance && clawbacks<MERCY){ if(regrip()) return true; }
-    return false;
-  }
+  function maybeRegrip(chance){ if(chance>0 && Math.random()<chance && clawbacks<MERCY){ if(regrip()) return true; } return false; }
   function onFree(i,isKeeper){
     state[i]='out';applyVisual(i);syncAuth();
     if(state.every(function(s){return s==='out';})){ win(); return; }
@@ -1713,10 +1740,12 @@ body::after{
   }
   function applyDoorState(){
     var u=loreDone();
-    stage.classList.toggle('unlocked',u);
-    stage.classList.toggle('sealed',!u);
+    stage.classList.remove('unlocked','sealed','denied');
+    stage.classList.add(u?'unlocked':'sealed');
     setAuthState(u?'cleared':'ready');
     setLabels(u?'cleared':'ready');
+    if(readout) readout.textContent = u? 'aperture // online' : ('aperture // sealed — '+loreN()+'/'+loreTotal());
+    if(threshold) threshold.setAttribute('tabindex', u?'0':'-1');
   }
   function win(){
     freed=true;puzzleWon=true;setPWon();
@@ -1732,10 +1761,15 @@ body::after{
     if(grip===1){ state[i]='crack';applyVisual(i);syncAuth(); maybeRegrip(0.7); twitch(); return; }
     onFree(i,false);
   }
+  function denyFlick(){
+    if(reduce) return;
+    stage.classList.remove('denied'); void stage.offsetWidth; stage.classList.add('denied');
+    setTimeout(function(){ stage.classList.remove('denied'); },950);
+  }
   function attempt(){
     if(busy)return;
     if(!freed){ panelErr(ERR_NOCRED); shakeAuth(); return; }
-    if(!loreDone()){ panelErr(fmt(ERR_CLEAR,loreN())); recoil(); shakeAuth(); return; }
+    if(!loreDone()){ panelErr(fmt(ERR_CLEAR,loreN())); denyFlick(); recoil(); shakeAuth(); return; }
     busy=true; setAuthState('busy'); if(paLbl) paLbl.textContent=BUSY; if(paState) paState.textContent='';
     setTimeout(function(){ window.location.href=SECRET; },720);
   }
@@ -1746,7 +1780,7 @@ body::after{
   function openPuzzle(){
     gen++;busy=false;
     freed=puzzleWon||pWon(); if(freed) puzzleWon=true;
-    stage.classList.remove('free','unlocked','sealed','recoil','twitch'); void stage.offsetWidth;
+    stage.classList.remove('free','unlocked','sealed','denied','recoil','twitch'); void stage.offsetWidth;
     state=fingers.map(function(){return freed?'out':'grip';});
     if(!freed){clawbacks=0;firstFreeDone=false;}
     fingers.forEach(function(f,i){applyVisual(i);});
@@ -1754,16 +1788,13 @@ body::after{
     stage.classList.toggle('free',freed);
     if(idOp){ if(freed){idOp.textContent='authenticated';idOp.className='granted';} else {idOp.textContent='unauthenticated';idOp.className='denied';} }
     if(freed){ applyDoorState(); }
-    else { setAuthState('locked'); setLabels('locked'); }
-    if(errEl)errEl.classList.remove('show');
+    else { setAuthState('locked'); setLabels('locked'); if(readout) readout.textContent='aperture // standby'; if(threshold) threshold.setAttribute('tabindex','-1'); }
+    if(errEl){errEl.classList.remove('show');errEl.setAttribute('aria-hidden','true');}
     ov.classList.add('show');ov.setAttribute('aria-hidden','false');lockScroll();
     startClock();
   }
   function closePuzzle(){gen++;stopClock();ov.classList.remove('show');ov.setAttribute('aria-hidden','true');unlockScroll();}
-  function refreshOnLore(){
-    if(!ov.classList.contains('show')||!freed) return;
-    applyDoorState();
-  }
+  function refreshOnLore(){ if(!ov.classList.contains('show')||!freed) return; applyDoorState(); }
   window.__openPuzzle=openPuzzle;
   window.addEventListener('nv-lore',refreshOnLore);
 
@@ -1772,9 +1803,9 @@ body::after{
     f.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tap(i);}});
   });
   if(authBtn) authBtn.addEventListener('click',attempt);
-  if(portal){
-    portal.addEventListener('click',attempt);
-    portal.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); attempt(); } });
+  if(threshold){
+    threshold.addEventListener('click',attempt);
+    threshold.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); attempt(); } });
   }
   if(closeBtn) closeBtn.addEventListener('click',closePuzzle);
 })();
