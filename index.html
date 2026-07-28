@@ -162,21 +162,18 @@ body::after{
 .coin-slot:nth-of-type(5){transform:translate(1px,-16px) rotate(6deg)}
 .coin{position:absolute;inset:0;display:block}
 .coin img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
-/* worn-bronze fallback token when coin.png is absent */
 .coin.nocoin{border-radius:50%;
   background:radial-gradient(circle at 35% 30%, #f3d9a0, #c79a4e 45%, #8a6326 75%, #5e4017);
   box-shadow:inset 0 0 0 1px rgba(0,0,0,.4),inset 0 1px 2px rgba(255,255,255,.4),inset 0 -2px 3px rgba(0,0,0,.4),0 2px 3px rgba(0,0,0,.55)}
 .coin.nocoin img{display:none}
 .coin.nocoin::after{content:"";position:absolute;left:50%;top:50%;width:34%;height:34%;transform:translate(-50%,-50%) rotate(45deg);
   background:var(--blood-bright);box-shadow:0 0 4px rgba(255,39,71,.7),inset 0 0 1px rgba(0,0,0,.5)}
-/* a freshly dropped coin falls + settles with an overshoot; an impact ring blooms on landing */
 .coin-slot.drop .coin{animation:coinDrop .55s cubic-bezier(.34,1.45,.5,1) both}
 @keyframes coinDrop{0%{transform:translateY(-44px) rotate(-24deg);opacity:0}52%{opacity:1}78%{transform:translateY(2px) rotate(3deg)}100%{transform:translateY(0) rotate(0)}}
 .coin-slot.drop::after{content:"";position:absolute;inset:0;border-radius:50%;
   border:1px solid rgba(255,210,120,.75);box-shadow:0 0 8px rgba(255,180,80,.5);
   opacity:0;transform:scale(.5);pointer-events:none;animation:coinImpact .5s .34s ease-out both}
 @keyframes coinImpact{0%{opacity:.85;transform:scale(.5)}100%{opacity:0;transform:scale(1.75)}}
-/* case closed: the whole pile gives a one-time gold cheer */
 .brand-stack.done .coin-slot{animation:coinCheer .7s var(--ease) both}
 .brand-stack.done .coin-slot:nth-of-type(2){animation-delay:.06s}
 .brand-stack.done .coin-slot:nth-of-type(3){animation-delay:.12s}
@@ -767,11 +764,31 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .pz-btn{position:absolute;top:13%;left:24%;right:24%;z-index:1;line-height:0;pointer-events:none;
   filter:drop-shadow(0 10px 24px rgba(0,0,0,.6));transition:filter .4s var(--ease)}
 .pz-btn img{width:100%;height:auto;display:block}
-.pz-stage.free .pz-btn{filter:drop-shadow(0 0 26px rgba(209,20,48,.65));animation:pzFloat 2.4s ease-in-out infinite alternate}
-@keyframes pzFloat{from{transform:translateY(-3px)}to{transform:translateY(3px)}}
+/* grip won: the gem is released — it rises, blooms, throws off shock-rings and breathes,
+   while the dead hand lets go and falls out of frame to reveal it */
+.pz-btn::before{content:"";position:absolute;left:50%;top:50%;width:78%;aspect-ratio:1;border-radius:50%;
+  transform:translate(-50%,-50%) scale(.5);opacity:0;pointer-events:none;
+  border:1px solid rgba(255,120,70,.55);box-shadow:0 0 22px rgba(255,39,71,.4)}
+.pz-stage.free .pz-btn{filter:drop-shadow(0 0 26px rgba(209,20,48,.65));animation:gemReveal .85s var(--ease-soft) both}
+.pz-stage.free .pz-btn::before{animation:gemRing 1.1s cubic-bezier(.22,.61,.36,1) .12s 2}
+.pz-stage.free .pz-btn img{animation:pzFloat 2.4s ease-in-out .8s infinite alternate}
+@keyframes gemReveal{
+  0%{transform:translateY(12%) scale(.55);opacity:0;filter:drop-shadow(0 0 2px rgba(209,20,48,.2))}
+  52%{transform:translateY(-5%) scale(1.14);opacity:1;filter:drop-shadow(0 0 46px rgba(255,39,71,.95))}
+  100%{transform:translateY(0) scale(1);opacity:1;filter:drop-shadow(0 0 26px rgba(209,20,48,.65))}}
+@keyframes gemRing{0%{transform:translate(-50%,-50%) scale(.5);opacity:.85}100%{transform:translate(-50%,-50%) scale(1.7);opacity:0}}
+@keyframes pzFloat{
+  0%{transform:translateY(-3px);filter:drop-shadow(0 0 8px rgba(255,39,71,.35))}
+  100%{transform:translateY(4px);filter:drop-shadow(0 0 30px rgba(255,39,71,.9))}}
 /* the hand photo: fully opaque, in front of the gem, casting its own shadow onto it */
 .pz-hand{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;z-index:2;
   pointer-events:none;opacity:1;filter:contrast(1.08) saturate(1.14) drop-shadow(0 5px 16px rgba(0,0,0,.55))}
+/* the dead hand releases its grip and falls out of frame once the key is extracted */
+.pz-stage.free .pz-hand{animation:handFall .95s cubic-bezier(.55,.05,.6,.2) .12s both}
+@keyframes handFall{
+  0%{transform:translateY(0) rotate(0);opacity:1}
+  26%{transform:translateY(3%) rotate(-1.5deg);opacity:1}
+  100%{transform:translateY(140%) rotate(8deg);opacity:0}}
 /* invisible tap zones on top of the hand; when the photo shows they carry no art */
 .fpos{position:absolute;bottom:0;width:13%;z-index:4;transform-origin:bottom center}
 .f0{left:19%;height:50%;transform:rotate(-16deg)}
@@ -810,6 +827,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 .has-hand .finger::before,.has-hand .finger::after,.has-hand .fpos::before,.has-hand .fpos::after{display:none}
 .pz-stage.twitch .finger:not(.out):not(.crack){animation:twitch .2s}
 @keyframes twitch{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+/* forensic clear-scan per column — the feedback that a finger was freed over the static photo */
 .scan-col{position:absolute;inset:0;display:none;pointer-events:none;opacity:0;transition:opacity .3s var(--ease);
   background:linear-gradient(180deg,rgba(8,12,13,.0),rgba(8,12,13,.62) 70%,rgba(8,12,13,.78))}
 .has-hand .scan-col{display:block}
@@ -822,6 +840,8 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
   font-family:var(--f-mono);font-size:.7rem;color:var(--cyan);opacity:0;transition:opacity .3s .12s var(--ease);
   text-shadow:0 0 8px var(--cyan)}
 .fpos.cleared .scan-col::after{opacity:.92}
+/* when the grip is won the hand drops away, so clear the per-column overlays to reveal the gem */
+.pz-stage.free .fpos .scan-col{opacity:0;transition:opacity .45s var(--ease)}
 
 .auth-meter{display:flex;align-items:center;gap:10px;margin-top:12px}
 .am-k{font-family:var(--f-mono);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bone-faint);white-space:nowrap}
@@ -1627,7 +1647,9 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
 /* ============ GRIP PUZZLE — restricted admin console ============ */
 /* the grip is the credential; the AUTHENTICATE button is the submit. a freed finger the dead claw
    back reads as a rejected credential. the photo is a static specimen in front of the gem; per-finger
-   feedback comes from the clear-scan columns + the auth bar + the readout. the console closes ONLY
+   feedback comes from the clear-scan columns + the auth bar + the readout. winning the grip releases
+   the key (it rises + pulses) and drops the hand away — regardless of lore. the four-secret lock gates
+   ONLY the door: AUTHENTICATE navigates only when every secret is recovered. the console closes ONLY
    via the ✕. the boot log is typed once and the session clock ticks only while open — both cancelled
    the instant it closes. */
 (function(){
@@ -1681,7 +1703,8 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
   var BOOT=["> boot NIL//OS v3.1.7-cold","> mount /dev/cold_storage ... ok","> handshake 0xDEAD ... ok","> biometric module ... OFFLINE","> legacy creds ... DISABLED","> fallback ... PHYSICAL_OVERRIDE","> awaiting operator ..."];
 
   function pick(a){return a[Math.floor(Math.random()*a.length)];}
-  function fmt(s,n,a){return String(s).replace('%',n).replace('%a',a);}
+  /* %a = lore/artifact count, % = freed-finger count; resolve %a first so the two never collide */
+  function fmt(s,n,a){return String(s).split('%a').join(a).split('%').join(n);}
   function loreN(){return window.__lore&&window.__lore.count?window.__lore.count():0;}
   function loreDone(){return !!(window.__lore&&window.__lore.isComplete());}
   function freedN(){var n=0;state.forEach(function(s){if(s==='out')n++;});return n;}
@@ -1745,7 +1768,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     if(idOp){idOp.textContent='authenticated';idOp.className='granted';}
     if(window.__winGrasp)window.__winGrasp();
     if(loreDone()){setReadout(pick(WIN_SYS_C),pick(WIN_FLV_C));setAuthState('cleared');}
-    else {setReadout(fmt(pick(WIN_SYS_L),5,loreN()),pick(WIN_FLV_L));setAuthState('ready');}
+    else {setReadout(fmt(pick(WIN_SYS_L),freedN(),loreN()),pick(WIN_FLV_L));setAuthState('ready');}
   }
   function tap(i){
     if(busy)return;
@@ -1779,7 +1802,7 @@ body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
     syncAuth();
     stage.classList.toggle('free',freed);
     if(idOp){if(freed){idOp.textContent='authenticated';idOp.className='granted';}else{idOp.textContent='unauthenticated';idOp.className='denied';}}
-    if(freed){ if(loreDone()){setReadout(pick(WIN_SYS_C),pick(WIN_FLV_C));setAuthState('cleared');} else {setReadout(fmt(pick(WIN_SYS_L),5,loreN()),pick(WIN_FLV_L));setAuthState('ready');} }
+    if(freed){ if(loreDone()){setReadout(pick(WIN_SYS_C),pick(WIN_FLV_C));setAuthState('cleared');} else {setReadout(fmt(pick(WIN_SYS_L),freedN(),loreN()),pick(WIN_FLV_L));setAuthState('ready');} }
     else if(fromReveal){setReadout(pick(REVEAL_SYS),REVEAL_FLV);setAuthState('locked');}
     else {setReadout(INSTR_SYS,INSTR_FLV);setAuthState('locked');}
     if(paLbl)paLbl.textContent='authenticate';
