@@ -61,12 +61,16 @@
   --f-serif:'Instrument Serif', serif;
   --f-body:'Space Grotesk', sans-serif;
   --f-egg:'Creepster', cursive;
+  --f-mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,'Liberation Mono',monospace;
 
   --rad:clamp(14px,2.2vw,22px);
   --panel-bg:rgba(18,13,12,.88);
   --panel-bg2:rgba(14,10,9,.92);
   --panel-edge:1px solid rgba(255,255,255,.09);
   --panel-shadow:0 24px 60px -36px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.07);
+
+  /* nav trophy key width (≈3×+ the old diamond) */
+  --keyw:clamp(52px,12vw,72px);
 
   /* art asset map */
   --art-hero:url('art/hero.jpg');
@@ -133,10 +137,13 @@ body::after{
   box-shadow:0 0 10px rgba(255,39,71,.5)}
 
 /* ============ LORE METER ============ */
-/* objective tracker; persisted per browser via localStorage (no server profile) */
+/* hidden until the first secret is found; persisted per browser via localStorage (no server profile) */
 .lore{position:fixed;right:14px;bottom:14px;z-index:65;display:flex;align-items:center;gap:7px;
   padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:rgba(8,5,6,.6);
-  box-shadow:0 8px 24px -12px rgba(0,0,0,.7)}
+  box-shadow:0 8px 24px -12px rgba(0,0,0,.7);
+  opacity:0;visibility:hidden;transform:translateY(8px);
+  transition:opacity .5s var(--ease),transform .5s var(--ease),visibility .5s}
+.lore.show{opacity:1;visibility:visible;transform:none}
 .lore-gem{width:9px;height:9px;transform:rotate(45deg);border:1px solid var(--bone-faint);background:transparent;
   transition:background .4s var(--ease),box-shadow .4s var(--ease),border-color .4s var(--ease)}
 .lore-gem.filled{background:var(--blood-bright);border-color:var(--blood-bright);box-shadow:0 0 10px var(--blood-bright)}
@@ -157,25 +164,27 @@ body::after{
   padding:16px clamp(16px,5vw,46px);border-bottom:1px solid transparent;
   transition:background var(--dur-1) var(--ease),border-color var(--dur-1) var(--ease),padding var(--dur-1) var(--ease)}
 .topbar.scrolled{background:rgba(8,5,6,.82);border-bottom-color:var(--line);padding-top:12px;padding-bottom:12px}
-.brand-mini{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;font-size:.74rem}
-.brand-mini .gem{width:8px;height:8px;background:var(--blood-bright);transform:rotate(45deg);box-shadow:0 0 8px var(--blood-bright);
-  transition:opacity var(--dur-1) var(--ease)}
-/* the trophy key that replaces the diamond once the grip is won */
+.brand-mini{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;font-size:.74rem;
+  transition:padding var(--dur-1) var(--ease)}
+.brand-mini .gem{width:8px;height:8px;background:var(--blood-bright);transform:rotate(45deg);box-shadow:0 0 8px var(--blood-bright)}
+/* nav trophy: replaces the diamond once the grip is won; opens the grip screen */
 .brand-key{position:absolute;left:clamp(16px,5vw,46px);top:50%;transform:translateY(-50%);z-index:5;
-  width:16px;height:16px;display:grid;place-items:center;cursor:pointer;
-  filter:drop-shadow(0 0 8px rgba(209,20,48,.5));transition:transform var(--dur-1) var(--ease),filter var(--dur-1) var(--ease)}
-.brand-key img{width:100%;height:100%;object-fit:contain;display:block;animation:keyPulse 2.4s ease-in-out infinite}
-@keyframes keyPulse{0%,100%{filter:drop-shadow(0 0 5px rgba(209,20,48,.4));transform:translateY(0)}50%{filter:drop-shadow(0 0 13px rgba(255,39,71,.85));transform:translateY(-2px)}}
-.brand-key:hover{transform:translateY(-50%) scale(1.18)}
-.brand-key:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:3px}
+  width:var(--keyw);line-height:0;cursor:pointer;filter:drop-shadow(0 0 10px rgba(209,20,48,.55));
+  transition:transform var(--dur-1) var(--ease)}
+.brand-key img{width:100%;height:auto;display:block;animation:keyBob 2.6s ease-in-out infinite}
+@keyframes keyBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-3px) rotate(2deg)}}
+.brand-key:hover{transform:translateY(-50%) scale(1.1)}
+.brand-key:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:4px}
 body:not(.key-won) .brand-key{display:none}
-body.key-won .brand-mini .gem{opacity:0}
-.brand-key-hint{position:absolute;left:clamp(16px,5vw,46px);top:calc(100% + 6px);z-index:5;
-  font-family:var(--f-serif);font-style:italic;font-size:.72rem;color:var(--cyan-soft);white-space:nowrap;
-  background:rgba(8,5,6,.85);border:1px solid var(--line);border-radius:8px;padding:5px 9px;
-  opacity:0;pointer-events:none;transition:opacity .4s var(--ease);max-width:70vw;overflow:hidden;text-overflow:ellipsis}
+body.key-won .brand-mini .gem{display:none}
+body.key-won .brand-mini{padding-left:calc(var(--keyw) + 10px)}
+.brand-key-hint{position:absolute;left:clamp(16px,5vw,46px);top:calc(100% + 8px);z-index:5;
+  font-family:var(--f-serif);font-style:italic;font-size:.74rem;color:var(--cyan-soft);white-space:nowrap;
+  background:rgba(8,5,6,.92);border:1px solid var(--line);border-radius:8px;padding:6px 10px;
+  box-shadow:0 10px 30px -12px rgba(0,0,0,.8);
+  opacity:0;pointer-events:none;transition:opacity .4s var(--ease);max-width:78vw;overflow:hidden;text-overflow:ellipsis}
 .brand-key-hint.show{opacity:1}
-.brand-key-hint::before{content:"";position:absolute;left:10px;top:-5px;width:8px;height:8px;background:rgba(8,5,6,.85);
+.brand-key-hint::before{content:"";position:absolute;left:14px;top:-5px;width:8px;height:8px;background:rgba(8,5,6,.92);
   border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
 .topnav{display:flex;align-items:center;gap:clamp(14px,3vw,30px)}
 .topnav a{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--bone-dim);transition:color var(--dur-1) var(--ease)}
@@ -566,12 +575,13 @@ body.key-won .brand-mini .gem{opacity:0}
 .seal-img{position:absolute;inset:0;background-image:var(--art-contact);background-size:contain;background-repeat:no-repeat;background-position:center;
   filter:drop-shadow(0 8px 18px rgba(0,0,0,.5));transition:opacity .3s var(--ease),transform .5s var(--ease)}
 .seal-img.open{background-image:var(--art-contact-open)}
-.seal .wax{position:absolute;left:50%;top:50%;width:26%;aspect-ratio:1/1;transform:translate(-50%,-50%);border-radius:50%;
-  background:radial-gradient(circle at 38% 34%,var(--blood-bright),var(--blood-deep));
-  box-shadow:0 0 14px rgba(209,20,48,.5),inset 0 -2px 4px rgba(0,0,0,.4);
+/* small flat wax seal on the flap seam */
+.seal .wax{position:absolute;left:50%;top:55%;width:15%;height:11%;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle at 42% 38%,#c01430,#7c0b1b 70%);
+  box-shadow:inset 0 -1px 2px rgba(0,0,0,.4);opacity:.92;
   transition:transform .45s var(--ease),opacity .3s var(--ease)}
 .seal.broke .seal-img{opacity:.4;transform:scale(.96)}
-.seal.broke .wax{transform:translate(-50%,-50%) rotate(18deg) scale(.55);opacity:0}
+.seal.broke .wax{transform:translate(-50%,-50%) rotate(18deg) scale(.5);opacity:0}
 
 .cform{display:grid;grid-template-columns:1fr;gap:14px}
 .cfield{display:flex;flex-direction:column;gap:7px}
@@ -598,42 +608,85 @@ body.key-won .brand-mini .gem{opacity:0}
 .cstatus.err{color:var(--blood-bright)}
 @media(min-width:680px){.cform{grid-template-columns:1fr 1fr}.cfield.full{grid-column:1/-1}.cfoot{grid-column:1/-1}}
 
-/* ============ GRIP PUZZLE ============ */
-#puzzle{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
-  padding:24px;background:rgba(4,2,3,.95);opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s}
-#puzzle::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(60% 50% at 50% 45%,rgba(124,11,27,.4),transparent 70%)}
+/* ============ GRIP PUZZLE — classified terminal ============ */
+/* all motion here is transform/opacity and only runs while #puzzle.show, so a closed puzzle costs nothing */
+#puzzle{position:fixed;inset:0;z-index:320;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0 1px, transparent 1px 3px),
+    radial-gradient(70% 60% at 50% 42%, rgba(124,11,27,.22), transparent 70%),
+    rgba(4,2,3,.96);
+  opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s}
 #puzzle.show{opacity:1;visibility:visible}
-.pz-close{position:absolute;top:18px;right:18px;z-index:4;appearance:none;background:none;border:1px solid var(--line);border-radius:999px;
-  color:var(--bone-dim);cursor:pointer;width:40px;height:40px;font-size:1.1rem;line-height:1;font-family:var(--f-body);transition:var(--dur-1) var(--ease)}
-.pz-close:hover{border-color:var(--blood-bright);color:var(--bone)}
-.pz-kicker{position:relative;z-index:1;font-family:var(--f-egg);font-style:normal;letter-spacing:.04em;
-  font-size:clamp(1.3rem,5vw,2rem);color:var(--blood-bright);
-  text-shadow:0 0 14px rgba(255,39,71,.6),0 0 30px rgba(209,20,48,.4)}
-.pz-stage{position:relative;z-index:1;width:clamp(240px,76vw,340px);aspect-ratio:5/4;overflow:hidden;border-radius:12px;
-  background:radial-gradient(120% 90% at 50% 30%, #1a0d0c 0%, #0a0505 70%, #050202 100%);
-  box-shadow: inset 0 0 70px 14px rgba(0,0,0,.9), 0 24px 60px -24px rgba(0,0,0,.8)}
+.pz-close{position:absolute;top:8px;right:8px;z-index:4;appearance:none;cursor:pointer;
+  width:30px;height:30px;display:grid;place-items:center;border-radius:6px;
+  background:rgba(8,5,6,.6);border:1px solid var(--line);color:var(--bone-faint);
+  font-family:var(--f-mono);font-size:.9rem;line-height:1;transition:var(--dur-1) var(--ease)}
+.pz-close:hover{border-color:var(--blood-bright);color:var(--blood-bright);box-shadow:0 0 14px -4px var(--blood-bright)}
+.console{position:relative;width:min(94vw,540px);background:linear-gradient(180deg,#0c0707,#080505);
+  border:1px solid rgba(209,20,48,.35);border-radius:10px;overflow:hidden;
+  box-shadow:0 40px 90px -30px rgba(0,0,0,.85),0 0 0 1px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05),0 0 60px -20px rgba(209,20,48,.4)}
+.console::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--blood-bright),transparent)}
+.con-bar{display:flex;align-items:center;gap:9px;padding:9px 44px 9px 12px;border-bottom:1px solid var(--line);
+  font-family:var(--f-mono);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bone-dim)}
+.con-dot{width:8px;height:8px;border-radius:50%;background:var(--blood-bright);box-shadow:0 0 8px var(--blood-bright);opacity:.85}
+.con-title{flex:1;color:var(--bone-dim)}
+.con-rec{display:inline-flex;align-items:center;gap:5px;color:var(--blood-bright)}
+.con-rec i{width:6px;height:6px;border-radius:50%;background:var(--blood-bright);opacity:1}
+.con-stripe{height:6px;opacity:.5;
+  background:repeating-linear-gradient(45deg, var(--blood-deep) 0 7px, transparent 7px 14px)}
+.con-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:7px 12px;border-bottom:1px solid var(--edge);
+  font-family:var(--f-mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-faint)}
+.con-meta b{color:var(--blood-bright);font-weight:700}
+.con-cursor{margin-left:auto;color:var(--cyan-soft);font-weight:700}
+.con-body{position:relative;padding:clamp(14px,4vw,22px);text-align:center}
+/* worn rubber-stamp threat label */
+.stamp{display:inline-block;font-family:var(--f-egg);font-style:normal;letter-spacing:.06em;line-height:1;
+  font-size:clamp(1.1rem,4.6vw,1.7rem);color:var(--blood-bright);
+  border:2px solid var(--blood-bright);border-radius:4px;padding:5px 13px;margin:2px auto 14px;
+  transform:rotate(-4deg);opacity:.92;text-shadow:0 0 12px rgba(255,39,71,.5);
+  box-shadow:0 0 0 1px rgba(255,39,71,.4) inset,0 0 18px -6px rgba(209,20,48,.6);
+  -webkit-mask-image:repeating-linear-gradient(92deg,#000 0 3px,rgba(0,0,0,.5) 3px 4px);
+  mask-image:repeating-linear-gradient(92deg,#000 0 3px,rgba(0,0,0,.5) 3px 4px)}
+/* surveillance feed frame */
+.feed{position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#050303;
+  box-shadow:inset 0 0 40px 6px rgba(0,0,0,.85)}
+.feed-tag{position:absolute;z-index:3;pointer-events:none;font-family:var(--f-mono);font-size:.5rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cyan-soft);opacity:.72;padding:5px 7px}
+.feed-tag.tl{top:0;left:0}
+.feed-tag.tr{top:0;right:0;display:inline-flex;align-items:center;gap:5px;color:var(--blood-bright)}
+.feed-tag.bl{bottom:0;left:0;color:var(--bone-faint)}
+.recdot{width:5px;height:5px;border-radius:50%;background:var(--blood-bright)}
+.feed-scan{position:absolute;left:0;right:0;top:0;height:30%;z-index:3;pointer-events:none;transform:translateY(-100%);
+  background:linear-gradient(180deg,transparent,rgba(52,227,214,.08) 45%,rgba(155,243,234,.16) 50%,rgba(52,227,214,.08) 55%,transparent)}
+.cb{position:absolute;width:12px;height:12px;z-index:3;pointer-events:none;border-color:rgba(155,243,234,.4)}
+.cb-tl{top:4px;left:4px;border-top:1px solid;border-left:1px solid}
+.cb-tr{top:4px;right:4px;border-top:1px solid;border-right:1px solid}
+.cb-bl{bottom:4px;left:4px;border-bottom:1px solid;border-left:1px solid}
+.cb-br{bottom:4px;right:4px;border-bottom:1px solid;border-right:1px solid}
+/* the cold-storage room */
+.pz-stage{position:relative;width:100%;aspect-ratio:5/4;overflow:hidden;
+  background:
+    linear-gradient(180deg,#040202 0 16%, transparent 42%),
+    radial-gradient(120% 90% at 50% 30%, #1a0d0c 0%, #0a0505 64%, #050202 100%)}
 .pz-stage.recoil{animation:recoil .3s}
 @keyframes recoil{0%,100%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-1px)}}
-/* grimy tiled wall band behind the hand */
-.pz-wall{position:absolute;left:5%;right:5%;top:30%;height:42%;z-index:0;opacity:.5;
+.pz-wall{position:absolute;left:4%;right:4%;top:32%;height:40%;z-index:0;opacity:.62;
   background:
-    repeating-linear-gradient(90deg, rgba(0,0,0,.55) 0 1px, transparent 1px 19px),
-    repeating-linear-gradient(0deg, rgba(0,0,0,.55) 0 1px, transparent 1px 19px),
-    repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 2px, transparent 2px 4px),
-    linear-gradient(90deg,#6b4a2a 0%,#8a6a3e 28%,#6a5a44 55%,#4a4a4a 100%);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-/* faint dark window, top-left */
-.pz-window{position:absolute;left:8%;top:5%;width:22%;height:24%;z-index:0;border:2px solid rgba(124,11,27,.3);border-radius:3px;opacity:.45}
-/* wrist shadow at the bottom */
+    repeating-linear-gradient(90deg, rgba(0,0,0,.6) 0 1px, transparent 1px 17px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.6) 0 1px, transparent 1px 17px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 2px, transparent 2px 4px),
+    linear-gradient(90deg,#7a532c 0%,#9a7240 24%,#7d6a4c 52%,#565656 78%,#3f3f3f 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.pz-window{position:absolute;left:7%;top:5%;width:20%;height:22%;z-index:0;border:2px solid rgba(124,11,27,.28);border-radius:2px;opacity:.5;
+  background:linear-gradient(180deg, rgba(124,11,27,.06), transparent)}
+.pz-window::after{content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,transparent 48%,rgba(124,11,27,.2) 49% 51%,transparent 52%),
+    linear-gradient(0deg,transparent 48%,rgba(124,11,27,.2) 49% 51%,transparent 52%)}
 .palm{position:absolute;left:0;right:0;bottom:0;height:26%;z-index:0;
   background:linear-gradient(0deg,#120a08 0 38%,transparent);filter:blur(2px)}
-/* grip counter */
-.pz-grip{position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:6px}
-.gi{width:6px;height:14px;border-radius:3px;background:rgba(239,230,221,.16);transition:background .3s var(--ease),box-shadow .3s var(--ease)}
-.gi.on{background:var(--blood-bright);box-shadow:0 0 8px var(--blood-bright)}
-/* the key, held in the fist */
 .pz-btn{position:absolute;top:15%;left:24%;right:24%;z-index:1;line-height:0;cursor:pointer;
   filter:drop-shadow(0 10px 24px rgba(0,0,0,.6));transition:filter .4s var(--ease)}
 .pz-btn img{width:100%;height:auto;display:block}
@@ -641,43 +694,73 @@ body.key-won .brand-mini .gem{opacity:0}
 @keyframes pzFloat{from{transform:translateY(-3px)}to{transform:translateY(3px)}}
 .pz-btn.shake{animation:pzShake .4s}
 @keyframes pzShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-/* bloody severed fingers gripping the key */
-.fpos{position:absolute;bottom:0;width:clamp(26px,9vw,42px);z-index:2;transform-origin:bottom center}
-.f0{left:7%;height:44%;transform:rotate(-20deg)}
-.f1{left:28%;height:80%}
-.f2{left:46%;height:94%}
-.f3{left:64%;height:82%}
-.f4{left:83%;height:48%;transform:rotate(22deg)}
-.finger{position:absolute;inset:0;border-radius:8px 8px 4px 4px;cursor:pointer;
+/* bloody severed fingers */
+.fpos{position:absolute;bottom:0;width:clamp(28px,9.5vw,46px);z-index:2;transform-origin:bottom center}
+.f0{left:6%;height:40%;transform:rotate(-16deg)}
+.f1{left:27%;height:78%}
+.f2{left:46%;height:90%}
+.f3{left:65%;height:80%}
+.f4{left:84%;height:44%;transform:rotate(18deg)}
+.finger{position:absolute;inset:0;cursor:pointer;border-radius:9px 9px 5px 5px;
   background:
-    linear-gradient(#7c0b1b,#7c0b1b) top 0 left 28% / 3px 34% no-repeat,
-    linear-gradient(#a31024,#a31024) top 0 left 60% / 2px 52% no-repeat,
-    linear-gradient(#7c0b1b,#7c0b1b) top 0 left 76% / 3px 22% no-repeat,
-    repeating-linear-gradient(0deg, rgba(0,0,0,.06) 0 2px, transparent 2px 4px),
-    linear-gradient(90deg,#a9785c 0 16%,#e7c4ab 16% 52%,#d2a98e 52% 84%,#9c6c50 84% 100%);
-  box-shadow: inset 0 0 0 2px rgba(40,15,10,.5), 0 6px 14px rgba(0,0,0,.55);
+    linear-gradient(90deg, rgba(124,11,27,0) 30%, rgba(124,11,27,.85) 31% 33%, rgba(124,11,27,0) 34%) 0 14% / 100% 60% no-repeat,
+    linear-gradient(90deg, rgba(160,16,36,0) 58%, rgba(160,16,36,.8) 59% 61%, rgba(160,16,36,0) 62%) 0 8% / 100% 72% no-repeat,
+    linear-gradient(90deg, rgba(124,11,27,0) 74%, rgba(124,11,27,.7) 75% 77%, rgba(124,11,27,0) 78%) 0 20% / 100% 44% no-repeat,
+    repeating-linear-gradient(0deg, rgba(0,0,0,.05) 0 2px, transparent 2px 5px),
+    linear-gradient(90deg,#9c6c50 0 14%,#e7c4ab 14% 50%,#d8b196 50% 82%,#8a5d47 82% 100%);
+  box-shadow: inset 0 0 0 2px rgba(40,15,10,.45), inset 2px 0 4px rgba(255,255,255,.12), inset -3px 0 6px rgba(0,0,0,.3), 0 6px 14px rgba(0,0,0,.55);
   transition: transform .45s var(--ease-soft), opacity .45s var(--ease-soft), filter .2s var(--ease)}
-/* blood-soaked tip */
-.finger::before{content:"";position:absolute;left:-2px;right:-2px;top:-6px;height:30%;border-radius:46% 46% 30% 30%;
-  background:radial-gradient(70% 60% at 50% 35%, #ff2747 0 18%, #d11430 30%, #7c0b1b 72%);
-  box-shadow: inset 0 2px 3px rgba(255,120,120,.4), inset 0 -4px 6px rgba(0,0,0,.4), 0 2px 6px rgba(124,11,27,.6)}
-/* a hanging drip */
-.finger::after{content:"";position:absolute;left:46%;top:18%;width:3px;height:30%;border-radius:2px;
-  background:linear-gradient(#7c0b1b, rgba(124,11,27,0))}
+.finger::before{content:"";position:absolute;left:-14%;right:-14%;top:-6%;height:30%;
+  border-radius:48% 48% 40% 40% / 60% 60% 40% 40%;
+  background:
+    radial-gradient(60% 50% at 30% 70%, rgba(124,11,27,.9), transparent 70%),
+    radial-gradient(50% 60% at 72% 64%, rgba(124,11,27,.85), transparent 72%),
+    radial-gradient(80% 70% at 50% 38%, #ff2747 0 14%, #d11430 34%, #7c0b1b 78%);
+  box-shadow: inset 0 3px 4px rgba(255,140,140,.35), inset 0 -5px 8px rgba(0,0,0,.45), 0 3px 7px rgba(124,11,27,.55)}
+.finger::after{content:"";position:absolute;left:47%;top:18%;width:3px;height:46%;border-radius:2px;
+  background:linear-gradient(#7c0b1b, rgba(124,11,27,0));box-shadow:6px 6px 0 -1px rgba(124,11,27,.5)}
 .finger:active{filter:brightness(1.15)}
-.finger.out{transform:translateY(118%) rotate(4deg);opacity:0;pointer-events:none}
+.finger.out{transform:translateY(120%) rotate(5deg);opacity:0;pointer-events:none}
 .finger.crack{filter:brightness(.7) saturate(.7);animation:crackShake .35s}
-.finger.crack::before{background:radial-gradient(70% 60% at 50% 35%, #b3102a 0 18%, #7c0b1b 40%, #3a0710 80%)}
+.finger.crack::before{background:radial-gradient(80% 70% at 50% 38%, #b3102a 0 14%, #7c0b1b 40%, #3a0710 82%)}
 @keyframes crackShake{0%,100%{transform:translateX(0) rotate(0)}20%{transform:translateX(-3px) rotate(-2deg)}40%{transform:translateX(3px) rotate(2deg)}60%{transform:translateX(-2px) rotate(-1deg)}80%{transform:translateX(2px) rotate(1deg)}}
 .finger.claw{animation:claw .4s}
 @keyframes claw{0%,100%{filter:brightness(1)}40%{filter:brightness(1.6) drop-shadow(0 0 6px #ff2747)}}
+.f0 .finger{border-radius:46% 54% 5px 5px / 34% 30% 5px 5px}
+.f4 .finger{border-radius:54% 46% 5px 5px / 30% 34% 5px 5px}
+.f0::after{content:"";position:absolute;top:-3%;right:-46%;width:62%;height:30%;border-radius:0 70% 70% 0;
+  background:linear-gradient(90deg,#d8b196,#a9785c);transform:rotate(10deg);
+  box-shadow:inset 0 0 0 2px rgba(40,15,10,.4), inset -2px 0 4px rgba(0,0,0,.3)}
+.f0::before{content:"";position:absolute;top:-6%;right:-50%;width:30%;height:18%;border-radius:50%;z-index:1;
+  background:radial-gradient(circle at 40% 40%,#d11430,#7c0b1b 75%)}
+.f4::after{content:"";position:absolute;top:6%;left:-44%;width:58%;height:30%;border-radius:70% 0 0 70%;
+  background:linear-gradient(270deg,#d8b196,#a9785c);transform:rotate(-12deg);
+  box-shadow:inset 0 0 0 2px rgba(40,15,10,.4), inset 2px 0 4px rgba(0,0,0,.3)}
+.f4::before{content:"";position:absolute;top:2%;left:-46%;width:28%;height:18%;border-radius:50%;z-index:1;
+  background:radial-gradient(circle at 60% 40%,#d11430,#7c0b1b 75%)}
 .pz-stage.twitch .finger:not(.out):not(.crack){animation:twitch .2s}
 @keyframes twitch{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-.pz-msg{position:relative;z-index:1;min-height:1.3em;max-width:32ch;text-align:center;
-  font-family:var(--f-serif);font-style:italic;font-size:clamp(.95rem,3vw,1.15rem);color:var(--bone-dim)}
-.pz-msg.err{color:var(--blood-bright)}
-.pz-sub{position:relative;z-index:1;min-height:1.1em;max-width:34ch;text-align:center;
-  font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan-soft);opacity:.92}
+/* lock integrity readout */
+.integ{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:12px}
+.integ-k{font-family:var(--f-mono);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bone-faint)}
+.pz-grip{display:flex;gap:5px}
+.gi{width:14px;height:8px;border-radius:2px;background:rgba(239,230,221,.14);transition:background .3s var(--ease),box-shadow .3s var(--ease)}
+.gi.on{background:var(--blood-bright);box-shadow:0 0 8px var(--blood-bright)}
+/* terminal output */
+.term{display:flex;gap:8px;align-items:flex-start;text-align:left;margin-top:14px;min-height:1.3em}
+.pz-prompt{font-family:var(--f-mono);font-weight:700;color:var(--cyan);line-height:1.5}
+.pz-msg{font-family:var(--f-mono);font-size:.8rem;line-height:1.5;color:var(--bone);letter-spacing:.01em}
+.pz-sub{margin-top:7px;min-height:1em;text-align:center;
+  font-family:var(--f-mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-faint)}
+.pz-sub:not(:empty)::before{content:"// ";color:var(--blood-bright)}
+/* scoped life — only while the terminal is open */
+#puzzle.show .con-dot{animation:conPulse 1.4s ease-in-out infinite}
+#puzzle.show .con-rec i,#puzzle.show .recdot{animation:conPulse 1s steps(1) infinite}
+#puzzle.show .con-cursor{animation:blink 1s steps(1) infinite}
+#puzzle.show .feed-scan{animation:scanY 3.4s linear infinite}
+@keyframes conPulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes scanY{0%{transform:translateY(-100%)}100%{transform:translateY(333%)}}
 
 /* ============ FOOTER ============ */
 .foot{position:relative;z-index:1;padding:clamp(28px,5vw,46px) clamp(18px,5vw,46px) clamp(20px,3vw,28px);
@@ -996,26 +1079,42 @@ body.key-won .brand-mini .gem{opacity:0}
 
 <!-- ============ GRIP PUZZLE ============ -->
 <div id="puzzle" aria-hidden="true">
-  <button class="pz-close" id="pzClose" type="button" aria-label="close">✕</button>
-  <p class="pz-kicker" id="pzKicker">the grasp of the dead</p>
-  <div class="pz-stage" id="pzStage">
-    <span class="pz-window" aria-hidden="true"></span>
-    <span class="pz-wall" aria-hidden="true"></span>
-    <span class="palm" aria-hidden="true"></span>
-    <div class="pz-grip" id="pzGrip" aria-hidden="true">
-      <span class="gi on"></span><span class="gi on"></span><span class="gi on"></span><span class="gi on"></span><span class="gi on"></span>
+  <div class="console">
+    <button class="pz-close" id="pzClose" type="button" aria-label="close terminal">✕</button>
+    <div class="con-bar">
+      <span class="con-dot"></span>
+      <span class="con-title">NIL//SECURE_TERMINAL</span>
+      <span class="con-rec"><i></i>LIVE</span>
     </div>
-    <a class="pz-btn" id="pzBtn" href="#" aria-label="the key">
-      <img src="art/button.png" alt="" draggable="false">
-    </a>
-    <span class="fpos f0"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
-    <span class="fpos f1"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
-    <span class="fpos f2"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
-    <span class="fpos f3"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
-    <span class="fpos f4"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+    <div class="con-stripe" aria-hidden="true"></div>
+    <div class="con-meta"><span>access: <b>UNAUTHORISED</b></span><span>session 0xDEAD</span><span class="con-cursor">_</span></div>
+    <div class="con-body">
+      <span class="stamp" id="pzKicker">the grasp of the dead</span>
+      <div class="feed">
+        <span class="feed-tag tl">FEED_03 // COLD_STORAGE</span>
+        <span class="feed-tag tr"><span class="recdot"></span>REC 03:17:42</span>
+        <span class="feed-tag bl">SIGNAL: DEGRADED</span>
+        <span class="feed-scan" aria-hidden="true"></span>
+        <span class="cb cb-tl"></span><span class="cb cb-tr"></span><span class="cb cb-bl"></span><span class="cb cb-br"></span>
+        <div class="pz-stage" id="pzStage">
+          <span class="pz-window" aria-hidden="true"></span>
+          <span class="pz-wall" aria-hidden="true"></span>
+          <span class="palm" aria-hidden="true"></span>
+          <a class="pz-btn" id="pzBtn" href="#" aria-label="the key">
+            <img src="art/button.png" alt="" draggable="false">
+          </a>
+          <span class="fpos f0"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+          <span class="fpos f1"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+          <span class="fpos f2"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+          <span class="fpos f3"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+          <span class="fpos f4"><span class="finger" role="button" tabindex="0" aria-label="finger"></span></span>
+        </div>
+      </div>
+      <div class="integ"><span class="integ-k">lock integrity</span><span class="pz-grip" id="pzGrip" aria-hidden="true"><span class="gi on"></span><span class="gi on"></span><span class="gi on"></span><span class="gi on"></span><span class="gi on"></span></span></div>
+      <div class="term"><span class="pz-prompt">&gt;</span><span class="pz-msg" id="pzMsg"></span></div>
+      <p class="pz-sub" id="pzSub"></p>
+    </div>
   </div>
-  <p class="pz-msg" id="pzMsg"></p>
-  <p class="pz-sub" id="pzSub"></p>
 </div>
 
 <script>
@@ -1032,7 +1131,8 @@ body.key-won .brand-mini .gem{opacity:0}
 })();
 
 /* ============ LORE PROGRESS ============ */
-/* persisted per browser via localStorage; there is no server-side profile */
+/* persisted per browser via localStorage; there is no server-side profile.
+   the meter stays hidden until the first secret is found. */
 (function(){
   var KEY='nv_lore_v1';
   var SECRETS=['deluxe','whisper','puzzle'];
@@ -1047,6 +1147,7 @@ body.key-won .brand-mini .gem{opacity:0}
   function render(){
     gems.forEach(function(g,i){ g.classList.toggle('filled', set.has(SECRETS[i])); });
     if(count) count.textContent=set.size+'/'+SECRETS.length;
+    if(loreEl) loreEl.classList.toggle('show', set.size>0);
   }
   function toastMsg(m){
     if(!toast) return;
@@ -1056,7 +1157,9 @@ body.key-won .brand-mini .gem{opacity:0}
   function complete(){ return set.size>=SECRETS.length; }
   function mark(id){
     if(SECRETS.indexOf(id)<0 || set.has(id)) return;
+    var was=set.size;
     set.add(id); save(); render();
+    if(was===0) toastMsg('you found one. there are three †');
     if(complete()){ if(loreEl) loreEl.classList.add('done'); toastMsg('every corner turned. the door\'s open, keeper †'); if(window.__loreComplete) window.__loreComplete(); }
   }
   render();
@@ -1314,7 +1417,7 @@ body.key-won .brand-mini .gem{opacity:0}
 })();
 
 /* ============ FOOTER TRIGGER ============ */
-/* tap cycles whispers; six rapid taps open the grip puzzle */
+/* tap cycles whispers; six rapid taps open the grip terminal */
 (function(){
   var fm=document.getElementById('footMark'),
       fw=document.getElementById('footWhisper'),wi=0;
@@ -1334,7 +1437,8 @@ body.key-won .brand-mini .gem{opacity:0}
 
 /* ============ GRIP PUZZLE ============ */
 /* free every finger to loosen the key; the last one is a keeper that must be cracked then killed.
-   the dead claw freed fingers back, but a mercy cap guarantees it always ends. */
+   the dead claw freed fingers back, but a mercy cap guarantees it always ends.
+   the terminal closes ONLY via the ✕ — no backdrop or Escape, so it can't be lost by accident. */
 (function(){
   var ov=document.getElementById('puzzle'); if(!ov) return;
   var stage=document.getElementById('pzStage');
@@ -1351,7 +1455,7 @@ body.key-won .brand-mini .gem{opacity:0}
   var MERCY=4;
   var SECRET='bd289'+'kouw.html';
 
-  var REVEAL=["shit — you found the grip †","the dead are holding it. pry it loose †","oh, you found it. now drag it from cold fingers †"];
+  var REVEAL=["shit — you found the backdoor †","the backdoor's guarded by the dead †","you found the backdoor — now take it from cold hands †"];
   var FREE=["one lets go…","a finger uncurls.","cold flesh — but it yields.","the grip loosens.","you feel it tire."];
   var KEEPER_SOON=["last one. and it's angry.","one left — the keeper.","the dead hold their breath."];
   var KEEPER_CRACK=["it cracks — again, harder.","the bone gives. hit it once more.","nearly. don't you stop."];
@@ -1362,14 +1466,10 @@ body.key-won .brand-mini .gem{opacity:0}
   var WIN_REST=["the key is yours †","dragged from cold fingers †","loose — and the door remembers you †"];
   var GATE="the key's loose — but the door's still shut. find the rest, you're close †";
   var GATE_SUB="every hidden corner, then come back";
-  var COMPLETE_MSG="the door is open † take the key";
   var COMPLETE_SUB="this opens the secret page — click it →";
-  var INSTR="free the key — tap the fingers. the dead will fight you †";
+  var INSTR="tap the fingers — free the key. the dead resists to Let It Go †";
 
   function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
-  function countGrip(){ var n=0; state.forEach(function(s){ if(s==='grip') n++; }); return n; }
-  function countHolding(){ var n=0; state.forEach(function(s){ if(s!=='out') n++; }); return n; }
-  function allOut(){ return state.every(function(s){ return s==='out'; }); }
   function freedIdx(){ var a=[]; state.forEach(function(s,i){ if(s==='out') a.push(i); }); return a; }
   function applyVisual(i){ fingers[i].classList.toggle('out', state[i]==='out'); fingers[i].classList.toggle('crack', state[i]==='crack'); }
   function updateGrip(){ gi.forEach(function(g,i){ g.classList.toggle('on', state[i]!=='out'); }); }
@@ -1389,7 +1489,6 @@ body.key-won .brand-mini .gem{opacity:0}
     recoil();
     return true;
   }
-  /* returns the line to show after a fight roll */
   function decideFight(baseLine, chance){
     var want = chance>0 && Math.random()<chance;
     if(!want) return baseLine;
@@ -1399,8 +1498,8 @@ body.key-won .brand-mini .gem{opacity:0}
   }
   function onFree(i, isKeeperKill){
     state[i]='out'; applyVisual(i); updateGrip();
-    if(allOut()){ win(); return; }
-    var holding=countHolding();
+    if(state.every(function(s){ return s==='out'; })){ win(); return; }
+    var holding=0; state.forEach(function(s){ if(s!=='out') holding++; });
     var chance = !firstFreeDone ? 0 : (holding>=4?0.25 : holding===3?0.4 : holding===2?0.6 : 0.7);
     var base = isKeeperKill ? pick(KEEPER_FREE) : (holding===1 ? pick(KEEPER_SOON) : pick(FREE));
     setMsg(decideFight(base, chance)); setSub('');
@@ -1416,8 +1515,8 @@ body.key-won .brand-mini .gem{opacity:0}
   function tap(i){
     if(state[i]==='out') return;
     if(state[i]==='crack'){ onFree(i, true); return; }
-    /* grip */
-    if(countGrip()===1){
+    var grip=0; state.forEach(function(s){ if(s==='grip') grip++; });
+    if(grip===1){
       state[i]='crack'; applyVisual(i); updateGrip();
       setMsg(decideFight(pick(KEEPER_CRACK), 0.7)); setSub('');
       twitch();
@@ -1432,11 +1531,16 @@ body.key-won .brand-mini .gem{opacity:0}
     fingers.forEach(function(f,i){ applyVisual(i); });
     updateGrip();
     stage.classList.toggle('free', freed);
-    if(kicker) kicker.textContent = fromReveal ? pick(REVEAL) : 'the grasp of the dead';
+    if(kicker) kicker.textContent = fromReveal ? 'BACKDOOR' : 'THE GRASP';
+    var done = !!(window.__lore && window.__lore.isComplete());
     if(freed){
-      if(window.__lore && window.__lore.isComplete()){ setMsg(pick(WIN_REST)); setSub(COMPLETE_SUB); }
+      if(done){ setMsg(pick(WIN_REST)); setSub(COMPLETE_SUB); }
       else { setMsg(GATE); setSub(GATE_SUB); }
-    } else { setMsg(INSTR); setSub(''); }
+    } else if(fromReveal){
+      setMsg(pick(REVEAL)); setSub(INSTR);
+    } else {
+      setMsg(INSTR); setSub('');
+    }
     ov.classList.add('show'); ov.setAttribute('aria-hidden','false'); lockScroll();
   }
   function closePuzzle(){ ov.classList.remove('show'); ov.setAttribute('aria-hidden','true'); unlockScroll(); }
@@ -1455,12 +1559,10 @@ body.key-won .brand-mini .gem{opacity:0}
   });
 
   if(closeBtn) closeBtn.addEventListener('click',closePuzzle);
-  ov.addEventListener('click',function(e){ if(e.target===ov) closePuzzle(); });
-  addEventListener('keydown',function(e){ if(e.key==='Escape' && ov.classList.contains('show')) closePuzzle(); });
 })();
 
 /* ============ BRAND KEY (nav trophy) ============ */
-/* the diamond becomes the key once the grip is won; tapping it opens the grip screen */
+/* the diamond becomes the key once the grip is won; tapping it opens the grip terminal */
 (function(){
   var key=document.getElementById('brandKey');
   var hint=document.getElementById('brandKeyHint');
