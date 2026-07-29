@@ -4,18 +4,57 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0a0708" />
-<title>NILOUVERSE — the gentle thing shows its teeth</title>
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Nilouverse">
-<meta property="og:title" content="NILOUVERSE — DOWN (out now)">
-<meta property="og:description" content="Independent nu-metal. Debut LP 'DOWN', out now. Play it loud enough to shake all the fucking world.">
-<meta property="og:url" content="https://nilouverse.github.io/">
-<meta property="og:image" content="https://nilouverse.github.io/art/adown.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="NILOUVERSE — DOWN (out now)">
-<meta name="twitter:description" content="Independent nu-metal. Debut LP 'DOWN', out now.">
-<meta name="twitter:image" content="https://nilouverse.github.io/art/adown.png">
-<meta name="description" content="Nilouverse Music — independent nu-metal. Debut LP 'DOWN', out now." />
+
+<title>Nilouverse — Independent Nu-Metal · Debut LP "DOWN" Out Now</title>
+<meta name="description" content="Nilouverse is an independent nu-metal project. Stream the debut LP 'DOWN' — out now on Audiomack and YouTube. Play it loud enough to shake all the fucking world." />
+<meta name="author" content="Nilouverse" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://nilouverse.github.io/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Nilouverse" />
+<meta property="og:title" content="Nilouverse — Independent Nu-Metal" />
+<meta property="og:description" content="Debut LP 'DOWN' is out now. Stream it on Audiomack and YouTube. Play it loud enough to shake all the fucking world." />
+<meta property="og:url" content="https://nilouverse.github.io/" />
+<meta property="og:image" content="https://nilouverse.github.io/art/adown.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="1200" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Nilouverse — Independent Nu-Metal" />
+<meta name="twitter:description" content="Debut LP 'DOWN' is out now. Stream it on Audiomack and YouTube." />
+<meta name="twitter:image" content="https://nilouverse.github.io/art/adown.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MusicAlbum",
+  "name": "DOWN",
+  "albumReleaseType": "https://schema.org/AlbumReleaseType/StudioAlbum",
+  "datePublished": "2026-07-17",
+  "genre": ["Nu metal", "Alternative metal"],
+  "numTracks": 10,
+  "image": "https://nilouverse.github.io/art/adown.png",
+  "url": "https://nilouverse.github.io/",
+  "byArtist": {
+    "@type": "MusicGroup",
+    "name": "Nilouverse",
+    "url": "https://nilouverse.github.io/",
+    "sameAs": [
+      "https://audiomack.com/nilouversemusic",
+      "https://youtube.com/@nilouverse_music",
+      "https://instagram.com/nilouverse_music",
+      "https://t.me/Nilouverse"
+    ]
+  },
+  "track": [
+    {"@type": "MusicRecording", "name": "Xero (Intro)", "position": 1},
+    {"@type": "MusicRecording", "name": "Down", "position": 2},
+    {"@type": "MusicRecording", "name": "It's Fine", "position": 3},
+    {"@type": "MusicRecording", "name": "Better Left Alone", "position": 4}
+  ]
+}
+</script>
 
 <link rel="preload" as="image" href="art/hero.webp" fetchpriority="high">
 <link rel="preload" as="image" href="art/button.png">
@@ -57,7 +96,7 @@
   --ember:#ff7a1a; --ember-soft:#ffb24d;
   --cyan:#34e3d6; --cyan-soft:#9bf3ea;
   --magenta:#ff2d7e; --magenta-soft:#ff86b6;
-  --bone:#efe6dd; --bone-dim:#b7aaa2; --bone-faint:#7d716b;
+  --bone:#efe6dd; --bone-dim:#b7aaa2; --bone-faint:#948a7c;
   --line:rgba(239,230,221,.12);
   --edge:rgba(239,230,221,.06);
 
@@ -408,9 +447,6 @@ body::after{
 .feat-body .now{font-size:.7rem;letter-spacing:.34em;text-transform:uppercase;color:var(--cyan-soft)}
 .feat-body h3{font-family:var(--f-logo);font-size:clamp(2.6rem,11vw,5rem);line-height:.85;color:var(--bone);-webkit-text-stroke:1px rgba(124,11,27,.8);text-shadow:0 0 20px rgba(209,20,48,.25)}
 .feat-body .it{font-family:var(--f-serif);font-style:italic;font-size:clamp(1.05rem,3.4vw,1.4rem);color:var(--bone-dim);max-width:36ch}
-.feat-body .progress{height:3px;background:var(--line);position:relative;margin:6px 0 2px;overflow:hidden}
-.feat-body .progress::after{content:"";position:absolute;left:0;top:0;bottom:0;width:38%;background:linear-gradient(90deg,var(--blood-bright),var(--ember));box-shadow:0 0 10px rgba(255,39,71,.5)}
-.feat-body .times{display:flex;justify-content:space-between;font-size:.66rem;letter-spacing:.16em;color:var(--bone-faint)}
 .stream-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
 .pill{display:inline-flex;align-items:center;gap:9px;padding:11px 16px;border:1px solid var(--line);border-radius:999px;font-size:.7rem;letter-spacing:.2em;
   text-transform:uppercase;font-weight:700;color:var(--bone-dim);transition:var(--dur-1) var(--ease)}
@@ -645,8 +681,8 @@ body::after{
 
 .cform{display:grid;grid-template-columns:1fr;gap:14px}
 .cfield{display:flex;flex-direction:column;gap:7px}
-.cfield label{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--bone-faint)}
-.cfield label .opt{color:var(--bone-faint);opacity:.6;letter-spacing:.1em;text-transform:none}
+.cfield label{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--bone-faint)}
+.cfield label .opt{color:var(--bone-faint);opacity:.8;letter-spacing:.1em;text-transform:none}
 .hp{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
 .cinput,.carea{width:100%;background:rgba(8,5,6,.55);border:1px solid var(--line);border-radius:12px;color:var(--bone);
   font-family:var(--f-body);font-size:.95rem;letter-spacing:.02em;line-height:1.5;padding:13px 16px;
@@ -1097,7 +1133,7 @@ body::after{
 
     <div class="hero-inner">
       <div class="hero-bottom">
-        <h1 class="wordmark">Nilouverse<span class="wm-sub">M U S I C</span></h1>
+        <h1 class="wordmark">Nilouverse<span class="wm-sub" aria-hidden="true">M U S I C</span></h1>
         <nav class="socials" aria-label="Social links">
           <a class="ig-am" href="https://audiomack.com/nilouversemusic" target="_blank" rel="noopener" aria-label="Audiomack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></a>
           <a class="ig-yt" href="https://youtube.com/@nilouverse_music" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2 15 12l-5 2.8z" fill="currentColor" stroke="none"/></svg></a>
@@ -1122,7 +1158,7 @@ body::after{
         <p class="ln" data-reveal style="--d:.25s">The gentle thing shows its <span class="teeth">teeth, horns.</span></p>
         <p class="ln" data-reveal style="--d:.35s">And when the riff pins you to the wall before you've finished deciding if you liked it, a shadow looms, bending the light the wrong way—</p>
         <p class="ln redline" data-reveal style="--d:.45s">a red that no lamp in the room is casting.</p>
-        <p class="ln" data-reveal style="--d:.55s"><span class="dag">†</span> <span class="nm" id="introName" role="button" tabindex="0">NilouZila</span> welcomes you.</p>
+        <p class="ln" data-reveal style="--d:.55s"><span class="dag" aria-hidden="true">†</span> <span class="nm" id="introName" role="button" tabindex="0">NilouZila</span> welcomes you.</p>
       </div>
     </div>
   </section>
@@ -1142,11 +1178,9 @@ body::after{
           <div class="scan"></div>
         </div>
         <div class="feat-body">
-          <span class="now">Now spinning — the title track</span>
+          <span class="now">Featured — the title track</span>
           <h3>Down</h3>
           <p class="it">Four minutes of falling. Play it loud enough to shake all the fucking world — DOWN!</p>
-          <div class="progress"></div>
-          <div class="times"><span>1:31</span><span>4:00</span></div>
           <div class="stream-row">
             <a class="pill pill-am" href="https://audiomack.com/nilouversemusic/song/down" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg>Audiomack</a>
             <a class="pill pill-yt" href="https://youtu.be/J85KUlsWypQ" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2 15 12l-5 2.8z" fill="currentColor" stroke="none"/></svg>YouTube</a>
