@@ -856,6 +856,11 @@ body::after{
 .f2{left:43%;width:14%;height:96%}
 .f3{left:55%;height:86%}
 .f4{left:70%;width:14%;height:54%;transform:rotate(18deg)}
+.f0{--bf:-1;--br:6deg;--bs:.82}
+.f1{--bf:1;--br:-5deg;--bs:1}
+.f2{--bf:-1;--br:3deg;--bs:1.06}
+.f3{--bf:1;--br:-7deg;--bs:1}
+.f4{--bf:-1;--br:10deg;--bs:.84}
 
 .tap-hint{position:absolute;left:50%;top:-15px;transform:translateX(-50%);width:26px;height:26px;pointer-events:none;opacity:0;
   border:2px solid rgba(155,243,234,.85);border-radius:50%;transition:opacity .3s var(--ease),border-color .2s var(--ease);
@@ -886,29 +891,25 @@ body::after{
 .pz-stage.twitch .fpos:not(.cleared) .tap-hint{animation:twitch .2s steps(2)}
 @keyframes twitch{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
 
-.scan-col{position:absolute;inset:0;display:block;pointer-events:none;opacity:0;transition:opacity .25s var(--ease)}
-.fpos.crack .scan-col{opacity:1;
-  background:linear-gradient(180deg,#b3102a 0%,#7c0b1b 60%,transparent 100%) 50% 0/3px 26% no-repeat}
-.fpos.crack .scan-col::after{content:"";position:absolute;top:0;left:50%;width:5px;height:5px;margin-left:-2px;background:#ff2747;
-  box-shadow:-3px 2px 0 #b3102a,3px 2px 0 #b3102a,0 0 6px rgba(255,39,71,.6)}
-.fpos.crack .scan-col::before{content:none}
-.fpos.cleared .scan-col{opacity:1;
-  background:
-    linear-gradient(180deg,#7c0b1b,transparent 70%) 32% 4%/3px 64% no-repeat,
-    linear-gradient(180deg,#b3102a,transparent 82%) 56% 4%/2px 80% no-repeat,
-    linear-gradient(180deg,#5e0814,transparent 55%) 74% 4%/3px 50% no-repeat}
-.fpos.cleared .scan-col::after{content:"";position:absolute;top:-2px;left:50%;width:7px;height:7px;margin-left:-3px;background:#ff2747;border-radius:1px;
-  box-shadow:-7px 2px 0 #b3102a,7px 1px 0 #b3102a,-4px 7px 0 #7c0b1b,5px 7px 0 #7c0b1b,0 9px 0 #5e0814,-9px 5px 0 #5e0814,9px 4px 0 #5e0814,0 0 9px rgba(255,39,71,.65);
-  animation:splat .4s steps(3) both}
-@keyframes splat{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.25);opacity:1}100%{transform:scale(1)}}
-.fpos.cleared .scan-col::before{content:"";position:absolute;top:8px;left:50%;width:3px;height:5px;margin-left:-1px;background:#b3102a;border-radius:0 0 3px 3px;
-  animation:bloodfall 1.7s steps(9) infinite}
-@keyframes bloodfall{0%{transform:translateY(0);opacity:0}10%{opacity:1}70%{opacity:1}100%{transform:translateY(120px);opacity:0}}
-.f0.cleared .scan-col::before{animation-delay:.3s}
-.f1.cleared .scan-col::before{animation-delay:.9s}
-.f2.cleared .scan-col::before{animation-delay:.1s}
-.f3.cleared .scan-col::before{animation-delay:1.2s}
-.f4.cleared .scan-col::before{animation-delay:.6s}
+.scan-col{position:absolute;inset:0;display:block;pointer-events:none;opacity:0;overflow:visible;transition:opacity .2s var(--ease)}
+.fpos.crack .scan-col,.fpos.cleared .scan-col{opacity:1}
+.blood{position:absolute;left:50%;top:5%;width:240%;pointer-events:none;opacity:0;
+  transform:translate(-50%,-50%) rotate(var(--br,0deg)) scaleX(var(--bf,1)) scale(var(--bs,1));
+  transition:opacity .2s var(--ease)}
+.blood i{display:block;width:100%;aspect-ratio:1.86;background:url('art/blood.png') center/contain no-repeat;
+  opacity:0;transform:scale(.2);filter:drop-shadow(0 1px 4px rgba(90,0,0,.6))}
+.fpos.crack .blood{opacity:.6;transform:translate(-50%,-50%) rotate(var(--br,0deg)) scaleX(var(--bf,1)) scale(calc(var(--bs,1)*.46))}
+.fpos.crack .blood i{opacity:.75;transform:scale(1)}
+.fpos.cleared .blood{opacity:1}
+.fpos.cleared .blood i{opacity:1;transform:scale(1);animation:splat .42s cubic-bezier(.2,1.5,.4,1) both, woundthrob 2.6s ease-in-out .5s infinite}
+@keyframes splat{0%{transform:scale(.15);opacity:0}55%{transform:scale(1.22);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes woundthrob{0%,100%{filter:drop-shadow(0 1px 4px rgba(90,0,0,.6)) brightness(1)}50%{filter:drop-shadow(0 1px 8px rgba(170,0,0,.75)) brightness(1.14)}}
+.fpos.cleared .scan-col::before{content:"";position:absolute;left:45%;top:12%;width:3px;height:6px;background:#7c0b1b;border-radius:0 0 3px 3px;animation:bloodfall 1.9s ease-in infinite}
+.fpos.cleared .scan-col::after{content:"";position:absolute;left:59%;top:14%;width:2px;height:5px;background:#b3102a;border-radius:0 0 2px 2px;animation:bloodfall 2.4s ease-in .8s infinite}
+@keyframes bloodfall{0%{transform:translateY(0);opacity:0}8%{opacity:.9}72%{opacity:.8}100%{transform:translateY(160px);opacity:0}}
+.f0.cleared .scan-col::before{animation-delay:.3s}.f1.cleared .scan-col::after{animation-delay:1.1s}
+.f2.cleared .scan-col::before{animation-delay:.1s}.f3.cleared .scan-col::after{animation-delay:.5s}
+.f4.cleared .scan-col::before{animation-delay:.9s}
 .pz-stage.free .fpos .scan-col{opacity:0}
 
 .px{position:absolute;width:4px;height:4px;z-index:8;pointer-events:none;animation:pxfly .65s steps(7) forwards}
@@ -1308,11 +1309,11 @@ body::after{
             <i class="mote" style="left:90%;--md:9.5s;--mdel:-5s;--msway:-8px"></i>
             <span class="pz-btn" aria-hidden="true"><img src="art/button.png" alt="" draggable="false" decoding="async"></span>
             <img class="pz-hand" id="pzHand" alt="" draggable="false" decoding="async">
-            <span class="fpos f0"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
-            <span class="fpos f1"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
-            <span class="fpos f2"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
-            <span class="fpos f3"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
-            <span class="fpos f4"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
+            <span class="fpos f0"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
+            <span class="fpos f1"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
+            <span class="fpos f2"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
+            <span class="fpos f3"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
+            <span class="fpos f4"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
           </div>
         </div>
         <div class="grip-pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
@@ -1716,8 +1717,11 @@ body::after{
   var ERR_NOCRED='PRY THE BONE KEY FREE FIRST';
   var ERR_CLEAR='THE SEAL DEMANDS 3 RELICS';
   var WARN_REGRIP='IT CLINGS AGAIN';
+  var WORD_FREE=['SEVERED','SNAP','FREE','GONE'];
+  var WORD_CRACK=['CRACK','SPLIT'];
   function buzz(p){try{if(navigator.vibrate)navigator.vibrate(p);}catch(e){}}
   function fmt(s,a){return String(s).split('%a').join(a);}
+  function pick(a){return a[(Math.random()*a.length)|0];}
   function loreN(){return window.__lore&&window.__lore.count?window.__lore.count():0;}
   function loreTotal(){return (window.__lore&&window.__lore.total)||3;}
   function loreDone(){return !!(window.__lore&&window.__lore.isComplete());}
@@ -1767,12 +1771,12 @@ body::after{
     p.addEventListener('animationend',function(){ if(this.parentNode)this.parentNode.removeChild(this); });
     stage.appendChild(p);
   }
-  function hitFx(i,kind){
+  function hitFx(i,kind,word){
     var xy=fingerXY(i), x=xy[0], y=xy[1];
-    if(kind==='crack'){ px(x,y,['#ff2747','#b3102a','#ff7a1a'],14,44); popup('CRACK',x,y,'rd'); }
-    else if(kind==='free'){ px(x,y,['#d8c2ff','#b07cff','#ffd24a'],18,54); popup('SEVERED',x,y,'cy'); }
-    else if(kind==='regrip'){ px(x,y,['#ff7a1a','#b3102a','#3a2a30'],12,38); popup('IT CLINGS',x,y,'em'); }
-    else { px(x,y,['#e8dccb','#d8a06a','#ff2747'],10,36); popup('RELEASED',x,y,'gd'); }
+    if(kind==='crack'){ px(x,y,['#ff2747','#b3102a','#7c0b1b'],14,44); popup(word,x,y,'rd'); }
+    else if(kind==='free'){ px(x,y,['#d8c2ff','#b07cff','#ffd24a'],18,54); popup(word,x,y,'cy'); }
+    else if(kind==='regrip'){ px(x,y,['#ff7a1a','#b3102a','#3a2a30'],12,38); popup(word,x,y,'em'); }
+    else { px(x,y,['#e8dccb','#d8a06a','#ff2747'],10,36); popup(word,x,y,'gd'); }
   }
   function twitch(){stage.classList.remove('twitch');void stage.offsetWidth;stage.classList.add('twitch');setTimeout(function(){stage.classList.remove('twitch');},220);}
   function recoil(){stage.classList.remove('recoil');void stage.offsetWidth;stage.classList.add('recoil');}
@@ -1805,7 +1809,7 @@ body::after{
       state[i]='grip';applyVisual(i);syncAuth();
       if(fp)fp.classList.remove('claw');
       pendingRegrip=false;
-      hitFx(i,'regrip');
+      hitFx(i,'regrip','IT CLINGS');
       banner(WARN_REGRIP,true);recoil();
     },reduce?0:280);
     return true;
@@ -1837,10 +1841,10 @@ body::after{
     if(busy||pendingRegrip)return;
     hideRite();
     if(state[i]==='out')return;
-    if(state[i]==='crack'){hitFx(i,'free');onFree(i);return;}
+    if(state[i]==='crack'){hitFx(i,'crack',pick(WORD_CRACK));recoil();onFree(i);return;}
     var grip=0;state.forEach(function(s){if(s==='grip')grip++;});
-    if(grip===1){state[i]='crack';applyVisual(i);syncAuth();buzz(14);hitFx(i,'crack');maybeRegrip(.7);twitch();return;}
-    hitFx(i,'loose');
+    if(grip===1){state[i]='crack';applyVisual(i);syncAuth();buzz(14);hitFx(i,'crack',pick(WORD_CRACK));recoil();maybeRegrip(.7);twitch();return;}
+    hitFx(i,'loose',pick(WORD_FREE));
     onFree(i);
   }
   function denyFlick(){
@@ -1986,7 +1990,7 @@ body::after{
 
   window.addEventListener('load',function(){
     var pf=function(u){ var l=document.createElement('link'); l.rel='prefetch'; l.href=u; document.head.appendChild(l); };
-    ['art/cdown.jpg','art/adown.png','art/ablank.png','art/acdown.jpg','art/grip.png'].forEach(pf);
+    ['art/cdown.jpg','art/adown.png','art/ablank.png','art/acdown.jpg','art/grip.png','art/blood.png'].forEach(pf);
     if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(function(){}); }
   });
 })();
