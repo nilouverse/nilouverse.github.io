@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#050203" />
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+<title>·</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Creepster&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#050203; --glass:#0b0608;
+  --blood:#b3102a; --blood-deep:#5e0814; --blood-bright:#ff2747; --blood-wet:#7c0b1b;
+  --violet:#b07cff; --violet-deep:#3a1d52;
+  --bone:#efe6dd; --bone-dim:#b7aaa2; --bone-faint:#948a7c;
+  --line:rgba(239,230,221,.12);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --f-logo:'Metal Mania',cursive; --f-egg:'Creepster',cursive;
+  --f-body:'Space Grotesk',sans-serif;
+  --px:0; --py:0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--ink);color:var(--bone);font-family:var(--f-body);overflow-x:hidden;overflow-y:auto;
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--blood-bright);color:#fff}
+
+body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+
+/* the room: header / main / footer, dimmed behind intact glass until the break */
+#room{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;
+  opacity:.28;filter:saturate(.7);transition:opacity .7s var(--ease),filter .7s var(--ease)}
+body.broken #room{opacity:1;filter:none}
+#room::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 30% 36%, rgba(176,124,255,.16), transparent 60%),
+    radial-gradient(70% 60% at 78% 80%, rgba(179,16,42,.22), transparent 62%),
+    radial-gradient(120% 90% at 50% 120%, rgba(94,8,20,.5), transparent 70%),
+    var(--ink);
+  animation:heart 3.4s ease-in-out infinite}
+@keyframes heart{0%,100%{opacity:.85}48%{opacity:1}52%{opacity:.92}}
+
+/* parallax layers inside the room (the scene shifts behind the pane) */
+.plx{position:absolute;inset:0;pointer-events:none;will-change:transform;
+  transform:translate3d(calc(var(--px)*var(--d)*1px),calc(var(--py)*var(--d)*1px),0)}
+
+/* chrome header */
+.rhead{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:16px clamp(16px,4vw,40px);border-bottom:1px solid rgba(179,16,42,.25)}
+.rhead .sig{font-family:var(--f-logo);font-size:clamp(1.1rem,4vw,1.5rem);color:var(--bone);
+  -webkit-text-stroke:.5px var(--blood-wet);text-shadow:0 0 12px rgba(179,16,42,.4)}
+.rhead .sig b{color:var(--blood-bright)}
+.waxrow{display:flex;gap:8px}
+.wax{position:relative;width:34px;height:34px;display:grid;place-items:center;cursor:help;
+  background:radial-gradient(circle at 38% 32%,#9c1326,#5e0814 70%);border-radius:50%;
+  box-shadow:inset 0 2px 3px rgba(255,150,150,.3),inset 0 -3px 5px rgba(0,0,0,.5),0 3px 8px rgba(0,0,0,.5);
+  font-family:var(--f-egg);font-size:.8rem;color:#ffd9de;transition:transform .25s var(--ease)}
+.wax::after{content:"SEALED";position:absolute;left:50%;top:118%;transform:translateX(-50%);
+  font-family:var(--f-body);font-size:.42rem;letter-spacing:.2em;color:var(--bone-faint);white-space:nowrap;opacity:0;transition:opacity .25s var(--ease)}
+.wax:hover{transform:rotate(-7deg) scale(1.12)}
+.wax:hover::after{opacity:1}
+
+/* main chaos field */
+.rmain{position:relative;flex:1 1 auto;min-height:max(58vh,440px);overflow:hidden}
+
+.shard{position:absolute;pointer-events:none;line-height:.9;white-space:nowrap;mix-blend-mode:screen;
+  text-shadow:0 0 18px rgba(179,16,42,.35)}
+.sh-logo{font-family:var(--f-logo);color:var(--bone)}
+.sh-egg{font-family:var(--f-egg);color:var(--blood-bright)}
+.sh-mono{font-family:var(--f-body);font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--violet)}
+.flick{animation:flick 4.5s steps(1) infinite}
+@keyframes flick{0%,100%{opacity:.85}41%{opacity:.3}44%{opacity:.9}47%{opacity:.4}73%{opacity:.95}}
+
+/* broken records */
+.wreck{position:absolute;width:clamp(80px,16vw,150px);aspect-ratio:1;border-radius:50%;pointer-events:none;
+  background:
+    radial-gradient(circle,#1a0d10 0 16%, transparent 17%),
+    repeating-radial-gradient(circle,#0c0809 0 2px,#161012 2px 4px);
+  box-shadow:0 10px 30px rgba(0,0,0,.6),inset 0 0 24px rgba(0,0,0,.7);will-change:transform;
+  animation:skip 2.6s steps(8) infinite}
+.wreck::before{content:"";position:absolute;inset:38%;border-radius:50%;
+  background:radial-gradient(circle,var(--blood-bright),var(--blood-deep));box-shadow:0 0 10px rgba(179,16,42,.6)}
+.wreck::after{content:"";position:absolute;left:48%;top:-4%;width:4%;height:108%;
+  background:linear-gradient(90deg,transparent,#050203 35%,#050203 65%,transparent);transform:rotate(8deg)}
+@keyframes skip{0%{transform:rotate(0)}40%{transform:rotate(150deg)}44%{transform:rotate(142deg)}48%{transform:rotate(158deg)}100%{transform:rotate(360deg)}}
+
+/* sealed reward frames (empty, to be filled later) */
+.sealed{position:absolute;width:clamp(150px,30vw,260px);aspect-ratio:4/3;pointer-events:auto;cursor:help;
+  border:1px dashed rgba(179,16,42,.5);background:rgba(11,6,8,.5);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  transform:rotate(var(--rot,0deg));transition:transform .3s var(--ease)}
+.sealed:hover{transform:rotate(calc(var(--rot,0deg) + 1.5deg)) translateZ(0)}
+.sealed .waxbig{width:46px;height:46px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#9c1326,#5e0814 72%);
+  box-shadow:inset 0 2px 4px rgba(255,150,150,.3),inset 0 -4px 6px rgba(0,0,0,.5),0 4px 12px rgba(0,0,0,.6)}
+.sealed .st{font-family:var(--f-egg);font-size:clamp(.9rem,2.4vw,1.2rem);color:var(--blood-bright);letter-spacing:.04em}
+.sealed .ss{font-family:var(--f-body);font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--bone-faint)}
+
+/* chrome footer */
+.rfoot{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:16px clamp(16px,4vw,40px);border-top:1px solid rgba(179,16,42,.25)}
+.rfoot .tag{font-family:var(--f-body);font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--bone-faint)}
+.slotrow{display:flex;gap:10px}
+.slot{width:64px;height:40px;border:1px dashed rgba(179,16,42,.45);display:grid;place-items:center;cursor:help;
+  font-family:var(--f-egg);font-size:.7rem;color:var(--blood-wet);transition:transform .25s var(--ease)}
+.slot:hover{transform:translateY(-3px) rotate(-2deg)}
+
+/* the glass pane (permanent faint surface) */
+#glass{position:fixed;inset:0;z-index:30;pointer-events:none;
+  background:
+    linear-gradient(115deg,transparent 38%,rgba(255,255,255,.05) 49%,rgba(255,255,255,.10) 50%,rgba(255,255,255,.04) 51%,transparent 62%),
+    radial-gradient(130% 120% at 50% 50%,transparent 56%,rgba(0,0,0,.55) 100%)}
+
+/* crack web etched into the glass (drawn on the break) */
+#cracks{position:fixed;inset:0;z-index:31;pointer-events:none}
+#cracks svg{width:100%;height:100%}
+#cracks path{fill:none;stroke:rgba(239,230,221,.55);stroke-width:1.4;vector-effect:non-scaling-stroke;
+  stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 3px rgba(255,255,255,.4))}
+body.broken #cracks path{animation:crackDraw .75s var(--ease) forwards;animation-delay:var(--cd,0s)}
+body.broken #cracks{animation:crackJolt .42s steps(5)}
+@keyframes crackDraw{to{stroke-dashoffset:0}}
+@keyframes crackJolt{0%,100%{transform:translate(0,0)}20%{transform:translate(-3px,2px)}40%{transform:translate(4px,-2px)}60%{transform:translate(-2px,-1px)}80%{transform:translate(2px,1px)}}
+
+/* blood on the glass */
+#blood-layer{position:fixed;inset:0;z-index:32;pointer-events:none}
+.blood{position:absolute;transform:rotate(var(--r,0deg));filter:drop-shadow(0 2px 6px rgba(60,0,0,.6))}
+.blood>i{display:block;width:var(--w,160px);aspect-ratio:1.86;
+  background:url('art/blood.png') center/contain no-repeat;opacity:0;transform:scale(.25)}
+body.broken .blood>i{animation:bloodBloom .6s cubic-bezier(.2,1.4,.4,1) both;animation-delay:var(--bd,0s)}
+@keyframes bloodBloom{0%{opacity:0;transform:scale(.25)}100%{opacity:var(--o,.8);transform:scale(1)}}
+.blood .drip{position:absolute;left:var(--dx,50%);top:62%;width:3px;height:0;border-radius:0 0 3px 3px;
+  background:linear-gradient(180deg,var(--blood-wet),var(--blood-deep))}
+body.broken .blood .drip{animation:drip var(--dd,4s) ease-in infinite;animation-delay:var(--bd,0s)}
+@keyframes drip{0%{height:0;opacity:0}10%{opacity:.9}70%{opacity:.8}100%{height:120px;opacity:0}}
+
+/* impact flash */
+#flash{position:fixed;inset:0;z-index:40;pointer-events:none;background:#fff;opacity:0}
+body.broken #flash{animation:flash .5s var(--ease)}
+@keyframes flash{0%{opacity:0}8%{opacity:.5}100%{opacity:0}}
+
+/* entry gate: intact glass + bloody handprint */
+#gate{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;cursor:pointer;
+  background:linear-gradient(120deg,rgba(255,255,255,.02) 30%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.02) 70%),
+    radial-gradient(120% 110% at 50% 50%,rgba(11,6,8,.35),rgba(5,2,3,.82))}
+body.broken #gate{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s var(--ease),visibility .5s}
+.gt-hand{width:clamp(120px,30vw,200px);filter:drop-shadow(0 0 22px rgba(179,16,42,.6));animation:breathe 2.6s ease-in-out infinite}
+.gt-hand svg{width:100%;height:auto}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.gt-k{font-family:var(--f-egg);font-size:clamp(1.6rem,7vw,3rem);color:var(--blood-bright);letter-spacing:.03em;
+  text-shadow:0 0 20px rgba(179,16,42,.5)}
+.gt-s{font-family:var(--f-body);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--bone-dim)}
+
+/* controls etched on the glass surface */
+#glassctl{position:fixed;top:14px;right:14px;z-index:60;display:flex;align-items:center;gap:10px}
+body.warded #glassctl{display:none}
+#glassctl button,#glassctl a{font-family:var(--f-body);font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bone-dim);background:rgba(5,2,3,.4);border:1px solid rgba(239,230,221,.18);padding:7px 11px;cursor:pointer;
+  transition:color .25s var(--ease),border-color .25s var(--ease)}
+#glassctl button:hover,#glassctl a:hover{color:var(--bone);border-color:var(--blood-bright)}
+.gc-mark{font-family:var(--f-body);font-size:.5rem;letter-spacing:.2em;color:var(--violet);text-shadow:0 0 8px rgba(176,124,255,.5)}
+
+/* the ward (shown to anyone who didn't descend) */
+#ward{position:fixed;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  background:radial-gradient(80% 70% at 50% 50%,#0b0608,#050203 75%);text-align:center;padding:24px}
+body.warded #ward{display:flex}
+.wd-crack{position:absolute;left:50%;top:50%;width:1px;height:62vh;background:rgba(239,230,221,.3);
+  transform:translate(-50%,-50%) rotate(7deg);box-shadow:0 0 6px rgba(255,255,255,.3)}
+.wd-k{position:relative;font-family:var(--f-egg);font-size:clamp(1.6rem,7vw,3rem);color:var(--blood-wet);letter-spacing:.04em}
+.wd-s{position:relative;font-family:var(--f-body);font-size:.7rem;letter-spacing:.12em;color:var(--bone-faint);line-height:1.8}
+.wd-up{position:relative;margin-top:8px;font-family:var(--f-body);font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--bone-dim);border:1px solid rgba(239,230,221,.2);padding:9px 16px;transition:color .25s var(--ease),border-color .25s var(--ease)}
+.wd-up:hover{color:var(--bone);border-color:var(--blood-bright)}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01ms!important}
+  #room{opacity:1;filter:none}
+  .blood>i{opacity:var(--o,.8);transform:scale(1)}
+  #cracks path{stroke-dashoffset:0}
+  body:not(.broken) #gate{opacity:1}
+}
+</style>
+</head>
+<body class="loading">
+
+<div id="room">
+  <header class="rhead">
+    <span class="sig">Nilou<b>·</b>verse</span>
+    <div class="waxrow" aria-label="sealed rewards">
+      <span class="wax" title="reward I — sealed">I</span>
+      <span class="wax" title="reward II — sealed">II</span>
+      <span class="wax" title="reward III — sealed">III</span>
+    </div>
+  </header>
+
+  <main class="rmain">
+    <div class="plx" style="--d:14">
+      <span class="shard sh-egg flick" style="top:12%;left:8%;font-size:clamp(1.4rem,5vw,2.6rem);transform:rotate(-9deg)">the glass remembers your hand</span>
+      <span class="shard sh-mono" style="top:74%;left:60%;font-size:.6rem;transform:rotate(4deg)">five fingers · five debts</span>
+    </div>
+
+    <div class="plx" style="--d:9">
+      <div class="wreck" style="top:18%;left:70%"></div>
+      <div class="sealed" style="top:30%;left:6%;--rot:-3deg">
+        <span class="waxbig"></span><span class="st">reward · sealed</span><span class="ss">the offering waits</span>
+      </div>
+      <span class="shard sh-logo flick" style="top:54%;left:42%;font-size:clamp(2rem,9vw,5rem);transform:rotate(3deg)">BENEATH</span>
+    </div>
+
+    <div class="plx" style="--d:5">
+      <div class="wreck" style="top:62%;left:78%;width:clamp(60px,12vw,110px)"></div>
+      <div class="sealed" style="top:60%;left:30%;--rot:2deg">
+        <span class="waxbig"></span><span class="st">reward · sealed</span><span class="ss">a voice, kept</span>
+      </div>
+      <span class="shard sh-egg" style="top:84%;left:10%;font-size:clamp(1rem,3.5vw,1.6rem);transform:rotate(-5deg)">don't wipe the glass. it isn't water.</span>
+      <span class="shard sh-mono flick" style="top:8%;left:46%;font-size:.55rem;transform:rotate(-2deg)">she kept the pieces</span>
+    </div>
+  </main>
+
+  <footer class="rfoot">
+    <span class="tag">the surface, far above</span>
+    <div class="slotrow" aria-label="sealed rewards">
+      <span class="slot" title="sealed">✦</span>
+      <span class="slot" title="sealed">✦</span>
+      <span class="slot" title="sealed">✦</span>
+    </div>
+  </footer>
+</div>
+
+<div id="glass" aria-hidden="true"></div>
+
+<svg id="cracks" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+  <path pathLength="1" style="--cd:0s"    d="M38 52 L20 30 L8 18"/>
+  <path pathLength="1" style="--cd:.05s" d="M38 52 L30 12 L26 2"/>
+  <path pathLength="1" style="--cd:.1s"  d="M38 52 L52 22 L60 6"/>
+  <path pathLength="1" style="--cd:.15s" d="M38 52 L70 34 L92 26"/>
+  <path pathLength="1" style="--cd:.2s"  d="M38 52 L74 56 L96 60"/>
+  <path pathLength="1" style="--cd:.25s" d="M38 52 L60 80 L72 98"/>
+  <path pathLength="1" style="--cd:.3s"  d="M38 52 L40 84 L36 99"/>
+  <path pathLength="1" style="--cd:.35s" d="M38 52 L18 64 L4 70"/>
+  <path pathLength="1" style="--cd:.18s" d="M30 12 L18 16"/>
+  <path pathLength="1" style="--cd:.22s" d="M52 22 L66 18"/>
+  <path pathLength="1" style="--cd:.28s" d="M70 34 L80 44"/>
+  <path pathLength="1" style="--cd:.34s" d="M60 80 L50 90"/>
+  <path pathLength="1" style="--cd:.4s"  d="M18 64 L24 78"/>
+</svg>
+
+<div id="blood-layer" aria-hidden="true">
+  <span class="blood" style="top:7%;left:5%;--r:-18deg;--w:170px;--o:.9;--bd:.1s"><i></i></span>
+  <span class="blood" style="top:21%;left:76%;--r:24deg;--w:130px;--o:.7;--bd:.22s"><i></i></span>
+  <span class="blood" style="top:60%;left:12%;--r:8deg;--w:200px;--o:.85;--bd:.16s"><i></i><span class="drip" style="--dx:42%;--dd:4.2s;--bd:.7s"></span></span>
+  <span class="blood" style="top:68%;left:68%;--r:-30deg;--w:150px;--o:.8;--bd:.3s"><i></i><span class="drip" style="--dx:58%;--dd:5s;--bd:1s"></span></span>
+  <span class="blood" style="top:39%;left:45%;--r:140deg;--w:110px;--o:.5;--bd:.4s"><i></i></span>
+  <span class="blood" style="top:83%;left:38%;--r:6deg;--w:160px;--o:.72;--bd:.34s"><i></i></span>
+</div>
+
+<div id="flash" aria-hidden="true"></div>
+
+<div id="gate" role="button" tabindex="0" aria-label="press the glass to descend">
+  <div class="gt-hand" aria-hidden="true">
+    <svg viewBox="0 0 100 124">
+      <g fill="#7c0b1b">
+        <ellipse cx="50" cy="80" rx="27" ry="31"/>
+        <rect x="19" y="22" width="9" height="46" rx="4.5" transform="rotate(-12 23 45)"/>
+        <rect x="34" y="9"  width="9" height="56" rx="4.5" transform="rotate(-4 38 37)"/>
+        <rect x="49" y="6"  width="9" height="58" rx="4.5"/>
+        <rect x="64" y="12" width="9" height="52" rx="4.5" transform="rotate(6 68 38)"/>
+        <rect x="78" y="34" width="9" height="34" rx="4.5" transform="rotate(28 82 51)"/>
+        <ellipse cx="40" cy="116" rx="3" ry="6"/>
+        <ellipse cx="58" cy="120" rx="2.5" ry="5"/>
+      </g>
+    </svg>
+  </div>
+  <p class="gt-k">press the glass</p>
+  <p class="gt-s">it is warm on the other side</p>
+</div>
+
+<div id="glassctl">
+  <button id="muteBtn" type="button" aria-pressed="false" aria-label="mute the chamber" hidden><span id="muteIco">♪</span> sound</button>
+  <a href="index.html" aria-label="return to the surface">↑ surface</a>
+  <span class="gc-mark" aria-hidden="true">● marked</span>
+</div>
+
+<div id="ward" role="alertdialog" aria-label="sealed">
+  <div class="wd-crack" aria-hidden="true"></div>
+  <p class="wd-k">the floor is sealed</p>
+  <p class="wd-s">you did not come from below.<br>the glass stays whole for you.</p>
+  <a class="wd-up" href="index.html">↑ return to the surface</a>
+</div>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
+
+  if(!WON){ document.body.classList.add('warded'); document.body.classList.remove('loading'); return; }
+
+  document.body.classList.remove('loading');
+
+  if(!reduce){
+    addEventListener('pointermove', function(e){
+      document.documentElement.style.setProperty('--px', ((e.clientX/innerWidth)-.5)*2);
+      document.documentElement.style.setProperty('--py', ((e.clientY/innerHeight)-.5)*2);
+    }, {passive:true});
+  }
+
+  var gate = document.getElementById('gate');
+  var broken = false;
+  function descend(){
+    if(broken) return; broken = true;
+    document.body.classList.add('broken');
+    Audio.start();
+  }
+  gate.addEventListener('click', descend);
+  gate.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); descend(); } });
+})();
+
+var Audio = (function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
+  var MANIFEST = {
+    bed: 'art/secret/bed.mp3',
+    clips: ['art/secret/v1.mp3','art/secret/v2.mp3','art/secret/v3.mp3','art/secret/v4.mp3',
+            'art/secret/r1.mp3','art/secret/r2.mp3','art/secret/r3.mp3','art/secret/r4.mp3']
+  };
+  var MAX = 3;
+  var ctx=null, master=null, comp=null, raw={}, buf={}, playing={}, any=false, muted=false, bedOn=false, timer=null;
+  var muteBtn=document.getElementById('muteBtn'), muteIco=document.getElementById('muteIco');
+
+  function decode(ab){
+    try{ var r=ctx.decodeAudioData(ab); if(r&&typeof r.then==='function') return r; }catch(e){}
+    return new Promise(function(res,rej){ try{ ctx.decodeAudioData(ab,res,rej); }catch(e){ rej(); } });
+  }
+  function preload(){
+    if(!WON) return;
+    var all = MANIFEST.clips.slice(); if(MANIFEST.bed) all.push(MANIFEST.bed);
+    all.forEach(function(src){
+      fetch(src).then(function(r){ return r.ok ? r.arrayBuffer() : Promise.reject(); })
+        .then(function(ab){ raw[src]=ab; }).catch(function(){ raw[src]=null; });
+    });
+  }
+  function showMute(){ if(!any) return; any=true; if(muteBtn) muteBtn.hidden=false; }
+  function voice(src){
+    var b=buf[src]; if(!b||playing[src]) return;
+    var n=0; for(var k in playing) n++; if(n>=MAX) return;
+    var s=ctx.createBufferSource(); s.buffer=b;
+    s.playbackRate.value = 0.9 + Math.random()*0.24;
+    var g=ctx.createGain(); g.gain.value = 0.45 + Math.random()*0.5;
+    s.connect(g); g.connect(master);
+    playing[src]=s;
+    s.onended=function(){ delete playing[src]; try{g.disconnect();}catch(e){} };
+    try{ s.start(); }catch(e){ delete playing[src]; }
+  }
+  function randomSrc(){
+    var pool=[]; for(var i=0;i<MANIFEST.clips.length;i++){ var c=MANIFEST.clips[i]; if(buf[c]&&!playing[c]) pool.push(c); }
+    return pool.length ? pool[(Math.random()*pool.length)|0] : null;
+  }
+  function scatter(){
+    var c=randomSrc(); if(c) voice(c);
+    if(Math.random()<0.35){ var c2=randomSrc(); if(c2) voice(c2); }
+    timer=setTimeout(scatter, 500 + Math.random()*2200);
+  }
+  function startBed(){
+    if(bedOn||!buf[MANIFEST.bed]) return; bedOn=true;
+    var s=ctx.createBufferSource(); s.buffer=buf[MANIFEST.bed]; s.loop=true;
+    var g=ctx.createGain(); g.gain.value=0.32; s.connect(g); g.connect(master);
+    try{ s.start(); }catch(e){}
+  }
+  function start(){
+    if(ctx){ if(ctx.state==='suspended') ctx.resume(); afterUnlock(); return; }
+    try{ ctx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-14; comp.knee.value=20; comp.ratio.value=6;
+    master=ctx.createGain(); master.gain.value = muted?0:1;
+    master.connect(comp); comp.connect(ctx.destination);
+    if(ctx.state==='suspended') ctx.resume();
+    afterUnlock();
+  }
+  function afterUnlock(){
+    var pending=[];
+    for(var src in raw){
+      if(raw[src] && !buf[src]){
+        (function(s){ decode(raw[s]).then(function(b){ buf[s]=b; showMute(); if(s===MANIFEST.bed) startBed(); else if(!any){ any=true; showMute(); voice(s); } })
+          .catch(function(){ buf[s]=null; }); })(src);
+      } else if(raw[src]===null){ buf[src]=null; }
+    }
+    setTimeout(function(){ if(!timer) scatter(); }, 250);
+  }
+  function toggleMute(){
+    if(!ctx||!master) return; muted=!muted;
+    master.gain.setTargetAtTime(muted?0:1, ctx.currentTime, 0.05);
+    if(muteBtn){ muteBtn.setAttribute('aria-pressed', muted?'true':'false'); if(muteIco) muteIco.textContent = muted?'✕':'♪'; }
+  }
+  if(muteBtn) muteBtn.addEventListener('click', toggleMute);
+  preload();
+  return { start:start };
+})();
+</script>
+</body>
+</html>
