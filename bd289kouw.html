@@ -9,18 +9,19 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Creepster&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Creepster&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --ink:#050203; --glass:#0b0608;
   --blood:#b3102a; --blood-deep:#5e0814; --blood-bright:#ff2747; --blood-wet:#7c0b1b;
-  --violet:#b07cff; --violet-deep:#3a1d52;
+  --violet:#b07cff;
   --bone:#efe6dd; --bone-dim:#b7aaa2; --bone-faint:#948a7c;
+  --paper:#e7dccb; --paper-2:#cdbfa9; --inkpage:#241712;
   --line:rgba(239,230,221,.12);
   --ease:cubic-bezier(.22,.61,.36,1);
   --f-logo:'Metal Mania',cursive; --f-egg:'Creepster',cursive;
-  --f-body:'Space Grotesk',sans-serif;
+  --f-serif:'Instrument Serif',serif; --f-body:'Space Grotesk',sans-serif;
   --px:0; --py:0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -29,14 +30,14 @@ body{background:var(--ink);color:var(--bone);font-family:var(--f-body);overflow-
   -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
+button{font:inherit}
 ::selection{background:var(--blood-bright);color:#fff}
 
 body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
 
-/* the room: header / main / footer, dimmed behind intact glass until the break */
 #room{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;
-  opacity:.28;filter:saturate(.7);transition:opacity .7s var(--ease),filter .7s var(--ease)}
+  opacity:.26;filter:saturate(.7);transition:opacity .7s var(--ease),filter .7s var(--ease)}
 body.broken #room{opacity:1;filter:none}
 #room::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:
@@ -47,18 +48,16 @@ body.broken #room{opacity:1;filter:none}
   animation:heart 3.4s ease-in-out infinite}
 @keyframes heart{0%,100%{opacity:.85}48%{opacity:1}52%{opacity:.92}}
 
-/* parallax layers inside the room (the scene shifts behind the pane) */
 .plx{position:absolute;inset:0;pointer-events:none;will-change:transform;
   transform:translate3d(calc(var(--px)*var(--d)*1px),calc(var(--py)*var(--d)*1px),0)}
 
-/* chrome header */
 .rhead{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:14px;
   padding:16px clamp(16px,4vw,40px);border-bottom:1px solid rgba(179,16,42,.25)}
 .rhead .sig{font-family:var(--f-logo);font-size:clamp(1.1rem,4vw,1.5rem);color:var(--bone);
   -webkit-text-stroke:.5px var(--blood-wet);text-shadow:0 0 12px rgba(179,16,42,.4)}
 .rhead .sig b{color:var(--blood-bright)}
 .waxrow{display:flex;gap:8px}
-.wax{position:relative;width:34px;height:34px;display:grid;place-items:center;cursor:help;
+.wax{position:relative;width:34px;height:34px;display:grid;place-items:center;cursor:help;border:0;
   background:radial-gradient(circle at 38% 32%,#9c1326,#5e0814 70%);border-radius:50%;
   box-shadow:inset 0 2px 3px rgba(255,150,150,.3),inset 0 -3px 5px rgba(0,0,0,.5),0 3px 8px rgba(0,0,0,.5);
   font-family:var(--f-egg);font-size:.8rem;color:#ffd9de;transition:transform .25s var(--ease)}
@@ -67,19 +66,16 @@ body.broken #room{opacity:1;filter:none}
 .wax:hover{transform:rotate(-7deg) scale(1.12)}
 .wax:hover::after{opacity:1}
 
-/* main chaos field */
-.rmain{position:relative;flex:1 1 auto;min-height:max(58vh,440px);overflow:hidden}
+.rmain{position:relative;flex:1 1 auto;min-height:max(72vh,560px);overflow:hidden}
 
 .shard{position:absolute;pointer-events:none;line-height:.9;white-space:nowrap;mix-blend-mode:screen;
   text-shadow:0 0 18px rgba(179,16,42,.35)}
 .sh-logo{font-family:var(--f-logo);color:var(--bone)}
-.sh-egg{font-family:var(--f-egg);color:var(--blood-bright)}
 .sh-mono{font-family:var(--f-body);font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--violet)}
 .flick{animation:flick 4.5s steps(1) infinite}
 @keyframes flick{0%,100%{opacity:.85}41%{opacity:.3}44%{opacity:.9}47%{opacity:.4}73%{opacity:.95}}
 
-/* broken records */
-.wreck{position:absolute;width:clamp(80px,16vw,150px);aspect-ratio:1;border-radius:50%;pointer-events:none;
+.wreck{position:absolute;width:clamp(80px,15vw,150px);aspect-ratio:1;border-radius:50%;pointer-events:none;
   background:
     radial-gradient(circle,#1a0d10 0 16%, transparent 17%),
     repeating-radial-gradient(circle,#0c0809 0 2px,#161012 2px 4px);
@@ -91,19 +87,42 @@ body.broken #room{opacity:1;filter:none}
   background:linear-gradient(90deg,transparent,#050203 35%,#050203 65%,transparent);transform:rotate(8deg)}
 @keyframes skip{0%{transform:rotate(0)}40%{transform:rotate(150deg)}44%{transform:rotate(142deg)}48%{transform:rotate(158deg)}100%{transform:rotate(360deg)}}
 
-/* sealed reward frames (empty, to be filled later) */
-.sealed{position:absolute;width:clamp(150px,30vw,260px);aspect-ratio:4/3;pointer-events:auto;cursor:help;
-  border:1px dashed rgba(179,16,42,.5);background:rgba(11,6,8,.5);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
-  transform:rotate(var(--rot,0deg));transition:transform .3s var(--ease)}
-.sealed:hover{transform:rotate(calc(var(--rot,0deg) + 1.5deg)) translateZ(0)}
-.sealed .waxbig{width:46px;height:46px;border-radius:50%;
-  background:radial-gradient(circle at 38% 32%,#9c1326,#5e0814 72%);
-  box-shadow:inset 0 2px 4px rgba(255,150,150,.3),inset 0 -4px 6px rgba(0,0,0,.5),0 4px 12px rgba(0,0,0,.6)}
-.sealed .st{font-family:var(--f-egg);font-size:clamp(.9rem,2.4vw,1.2rem);color:var(--blood-bright);letter-spacing:.04em}
-.sealed .ss{font-family:var(--f-body);font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--bone-faint)}
+.page{position:absolute;width:clamp(150px,29vw,248px);padding:20px 22px 22px;cursor:pointer;border:0;text-align:left;
+  background:
+    radial-gradient(130% 90% at 82% 8%, rgba(179,16,42,.20), transparent 58%),
+    linear-gradient(160deg,var(--paper),var(--paper-2));
+  color:var(--inkpage);
+  clip-path:polygon(2% 6%,14% 1%,30% 5%,48% 0,66% 4%,82% 1%,98% 7%,96% 30%,99% 52%,95% 74%,98% 92%,84% 97%,66% 93%,48% 99%,30% 94%,12% 98%,3% 90%,6% 70%,1% 48%,5% 26%);
+  box-shadow:0 16px 32px rgba(0,0,0,.55),inset 0 2px 0 rgba(255,255,255,.35),inset 0 -10px 18px rgba(120,90,60,.18);
+  rotate:var(--rot,0deg);
+  transition:transform .3s var(--ease),filter .3s var(--ease),opacity .35s var(--ease)}
+.page::before{content:"";position:absolute;right:14%;top:10%;width:26px;height:14px;pointer-events:none;opacity:.5;
+  background:url('art/blood.png') center/contain no-repeat;transform:rotate(34deg)}
+.page:nth-child(3n+1)::before{opacity:0}
+.page .pn{display:block;font-family:var(--f-body);font-size:.5rem;letter-spacing:.22em;color:rgba(36,23,18,.45);margin-bottom:8px}
+.page .ln{font-family:var(--f-serif);font-style:italic;font-size:clamp(1.05rem,2.5vw,1.5rem);line-height:1.34}
+.page .cue{display:none;margin-top:12px;font-family:var(--f-body);font-style:normal;font-size:.5rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--blood);opacity:.85}
+.page:hover{transform:scale(1.03) translateY(-2px)}
+.page.cur{transform:scale(1.06);z-index:5;filter:drop-shadow(0 0 24px rgba(179,16,42,.6));animation:pageBob 2.6s ease-in-out infinite}
+.page.cur .pn{color:var(--blood-bright)}
+.page.cur .cue{display:block}
+.page.cur:hover{transform:scale(1.08) translateY(-2px)}
+@keyframes pageBob{0%,100%{transform:scale(1.06) translateY(0)}50%{transform:scale(1.06) translateY(-5px)}}
+.page.reading{filter:drop-shadow(0 0 30px rgba(255,39,71,.8))}
+.page.read{opacity:.5;filter:grayscale(.45) brightness(.85)}
+.page.read::after{content:"";position:absolute;left:9%;right:9%;top:54%;height:2px;background:rgba(179,16,42,.75);transform:rotate(-4deg)}
+.page.flinch{animation:flinch .42s}
+@keyframes flinch{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.page.tornout{opacity:.2;filter:grayscale(1) brightness(.6)}
+.page.tornout::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 46%,#050203 47% 53%,transparent 54%)}
 
-/* chrome footer */
+#closing{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.9);z-index:6;text-align:center;
+  font-family:var(--f-egg);font-size:clamp(1.2rem,4vw,2.2rem);color:var(--blood-bright);
+  text-shadow:0 0 22px rgba(179,16,42,.55);opacity:0;pointer-events:none;
+  transition:opacity .8s var(--ease),transform .8s var(--ease)}
+body.read-done #closing{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
 .rfoot{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
   padding:16px clamp(16px,4vw,40px);border-top:1px solid rgba(179,16,42,.25)}
 .rfoot .tag{font-family:var(--f-body);font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--bone-faint)}
@@ -112,13 +131,12 @@ body.broken #room{opacity:1;filter:none}
   font-family:var(--f-egg);font-size:.7rem;color:var(--blood-wet);transition:transform .25s var(--ease)}
 .slot:hover{transform:translateY(-3px) rotate(-2deg)}
 
-/* the glass pane (permanent faint surface) */
-#glass{position:fixed;inset:0;z-index:30;pointer-events:none;
+#glass{position:fixed;inset:0;z-index:30;pointer-events:none;transition:opacity .12s linear;
   background:
     linear-gradient(115deg,transparent 38%,rgba(255,255,255,.05) 49%,rgba(255,255,255,.10) 50%,rgba(255,255,255,.04) 51%,transparent 62%),
     radial-gradient(130% 120% at 50% 50%,transparent 56%,rgba(0,0,0,.55) 100%)}
+body.blackout #glass{opacity:.18}
 
-/* crack web etched into the glass (drawn on the break) */
 #cracks{position:fixed;inset:0;z-index:31;pointer-events:none}
 #cracks svg{width:100%;height:100%}
 #cracks path{fill:none;stroke:rgba(239,230,221,.55);stroke-width:1.4;vector-effect:non-scaling-stroke;
@@ -128,7 +146,6 @@ body.broken #cracks{animation:crackJolt .42s steps(5)}
 @keyframes crackDraw{to{stroke-dashoffset:0}}
 @keyframes crackJolt{0%,100%{transform:translate(0,0)}20%{transform:translate(-3px,2px)}40%{transform:translate(4px,-2px)}60%{transform:translate(-2px,-1px)}80%{transform:translate(2px,1px)}}
 
-/* blood on the glass */
 #blood-layer{position:fixed;inset:0;z-index:32;pointer-events:none}
 .blood{position:absolute;transform:rotate(var(--r,0deg));filter:drop-shadow(0 2px 6px rgba(60,0,0,.6))}
 .blood>i{display:block;width:var(--w,160px);aspect-ratio:1.86;
@@ -140,26 +157,26 @@ body.broken .blood>i{animation:bloodBloom .6s cubic-bezier(.2,1.4,.4,1) both;ani
 body.broken .blood .drip{animation:drip var(--dd,4s) ease-in infinite;animation-delay:var(--bd,0s)}
 @keyframes drip{0%{height:0;opacity:0}10%{opacity:.9}70%{opacity:.8}100%{height:120px;opacity:0}}
 
-/* impact flash */
 #flash{position:fixed;inset:0;z-index:40;pointer-events:none;background:#fff;opacity:0}
 body.broken #flash{animation:flash .5s var(--ease)}
 @keyframes flash{0%{opacity:0}8%{opacity:.5}100%{opacity:0}}
 
-/* entry gate: intact glass + bloody handprint */
+body.blackout #room{filter:brightness(.04) saturate(0)}
+
 #gate{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:14px;cursor:pointer;
+  gap:16px;cursor:pointer;
   background:linear-gradient(120deg,rgba(255,255,255,.02) 30%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.02) 70%),
     radial-gradient(120% 110% at 50% 50%,rgba(11,6,8,.35),rgba(5,2,3,.82))}
 body.broken #gate{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s var(--ease),visibility .5s}
-.gt-hand{width:clamp(120px,30vw,200px);filter:drop-shadow(0 0 22px rgba(179,16,42,.6));animation:breathe 2.6s ease-in-out infinite}
-.gt-hand svg{width:100%;height:auto}
+.gt-hand{width:clamp(150px,38vw,260px);filter:drop-shadow(0 0 26px rgba(179,16,42,.6));animation:breathe 2.6s ease-in-out infinite}
 @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 .gt-k{font-family:var(--f-egg);font-size:clamp(1.6rem,7vw,3rem);color:var(--blood-bright);letter-spacing:.03em;
   text-shadow:0 0 20px rgba(179,16,42,.5)}
 .gt-s{font-family:var(--f-body);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--bone-dim)}
 
-/* controls etched on the glass surface */
-#glassctl{position:fixed;top:14px;right:14px;z-index:60;display:flex;align-items:center;gap:10px}
+#glassctl{position:fixed;top:14px;right:14px;z-index:60;display:flex;align-items:center;gap:10px;
+  opacity:0;pointer-events:none;transition:opacity .5s var(--ease)}
+body.broken #glassctl{opacity:1;pointer-events:auto}
 body.warded #glassctl{display:none}
 #glassctl button,#glassctl a{font-family:var(--f-body);font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;
   color:var(--bone-dim);background:rgba(5,2,3,.4);border:1px solid rgba(239,230,221,.18);padding:7px 11px;cursor:pointer;
@@ -167,7 +184,6 @@ body.warded #glassctl{display:none}
 #glassctl button:hover,#glassctl a:hover{color:var(--bone);border-color:var(--blood-bright)}
 .gc-mark{font-family:var(--f-body);font-size:.5rem;letter-spacing:.2em;color:var(--violet);text-shadow:0 0 8px rgba(176,124,255,.5)}
 
-/* the ward (shown to anyone who didn't descend) */
 #ward{position:fixed;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;
   background:radial-gradient(80% 70% at 50% 50%,#0b0608,#050203 75%);text-align:center;padding:24px}
 body.warded #ward{display:flex}
@@ -179,49 +195,79 @@ body.warded #ward{display:flex}
   color:var(--bone-dim);border:1px solid rgba(239,230,221,.2);padding:9px 16px;transition:color .25s var(--ease),border-color .25s var(--ease)}
 .wd-up:hover{color:var(--bone);border-color:var(--blood-bright)}
 
+@media(max-width:760px){
+  .rmain{overflow:visible;min-height:auto;padding:26px 0 44px}
+  .plx{display:none}
+  .page{position:relative;width:82%;left:auto!important;top:auto!important;margin:-4px auto 30px}
+  .page:nth-of-type(odd){margin-left:7%}
+  .page:nth-of-type(even){margin-left:auto;margin-right:7%}
+  .page.cur{transform:scale(1.02)}
+  .page.cur:hover{transform:scale(1.04)}
+  @keyframes pageBob{0%,100%{transform:scale(1.02) translateY(0)}50%{transform:scale(1.02) translateY(-4px)}}
+  #closing{position:relative;left:auto;top:auto;transform:none;margin:36px auto 12px}
+  body.read-done #closing{transform:none}
+}
+
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition-duration:.01ms!important}
   #room{opacity:1;filter:none}
   .blood>i{opacity:var(--o,.8);transform:scale(1)}
   #cracks path{stroke-dashoffset:0}
-  body:not(.broken) #gate{opacity:1}
 }
 </style>
 </head>
-<body class="loading">
+<body>
 
 <div id="room">
   <header class="rhead">
     <span class="sig">Nilou<b>·</b>verse</span>
     <div class="waxrow" aria-label="sealed rewards">
-      <span class="wax" title="reward I — sealed">I</span>
-      <span class="wax" title="reward II — sealed">II</span>
-      <span class="wax" title="reward III — sealed">III</span>
+      <button class="wax" type="button" title="reward I — sealed">I</button>
+      <button class="wax" type="button" title="reward II — sealed">II</button>
+      <button class="wax" type="button" title="reward III — sealed">III</button>
     </div>
   </header>
 
   <main class="rmain">
-    <div class="plx" style="--d:14">
-      <span class="shard sh-egg flick" style="top:12%;left:8%;font-size:clamp(1.4rem,5vw,2.6rem);transform:rotate(-9deg)">the glass remembers your hand</span>
-      <span class="shard sh-mono" style="top:74%;left:60%;font-size:.6rem;transform:rotate(4deg)">five fingers · five debts</span>
+    <div class="plx" style="--d:11" aria-hidden="true">
+      <span class="shard sh-logo flick" style="top:46%;left:40%;font-size:clamp(2.4rem,10vw,6rem);transform:rotate(3deg)">BENEATH</span>
+      <div class="wreck" style="top:16%;left:70%"></div>
+      <div class="wreck" style="top:64%;left:80%;width:clamp(60px,11vw,108px)"></div>
+      <span class="shard sh-mono flick" style="top:6%;left:44%;font-size:.55rem;transform:rotate(-2deg)">she kept the pieces</span>
     </div>
 
-    <div class="plx" style="--d:9">
-      <div class="wreck" style="top:18%;left:70%"></div>
-      <div class="sealed" style="top:30%;left:6%;--rot:-3deg">
-        <span class="waxbig"></span><span class="st">reward · sealed</span><span class="ss">the offering waits</span>
-      </div>
-      <span class="shard sh-logo flick" style="top:54%;left:42%;font-size:clamp(2rem,9vw,5rem);transform:rotate(3deg)">BENEATH</span>
-    </div>
+    <button class="page" type="button" style="top:8%;left:5%;--rot:-7deg" aria-label="page one">
+      <span class="pn">· 01</span>
+      <span class="ln">the first verse bleeds through the wall</span>
+      <span class="cue">▸ read aloud</span>
+    </button>
+    <button class="page" type="button" style="top:6%;left:58%;--rot:5deg" aria-label="page two">
+      <span class="pn">· 02</span>
+      <span class="ln">she was quiet, once — before the floor learned her name</span>
+      <span class="cue">▸ read aloud</span>
+    </button>
+    <button class="page" type="button" style="top:38%;left:36%;--rot:-3deg" aria-label="page three">
+      <span class="pn">· 03</span>
+      <span class="ln">every door you opened was a mouth</span>
+      <span class="cue">▸ read aloud</span>
+    </button>
+    <button class="page" type="button" style="top:60%;left:6%;--rot:6deg" aria-label="page four">
+      <span class="pn">· 04</span>
+      <span class="ln">you kept counting fingers like they were rosary beads</span>
+      <span class="cue">▸ read aloud</span>
+    </button>
+    <button class="page" type="button" style="top:56%;left:60%;--rot:-5deg" aria-label="page five">
+      <span class="pn">· 05</span>
+      <span class="ln">the gentle thing was never gentle — only patient</span>
+      <span class="cue">▸ read aloud</span>
+    </button>
+    <button class="page" type="button" style="top:30%;left:74%;--rot:8deg" aria-label="page six">
+      <span class="pn">· 06</span>
+      <span class="ln">and now the book is open, and the book is you</span>
+      <span class="cue">▸ read aloud</span>
+    </button>
 
-    <div class="plx" style="--d:5">
-      <div class="wreck" style="top:62%;left:78%;width:clamp(60px,12vw,110px)"></div>
-      <div class="sealed" style="top:60%;left:30%;--rot:2deg">
-        <span class="waxbig"></span><span class="st">reward · sealed</span><span class="ss">a voice, kept</span>
-      </div>
-      <span class="shard sh-egg" style="top:84%;left:10%;font-size:clamp(1rem,3.5vw,1.6rem);transform:rotate(-5deg)">don't wipe the glass. it isn't water.</span>
-      <span class="shard sh-mono flick" style="top:8%;left:46%;font-size:.55rem;transform:rotate(-2deg)">she kept the pieces</span>
-    </div>
+    <p id="closing">the book is empty now — but she isn't.</p>
   </main>
 
   <footer class="rfoot">
@@ -264,20 +310,7 @@ body.warded #ward{display:flex}
 <div id="flash" aria-hidden="true"></div>
 
 <div id="gate" role="button" tabindex="0" aria-label="press the glass to descend">
-  <div class="gt-hand" aria-hidden="true">
-    <svg viewBox="0 0 100 124">
-      <g fill="#7c0b1b">
-        <ellipse cx="50" cy="80" rx="27" ry="31"/>
-        <rect x="19" y="22" width="9" height="46" rx="4.5" transform="rotate(-12 23 45)"/>
-        <rect x="34" y="9"  width="9" height="56" rx="4.5" transform="rotate(-4 38 37)"/>
-        <rect x="49" y="6"  width="9" height="58" rx="4.5"/>
-        <rect x="64" y="12" width="9" height="52" rx="4.5" transform="rotate(6 68 38)"/>
-        <rect x="78" y="34" width="9" height="34" rx="4.5" transform="rotate(28 82 51)"/>
-        <ellipse cx="40" cy="116" rx="3" ry="6"/>
-        <ellipse cx="58" cy="120" rx="2.5" ry="5"/>
-      </g>
-    </svg>
-  </div>
+  <img class="gt-hand" src="art/handprint.png" alt="" draggable="false">
   <p class="gt-k">press the glass</p>
   <p class="gt-s">it is warm on the other side</p>
 </div>
@@ -299,108 +332,180 @@ body.warded #ward{display:flex}
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
-
-  if(!WON){ document.body.classList.add('warded'); document.body.classList.remove('loading'); return; }
-
-  document.body.classList.remove('loading');
+  if(!WON){ document.body.classList.add('warded'); return; }
 
   if(!reduce){
     addEventListener('pointermove', function(e){
-      document.documentElement.style.setProperty('--px', ((e.clientX/innerWidth)-.5)*2);
-      document.documentElement.style.setProperty('--py', ((e.clientY/innerHeight)-.5)*2);
+      var r = document.documentElement.style;
+      r.setProperty('--px', ((e.clientX/innerWidth)-.5)*2);
+      r.setProperty('--py', ((e.clientY/innerHeight)-.5)*2);
     }, {passive:true});
   }
 
+  var pageEls = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var unlocked = false, reading = false, broken = false;
   var gate = document.getElementById('gate');
-  var broken = false;
+
+  function flinch(el){ el.classList.remove('flinch'); void el.offsetWidth; el.classList.add('flinch'); setTimeout(function(){ el.classList.remove('flinch'); }, 420); }
+  function advance(i){
+    var nx = i + 1;
+    if(nx < pageEls.length) pageEls[nx].classList.add('cur');
+    else document.body.classList.add('read-done');
+  }
+  function readPage(i){
+    if(reading || i < 0 || i >= pageEls.length) return;
+    var el = pageEls[i];
+    var played = Audio.playPage(i, function(missing){
+      reading = false;
+      el.classList.remove('cur','reading');
+      el.classList.add(missing ? 'tornout' : 'read');
+      advance(i);
+    });
+    if(!played){ reading = false; el.classList.remove('cur'); el.classList.add('tornout'); advance(i); return; }
+    reading = true;
+    el.classList.add('reading');
+  }
+  pageEls.forEach(function(el,i){
+    el.addEventListener('click', function(){
+      if(!unlocked) return;
+      if(el.classList.contains('cur')) readPage(i);
+      else flinch(el);
+    });
+  });
+
   function descend(){
     if(broken) return; broken = true;
     document.body.classList.add('broken');
-    Audio.start();
+    Audio.start(function(){
+      unlocked = true;
+      if(pageEls[0]) pageEls[0].classList.add('cur');
+    });
   }
   gate.addEventListener('click', descend);
   gate.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); descend(); } });
 })();
 
 var Audio = (function(){
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
-  var MANIFEST = {
-    bed: 'art/secret/bed.mp3',
-    clips: ['art/secret/v1.mp3','art/secret/v2.mp3','art/secret/v3.mp3','art/secret/v4.mp3',
-            'art/secret/r1.mp3','art/secret/r2.mp3','art/secret/r3.mp3','art/secret/r4.mp3']
-  };
-  var MAX = 3;
-  var ctx=null, master=null, comp=null, raw={}, buf={}, playing={}, any=false, muted=false, bedOn=false, timer=null;
-  var muteBtn=document.getElementById('muteBtn'), muteIco=document.getElementById('muteIco');
+  if(!WON) return { start:function(){}, playPage:function(){ return false; } };
 
-  function decode(ab){
-    try{ var r=ctx.decodeAudioData(ab); if(r&&typeof r.then==='function') return r; }catch(e){}
-    return new Promise(function(res,rej){ try{ ctx.decodeAudioData(ab,res,rej); }catch(e){ rej(); } });
-  }
-  function preload(){
-    if(!WON) return;
-    var all = MANIFEST.clips.slice(); if(MANIFEST.bed) all.push(MANIFEST.bed);
-    all.forEach(function(src){
-      fetch(src).then(function(r){ return r.ok ? r.arrayBuffer() : Promise.reject(); })
-        .then(function(ab){ raw[src]=ab; }).catch(function(){ raw[src]=null; });
-    });
-  }
-  function showMute(){ if(!any) return; any=true; if(muteBtn) muteBtn.hidden=false; }
-  function voice(src){
-    var b=buf[src]; if(!b||playing[src]) return;
-    var n=0; for(var k in playing) n++; if(n>=MAX) return;
-    var s=ctx.createBufferSource(); s.buffer=b;
-    s.playbackRate.value = 0.9 + Math.random()*0.24;
-    var g=ctx.createGain(); g.gain.value = 0.45 + Math.random()*0.5;
-    s.connect(g); g.connect(master);
-    playing[src]=s;
-    s.onended=function(){ delete playing[src]; try{g.disconnect();}catch(e){} };
-    try{ s.start(); }catch(e){ delete playing[src]; }
-  }
-  function randomSrc(){
-    var pool=[]; for(var i=0;i<MANIFEST.clips.length;i++){ var c=MANIFEST.clips[i]; if(buf[c]&&!playing[c]) pool.push(c); }
-    return pool.length ? pool[(Math.random()*pool.length)|0] : null;
-  }
-  function scatter(){
-    var c=randomSrc(); if(c) voice(c);
-    if(Math.random()<0.35){ var c2=randomSrc(); if(c2) voice(c2); }
-    timer=setTimeout(scatter, 500 + Math.random()*2200);
-  }
-  function startBed(){
-    if(bedOn||!buf[MANIFEST.bed]) return; bedOn=true;
-    var s=ctx.createBufferSource(); s.buffer=buf[MANIFEST.bed]; s.loop=true;
-    var g=ctx.createGain(); g.gain.value=0.32; s.connect(g); g.connect(master);
-    try{ s.start(); }catch(e){}
-  }
-  function start(){
-    if(ctx){ if(ctx.state==='suspended') ctx.resume(); afterUnlock(); return; }
-    try{ ctx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
-    comp=ctx.createDynamicsCompressor();
+  /* intro's silence is baked into the file at 2-4s: lights only, no gain duck */
+  var INTRO_FX = [{ at:2, dur:2, lights:true, duck:false }];
+  /* war's break is imposed here (lights + gain); move WAR_BREAK to the exact second after you hear it */
+  var WAR_BREAK = 2.0;
+  var TRACK = {
+    intro: 'sound/intro.mp3',
+    pages: [
+      { src:'sound/war.mp3', fx:[{ at:WAR_BREAK, dur:1.0, lights:true, duck:true }] },
+      { src:'sound/nz1.mp3', fx:[] },
+      { src:'sound/nz2.mp3', fx:[] },
+      { src:'sound/nz3.mp3', fx:[] },
+      { src:'sound/nz4.mp3', fx:[] },
+      { src:'sound/nz5.mp3', fx:[] }
+    ]
+  };
+
+  var ctx=null, master=null, comp=null, raw={}, buf={}, muted=false, any=false;
+  var muteBtn=document.getElementById('muteBtn'), muteIco=document.getElementById('muteIco');
+  function noop(){}
+
+  function ensureCtx(){
+    if(ctx) return;
+    try{ ctx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
+    comp = ctx.createDynamicsCompressor();
     comp.threshold.value=-14; comp.knee.value=20; comp.ratio.value=6;
-    master=ctx.createGain(); master.gain.value = muted?0:1;
+    master = ctx.createGain(); master.gain.value = muted?0:1;
     master.connect(comp); comp.connect(ctx.destination);
-    if(ctx.state==='suspended') ctx.resume();
-    afterUnlock();
   }
-  function afterUnlock(){
-    var pending=[];
-    for(var src in raw){
-      if(raw[src] && !buf[src]){
-        (function(s){ decode(raw[s]).then(function(b){ buf[s]=b; showMute(); if(s===MANIFEST.bed) startBed(); else if(!any){ any=true; showMute(); voice(s); } })
-          .catch(function(){ buf[s]=null; }); })(src);
-      } else if(raw[src]===null){ buf[src]=null; }
-    }
-    setTimeout(function(){ if(!timer) scatter(); }, 250);
+  function decode(ab){
+    try{ var r=ctx.decodeAudioData(ab.slice(0)); if(r&&typeof r.then==='function') return r; }catch(e){}
+    return new Promise(function(res,rej){ try{ ctx.decodeAudioData(ab.slice(0),res,rej); }catch(e){ rej(); } });
   }
+  function decodeOne(src, cb){
+    if(!src){ buf[src]=null; if(cb)cb(); return; }
+    if(buf[src]!==undefined){ if(cb)cb(); return; }
+    if(raw[src]===null || raw[src]===undefined){ buf[src]=null; if(cb)cb(); return; }
+    decode(raw[src]).then(function(b){ buf[src]=b; showMute(); if(cb)cb(); })
+      .catch(function(){ buf[src]=null; if(cb)cb(); });
+  }
+  function showMute(){ if(any) return; any=true; if(muteBtn) muteBtn.hidden=false; }
   function toggleMute(){
     if(!ctx||!master) return; muted=!muted;
     master.gain.setTargetAtTime(muted?0:1, ctx.currentTime, 0.05);
     if(muteBtn){ muteBtn.setAttribute('aria-pressed', muted?'true':'false'); if(muteIco) muteIco.textContent = muted?'✕':'♪'; }
   }
   if(muteBtn) muteBtn.addEventListener('click', toggleMute);
-  preload();
-  return { start:start };
+
+  /* plays one buffer with its fx timeline; onEnd(true) on finish, onEnd(false) if the clip is missing */
+  function playBuf(src, baseGain, fx, onEnd){
+    var b = buf[src];
+    if(!b){ if(onEnd) onEnd(false); return false; }
+    var s = ctx.createBufferSource(); s.buffer = b;
+    var g = ctx.createGain(); g.gain.value = baseGain;
+    s.connect(g); g.connect(master);
+    var t0 = ctx.currentTime;
+    try{ s.start(t0); }catch(e){ if(onEnd) onEnd(false); return false; }
+    showMute();
+    var applied = fx.map(function(){ return false; });
+    var raf = 0;
+    function tick(){
+      var el = ctx.currentTime - t0;
+      for(var i=0;i<fx.length;i++){
+        var w = fx[i], inW = el >= w.at && el < w.at + w.dur;
+        if(inW && !applied[i]){
+          applied[i]=true;
+          if(w.lights) document.body.classList.add('blackout');
+          if(w.duck) g.gain.setTargetAtTime(0, ctx.currentTime, 0.02);
+        } else if(!inW && applied[i]){
+          applied[i]=false;
+          if(w.lights) document.body.classList.remove('blackout');
+          if(w.duck) g.gain.setTargetAtTime(baseGain, ctx.currentTime, 0.02);
+        }
+      }
+      if(el < (b.duration||0) + 0.05) raf = requestAnimationFrame(tick);
+    }
+    if(fx.length) raf = requestAnimationFrame(tick);
+    s.onended = function(){
+      if(raf) cancelAnimationFrame(raf);
+      for(var i=0;i<fx.length;i++){ if(applied[i] && fx[i].lights) document.body.classList.remove('blackout'); }
+      try{ g.disconnect(); }catch(e){}
+      if(onEnd) onEnd(true);
+    };
+    return true;
+  }
+
+  function start(onDone){
+    ensureCtx();
+    if(!ctx){ if(onDone) onDone(); return; }
+    var go = function(){
+      TRACK.pages.forEach(function(p){ decodeOne(p.src, noop); });
+      decodeOne(TRACK.intro, function(){
+        showMute();
+        if(buf[TRACK.intro]) playBuf(TRACK.intro, 1.0, INTRO_FX, function(){ if(onDone) onDone(); });
+        else if(onDone) setTimeout(onDone, 700);
+      });
+    };
+    if(ctx.state==='suspended'){ var pr=ctx.resume(); if(pr&&pr.then) pr.then(go,go); else go(); }
+    else go();
+  }
+  function playPage(i, onEnd){
+    var p = TRACK.pages[i];
+    if(!p) { if(onEnd) onEnd(true); return false; }
+    var ok = playBuf(p.src, 0.95, p.fx||[], function(played){ if(onEnd) onEnd(!played); });
+    if(!ok){ if(onEnd) onEnd(true); }
+    return ok;
+  }
+
+  (function preload(){
+    var all = TRACK.pages.map(function(p){ return p.src; }); all.push(TRACK.intro);
+    all.forEach(function(src){
+      if(!src){ raw[src]=null; return; }
+      fetch(src).then(function(r){ return r.ok ? r.arrayBuffer() : Promise.reject(); })
+        .then(function(ab){ raw[src]=ab; }).catch(function(){ raw[src]=null; });
+    });
+  })();
+
+  return { start:start, playPage:playPage };
 })();
 </script>
 </body>
