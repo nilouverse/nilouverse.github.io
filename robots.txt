@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://nilouverse.github.io/sitemap.xml
