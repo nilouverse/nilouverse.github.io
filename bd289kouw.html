@@ -11,6 +11,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Creepster&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
 
+<noscript><style>
+  #gate{display:none!important}
+  #room{opacity:1!important;filter:none!important}
+  .page,.void,.disc-wrap,.disc-text,.sec-label{opacity:1!important;transform:none!important}
+</style></noscript>
+
 <style>
 :root{
   --ink:#050203; --glass:#0b0608;
@@ -39,7 +45,7 @@ body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 #room{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;
   opacity:.26;filter:saturate(.7);transition:opacity .7s var(--ease),filter .7s var(--ease)}
 body.broken #room{opacity:1;filter:none}
-#room::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+#room::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:
     radial-gradient(60% 50% at 30% 36%, rgba(176,124,255,.16), transparent 60%),
     radial-gradient(70% 60% at 78% 80%, rgba(179,16,42,.22), transparent 62%),
@@ -48,60 +54,105 @@ body.broken #room{opacity:1;filter:none}
   animation:heart 3.4s ease-in-out infinite}
 @keyframes heart{0%,100%{opacity:.85}48%{opacity:1}52%{opacity:.92}}
 
-.plx{position:absolute;inset:0;pointer-events:none;will-change:transform;
+.ambient{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.plx{position:absolute;inset:0;will-change:transform;
   transform:translate3d(calc(var(--px)*var(--d)*1px),calc(var(--py)*var(--d)*1px),0)}
+.ambient .wreck{opacity:.5}
+.ambient .amb-word{position:absolute;font-family:var(--f-logo);color:rgba(239,230,221,.06);
+  font-size:clamp(3rem,12vw,8rem);white-space:nowrap;mix-blend-mode:screen}
 
 .rhead{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:14px;
   padding:16px clamp(16px,4vw,40px);border-bottom:1px solid rgba(179,16,42,.25)}
 .rhead .sig{font-family:var(--f-logo);font-size:clamp(1.1rem,4vw,1.5rem);color:var(--bone);
   -webkit-text-stroke:.5px var(--blood-wet);text-shadow:0 0 12px rgba(179,16,42,.4)}
 .rhead .sig b{color:var(--blood-bright)}
-.waxrow{display:flex;gap:8px}
-.wax{position:relative;width:34px;height:34px;display:grid;place-items:center;cursor:help;border:0;
-  background:radial-gradient(circle at 38% 32%,#9c1326,#5e0814 70%);border-radius:50%;
-  box-shadow:inset 0 2px 3px rgba(255,150,150,.3),inset 0 -3px 5px rgba(0,0,0,.5),0 3px 8px rgba(0,0,0,.5);
-  font-family:var(--f-egg);font-size:.8rem;color:#ffd9de;transition:transform .25s var(--ease)}
-.wax::after{content:"SEALED";position:absolute;left:50%;top:118%;transform:translateX(-50%);
-  font-family:var(--f-body);font-size:.42rem;letter-spacing:.2em;color:var(--bone-faint);white-space:nowrap;opacity:0;transition:opacity .25s var(--ease)}
-.wax:hover{transform:rotate(-7deg) scale(1.12)}
-.wax:hover::after{opacity:1}
+.rhead-tag{font-family:var(--f-body);font-size:.5rem;letter-spacing:.26em;text-transform:uppercase;color:var(--bone-faint)}
 
-.rmain{position:relative;flex:1 1 auto;min-height:max(72vh,560px);overflow:hidden}
+.rmain{position:relative;flex:1 1 auto}
 
-.shard{position:absolute;pointer-events:none;line-height:.9;white-space:nowrap;mix-blend-mode:screen;
-  text-shadow:0 0 18px rgba(179,16,42,.35)}
-.sh-logo{font-family:var(--f-logo);color:var(--bone)}
-.sh-mono{font-family:var(--f-body);font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--violet)}
-.flick{animation:flick 4.5s steps(1) infinite}
-@keyframes flick{0%,100%{opacity:.85}41%{opacity:.3}44%{opacity:.9}47%{opacity:.4}73%{opacity:.95}}
+.sec{position:relative;padding:clamp(48px,11vh,120px) clamp(18px,5vw,56px)}
+.sec + .sec{border-top:1px solid rgba(179,16,42,.16)}
+.sec-label{display:flex;align-items:center;gap:14px;max-width:1180px;margin:0 auto clamp(34px,7vh,72px);
+  font-family:var(--f-body);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--blood-wet);opacity:0}
+body.broken .sec-label{animation:fadeUp .8s var(--ease) both;animation-delay:.1s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.sec-label .sl-n{color:var(--blood-bright);font-weight:700}
+.sec-label .sl-rule{flex:1;height:1px;background:linear-gradient(90deg,rgba(179,16,42,.4),transparent)}
 
-.wreck{position:absolute;width:clamp(80px,15vw,150px);aspect-ratio:1;border-radius:50%;pointer-events:none;
+/* broken play-disc */
+.disc-stage{max-width:1180px;margin:0 auto;display:flex;justify-content:center}
+.disc-wrap{display:flex;align-items:center;gap:clamp(22px,5vw,52px);opacity:0}
+body.broken .disc-wrap{animation:flyIn 1.3s var(--ease) both;animation-delay:var(--flyd,0s)}
+@keyframes flyIn{
+  0%{opacity:0;transform:translate(var(--flyx,0px),var(--flyy,60px)) scale(.9)}
+  70%{opacity:1}
+  100%{opacity:1;transform:translate(0,0) scale(1)}}
+.disc-wrap.settled{animation:sway var(--swd,8s) ease-in-out infinite}
+@keyframes sway{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--swx,2px),var(--swy,-3px))}}
+.disc{position:relative;width:clamp(170px,34vw,280px);aspect-ratio:1;flex:none;border-radius:50%;background:#050203;
+  filter:drop-shadow(0 18px 36px rgba(0,0,0,.6))}
+.half{position:absolute;inset:0;border-radius:50%;transition:transform .55s var(--ease);
   background:
-    radial-gradient(circle,#1a0d10 0 16%, transparent 17%),
-    repeating-radial-gradient(circle,#0c0809 0 2px,#161012 2px 4px);
-  box-shadow:0 10px 30px rgba(0,0,0,.6),inset 0 0 24px rgba(0,0,0,.7);will-change:transform;
-  animation:skip 2.6s steps(8) infinite}
-.wreck::before{content:"";position:absolute;inset:38%;border-radius:50%;
-  background:radial-gradient(circle,var(--blood-bright),var(--blood-deep));box-shadow:0 0 10px rgba(179,16,42,.6)}
-.wreck::after{content:"";position:absolute;left:48%;top:-4%;width:4%;height:108%;
-  background:linear-gradient(90deg,transparent,#050203 35%,#050203 65%,transparent);transform:rotate(8deg)}
-@keyframes skip{0%{transform:rotate(0)}40%{transform:rotate(150deg)}44%{transform:rotate(142deg)}48%{transform:rotate(158deg)}100%{transform:rotate(360deg)}}
+    radial-gradient(circle, transparent 0 13%, #1a0d10 13.5% 16%, transparent 16.5%),
+    repeating-radial-gradient(circle, #0c0809 0 2px, #161012 2px 4px)}
+.half.a{clip-path:polygon(0 0,47% 0,43% 100%,0 100%)}
+.half.b{clip-path:polygon(53% 0,100% 0,100% 100%,49% 100%)}
+.disc-wrap.reading .half{animation:skip 2.4s steps(10) infinite}
+@keyframes skip{0%{transform:rotate(0)}38%{transform:rotate(150deg)}42%{transform:rotate(140deg)}46%{transform:rotate(158deg)}50%{transform:rotate(150deg)}100%{transform:rotate(360deg)}}
+.disc-wrap.shatter .half.a{transform:translate(-9px,-7px) rotate(-3.5deg)}
+.disc-wrap.shatter .half.b{transform:translate(9px,8px) rotate(3.5deg)}
+.disc-sheen{position:absolute;inset:0;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
+  background:conic-gradient(from 200deg, transparent 0 70%, rgba(255,255,255,.08) 78%, transparent 86%)}
+.disc-crack{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transition:opacity .3s var(--ease);
+  filter:drop-shadow(0 0 4px rgba(255,80,80,.5))}
+.disc-crack path{stroke:rgba(20,8,8,.92);stroke-width:1.4;fill:none;vector-effect:non-scaling-stroke}
+.disc-wrap.shatter .disc-crack{opacity:0}
+.disc-label{position:absolute;left:50%;top:50%;width:30%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle at 40% 35%, #2a1c20, #140a0c 70%);display:grid;place-items:center;
+  box-shadow:inset 0 0 8px rgba(0,0,0,.7);transition:opacity .4s var(--ease)}
+.disc-label .spindle{width:16%;aspect-ratio:1;border-radius:50%;background:#050203;box-shadow:0 0 0 2px rgba(239,230,221,.15)}
+.disc-label .disc-sig{position:absolute;bottom:16%;font-family:var(--f-egg);font-size:.62rem;color:var(--blood-wet)}
+.disc-wrap.dead .disc-label{opacity:.5}
+.disc-wrap.shatter .disc-label{opacity:0}
+.tonearm{position:absolute;top:-7%;right:-5%;width:48%;height:9%;transform-origin:right center;transform:rotate(-34deg);
+  transition:transform .5s var(--ease);pointer-events:none}
+.tonearm::before{content:"";position:absolute;right:0;top:50%;width:100%;height:5px;transform:translateY(-50%);
+  background:linear-gradient(90deg,#3a2a30,#8a7a6c);border-radius:3px;box-shadow:0 2px 4px rgba(0,0,0,.5)}
+.tonearm::after{content:"";position:absolute;left:-3%;top:50%;width:11px;height:11px;transform:translate(-50%,-50%) rotate(45deg);
+  background:#b3102a;box-shadow:0 0 6px rgba(179,16,42,.6)}
+.disc-wrap.reading .tonearm{transform:rotate(-9deg)}
+.disc-wrap.dead .tonearm{transform:rotate(-46deg)}
+.disc-text{display:flex;flex-direction:column;gap:9px;max-width:240px;opacity:0;transition:opacity .5s var(--ease)}
+.disc-wrap.cur .disc-text,.disc-wrap.reading .disc-text,.disc-wrap.dead .disc-text{opacity:1}
+.disc-text .pn{font-family:var(--f-body);font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(239,230,221,.4)}
+.disc-wrap.cur .disc-text .pn{color:var(--blood-bright)}
+.disc-text .ln{font-family:var(--f-serif);font-style:italic;font-size:clamp(1.4rem,3.6vw,2.2rem);line-height:1.18;color:var(--bone)}
+.disc-wrap.cur .disc-text .ln{text-shadow:0 0 18px rgba(179,16,42,.5)}
+.disc-wrap.reading .disc-text .ln{text-shadow:0 0 26px rgba(255,39,71,.7)}
+.disc-wrap.dead .disc-text .ln{color:var(--bone-dim);animation:signalflick 2.2s steps(1) infinite}
+@keyframes signalflick{0%,100%{opacity:.85}40%{opacity:.3}44%{opacity:.9}48%{opacity:.4}70%{opacity:.8}}
+.disc-text .cue{display:none;font-family:var(--f-body);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blood)}
+.disc-wrap.cur .cue{display:block}
+@media(max-width:760px){.disc-wrap{flex-direction:column;gap:20px}.disc-text{max-width:80vw;text-align:center;align-items:center}}
 
-.page{position:absolute;width:clamp(150px,29vw,248px);padding:20px 22px 22px;cursor:pointer;border:0;text-align:left;
+/* torn poem */
+.poem-flow{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(48px,11vh,104px)}
+.page{position:relative;width:clamp(158px,30vw,256px);padding:22px 24px 24px;cursor:pointer;border:0;text-align:left;opacity:0;
   background:
     radial-gradient(130% 90% at 82% 8%, rgba(179,16,42,.20), transparent 58%),
     linear-gradient(160deg,var(--paper),var(--paper-2));
   color:var(--inkpage);
   clip-path:polygon(2% 6%,14% 1%,30% 5%,48% 0,66% 4%,82% 1%,98% 7%,96% 30%,99% 52%,95% 74%,98% 92%,84% 97%,66% 93%,48% 99%,30% 94%,12% 98%,3% 90%,6% 70%,1% 48%,5% 26%);
   box-shadow:0 16px 32px rgba(0,0,0,.55),inset 0 2px 0 rgba(255,255,255,.35),inset 0 -10px 18px rgba(120,90,60,.18);
-  rotate:var(--rot,0deg);
-  transition:transform .3s var(--ease),filter .3s var(--ease),opacity .35s var(--ease)}
-.page::before{content:"";position:absolute;right:14%;top:10%;width:26px;height:14px;pointer-events:none;opacity:.5;
+  rotate:var(--rot,0deg);transition:transform .3s var(--ease),filter .3s var(--ease),opacity .35s var(--ease)}
+body.unlocked .page{animation:flyIn 1.3s var(--ease) both;animation-delay:var(--flyd,0s)}
+.page.settled{animation:sway var(--swd,7s) ease-in-out infinite}
+.page::before{content:"";position:absolute;right:13%;top:9%;width:26px;height:14px;pointer-events:none;opacity:.5;
   background:url('art/blood.png') center/contain no-repeat;transform:rotate(34deg)}
 .page:nth-child(3n+1)::before{opacity:0}
-.page .pn{display:block;font-family:var(--f-body);font-size:.5rem;letter-spacing:.22em;color:rgba(36,23,18,.45);margin-bottom:8px}
-.page .ln{font-family:var(--f-serif);font-style:italic;font-size:clamp(1.05rem,2.5vw,1.5rem);line-height:1.34}
-.page .cue{display:none;margin-top:12px;font-family:var(--f-body);font-style:normal;font-size:.5rem;letter-spacing:.2em;
+.page .pn{display:block;font-family:var(--f-body);font-size:.5rem;letter-spacing:.22em;color:rgba(36,23,18,.45);margin-bottom:9px}
+.page .ln{font-family:var(--f-serif);font-style:italic;font-size:clamp(1.1rem,2.6vw,1.55rem);line-height:1.34}
+.page .cue{display:none;margin-top:13px;font-family:var(--f-body);font-style:normal;font-size:.5rem;letter-spacing:.2em;
   text-transform:uppercase;color:var(--blood);opacity:.85}
 .page:hover{transform:scale(1.03) translateY(-2px)}
 .page.cur{transform:scale(1.06);z-index:5;filter:drop-shadow(0 0 24px rgba(179,16,42,.6));animation:pageBob 2.6s ease-in-out infinite}
@@ -114,22 +165,32 @@ body.broken #room{opacity:1;filter:none}
 .page.read::after{content:"";position:absolute;left:9%;right:9%;top:54%;height:2px;background:rgba(179,16,42,.75);transform:rotate(-4deg)}
 .page.flinch{animation:flinch .42s}
 @keyframes flinch{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-.page.tornout{opacity:.2;filter:grayscale(1) brightness(.6)}
+.page.tornout{opacity:.42;filter:grayscale(1) brightness(.62)}
 .page.tornout::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 46%,#050203 47% 53%,transparent 54%)}
 
-#closing{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.9);z-index:6;text-align:center;
-  font-family:var(--f-egg);font-size:clamp(1.2rem,4vw,2.2rem);color:var(--blood-bright);
-  text-shadow:0 0 22px rgba(179,16,42,.55);opacity:0;pointer-events:none;
-  transition:opacity .8s var(--ease),transform .8s var(--ease)}
-body.read-done #closing{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.void-cluster{display:flex;flex-direction:column;align-items:center;gap:16px}
+.void{display:flex;flex-direction:column;align-items:center;gap:7px;opacity:0}
+body.unlocked .void{animation:flyIn 1.3s var(--ease) both;animation-delay:var(--flyd,0s)}
+.void.settled{animation:sway var(--swd,9s) ease-in-out infinite}
+.void .rip{width:clamp(96px,24vw,160px);height:34px;filter:grayscale(1) brightness(.5);transition:filter .5s var(--ease);
+  background:linear-gradient(160deg, rgba(231,220,203,.10), rgba(231,220,203,.04));
+  clip-path:polygon(3% 30%,12% 8%,28% 22%,46% 4%,64% 20%,82% 6%,97% 28%,92% 70%,78% 92%,58% 76%,40% 96%,22% 78%,6% 92%)}
+.void .vt{font-family:var(--f-body);font-size:.46rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(239,230,221,.26);transition:color .5s var(--ease)}
+.void.passed .rip{filter:grayscale(.55) brightness(.72)}
+.void.passed .vt{color:rgba(179,16,42,.5)}
+
+#closing{position:relative;max-width:1180px;margin:clamp(40px,9vh,90px) auto 0;text-align:center;
+  opacity:0;transform:scale(.92);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+body.read-done #closing{opacity:1;transform:none}
+#closing .cl-big{display:block;font-family:var(--f-egg);font-size:clamp(1.4rem,5vw,2.6rem);color:var(--blood-bright);
+  letter-spacing:.03em;text-shadow:0 0 22px rgba(179,16,42,.55)}
+#closing .cl-sub{display:block;margin-top:12px;font-family:var(--f-body);font-size:.56rem;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--bone-faint)}
 
 .rfoot{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
   padding:16px clamp(16px,4vw,40px);border-top:1px solid rgba(179,16,42,.25)}
 .rfoot .tag{font-family:var(--f-body);font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--bone-faint)}
-.slotrow{display:flex;gap:10px}
-.slot{width:64px;height:40px;border:1px dashed rgba(179,16,42,.45);display:grid;place-items:center;cursor:help;
-  font-family:var(--f-egg);font-size:.7rem;color:var(--blood-wet);transition:transform .25s var(--ease)}
-.slot:hover{transform:translateY(-3px) rotate(-2deg)}
+.rfoot-mark{font-family:var(--f-logo);font-size:1rem;color:var(--bone-dim);-webkit-text-stroke:.4px var(--blood-wet)}
 
 #glass{position:fixed;inset:0;z-index:30;pointer-events:none;transition:opacity .12s linear;
   background:
@@ -162,6 +223,8 @@ body.broken #flash{animation:flash .5s var(--ease)}
 @keyframes flash{0%{opacity:0}8%{opacity:.5}100%{opacity:0}}
 
 body.blackout #room{filter:brightness(.04) saturate(0)}
+body.jolt{animation:hardJolt .42s steps(4)}
+@keyframes hardJolt{0%,100%{transform:translate(0,0)}25%{transform:translate(-6px,4px)}50%{transform:translate(7px,-5px)}75%{transform:translate(-4px,-3px)}}
 
 #gate{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:16px;cursor:pointer;
@@ -172,7 +235,6 @@ body.broken #gate{opacity:0;visibility:hidden;pointer-events:none;transition:opa
 @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 .gt-k{font-family:var(--f-egg);font-size:clamp(1.6rem,7vw,3rem);color:var(--blood-bright);letter-spacing:.03em;
   text-shadow:0 0 20px rgba(179,16,42,.5)}
-.gt-s{font-family:var(--f-body);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--bone-dim)}
 
 #glassctl{position:fixed;top:14px;right:14px;z-index:60;display:flex;align-items:center;gap:10px;
   opacity:0;pointer-events:none;transition:opacity .5s var(--ease)}
@@ -196,21 +258,21 @@ body.warded #ward{display:flex}
 .wd-up:hover{color:var(--bone);border-color:var(--blood-bright)}
 
 @media(max-width:760px){
-  .rmain{overflow:visible;min-height:auto;padding:26px 0 44px}
-  .plx{display:none}
-  .page{position:relative;width:82%;left:auto!important;top:auto!important;margin:-4px auto 30px}
-  .page:nth-of-type(odd){margin-left:7%}
-  .page:nth-of-type(even){margin-left:auto;margin-right:7%}
+  .sec{padding:clamp(40px,9vh,80px) 0}
+  .sec-label{padding:0 clamp(18px,5vw,40px)}
+  .disc-stage{padding:0 clamp(18px,5vw,40px)}
+  .poem-flow{padding:0 clamp(18px,5vw,40px);gap:clamp(40px,9vh,80px)}
+  .page{width:82%}
   .page.cur{transform:scale(1.02)}
   .page.cur:hover{transform:scale(1.04)}
   @keyframes pageBob{0%,100%{transform:scale(1.02) translateY(0)}50%{transform:scale(1.02) translateY(-4px)}}
-  #closing{position:relative;left:auto;top:auto;transform:none;margin:36px auto 12px}
-  body.read-done #closing{transform:none}
+  #closing{padding:0 clamp(18px,5vw,40px)}
 }
 
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition-duration:.01ms!important}
   #room{opacity:1;filter:none}
+  .page,.void,.disc-wrap,.disc-text,.sec-label{opacity:1!important;transform:none!important}
   .blood>i{opacity:var(--o,.8);transform:scale(1)}
   #cracks path{stroke-dashoffset:0}
 }
@@ -219,64 +281,85 @@ body.warded #ward{display:flex}
 <body>
 
 <div id="room">
+  <div class="ambient" aria-hidden="true">
+    <div class="plx" style="--d:16"><span class="amb-word" style="top:30%;left:50%;transform:translateX(-50%) rotate(-2deg)">BENEATH</span></div>
+    <div class="plx" style="--d:10"><div class="wreck" style="position:absolute;top:14%;left:74%;width:clamp(70px,13vw,130px)"></div></div>
+    <div class="plx" style="--d:7"><div class="wreck" style="position:absolute;top:68%;left:8%;width:clamp(60px,11vw,108px)"></div></div>
+  </div>
+
   <header class="rhead">
     <span class="sig">Nilou<b>·</b>verse</span>
-    <div class="waxrow" aria-label="sealed rewards">
-      <button class="wax" type="button" title="reward I — sealed">I</button>
-      <button class="wax" type="button" title="reward II — sealed">II</button>
-      <button class="wax" type="button" title="reward III — sealed">III</button>
-    </div>
+    <span class="rhead-tag">† the beneath</span>
   </header>
 
   <main class="rmain">
-    <div class="plx" style="--d:11" aria-hidden="true">
-      <span class="shard sh-logo flick" style="top:46%;left:40%;font-size:clamp(2.4rem,10vw,6rem);transform:rotate(3deg)">BENEATH</span>
-      <div class="wreck" style="top:16%;left:70%"></div>
-      <div class="wreck" style="top:64%;left:80%;width:clamp(60px,11vw,108px)"></div>
-      <span class="shard sh-mono flick" style="top:6%;left:44%;font-size:.55rem;transform:rotate(-2deg)">she kept the pieces</span>
-    </div>
+    <section class="sec sec-disc">
+      <div class="sec-label"><span class="sl-n">[ I ]</span> the broken record <span class="sl-rule"></span></div>
+      <div class="disc-stage">
+        <div class="disc-wrap seq" role="button" tabindex="0" aria-label="the broken record — side †">
+          <div class="disc" aria-hidden="true">
+            <div class="half a"></div>
+            <div class="half b"></div>
+            <div class="disc-sheen"></div>
+            <svg class="disc-crack" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M50 0 L48 14 L52 22 L47 34 L50 44 M50 56 L47 68 L52 80 L49 92 L50 100 M48 22 L40 26 M52 34 L60 30 M47 68 L39 72"/>
+            </svg>
+            <div class="disc-label"><span class="spindle"></span><span class="disc-sig">†</span></div>
+            <div class="tonearm"></div>
+          </div>
+          <div class="disc-text">
+            <span class="pn">· side †</span>
+            <span class="ln">I'm who I am</span>
+            <span class="cue">▸ drop the needle</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <button class="page" type="button" style="top:8%;left:5%;--rot:-7deg" aria-label="page one">
-      <span class="pn">· 01</span>
-      <span class="ln">the first verse bleeds through the wall</span>
-      <span class="cue">▸ read aloud</span>
-    </button>
-    <button class="page" type="button" style="top:6%;left:58%;--rot:5deg" aria-label="page two">
-      <span class="pn">· 02</span>
-      <span class="ln">she was quiet, once — before the floor learned her name</span>
-      <span class="cue">▸ read aloud</span>
-    </button>
-    <button class="page" type="button" style="top:38%;left:36%;--rot:-3deg" aria-label="page three">
-      <span class="pn">· 03</span>
-      <span class="ln">every door you opened was a mouth</span>
-      <span class="cue">▸ read aloud</span>
-    </button>
-    <button class="page" type="button" style="top:60%;left:6%;--rot:6deg" aria-label="page four">
-      <span class="pn">· 04</span>
-      <span class="ln">you kept counting fingers like they were rosary beads</span>
-      <span class="cue">▸ read aloud</span>
-    </button>
-    <button class="page" type="button" style="top:56%;left:60%;--rot:-5deg" aria-label="page five">
-      <span class="pn">· 05</span>
-      <span class="ln">the gentle thing was never gentle — only patient</span>
-      <span class="cue">▸ read aloud</span>
-    </button>
-    <button class="page" type="button" style="top:30%;left:74%;--rot:8deg" aria-label="page six">
-      <span class="pn">· 06</span>
-      <span class="ln">and now the book is open, and the book is you</span>
-      <span class="cue">▸ read aloud</span>
-    </button>
+    <section class="sec sec-poem">
+      <div class="sec-label"><span class="sl-n">[ II ]</span> the torn poem <span class="sl-rule"></span></div>
+      <div class="poem-flow">
+        <button class="page seq" type="button" style="--rot:-6deg;margin-left:4%;margin-right:auto" aria-label="page one">
+          <span class="pn">· 01</span>
+          <span class="ln">As I walk through the flames I breathe this damnation</span>
+          <span class="cue">▸ read aloud</span>
+        </button>
 
-    <p id="closing">the book is empty now — but she isn't.</p>
+        <div class="void-cluster">
+          <span class="void"><span class="rip"></span><span class="vt">· · ·</span></span>
+          <span class="void"><span class="rip"></span><span class="vt">[ three pages, torn out ]</span></span>
+          <span class="void"><span class="rip"></span><span class="vt">· · ·</span></span>
+        </div>
+
+        <button class="page seq" type="button" style="--rot:5deg;margin-left:auto;margin-right:6%" aria-label="page two">
+          <span class="pn">· 02</span>
+          <span class="ln">The dark nectar's in my veins</span>
+          <span class="cue">▸ read aloud</span>
+        </button>
+        <button class="page seq" type="button" style="--rot:-4deg;margin-left:9%;margin-right:auto" aria-label="page three">
+          <span class="pn">· 03</span>
+          <span class="ln">slowly driving me insane</span>
+          <span class="cue">▸ read aloud</span>
+        </button>
+        <button class="page seq" type="button" style="--rot:6deg;margin-left:auto;margin-right:4%" aria-label="page four">
+          <span class="pn">· 04</span>
+          <span class="ln">hearing whispers in my head</span>
+          <span class="cue">▸ read aloud</span>
+        </button>
+        <button class="page seq" type="button" style="--rot:-7deg;margin-left:5%;margin-right:auto" aria-label="page five">
+          <span class="pn">· 05</span>
+          <span class="ln">There's a void ...</span>
+          <span class="cue">▸ read aloud</span>
+        </button>
+      </div>
+
+      <p id="closing"><span class="cl-big">the void kept the last line</span><span class="cl-sub">come back when it speaks</span></p>
+    </section>
   </main>
 
   <footer class="rfoot">
     <span class="tag">the surface, far above</span>
-    <div class="slotrow" aria-label="sealed rewards">
-      <span class="slot" title="sealed">✦</span>
-      <span class="slot" title="sealed">✦</span>
-      <span class="slot" title="sealed">✦</span>
-    </div>
+    <span class="rfoot-mark">nilou·verse †</span>
   </footer>
 </div>
 
@@ -312,7 +395,6 @@ body.warded #ward{display:flex}
 <div id="gate" role="button" tabindex="0" aria-label="press the glass to descend">
   <img class="gt-hand" src="art/handprint.png" alt="" draggable="false">
   <p class="gt-k">press the glass</p>
-  <p class="gt-s">it is warm on the other side</p>
 </div>
 
 <div id="glassctl">
@@ -342,35 +424,65 @@ body.warded #ward{display:flex}
     }, {passive:true});
   }
 
-  var pageEls = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var seq = Array.prototype.slice.call(document.querySelectorAll('.seq'));
+  var voidEls = Array.prototype.slice.call(document.querySelectorAll('.void'));
+  var flowKids = Array.prototype.slice.call(document.querySelectorAll('.poem-flow > *'));
+  var discWrap = document.querySelector('.disc-wrap');
+  if(discWrap) discWrap.style.setProperty('--flyd','0s');
+  flowKids.forEach(function(el,idx){
+    var dir = idx%2 ? 1 : -1;
+    el.style.setProperty('--flyd', (0.15 + idx*0.14).toFixed(2)+'s');
+    el.style.setProperty('--flyx', (dir*(20 + (idx%3)*12))+'px');
+    el.style.setProperty('--flyy', (50 + (idx%2)*32)+'px');
+    el.style.setProperty('--flyr', (dir*(6 + (idx%3)*4))+'deg');
+    el.style.setProperty('--swx', (dir*(1 + (idx%3)))+'px');
+    el.style.setProperty('--swy', (-(2 + (idx%2)*2))+'px');
+    el.style.setProperty('--swd', (6 + (idx%4)*1.3).toFixed(1)+'s');
+  });
+  seq.concat(voidEls).forEach(function(el){
+    el.addEventListener('animationend', function(e){ if(e.animationName==='flyIn') el.classList.add('settled'); });
+  });
+
   var unlocked = false, reading = false, broken = false;
   var gate = document.getElementById('gate');
+  var mobile = function(){ return matchMedia('(max-width:760px)').matches; };
+  function intoView(el){ if(mobile()){ try{ el.scrollIntoView({behavior: reduce?'auto':'smooth', block:'center'}); }catch(e){} } }
 
   function flinch(el){ el.classList.remove('flinch'); void el.offsetWidth; el.classList.add('flinch'); setTimeout(function(){ el.classList.remove('flinch'); }, 420); }
+  function done(el){ return el.classList.contains('dead')||el.classList.contains('read')||el.classList.contains('tornout'); }
+
   function advance(i){
+    if(i===1) voidEls.forEach(function(v){ v.classList.add('passed'); });
     var nx = i + 1;
-    if(nx < pageEls.length) pageEls[nx].classList.add('cur');
-    else document.body.classList.add('read-done');
+    if(nx < seq.length){ seq[nx].classList.add('cur'); intoView(seq[nx]); }
+    else { document.body.classList.add('read-done'); intoView(document.getElementById('closing')); }
   }
   function readPage(i){
-    if(reading || i < 0 || i >= pageEls.length) return;
-    var el = pageEls[i];
-    var played = Audio.playPage(i, function(missing){
-      reading = false;
-      el.classList.remove('cur','reading');
-      el.classList.add(missing ? 'tornout' : 'read');
-      advance(i);
+    if(reading || i<0 || i>=seq.length) return;
+    var el = seq[i], isDisc = el.classList.contains('disc-wrap');
+    var played = Audio.playPage(i, {
+      onBreak: function(){ if(isDisc) el.classList.add('shatter'); },
+      onEnd: function(missing){
+        reading = false;
+        el.classList.remove('cur','reading');
+        if(isDisc) el.classList.add('dead');
+        else el.classList.add(missing ? 'tornout' : 'read');
+        advance(i);
+      }
     });
-    if(!played){ reading = false; el.classList.remove('cur'); el.classList.add('tornout'); advance(i); return; }
-    reading = true;
-    el.classList.add('reading');
+    if(!played){ reading=false; el.classList.remove('cur'); el.classList.add(isDisc?'dead':'tornout'); advance(i); return; }
+    reading = true; el.classList.add('reading');
   }
-  pageEls.forEach(function(el,i){
-    el.addEventListener('click', function(){
-      if(!unlocked) return;
-      if(el.classList.contains('cur')) readPage(i);
-      else flinch(el);
-    });
+  function activate(el,i){
+    if(!unlocked) return;
+    if(el.classList.contains('cur')) readPage(i);
+    else if(!done(el)) flinch(el);
+  }
+  seq.forEach(function(el,i){
+    el.addEventListener('click', function(){ activate(el,i); });
+    if(el.classList.contains('disc-wrap')){
+      el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(el,i); } });
+    }
   });
 
   function descend(){
@@ -378,7 +490,7 @@ body.warded #ward{display:flex}
     document.body.classList.add('broken');
     Audio.start(function(){
       unlocked = true;
-      if(pageEls[0]) pageEls[0].classList.add('cur');
+      if(seq[0]){ seq[0].classList.add('cur'); intoView(seq[0]); }
     });
   }
   gate.addEventListener('click', descend);
@@ -386,28 +498,25 @@ body.warded #ward{display:flex}
 })();
 
 var Audio = (function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
   if(!WON) return { start:function(){}, playPage:function(){ return false; } };
 
-  /* intro's silence is baked into the file at 2-4s: lights only, no gain duck */
   var INTRO_FX = [{ at:2, dur:2, lights:true, duck:false }];
-  /* war's break is imposed here (lights + gain); move WAR_BREAK to the exact second after you hear it */
-  var WAR_BREAK = 2.0;
   var TRACK = {
     intro: 'sound/intro.mp3',
     pages: [
-      { src:'sound/war.mp3', fx:[{ at:WAR_BREAK, dur:1.0, lights:true, duck:true }] },
-      { src:'sound/nz1.mp3', fx:[] },
-      { src:'sound/nz2.mp3', fx:[] },
-      { src:'sound/nz3.mp3', fx:[] },
-      { src:'sound/nz4.mp3', fx:[] },
-      { src:'sound/nz5.mp3', fx:[] }
+      { src:'sound/war.mp3',  fx:[], breakOnEnd:true },
+      { src:'sound/nz1.mp3',  fx:[], breakOnEnd:false },
+      { src:'sound/nz2.mp3',  fx:[], breakOnEnd:false },
+      { src:'sound/nz3.mp3',  fx:[], breakOnEnd:false },
+      { src:'sound/nz4.mp3',  fx:[], breakOnEnd:false },
+      { src:'sound/nz5.mp3',  fx:[], breakOnEnd:false }
     ]
   };
 
   var ctx=null, master=null, comp=null, raw={}, buf={}, muted=false, any=false;
   var muteBtn=document.getElementById('muteBtn'), muteIco=document.getElementById('muteIco');
-  function noop(){}
 
   function ensureCtx(){
     if(ctx) return;
@@ -436,40 +545,65 @@ var Audio = (function(){
   }
   if(muteBtn) muteBtn.addEventListener('click', toggleMute);
 
-  /* plays one buffer with its fx timeline; onEnd(true) on finish, onEnd(false) if the clip is missing */
-  function playBuf(src, baseGain, fx, onEnd){
+  function synthBreak(){
+    if(!ctx) return;
+    try{
+      var t=ctx.currentTime;
+      var len=Math.floor(ctx.sampleRate*0.28), nb=ctx.createBuffer(1,len,ctx.sampleRate), d=nb.getChannelData(0);
+      for(var i=0;i<len;i++){ d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2); }
+      var ns=ctx.createBufferSource(); ns.buffer=nb;
+      var bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1400; bp.Q.value=1.2;
+      var ng=ctx.createGain(); ng.gain.setValueAtTime(0.0001,t); ng.gain.exponentialRampToValueAtTime(0.5,t+0.01); ng.gain.exponentialRampToValueAtTime(0.0001,t+0.26);
+      ns.connect(bp); bp.connect(ng); ng.connect(master); ns.start(t); ns.stop(t+0.3);
+      var o=ctx.createOscillator(); o.type='sine'; o.frequency.setValueAtTime(90,t); o.frequency.exponentialRampToValueAtTime(40,t+0.3);
+      var og=ctx.createGain(); og.gain.setValueAtTime(0.0001,t); og.gain.exponentialRampToValueAtTime(0.4,t+0.02); og.gain.exponentialRampToValueAtTime(0.0001,t+0.32);
+      o.connect(og); og.connect(master); o.start(t); o.stop(t+0.34);
+      var k=ctx.createOscillator(); k.type='square'; k.frequency.value=2200;
+      var kg=ctx.createGain(); kg.gain.setValueAtTime(0.0001,t); kg.gain.exponentialRampToValueAtTime(0.18,t+0.005); kg.gain.exponentialRampToValueAtTime(0.0001,t+0.06);
+      k.connect(kg); kg.connect(master); k.start(t); k.stop(t+0.08);
+    }catch(e){}
+  }
+  function runBreak(hooks){
+    document.body.classList.add('blackout');
+    synthBreak();
+    if(hooks && hooks.onBreak) hooks.onBreak();
+    setTimeout(function(){
+      document.body.classList.remove('blackout');
+      document.body.classList.add('jolt');
+      setTimeout(function(){ document.body.classList.remove('jolt'); }, 420);
+      if(hooks && hooks.onEnd) hooks.onEnd(true);
+    }, 600);
+  }
+
+  function playBuf(src, baseGain, cfg, hooks){
+    cfg = cfg||{}; var fx = cfg.fx||[];
     var b = buf[src];
-    if(!b){ if(onEnd) onEnd(false); return false; }
+    if(!b) return false;
     var s = ctx.createBufferSource(); s.buffer = b;
-    var g = ctx.createGain(); g.gain.value = baseGain;
-    s.connect(g); g.connect(master);
+    var g = ctx.createGain(); g.gain.value = baseGain; s.connect(g); g.connect(master);
     var t0 = ctx.currentTime;
-    try{ s.start(t0); }catch(e){ if(onEnd) onEnd(false); return false; }
+    try{ s.start(t0); }catch(e){ return false; }
     showMute();
-    var applied = fx.map(function(){ return false; });
-    var raf = 0;
+    var applied = fx.map(function(){ return false; }); var raf = 0;
+    function clearFx(){
+      if(raf) cancelAnimationFrame(raf);
+      for(var i=0;i<fx.length;i++){ if(applied[i] && fx[i].lights) document.body.classList.remove('blackout'); }
+      try{ g.disconnect(); }catch(e){}
+    }
     function tick(){
       var el = ctx.currentTime - t0;
       for(var i=0;i<fx.length;i++){
         var w = fx[i], inW = el >= w.at && el < w.at + w.dur;
-        if(inW && !applied[i]){
-          applied[i]=true;
-          if(w.lights) document.body.classList.add('blackout');
-          if(w.duck) g.gain.setTargetAtTime(0, ctx.currentTime, 0.02);
-        } else if(!inW && applied[i]){
-          applied[i]=false;
-          if(w.lights) document.body.classList.remove('blackout');
-          if(w.duck) g.gain.setTargetAtTime(baseGain, ctx.currentTime, 0.02);
-        }
+        if(inW && !applied[i]){ applied[i]=true; if(w.lights) document.body.classList.add('blackout'); if(w.duck) g.gain.setTargetAtTime(0,ctx.currentTime,0.02); }
+        else if(!inW && applied[i]){ applied[i]=false; if(w.lights) document.body.classList.remove('blackout'); if(w.duck) g.gain.setTargetAtTime(baseGain,ctx.currentTime,0.02); }
       }
       if(el < (b.duration||0) + 0.05) raf = requestAnimationFrame(tick);
     }
     if(fx.length) raf = requestAnimationFrame(tick);
     s.onended = function(){
-      if(raf) cancelAnimationFrame(raf);
-      for(var i=0;i<fx.length;i++){ if(applied[i] && fx[i].lights) document.body.classList.remove('blackout'); }
-      try{ g.disconnect(); }catch(e){}
-      if(onEnd) onEnd(true);
+      clearFx();
+      if(cfg.breakOnEnd) runBreak(hooks);
+      else if(hooks && hooks.onEnd) hooks.onEnd(true);
     };
     return true;
   }
@@ -478,21 +612,21 @@ var Audio = (function(){
     ensureCtx();
     if(!ctx){ if(onDone) onDone(); return; }
     var go = function(){
-      TRACK.pages.forEach(function(p){ decodeOne(p.src, noop); });
+      TRACK.pages.forEach(function(p){ decodeOne(p.src); });
       decodeOne(TRACK.intro, function(){
         showMute();
-        if(buf[TRACK.intro]) playBuf(TRACK.intro, 1.0, INTRO_FX, function(){ if(onDone) onDone(); });
+        if(buf[TRACK.intro]) playBuf(TRACK.intro, 1.0, { fx:INTRO_FX, breakOnEnd:false }, { onEnd:function(){ if(onDone) onDone(); } });
         else if(onDone) setTimeout(onDone, 700);
       });
     };
     if(ctx.state==='suspended'){ var pr=ctx.resume(); if(pr&&pr.then) pr.then(go,go); else go(); }
     else go();
   }
-  function playPage(i, onEnd){
+  function playPage(i, hooks){
     var p = TRACK.pages[i];
-    if(!p) { if(onEnd) onEnd(true); return false; }
-    var ok = playBuf(p.src, 0.95, p.fx||[], function(played){ if(onEnd) onEnd(!played); });
-    if(!ok){ if(onEnd) onEnd(true); }
+    if(!p){ if(hooks&&hooks.onEnd) hooks.onEnd(true); return false; }
+    var ok = playBuf(p.src, i===0?1.0:0.95, p, hooks);
+    if(!ok && hooks && hooks.onEnd) hooks.onEnd(true);
     return ok;
   }
 
