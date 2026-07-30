@@ -14,7 +14,8 @@
 <noscript><style>
   #gate{display:none!important}
   #room{opacity:1!important;filter:none!important}
-  .page,.void,.wreck-col,.wreck,.wreck-text,.threshold,.sec-label{opacity:1!important;transform:none!important}
+  .threshold,.lib-head,.specimen{opacity:1!important;transform:none!important}
+  .spec-media{display:block!important}
 </style></noscript>
 
 <style>
@@ -26,8 +27,10 @@
   --paper:#e7dccb; --paper-2:#cdbfa9; --inkpage:#241712;
   --line:rgba(239,230,221,.12);
   --ease:cubic-bezier(.22,.61,.36,1);
+  --dur-1:.35s;
   --f-logo:'Metal Mania',cursive; --f-egg:'Creepster',cursive;
   --f-serif:'Instrument Serif',serif; --f-body:'Space Grotesk',sans-serif;
+  --f-mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,'Liberation Mono',monospace;
   --px:0; --py:0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -46,7 +49,11 @@ body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 #breath{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s var(--ease);
   background:radial-gradient(80% 70% at 50% 62%, rgba(179,16,42,.12), transparent 70%)}
 body.alive #breath{opacity:1;animation:breatheGlow 4.4s ease-in-out infinite}
+body.muted #breath{opacity:.12;animation:none}
 @keyframes breatheGlow{0%,100%{opacity:.45}50%{opacity:1}}
+
+#scan{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.5) 0 1px,transparent 1px 3px)}
 
 .ashfield{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .ash{position:absolute;bottom:-12px;width:3px;height:3px;border-radius:50%;background:rgba(231,220,203,.45);
@@ -77,164 +84,132 @@ body.broken #room{opacity:1;filter:none}
   box-shadow:0 0 0 2px rgba(239,230,221,.06),inset 0 0 24px rgba(0,0,0,.7);
   animation:skip 2.6s steps(8) infinite}
 
+/* containment header (opposes the surface) */
 .rhead{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:14px;
-  padding:16px clamp(16px,4vw,40px);border-bottom:1px solid rgba(179,16,42,.25)}
-.rhead .sig{font-family:var(--f-logo);font-size:clamp(1.1rem,4vw,1.5rem);color:var(--bone);
-  -webkit-text-stroke:.5px var(--blood-wet);text-shadow:0 0 12px rgba(179,16,42,.4)}
-.rhead .sig b{color:var(--blood-bright)}
-.rhead-tag{font-family:var(--f-body);font-size:.5rem;letter-spacing:.26em;text-transform:uppercase;color:var(--bone-faint)}
+  padding:13px clamp(16px,4vw,40px);border-bottom:1px solid rgba(179,16,42,.3);font-family:var(--f-mono);
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 4px),rgba(8,4,5,.6)}
+.rhead-brand{font-size:clamp(.7rem,2.4vw,1rem);letter-spacing:.12em;color:var(--bone);text-transform:uppercase;animation:glitchText 5s steps(1) infinite}
+.rhead-brand .glitchbar{color:var(--blood-bright);margin-left:8px}
+@keyframes glitchText{0%,100%{opacity:1}41%{opacity:.5;transform:translateX(1px)}43%{opacity:1;transform:none}72%{opacity:.6;transform:translateX(-1px)}74%{transform:none}}
+.rhead-stat{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-faint);display:flex;align-items:center;gap:7px}
+.blinkdot{width:6px;height:6px;border-radius:50%;background:var(--blood-bright);box-shadow:0 0 6px var(--blood-bright);animation:blink 1.1s steps(1) infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
 .rmain{position:relative;flex:1 1 auto}
-.threshold{position:relative;z-index:2;text-align:center;padding:22px 16px 0;
-  font-family:var(--f-egg);font-size:clamp(.95rem,3.2vw,1.4rem);letter-spacing:.06em;color:var(--blood-wet);
+.threshold{position:relative;z-index:2;text-align:center;padding:22px 16px 0;font-family:var(--f-egg);
+  font-size:clamp(.95rem,3.2vw,1.4rem);letter-spacing:.05em;color:var(--blood-wet);
   text-shadow:0 0 16px rgba(179,16,42,.4);opacity:0;transition:opacity .9s var(--ease)}
 body.broken .threshold{opacity:.85}
 
-.sec{position:relative;padding:clamp(48px,11vh,120px) clamp(18px,5vw,56px)}
-.sec + .sec{border-top:1px solid rgba(179,16,42,.16)}
-.sec-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.sec-ghost{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);font-family:var(--f-logo);
-  font-size:clamp(13rem,44vw,38rem);line-height:.78;color:rgba(179,16,42,.05);
-  -webkit-text-stroke:1px rgba(179,16,42,.07);white-space:nowrap;user-select:none}
-.sec-label,.wreck-rail,.poem-flow{position:relative;z-index:1}
-.sec-label{display:flex;align-items:center;gap:14px;max-width:1180px;margin:0 auto clamp(34px,7vh,72px);
-  font-family:var(--f-body);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--blood-wet);opacity:0}
-body.broken .sec-label{animation:fadeUp .8s var(--ease) both;animation-delay:.1s}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.sec-label .sl-n{color:var(--blood-bright);font-weight:700}
-.sec-label .sl-sub{font-family:var(--f-serif);font-style:italic;font-size:.8rem;letter-spacing:.02em;text-transform:none;color:var(--bone-faint)}
-.sec-label .sl-rule{flex:1;height:1px;background:linear-gradient(90deg,rgba(179,16,42,.4),transparent)}
+.lib-head{max-width:1080px;margin:clamp(20px,4vh,40px) auto clamp(28px,6vh,56px);text-align:center;
+  padding:0 clamp(18px,5vw,40px);opacity:0;transition:opacity .9s var(--ease) .15s}
+body.broken .lib-head{opacity:1}
+.lib-head .lh-k{font-family:var(--f-mono);font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--blood-bright)}
+.lib-head .lh-t{font-family:var(--f-logo);font-size:clamp(2rem,8vw,4rem);color:var(--bone);
+  -webkit-text-stroke:.6px var(--blood-wet);text-shadow:0 0 22px rgba(179,16,42,.4);margin-top:6px}
+.lib-head .lh-s{font-family:var(--f-serif);font-style:italic;font-size:clamp(.95rem,2.6vw,1.25rem);color:var(--bone-dim);margin-top:8px}
 
-/* wreckage rail */
-.wreck-rail{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;
-  gap:clamp(30px,7vw,84px)}
-.wreck-col{display:flex;flex-direction:column;align-items:center;opacity:0;
-  transform:translate(var(--flyx,0px),var(--flyy,40px));
-  transition:opacity 1.15s var(--ease) var(--flyd,0s),transform 1.15s var(--ease) var(--flyd,0s),filter .3s var(--ease)}
-.wreck-col.revealed{opacity:1;transform:translate(0,0);animation:drift var(--swd,8s) ease-in-out infinite}
-@keyframes drift{0%,100%{translate:0 0}50%{translate:var(--swx,2px) var(--swy,-3px)}}
-.wire{width:1px;height:clamp(22px,6vh,60px);
-  background:linear-gradient(180deg,transparent,rgba(239,230,221,.28) 70%,rgba(239,230,221,.5))}
-.wreck{position:relative;width:clamp(150px,40vw,250px);aspect-ratio:1;border-radius:50%;background:#0a0608;cursor:pointer;
-  box-shadow:0 0 0 2px rgba(239,230,221,.08),0 0 26px rgba(0,0,0,.7),0 18px 36px rgba(0,0,0,.6),inset 0 0 30px rgba(0,0,0,.65);
-  transition:filter .3s var(--ease),transform .3s var(--ease)}
-.wreck:hover{transform:scale(1.03)}
-.wreck:focus-visible{outline:2px solid var(--cyan);outline-offset:6px}
-.half{position:absolute;inset:0;border-radius:50%;transition:transform .55s var(--ease);
-  background:
-    radial-gradient(circle, transparent 0 13%, #1a0d10 13.5% 16%, transparent 16.5%),
-    repeating-radial-gradient(circle, #151014 0 2px, #241a20 2px 4px)}
-.half.a{clip-path:polygon(0 0,47% 0,43% 100%,0 100%)}
-.half.b{clip-path:polygon(53% 0,100% 0,100% 100%,49% 100%)}
-.wreck-col.reading .half{animation:skip 2.4s steps(10) infinite}
-@keyframes skip{0%{transform:rotate(0)}38%{transform:rotate(150deg)}42%{transform:rotate(140deg)}46%{transform:rotate(158deg)}50%{transform:rotate(150deg)}100%{transform:rotate(360deg)}}
-.wreck-col.shatter .half.a{transform:translate(-9px,-7px) rotate(-3.5deg)}
-.wreck-col.shatter .half.b{transform:translate(9px,8px) rotate(3.5deg)}
-.disc-sheen{position:absolute;inset:0;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
-  background:conic-gradient(from 200deg, transparent 0 70%, rgba(255,255,255,.10) 78%, rgba(255,255,255,.22) 84%, rgba(255,255,255,.08) 88%, transparent 94%)}
-.disc-crack{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transition:opacity .3s var(--ease);
-  filter:drop-shadow(0 0 4px rgba(255,80,80,.5))}
-.disc-crack path{stroke:rgba(20,8,8,.92);stroke-width:1.4;fill:none;vector-effect:non-scaling-stroke}
-.wreck-col.shatter .disc-crack{opacity:0}
-.disc-label{position:absolute;left:50%;top:50%;width:30%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
-  background:radial-gradient(circle at 40% 35%, #2a1c20, #140a0c 70%);display:grid;place-items:center;
-  box-shadow:inset 0 0 8px rgba(0,0,0,.7);transition:opacity .4s var(--ease)}
-.disc-label .spindle{width:16%;aspect-ratio:1;border-radius:50%;background:#050203;box-shadow:0 0 0 2px rgba(239,230,221,.15)}
-.disc-label .disc-sig{position:absolute;bottom:15%;font-family:var(--f-egg);font-size:.6rem;color:var(--blood-wet)}
-.wreck-col.dead .disc-label{opacity:.5}
-.wreck-col.shatter .disc-label{opacity:0}
-.tonearm{position:absolute;top:-7%;right:-5%;width:48%;height:9%;transform-origin:right center;transform:rotate(-34deg);
-  transition:transform .5s var(--ease);pointer-events:none}
-.tonearm::before{content:"";position:absolute;right:0;top:50%;width:100%;height:5px;transform:translateY(-50%);
-  background:linear-gradient(90deg,#3a2a30,#8a7a6c);border-radius:3px;box-shadow:0 2px 4px rgba(0,0,0,.5)}
-.tonearm::after{content:"";position:absolute;left:-3%;top:50%;width:11px;height:11px;transform:translate(-50%,-50%) rotate(45deg);
-  background:#b3102a;box-shadow:0 0 6px rgba(179,16,42,.6)}
-.wreck-col.reading .tonearm{transform:rotate(-9deg)}
-.wreck-col.dead .tonearm{transform:rotate(-46deg)}
-.wreck-col.reading{filter:drop-shadow(0 0 30px rgba(255,39,71,.6))}
-.wreck-col.dead{filter:grayscale(.4) brightness(.8)}
-.wreck-text{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:16px;max-width:230px;text-align:center}
-.wreck-text .pn{font-family:var(--f-body);font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(239,230,221,.4)}
-.wreck-text .ln{font-family:var(--f-serif);font-style:italic;font-size:clamp(1.2rem,3.2vw,1.8rem);line-height:1.18;color:var(--bone)}
-.wreck-col.reading .wreck-text .ln{text-shadow:0 0 24px rgba(255,39,71,.6)}
-.wreck-col.dead .wreck-text .ln{color:var(--bone-dim);animation:signalflick 2.2s steps(1) infinite}
-@keyframes signalflick{0%,100%{opacity:.85}40%{opacity:.3}44%{opacity:.9}48%{opacity:.4}70%{opacity:.8}}
-.wreck-text .cue{font-family:var(--f-body);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blood);opacity:.7}
-.wreck-col.ghost .wreck{cursor:default;filter:grayscale(1) brightness(.5);opacity:.5}
-.wreck-col.ghost .wreck:hover{transform:none}
-.wreck-col.ghost .wreck-text .ln{color:rgba(239,230,221,.25);font-style:normal;font-family:var(--f-body);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase}
-.wreck-col.ghost .wreck-text .cue{display:none}
+.specimens{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,40px);
+  padding:0 clamp(18px,5vw,40px)}
+@media(max-width:820px){.specimens{grid-template-columns:1fr}}
+.specimen{position:relative;border:1px solid rgba(179,16,42,.25);
+  background:linear-gradient(180deg,rgba(11,6,8,.6),rgba(8,4,5,.72));
+  padding:clamp(24px,4vw,34px);display:flex;flex-direction:column;gap:18px;
+  box-shadow:inset 0 0 50px rgba(0,0,0,.55),0 20px 44px rgba(0,0,0,.45);
+  opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease) var(--sd,.2s),transform 1s var(--ease) var(--sd,.2s)}
+body.broken .specimen{opacity:1;transform:none}
+.spec-tag{position:absolute;top:0;left:0;font-family:var(--f-mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--blood-bright);background:rgba(124,11,27,.22);padding:5px 10px;
+  border-right:1px solid rgba(179,16,42,.3);border-bottom:1px solid rgba(179,16,42,.3);display:flex;align-items:center;gap:6px}
+.case-btn{appearance:none;border:0;background:none;cursor:pointer;position:relative;align-self:center;
+  width:clamp(140px,42%,200px);transition:transform .4s var(--ease)}
+.case-btn img{width:100%;height:auto;display:block;filter:drop-shadow(0 16px 30px rgba(0,0,0,.6));transition:transform .5s var(--ease)}
+.case-btn:hover{transform:translateY(-4px)}
+.case-btn:hover img{transform:rotate(-2deg) scale(1.03)}
+.specimen.open .case-btn img{transform:rotate(-7deg) scale(.9) translateX(-6%)}
+.case-glow{position:absolute;inset:-12%;border-radius:50%;background:radial-gradient(circle,rgba(179,16,42,.32),transparent 70%);
+  opacity:0;transition:opacity .4s var(--ease);pointer-events:none}
+.case-btn:hover .case-glow,.specimen.open .case-glow{opacity:1}
+.case-hint{position:absolute;left:50%;bottom:-2px;transform:translate(-50%,100%);font-family:var(--f-mono);font-size:.5rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--bone-faint);white-space:nowrap;transition:opacity .3s var(--ease)}
+.specimen.open .case-hint{opacity:0}
+.spec-plate{text-align:center}
+.spec-plate .sp-title{font-family:var(--f-logo);font-size:clamp(1.5rem,5vw,2.3rem);color:var(--bone);-webkit-text-stroke:.5px var(--blood-wet)}
+.spec-plate .sp-joke{font-family:var(--f-mono);font-size:.5rem;letter-spacing:.06em;color:var(--bone-faint);line-height:1.7;margin-top:7px}
+.spec-media{display:none;border-top:1px dashed rgba(179,16,42,.25);padding-top:18px}
+.specimen.open .spec-media{display:block;animation:fadeUp .5s var(--ease) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
-/* torn poem */
-.poem-flow{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(48px,11vh,104px)}
-.spine{position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);z-index:0;pointer-events:none;
-  background:repeating-linear-gradient(180deg, rgba(179,16,42,.5) 0 8px, transparent 8px 16px);
-  -webkit-mask-image:linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent);
-  mask-image:linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent);opacity:.5}
-.page{position:relative;z-index:1;width:clamp(158px,30vw,256px);padding:22px 24px 24px;cursor:pointer;border:0;text-align:left;opacity:0;
-  transform:translate(var(--flyx,0px),var(--flyy,46px));rotate:var(--rot,0deg);
-  background:
-    radial-gradient(130% 90% at 82% 8%, rgba(179,16,42,.20), transparent 58%),
-    linear-gradient(160deg,var(--paper),var(--paper-2));
+/* WAR player */
+.war{display:flex;gap:clamp(16px,3vw,26px);align-items:center;flex-wrap:wrap;justify-content:center}
+.war-disc{position:relative;width:clamp(120px,30vw,170px);aspect-ratio:1;flex:none;border-radius:50%;background:#0a0608;
+  box-shadow:0 0 0 2px rgba(239,230,221,.08),0 12px 28px rgba(0,0,0,.6),inset 0 0 24px rgba(0,0,0,.7)}
+.war-disc .face{position:absolute;inset:0;border-radius:50%;background:url('art/nzface.png') center/cover}
+.war-disc .groove{position:absolute;inset:0;border-radius:50%;mix-blend-mode:overlay;opacity:.55;
+  background:repeating-radial-gradient(circle,transparent 0 3px,rgba(0,0,0,.4) 3px 4px)}
+.war-disc .hole{position:absolute;left:50%;top:50%;width:14%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:#050203;box-shadow:0 0 0 2px rgba(239,230,221,.15)}
+.war-disc.spin{animation:spin 3.2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.war-ctrl{flex:1;min-width:170px;display:flex;flex-direction:column;gap:11px}
+.pp-row{display:flex;align-items:center;gap:12px}
+.pp-btn{width:48px;height:48px;flex:none;border-radius:50%;border:1.5px solid var(--bone);background:rgba(8,5,6,.6);
+  cursor:pointer;display:grid;place-items:center;transition:background var(--dur-1) var(--ease),border-color var(--dur-1) var(--ease)}
+.pp-btn:hover{background:var(--blood);border-color:var(--blood)}
+.pp-btn .ico-play{width:0;height:0;border-left:14px solid var(--bone);border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:3px}
+.pp-btn .ico-pause{display:none;width:12px;height:14px;border-left:4px solid var(--bone);border-right:4px solid var(--bone)}
+.pp-btn.playing .ico-play{display:none}
+.pp-btn.playing .ico-pause{display:block}
+.pp-track{position:relative;flex:1;height:6px;background:rgba(239,230,221,.12);border-radius:3px;cursor:pointer;touch-action:none}
+.pp-fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:3px;pointer-events:none;
+  background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright))}
+.pp-knob{position:absolute;top:50%;left:0%;width:12px;height:12px;border-radius:50%;background:var(--bone);
+  transform:translate(-50%,-50%);box-shadow:0 0 8px rgba(255,39,71,.6);pointer-events:none}
+.pp-time{font-family:var(--f-mono);font-size:.55rem;color:var(--bone-faint);display:flex;justify-content:space-between}
+.war-meta .wm-title{font-family:var(--f-serif);font-style:italic;font-size:1.1rem;color:var(--bone)}
+.war-meta .wm-joke{font-family:var(--f-mono);font-size:.48rem;letter-spacing:.05em;color:var(--bone-faint);margin-top:5px;line-height:1.6}
+
+/* torn-poem book */
+.book{display:flex;flex-direction:column;gap:14px;align-items:center}
+.book-stage{position:relative;width:min(100%,330px);min-height:180px;display:grid;place-items:center}
+.book-page{width:100%;padding:24px 26px;text-align:center;
+  background:radial-gradient(130% 90% at 82% 8%,rgba(179,16,42,.18),transparent 58%),linear-gradient(160deg,var(--paper),var(--paper-2));
   color:var(--inkpage);
   clip-path:polygon(2% 6%,14% 1%,30% 5%,48% 0,66% 4%,82% 1%,98% 7%,96% 30%,99% 52%,95% 74%,98% 92%,84% 97%,66% 93%,48% 99%,30% 94%,12% 98%,3% 90%,6% 70%,1% 48%,5% 26%);
-  box-shadow:0 16px 32px rgba(0,0,0,.55),inset 0 2px 0 rgba(255,255,255,.35),inset 0 -10px 18px rgba(120,90,60,.18);
-  transition:opacity 1.15s var(--ease) var(--flyd,0s),transform 1.15s var(--ease) var(--flyd,0s),scale .3s var(--ease),filter .3s var(--ease)}
-.page.revealed{opacity:1;transform:translate(0,0);animation:drift var(--swd,7s) ease-in-out infinite}
-.page::before{content:"";position:absolute;right:13%;top:9%;width:26px;height:14px;pointer-events:none;opacity:.5;
-  background:url('art/blood.png') center/contain no-repeat;transform:rotate(34deg)}
-.page:nth-child(3n+1)::before{opacity:0}
-.page .pn{display:block;font-family:var(--f-body);font-size:.5rem;letter-spacing:.22em;color:rgba(36,23,18,.45);margin-bottom:9px}
-.page .ln{font-family:var(--f-serif);font-style:italic;font-size:clamp(1.1rem,2.6vw,1.55rem);line-height:1.34}
-.page .cue{display:none;margin-top:13px;font-family:var(--f-body);font-style:normal;font-size:.5rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--blood);opacity:.85}
-.page:hover{scale:1.03}
-.page.cur{scale:1.06;z-index:5;filter:drop-shadow(0 0 24px rgba(179,16,42,.6))}
-.page.cur .pn{color:var(--blood-bright)}
-.page.cur .cue{display:block}
-.page.cur:hover{scale:1.09}
-.page.reading{filter:drop-shadow(0 0 30px rgba(255,39,71,.8))}
-.page.read{opacity:.5;filter:grayscale(.45) brightness(.85)}
-.page.read::after{content:"";position:absolute;left:9%;right:9%;top:54%;height:2px;background:rgba(179,16,42,.75);transform:rotate(-4deg)}
-.page.flinch{animation:flinch .42s}
-@keyframes flinch{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-.page.tornout{opacity:.42;filter:grayscale(1) brightness(.62)}
-.page.tornout::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 46%,#050203 47% 53%,transparent 54%)}
+  box-shadow:0 14px 30px rgba(0,0,0,.5),inset 0 2px 0 rgba(255,255,255,.35)}
+.book-page .bp-num{display:block;font-family:var(--f-mono);font-size:.5rem;letter-spacing:.2em;color:rgba(36,23,18,.5)}
+.book-page .bp-line{display:block;font-family:var(--f-serif);font-style:italic;font-size:clamp(1.1rem,3vw,1.5rem);color:var(--inkpage);line-height:1.32;margin-top:9px}
+.book-page.gap{background:none;box-shadow:none;clip-path:none;border:1px dashed rgba(179,16,42,.4)}
+.book-page.gap .bp-line{color:var(--bone-faint);font-family:var(--f-mono);font-style:normal;font-size:.55rem;letter-spacing:.08em}
+.book-page.gap .bp-num{color:rgba(179,16,42,.6)}
+.book-page.in-l{animation:slideInL .4s var(--ease)}
+.book-page.in-r{animation:slideInR .4s var(--ease)}
+@keyframes slideInL{from{opacity:0;transform:translateX(46px)}to{opacity:1;transform:none}}
+@keyframes slideInR{from{opacity:0;transform:translateX(-46px)}to{opacity:1;transform:none}}
+.book-nav{display:flex;align-items:center;gap:16px}
+.book-nav button{appearance:none;border:1px solid rgba(239,230,221,.2);background:rgba(8,5,6,.5);color:var(--bone-dim);
+  width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1.1rem;line-height:1;transition:var(--dur-1) var(--ease)}
+.book-nav button:hover:not(:disabled){color:var(--bone);border-color:var(--blood-bright)}
+.book-nav button:disabled{opacity:.3;cursor:default}
+.book-count{font-family:var(--f-mono);font-size:.55rem;letter-spacing:.12em;color:var(--bone-faint);min-width:96px;text-align:center}
+.book-note{font-family:var(--f-mono);font-size:.46rem;letter-spacing:.06em;color:var(--bone-faint);text-align:center;min-height:1em}
 
-.void-cluster{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:16px}
-.void{display:flex;flex-direction:column;align-items:center;gap:7px;opacity:0;
-  transform:translate(var(--flyx,0px),var(--flyy,30px));
-  transition:opacity 1.15s var(--ease) var(--flyd,0s),transform 1.15s var(--ease) var(--flyd,0s)}
-.void.revealed{opacity:1;transform:translate(0,0);animation:drift var(--swd,9s) ease-in-out infinite}
-.void .rip{width:clamp(96px,24vw,160px);height:34px;filter:grayscale(1) brightness(.5);transition:filter .5s var(--ease);
-  background:linear-gradient(160deg, rgba(231,220,203,.10), rgba(231,220,203,.04));
-  clip-path:polygon(3% 30%,12% 8%,28% 22%,46% 4%,64% 20%,82% 6%,97% 28%,92% 70%,78% 92%,58% 76%,40% 96%,22% 78%,6% 92%)}
-.void .vt{font-family:var(--f-body);font-size:.46rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(239,230,221,.26);transition:color .5s var(--ease)}
-.void.passed .rip{filter:grayscale(.55) brightness(.72)}
-.void.passed .vt{color:rgba(179,16,42,.5)}
+/* containment footer (opposes the surface) */
+.rfoot{position:relative;z-index:3;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;
+  padding:clamp(22px,5vw,40px) clamp(16px,4vw,40px);border-top:1px solid rgba(179,16,42,.3);font-family:var(--f-mono);
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 4px),rgba(8,4,5,.6)}
+.rfoot-brand{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blood-wet)}
+.rfoot-up{font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bone-dim);
+  border:1px solid rgba(239,230,221,.18);padding:8px 14px;transition:var(--dur-1) var(--ease)}
+.rfoot-up:hover{color:var(--bone);border-color:var(--blood-bright)}
+.rfoot-joke{font-size:.46rem;letter-spacing:.05em;color:var(--bone-faint);line-height:1.7;max-width:62ch}
 
-#closing{position:relative;max-width:1180px;margin:clamp(40px,9vh,90px) auto 0;text-align:center;
-  opacity:0;transform:scale(.92);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-body.read-done #closing{opacity:1;transform:none}
-#closing::before{content:"";position:absolute;left:50%;top:50%;width:150%;height:240%;transform:translate(-50%,-50%);z-index:-1;pointer-events:none;
-  background:radial-gradient(circle, rgba(179,16,42,.22), transparent 62%);opacity:0;transition:opacity .8s var(--ease)}
-body.read-done #closing::before{opacity:1}
-#closing .cl-big{display:block;font-family:var(--f-egg);font-size:clamp(1.4rem,5vw,2.6rem);color:var(--blood-bright);
-  letter-spacing:.03em;text-shadow:0 0 22px rgba(179,16,42,.55)}
-#closing .cl-sub{display:block;margin-top:12px;font-family:var(--f-body);font-size:.56rem;letter-spacing:.26em;
-  text-transform:uppercase;color:var(--bone-faint)}
-
-.rfoot{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
-  padding:16px clamp(16px,4vw,40px);border-top:1px solid rgba(179,16,42,.25)}
-.rfoot .tag{font-family:var(--f-body);font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--bone-faint)}
-.rfoot-mark{font-family:var(--f-logo);font-size:1rem;color:var(--bone-dim);-webkit-text-stroke:.4px var(--blood-wet)}
-
+/* glass / cracks / blood / gate / ward */
 #glass{position:fixed;inset:0;z-index:30;pointer-events:none;transition:opacity .12s linear;
   background:
     linear-gradient(115deg,transparent 38%,rgba(255,255,255,.05) 49%,rgba(255,255,255,.10) 50%,rgba(255,255,255,.04) 51%,transparent 62%),
     radial-gradient(130% 120% at 50% 50%,transparent 56%,rgba(0,0,0,.55) 100%)}
 body.blackout #glass{opacity:.18}
-
 #cracks{position:fixed;inset:0;z-index:31;pointer-events:none}
 #cracks svg{width:100%;height:100%}
 #cracks path{fill:none;stroke:rgba(239,230,221,.55);stroke-width:1.4;vector-effect:non-scaling-stroke;
@@ -243,7 +218,6 @@ body.broken #cracks path{animation:crackDraw .75s var(--ease) forwards;animation
 body.broken #cracks{animation:crackJolt .42s steps(5)}
 @keyframes crackDraw{to{stroke-dashoffset:0}}
 @keyframes crackJolt{0%,100%{transform:translate(0,0)}20%{transform:translate(-3px,2px)}40%{transform:translate(4px,-2px)}60%{transform:translate(-2px,-1px)}80%{transform:translate(2px,1px)}}
-
 #blood-layer{position:fixed;inset:0;z-index:32;pointer-events:none}
 .blood{position:absolute;transform:rotate(var(--r,0deg));filter:drop-shadow(0 2px 6px rgba(60,0,0,.6))}
 .blood>i{display:block;width:var(--w,160px);aspect-ratio:1.86;
@@ -254,11 +228,9 @@ body.broken .blood>i{animation:bloodBloom .6s cubic-bezier(.2,1.4,.4,1) both;ani
   background:linear-gradient(180deg,var(--blood-wet),var(--blood-deep))}
 body.broken .blood .drip{animation:drip var(--dd,4s) ease-in infinite;animation-delay:var(--bd,0s)}
 @keyframes drip{0%{height:0;opacity:0}10%{opacity:.9}70%{opacity:.8}100%{height:120px;opacity:0}}
-
 #flash{position:fixed;inset:0;z-index:40;pointer-events:none;background:#fff;opacity:0}
 body.broken #flash{animation:flash .5s var(--ease)}
 @keyframes flash{0%{opacity:0}8%{opacity:.5}100%{opacity:0}}
-
 body.blackout #room{filter:brightness(.04) saturate(0)}
 body.jolt{animation:hardJolt .42s steps(4)}
 @keyframes hardJolt{0%,100%{transform:translate(0,0)}25%{transform:translate(-6px,4px)}50%{transform:translate(7px,-5px)}75%{transform:translate(-4px,-3px)}}
@@ -277,11 +249,11 @@ body.broken #gate{opacity:0;visibility:hidden;pointer-events:none;transition:opa
   opacity:0;pointer-events:none;transition:opacity .5s var(--ease)}
 body.broken #glassctl{opacity:1;pointer-events:auto}
 body.warded #glassctl{display:none}
-#glassctl button,#glassctl a{font-family:var(--f-body);font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;
+#glassctl button,#glassctl a{font-family:var(--f-mono);font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;
   color:var(--bone-dim);background:rgba(5,2,3,.4);border:1px solid rgba(239,230,221,.18);padding:7px 11px;cursor:pointer;
   transition:color .25s var(--ease),border-color .25s var(--ease)}
 #glassctl button:hover,#glassctl a:hover{color:var(--bone);border-color:var(--blood-bright)}
-.gc-mark{font-family:var(--f-body);font-size:.5rem;letter-spacing:.2em;color:var(--violet);text-shadow:0 0 8px rgba(176,124,255,.5)}
+.gc-mark{font-family:var(--f-mono);font-size:.5rem;letter-spacing:.16em;color:var(--violet);text-shadow:0 0 8px rgba(176,124,255,.5)}
 
 #ward{position:fixed;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;
   background:radial-gradient(80% 70% at 50% 50%,#0b0608,#050203 75%);text-align:center;padding:24px}
@@ -289,26 +261,20 @@ body.warded #ward{display:flex}
 .wd-crack{position:absolute;left:50%;top:50%;width:1px;height:62vh;background:rgba(239,230,221,.3);
   transform:translate(-50%,-50%) rotate(7deg);box-shadow:0 0 6px rgba(255,255,255,.3)}
 .wd-k{position:relative;font-family:var(--f-egg);font-size:clamp(1.6rem,7vw,3rem);color:var(--blood-wet);letter-spacing:.04em}
-.wd-s{position:relative;font-family:var(--f-body);font-size:.7rem;letter-spacing:.12em;color:var(--bone-faint);line-height:1.8}
-.wd-up{position:relative;margin-top:8px;font-family:var(--f-body);font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;
+.wd-s{position:relative;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;color:var(--bone-faint);line-height:1.9}
+.wd-up{position:relative;margin-top:8px;font-family:var(--f-mono);font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;
   color:var(--bone-dim);border:1px solid rgba(239,230,221,.2);padding:9px 16px;transition:color .25s var(--ease),border-color .25s var(--ease)}
 .wd-up:hover{color:var(--bone);border-color:var(--blood-bright)}
 
 @media(max-width:760px){
-  .sec{padding:clamp(40px,9vh,80px) 0}
-  .sec-label,.wreck-rail,.poem-flow{padding-left:clamp(18px,5vw,40px);padding-right:clamp(18px,5vw,40px)}
-  .wreck-rail{gap:clamp(36px,9vh,72px)}
-  .poem-flow{gap:clamp(40px,9vh,80px)}
-  .page{width:84%}
-  .page.cur{scale:1.02}
-  .page.cur:hover{scale:1.04}
-  #closing{padding:0 clamp(18px,5vw,40px)}
+  .book-stage{width:88%}
 }
 
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition-duration:.01ms!important}
   #room{opacity:1;filter:none}
-  .page,.void,.wreck-col,.wreck,.wreck-text,.threshold,.sec-label{opacity:1!important;transform:none!important}
+  .threshold,.lib-head,.specimen{opacity:1!important;transform:none!important}
+  .spec-media{display:block!important}
   .blood>i{opacity:var(--o,.8);transform:scale(1)}
   #cracks path{stroke-dashoffset:0}
 }
@@ -317,6 +283,7 @@ body.warded #ward{display:flex}
 <body>
 
 <div id="breath" aria-hidden="true"></div>
+<div id="scan" aria-hidden="true"></div>
 
 <div class="ashfield" aria-hidden="true">
   <span class="ash" style="left:8%;--ad:17s;--adel:-2s;--asw:16px"></span>
@@ -336,103 +303,76 @@ body.warded #ward{display:flex}
   </div>
 
   <header class="rhead">
-    <span class="sig">Nilou<b>·</b>verse</span>
-    <span class="rhead-tag">† the beneath</span>
+    <span class="rhead-brand">NILOUVERSE<span class="glitchbar">// SECTOR †</span></span>
+    <span class="rhead-stat"><span class="blinkdot"></span>CONTAINMENT: holding. barely.</span>
   </header>
 
   <main class="rmain">
-    <p class="threshold" aria-hidden="true">† you are beneath now †</p>
+    <p class="threshold" aria-hidden="true">† everything below this line was supposed to be deleted. †</p>
 
-    <section class="sec sec-wreck">
-      <div class="sec-bg" aria-hidden="true"><span class="sec-ghost">I</span></div>
-      <div class="sec-label"><span class="sl-n">[ I ]</span> the wreckage <span class="sl-sub">what she broke, hung to dry</span> <span class="sl-rule"></span></div>
-      <div class="wreck-rail">
-        <div class="wreck-col">
-          <span class="wire"></span>
-          <div class="wreck" role="button" tabindex="0" data-src="sound/war.mp3" aria-label="broken record — war">
-            <div class="half a"></div>
-            <div class="half b"></div>
-            <div class="disc-sheen"></div>
-            <svg class="disc-crack" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <path d="M50 0 L48 14 L52 22 L47 34 L50 44 M50 56 L47 68 L52 80 L49 92 L50 100 M48 22 L40 26 M52 34 L60 30 M47 68 L39 72"/>
-            </svg>
-            <div class="disc-label"><span class="spindle"></span><span class="disc-sig">†</span></div>
-            <div class="tonearm"></div>
-          </div>
-          <div class="wreck-text">
-            <span class="pn">· side † — war</span>
-            <span class="ln">I'm who I am</span>
-            <span class="cue">▸ drop the needle</span>
+    <div class="lib-head">
+      <p class="lh-k">[ THE GRAVEYARD ]</p>
+      <h2 class="lh-t">the art that wouldn't stay buried</h2>
+      <p class="lh-s">we threw it in the trash. it grew a soul, crawled back through the server, and now it lives here — quarantined behind the grip.</p>
+    </div>
+
+    <div class="specimens">
+      <section class="specimen" id="specWar" style="--sd:.25s">
+        <span class="spec-tag"><span class="blinkdot"></span>SPECIMEN 01</span>
+        <button class="case-btn" id="caseWar" type="button" aria-expanded="false" aria-label="open specimen 01 — war">
+          <span class="case-glow"></span>
+          <img src="art/aadown.png" alt="DOWN — 3D album case" draggable="false">
+          <span class="case-hint">▸ open the case</span>
+        </button>
+        <div class="spec-plate">
+          <p class="sp-title">WAR</p>
+          <p class="sp-joke">recovered from /dev/null · purged 4× · still humming</p>
+        </div>
+        <div class="spec-media">
+          <div class="war">
+            <div class="war-disc" id="warDisc"><span class="face"></span><span class="groove"></span><span class="hole"></span></div>
+            <div class="war-ctrl">
+              <div class="pp-row">
+                <button class="pp-btn" id="warPlay" type="button" aria-label="play or pause war"><span class="ico-play"></span><span class="ico-pause"></span></button>
+                <div class="pp-track" id="warTrack"><span class="pp-fill" id="warFill"></span><span class="pp-knob" id="warKnob"></span></div>
+              </div>
+              <div class="pp-time"><span id="warCur">0:00</span><span id="warDur">0:00</span></div>
+              <div class="war-meta"><span class="wm-title">WAR — I'm who I am</span><span class="wm-joke">if it skips, that's not a bug. it's remembering.</span></div>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div class="wreck-col ghost">
-          <span class="wire"></span>
-          <div class="wreck" aria-hidden="true">
-            <div class="half a"></div>
-            <div class="half b"></div>
-            <div class="disc-sheen"></div>
-            <svg class="disc-crack" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <path d="M50 0 L52 18 L48 30 L51 46 M49 54 L52 70 L48 86 L50 100 M52 30 L60 26"/>
-            </svg>
-            <div class="disc-label"><span class="spindle"></span><span class="disc-sig">·</span></div>
-            <div class="tonearm"></div>
-          </div>
-          <div class="wreck-text">
-            <span class="pn">· · ·</span>
-            <span class="ln">no record left</span>
+      <section class="specimen" id="specBook" style="--sd:.4s">
+        <span class="spec-tag"><span class="blinkdot"></span>SPECIMEN 02</span>
+        <button class="case-btn" id="caseBook" type="button" aria-expanded="false" aria-label="open specimen 02 — the torn poem">
+          <span class="case-glow"></span>
+          <img src="art/aadown.png" alt="DOWN — 3D album case" draggable="false">
+          <span class="case-hint">▸ open the case</span>
+        </button>
+        <div class="spec-plate">
+          <p class="sp-title">THE TORN POEM</p>
+          <p class="sp-joke">6 fragments survived · 3 we actually burned</p>
+        </div>
+        <div class="spec-media">
+          <div class="book">
+            <div class="book-stage" id="bookStage"></div>
+            <div class="book-nav">
+              <button id="bookPrev" type="button" aria-label="previous fragment">‹</button>
+              <span class="book-count" id="bookCount">— / —</span>
+              <button id="bookNext" type="button" aria-label="next fragment">›</button>
+            </div>
+            <p class="book-note" id="bookNote"></p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="sec sec-poem">
-      <div class="sec-bg" aria-hidden="true"><span class="sec-ghost">II</span></div>
-      <div class="sec-label"><span class="sl-n">[ II ]</span> the torn poem <span class="sl-sub">what she left, in order</span> <span class="sl-rule"></span></div>
-      <div class="poem-flow">
-        <span class="spine" aria-hidden="true"></span>
-
-        <button class="page" type="button" data-src="sound/nz1.mp3" style="--rot:-6deg;margin-left:4%;margin-right:auto" aria-label="page one">
-          <span class="pn">· 01</span>
-          <span class="ln">As I walk through the flames I breathe this damnation</span>
-          <span class="cue">▸ read aloud</span>
-        </button>
-
-        <div class="void-cluster">
-          <span class="void"><span class="rip"></span><span class="vt">· · ·</span></span>
-          <span class="void"><span class="rip"></span><span class="vt">[ three pages, torn out ]</span></span>
-          <span class="void"><span class="rip"></span><span class="vt">· · ·</span></span>
-        </div>
-
-        <button class="page" type="button" data-src="sound/nz2.mp3" style="--rot:5deg;margin-left:auto;margin-right:6%" aria-label="page two">
-          <span class="pn">· 02</span>
-          <span class="ln">The dark nectar's in my veins</span>
-          <span class="cue">▸ read aloud</span>
-        </button>
-        <button class="page" type="button" data-src="sound/nz3.mp3" style="--rot:-4deg;margin-left:9%;margin-right:auto" aria-label="page three">
-          <span class="pn">· 03</span>
-          <span class="ln">slowly driving me insane</span>
-          <span class="cue">▸ read aloud</span>
-        </button>
-        <button class="page" type="button" data-src="sound/nz4.mp3" style="--rot:6deg;margin-left:auto;margin-right:4%" aria-label="page four">
-          <span class="pn">· 04</span>
-          <span class="ln">hearing whispers in my head</span>
-          <span class="cue">▸ read aloud</span>
-        </button>
-        <button class="page" type="button" data-src="sound/nz5.mp3" style="--rot:-7deg;margin-left:5%;margin-right:auto" aria-label="page five">
-          <span class="pn">· 05</span>
-          <span class="ln">There's a void ...</span>
-          <span class="cue">▸ read aloud</span>
-        </button>
-      </div>
-
-      <p id="closing"><span class="cl-big">the void kept the last line</span><span class="cl-sub">she'll return it when the next lock opens</span></p>
-    </section>
+      </section>
+    </div>
   </main>
 
   <footer class="rfoot">
-    <span class="tag">the surface, far above</span>
-    <span class="rfoot-mark">nilou·verse †</span>
+    <span class="rfoot-brand">NIL//SEC // QUARANTINE DIVISION</span>
+    <a class="rfoot-up" href="index.html">↑ return to the surface (if it still recognizes you)</a>
+    <p class="rfoot-joke">do not feed the art after midnight. do not name it. do not — actually you already did. †</p>
   </footer>
 </div>
 
@@ -497,107 +437,135 @@ body.warded #ward{display:flex}
     }, {passive:true});
   }
 
-  var mobile = function(){ return matchMedia('(max-width:760px)').matches; };
-  var wreckCols = Array.prototype.slice.call(document.querySelectorAll('.wreck-col'));
-  var wreckEls  = Array.prototype.slice.call(document.querySelectorAll('.wreck[data-src]'));
-  var pageEls   = Array.prototype.slice.call(document.querySelectorAll('.page'));
-  var voidEls   = Array.prototype.slice.call(document.querySelectorAll('.void'));
-  var closing   = document.getElementById('closing');
+  function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return c==='&'?'&amp;':c==='<'?'&lt;':'&gt;'; }); }
+  function fmtTime(s){ if(!isFinite(s)||s<0) s=0; var m=Math.floor(s/60), ss=Math.floor(s%60); return m+':'+(ss<10?'0':'')+ss; }
 
-  wreckCols.forEach(function(col,i){
-    var dir = i%2 ? 1 : -1;
-    col.style.setProperty('--flyd',(0.05+i*0.12).toFixed(2)+'s');
-    col.style.setProperty('--flyx', mobile()?'0px':(dir*(16+(i%2)*10))+'px');
-    col.style.setProperty('--flyy',(40+(i%2)*24)+'px');
-    col.style.setProperty('--swx',(dir*(1+(i%2)))+'px');
-    col.style.setProperty('--swy',(-(2+(i%2)*2))+'px');
-    col.style.setProperty('--swd',(7+(i%3)*1.3).toFixed(1)+'s');
-  });
-  pageEls.forEach(function(el,i){
-    var dir = i%2 ? 1 : -1;
-    el.style.setProperty('--flyd',(0.15+i*0.12).toFixed(2)+'s');
-    el.style.setProperty('--flyx', mobile()?'0px':(dir*(18+(i%3)*10))+'px');
-    el.style.setProperty('--flyy',(44+(i%2)*26)+'px');
-    el.style.setProperty('--swx',(dir*(1+(i%3)))+'px');
-    el.style.setProperty('--swy',(-(2+(i%2)*2))+'px');
-    el.style.setProperty('--swd',(6+(i%4)*1.2).toFixed(1)+'s');
-  });
-  voidEls.forEach(function(el,i){
-    el.style.setProperty('--flyd',(0.5+i*0.1).toFixed(2)+'s');
-    el.style.setProperty('--flyx','0px');
-    el.style.setProperty('--flyy','30px');
-    el.style.setProperty('--swx','1px');
-    el.style.setProperty('--swy','-2px');
-    el.style.setProperty('--swd','9s');
-  });
+  var specWar  = document.getElementById('specWar');
+  var specBook = document.getElementById('specBook');
+  var caseWar  = document.getElementById('caseWar');
+  var caseBook = document.getElementById('caseBook');
+  var warDisc  = document.getElementById('warDisc');
+  var warPlay  = document.getElementById('warPlay');
+  var warTrack = document.getElementById('warTrack');
+  var warFill  = document.getElementById('warFill');
+  var warKnob  = document.getElementById('warKnob');
+  var warCur   = document.getElementById('warCur');
+  var warDur   = document.getElementById('warDur');
+  var bookStage= document.getElementById('bookStage');
+  var bookPrev = document.getElementById('bookPrev');
+  var bookNext = document.getElementById('bookNext');
+  var bookCount= document.getElementById('bookCount');
+  var bookNote = document.getElementById('bookNote');
+  var muteBtn  = document.getElementById('muteBtn');
+  var muteIco  = document.getElementById('muteIco');
+  var gate     = document.getElementById('gate');
 
-  var unlocked = false, readingPoem = false, broken = false;
-  var gate = document.getElementById('gate');
-  function intoView(el){ if(el && mobile()){ try{ el.scrollIntoView({behavior: reduce?'auto':'smooth', block:'center'}); }catch(e){} } }
-  function flinch(el){ el.classList.remove('flinch'); void el.offsetWidth; el.classList.add('flinch'); setTimeout(function(){ el.classList.remove('flinch'); }, 420); }
+  var broken=false, unlocked=false;
 
-  /* wreckage: independent, replayable */
-  function playWreck(el){
-    var col = el.parentNode;
-    if(col._busy) return;
-    col._busy = true; col.classList.add('reading');
-    var ok = Audio.playSrc(el.dataset.src, 1.0, { breakOnEnd:true }, {
-      onBreak: function(){ col.classList.add('shatter'); },
-      onEnd: function(played){
-        col.classList.remove('reading');
-        col.classList.add('dead');
-        if(!played) return; /* missing file: stays dead, no replay */
-        setTimeout(function(){ col.classList.remove('shatter','dead'); col._busy=false; }, 1300);
-      }
-    });
-    if(!ok){ col.classList.remove('reading'); col.classList.add('dead'); }
+  /* ---- WAR player (real <audio>, lazy) ---- */
+  var warEl=null, seeking=false;
+  function getWar(){
+    if(warEl) return warEl;
+    warEl = Audio.file('sound/war.mp3');
+    warEl.addEventListener('loadedmetadata', function(){ warDur.textContent=fmtTime(warEl.duration); updateWarBar(); });
+    warEl.addEventListener('timeupdate', updateWarBar);
+    warEl.addEventListener('ended', function(){ warPlay.classList.remove('playing'); warDisc.classList.remove('spin'); warEl.currentTime=0; updateWarBar(); });
+    return warEl;
   }
-  wreckEls.forEach(function(el){
-    el.addEventListener('click', function(){ if(unlocked) playWreck(el); });
-    el.addEventListener('keydown', function(e){ if(unlocked && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); playWreck(el); } });
+  function warPct(){ return (warEl && warEl.duration) ? (warEl.currentTime/warEl.duration) : 0; }
+  function updateWarBar(){ var p=warPct()*100; warFill.style.width=p+'%'; warKnob.style.left=p+'%'; warCur.textContent=fmtTime(warEl?warEl.currentTime:0); }
+  function setWar(p){
+    var el=getWar();
+    warPlay.classList.toggle('playing',p); warDisc.classList.toggle('spin',p);
+    if(p){ el.play().catch(function(){ warPlay.classList.remove('playing'); warDisc.classList.remove('spin'); }); }
+    else el.pause();
+  }
+  function pauseWar(){ if(warEl){ warEl.pause(); warPlay.classList.remove('playing'); warDisc.classList.remove('spin'); } }
+  warPlay.addEventListener('click', function(){ setWar(!warPlay.classList.contains('playing')); });
+  function seekFrom(e){
+    var el=getWar(); var r=warTrack.getBoundingClientRect();
+    var cx = (e.touches?e.touches[0].clientX:e.clientX);
+    var x=Math.max(0,Math.min(1,(cx-r.left)/r.width));
+    if(el.duration){ el.currentTime=x*el.duration; } updateWarBar();
+  }
+  warTrack.addEventListener('pointerdown', function(e){ seeking=true; if(warTrack.setPointerCapture) try{warTrack.setPointerCapture(e.pointerId);}catch(_){} seekFrom(e); });
+  warTrack.addEventListener('pointermove', function(e){ if(seeking) seekFrom(e); });
+  warTrack.addEventListener('pointerup', function(){ seeking=false; });
+  warTrack.addEventListener('pointercancel', function(){ seeking=false; });
+
+  caseWar.addEventListener('click', function(){
+    var open = specWar.classList.toggle('open');
+    caseWar.setAttribute('aria-expanded', open?'true':'false');
+    if(open){ getWar(); } else { pauseWar(); }
   });
 
-  /* poem: independent, in order */
-  function poemDone(el){ return el.classList.contains('read')||el.classList.contains('tornout'); }
-  function advancePoem(i){
-    if(i===0) voidEls.forEach(function(v){ v.classList.add('passed'); });
-    var nx = i + 1;
-    if(nx < pageEls.length){ pageEls[nx].classList.add('cur'); intoView(pageEls[nx]); }
-    else { document.body.classList.add('read-done'); intoView(closing); }
+  /* ---- TORN-POEM book ---- */
+  var LEAVES = [
+    {type:'page', num:'01', src:'sound/nz1.mp3', line:'As I walk through the flames I breathe this damnation'},
+    {type:'gap'},
+    {type:'page', num:'02', src:'sound/nz2.mp3', line:"The dark nectar's in my veins"},
+    {type:'page', num:'03', src:'sound/nz3.mp3', line:'slowly driving me insane'},
+    {type:'page', num:'04', src:'sound/nz4.mp3', line:'hearing whispers in my head'},
+    {type:'page', num:'05', src:'sound/nz5.mp3', line:"There's a void ..."}
+  ];
+  var REAL = LEAVES.filter(function(l){ return l.type==='page'; }).length;
+  var curLeaf=0, curBookEl=null;
+  function pauseBook(){ if(curBookEl){ try{curBookEl.pause();}catch(e){} } }
+  function renderLeaf(dir){
+    var L=LEAVES[curLeaf];
+    bookStage.innerHTML='';
+    var div=document.createElement('div');
+    div.className='book-page'+(L.type==='gap'?' gap':'')+(dir>0?' in-l':dir<0?' in-r':'');
+    if(L.type==='page'){
+      div.innerHTML='<span class="bp-num">FRAGMENT '+esc(L.num)+'</span><span class="bp-line">'+esc(L.line)+'</span>';
+    } else {
+      div.innerHTML='<span class="bp-num">— — —</span><span class="bp-line">[ three fragments, burned. they still scream a little. ]</span>';
+    }
+    bookStage.appendChild(div);
+    pauseBook(); curBookEl=null;
+    if(L.type==='page'){
+      var el=Audio.file(L.src); curBookEl=el; el.currentTime=0;
+      el.play().catch(function(){});
+    }
+    if(L.type==='page'){ bookCount.textContent='FRAGMENT '+L.num+' / '+String(REAL).padStart(2,'0'); bookNote.textContent=''; }
+    else { bookCount.textContent='— / '+String(REAL).padStart(2,'0'); bookNote.textContent='3 fragments missing between 01 and 02'; }
+    bookPrev.disabled = curLeaf===0;
+    bookNext.disabled = curLeaf===LEAVES.length-1;
   }
-  function readPoem(i){
-    if(readingPoem || i<0 || i>=pageEls.length) return;
-    var el = pageEls[i];
-    var ok = Audio.playSrc(el.dataset.src, 0.95, { breakOnEnd:false }, {
-      onEnd: function(missing){
-        readingPoem = false;
-        el.classList.remove('cur','reading');
-        el.classList.add(missing ? 'tornout' : 'read');
-        advancePoem(i);
-      }
-    });
-    if(!ok){ readingPoem=false; el.classList.remove('cur'); el.classList.add('tornout'); advancePoem(i); return; }
-    readingPoem = true; el.classList.add('reading');
-  }
-  pageEls.forEach(function(el,i){
-    el.addEventListener('click', function(){
-      if(!unlocked) return;
-      if(el.classList.contains('cur')) readPoem(i);
-      else if(!poemDone(el)) flinch(el);
-    });
+  function showLeaf(i, noAnim){ if(i<0||i>=LEAVES.length) return; var dir=noAnim?0:(i>curLeaf?1:-1); curLeaf=i; renderLeaf(dir); }
+  bookPrev.addEventListener('click', function(){ showLeaf(curLeaf-1); });
+  bookNext.addEventListener('click', function(){ showLeaf(curLeaf+1); });
+
+  caseBook.addEventListener('click', function(){
+    var open = specBook.classList.toggle('open');
+    caseBook.setAttribute('aria-expanded', open?'true':'false');
+    if(open){ showLeaf(0, true); } else { pauseBook(); }
   });
 
+  /* ---- mute ---- */
+  if(muteBtn){
+    muteBtn.addEventListener('click', function(){
+      var m=Audio.toggleMute();
+      document.body.classList.toggle('muted', m);
+      muteBtn.setAttribute('aria-pressed', m?'true':'false');
+      if(muteIco) muteIco.textContent = m?'✕':'♪';
+    });
+  }
+
+  /* ---- descend ---- */
+  function introBlackout(){ if(!this || !isFinite(this.currentTime)) return; var t=this.currentTime; document.body.classList.toggle('blackout', t>=2 && t<4); }
   function descend(){
-    if(broken) return; broken = true;
+    if(broken) return; broken=true;
     document.body.classList.add('broken');
-    wreckCols.forEach(function(c){ c.classList.add('revealed'); });
-    pageEls.forEach(function(p){ p.classList.add('revealed'); });
-    voidEls.forEach(function(v){ v.classList.add('revealed'); });
-    Audio.start(function(){
-      unlocked = true;
-      document.body.classList.add('alive');
-      setTimeout(function(){ if(pageEls[0]){ pageEls[0].classList.add('cur'); intoView(pageEls[0]); } }, 1300);
-    });
+    document.body.classList.add('alive');
+    if(muteBtn) muteBtn.hidden=false;
+    Audio.startDrone();
+    var intro=Audio.file('sound/intro.mp3');
+    intro.addEventListener('timeupdate', introBlackout);
+    intro.addEventListener('ended', function(){ document.body.classList.remove('blackout'); }, {once:true});
+    intro.currentTime=0;
+    intro.play().catch(function(){});
+    unlocked=true;
   }
   gate.addEventListener('click', descend);
   gate.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); descend(); } });
@@ -605,171 +573,56 @@ body.warded #ward{display:flex}
 
 var Audio = (function(){
   var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
-  if(!WON) return { start:function(){}, playSrc:function(){ return false; } };
+  if(!WON){
+    return { file:function(){ var a=new window.Audio(); a.preload='auto'; return a; }, startDrone:function(){}, toggleMute:function(){ return false; } };
+  }
+  var ctx=null, master=null, drone=[], pool={}, reg=new Set(), muted=false;
 
-  var INTRO = 'sound/intro.mp3';
-  var INTRO_FX = [{ at:2, dur:2, lights:true, master:true }];
-
-  var ctx=null, master=null, comp=null, raw={}, buf={}, muted=false, any=false;
-  var droneNodes = [];
-  var muteBtn=document.getElementById('muteBtn'), muteIco=document.getElementById('muteIco');
-
-  function ensureCtx(){
+  function ensure(){
     if(ctx) return;
-    try{ ctx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
-    comp = ctx.createDynamicsCompressor();
-    comp.threshold.value=-14; comp.knee.value=20; comp.ratio.value=6;
-    master = ctx.createGain(); master.gain.value = muted?0:1;
-    master.connect(comp); comp.connect(ctx.destination);
-  }
-  function setMaster(v){ if(master) master.gain.setTargetAtTime(v, ctx.currentTime, 0.03); }
-
-  function startDrone(){
-    if(!ctx || droneNodes.length) return;
-    var lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=320; lp.Q.value=0.7;
-    var lfo = ctx.createOscillator(); lfo.type='sine'; lfo.frequency.value=0.08;
-    var lfoG = ctx.createGain(); lfoG.gain.value=140; lfo.connect(lfoG); lfoG.connect(lp.frequency);
-    var dg = ctx.createGain(); dg.gain.value=0.0001; dg.gain.setTargetAtTime(0.22, ctx.currentTime, 1.4);
-    lp.connect(dg); dg.connect(master);
-    var freqs=[55, 82.4, 110];
-    freqs.forEach(function(f,i){
-      var o=ctx.createOscillator(); o.type = i===2?'triangle':'sine'; o.frequency.value=f; o.detune.value=(i-1)*7;
-      var g=ctx.createGain(); g.gain.value = i===2?0.4:0.7; o.connect(g); g.connect(lp); o.start();
-      droneNodes.push(o);
-    });
-    var nlen=Math.floor(ctx.sampleRate*2), nb=ctx.createBuffer(1,nlen,ctx.sampleRate), nd=nb.getChannelData(0);
-    for(var i=0;i<nlen;i++) nd[i]=(Math.random()*2-1);
-    var ns=ctx.createBufferSource(); ns.buffer=nb; ns.loop=true;
-    var bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=420; bp.Q.value=0.6;
-    var ng=ctx.createGain(); ng.gain.value=0.04; ns.connect(bp); bp.connect(ng); ng.connect(dg); ns.start();
-    droneNodes.push(ns); lfo.start(); droneNodes.push(lfo);
-  }
-
-  function decode(ab){
-    try{ var r=ctx.decodeAudioData(ab.slice(0)); if(r&&typeof r.then==='function') return r; }catch(e){}
-    return new Promise(function(res,rej){ try{ ctx.decodeAudioData(ab.slice(0),res,rej); }catch(e){ rej(); } });
-  }
-  function decodeOne(src, cb){
-    if(!src){ buf[src]=null; if(cb)cb(); return; }
-    if(buf[src]!==undefined){ if(cb)cb(); return; }
-    if(raw[src]===null || raw[src]===undefined){ buf[src]=null; if(cb)cb(); return; }
-    decode(raw[src]).then(function(b){ buf[src]=b; showMute(); if(cb)cb(); })
-      .catch(function(){ buf[src]=null; if(cb)cb(); });
-  }
-  function showMute(){ if(any) return; any=true; if(muteBtn) muteBtn.hidden=false; }
-  function toggleMute(){
-    if(!ctx||!master) return; muted=!muted;
-    setMaster(muted?0:1);
-    if(muteBtn){ muteBtn.setAttribute('aria-pressed', muted?'true':'false'); if(muteIco) muteIco.textContent = muted?'✕':'♪'; }
-  }
-  if(muteBtn) muteBtn.addEventListener('click', toggleMute);
-
-  function synthBreak(){
-    if(!ctx) return;
     try{
-      var t=ctx.currentTime;
-      var len=Math.floor(ctx.sampleRate*0.28), nb=ctx.createBuffer(1,len,ctx.sampleRate), d=nb.getChannelData(0);
-      for(var i=0;i<len;i++){ d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2); }
-      var ns=ctx.createBufferSource(); ns.buffer=nb;
-      var bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1400; bp.Q.value=1.2;
-      var ng=ctx.createGain(); ng.gain.setValueAtTime(0.0001,t); ng.gain.exponentialRampToValueAtTime(0.5,t+0.01); ng.gain.exponentialRampToValueAtTime(0.0001,t+0.26);
-      ns.connect(bp); bp.connect(ng); ng.connect(master); ns.start(t); ns.stop(t+0.3);
-      var o=ctx.createOscillator(); o.type='sine'; o.frequency.setValueAtTime(90,t); o.frequency.exponentialRampToValueAtTime(40,t+0.3);
-      var og=ctx.createGain(); og.gain.setValueAtTime(0.0001,t); og.gain.exponentialRampToValueAtTime(0.4,t+0.02); og.gain.exponentialRampToValueAtTime(0.0001,t+0.32);
-      o.connect(og); og.connect(master); o.start(t); o.stop(t+0.34);
-      var k=ctx.createOscillator(); k.type='square'; k.frequency.value=2200;
-      var kg=ctx.createGain(); kg.gain.setValueAtTime(0.0001,t); kg.gain.exponentialRampToValueAtTime(0.18,t+0.005); kg.gain.exponentialRampToValueAtTime(0.0001,t+0.06);
-      k.connect(kg); kg.connect(master); k.start(t); k.stop(t+0.08);
+      ctx = new (window.AudioContext||window.webkitAudioContext)();
+      var comp = ctx.createDynamicsCompressor();
+      comp.threshold.value=-14; comp.knee.value=20; comp.ratio.value=6;
+      master = ctx.createGain(); master.gain.value = muted?0:1;
+      master.connect(comp); comp.connect(ctx.destination);
+    }catch(e){ ctx=null; }
+  }
+  function startDrone(){
+    ensure();
+    if(!ctx || drone.length) return;
+    try{
+      if(ctx.state==='suspended') ctx.resume();
+      var lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=320; lp.Q.value=0.7;
+      var lfo=ctx.createOscillator(); lfo.type='sine'; lfo.frequency.value=0.08;
+      var lfoG=ctx.createGain(); lfoG.gain.value=140; lfo.connect(lfoG); lfoG.connect(lp.frequency);
+      var dg=ctx.createGain(); dg.gain.value=0.0001; dg.gain.setTargetAtTime(0.2, ctx.currentTime, 1.4);
+      lp.connect(dg); dg.connect(master);
+      [55,82.4,110].forEach(function(f,i){
+        var o=ctx.createOscillator(); o.type = i===2?'triangle':'sine'; o.frequency.value=f; o.detune.value=(i-1)*7;
+        var g=ctx.createGain(); g.gain.value = i===2?0.4:0.7; o.connect(g); g.connect(lp); o.start(); drone.push(o);
+      });
+      var nlen=Math.floor(ctx.sampleRate*2), nb=ctx.createBuffer(1,nlen,ctx.sampleRate), nd=nb.getChannelData(0);
+      for(var i=0;i<nlen;i++) nd[i]=(Math.random()*2-1);
+      var ns=ctx.createBufferSource(); ns.buffer=nb; ns.loop=true;
+      var bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=420; bp.Q.value=0.6;
+      var ng=ctx.createGain(); ng.gain.value=0.04; ns.connect(bp); bp.connect(ng); ng.connect(dg); ns.start();
+      drone.push(ns); lfo.start(); drone.push(lfo);
     }catch(e){}
   }
-  function runBreak(hooks){
-    document.body.classList.add('blackout');
-    setMaster(0);
-    synthBreak();
-    if(hooks && hooks.onBreak) hooks.onBreak();
-    setTimeout(function(){
-      document.body.classList.remove('blackout');
-      setMaster(muted?0:1);
-      document.body.classList.add('jolt');
-      setTimeout(function(){ document.body.classList.remove('jolt'); }, 420);
-      if(hooks && hooks.onEnd) hooks.onEnd(true);
-    }, 600);
+  function file(src){
+    if(pool[src]) return pool[src];
+    var el=new window.Audio(src); el.preload='auto'; el.muted=muted;
+    pool[src]=el; reg.add(el);
+    return el;
   }
-
-  function playSrc(src, baseGain, cfg, hooks){
-    cfg = cfg||{}; var fx = cfg.fx||[];
-    var b = buf[src];
-    if(!b) return false;
-    var s = ctx.createBufferSource(); s.buffer = b;
-    var g = ctx.createGain(); g.gain.value = baseGain; s.connect(g); g.connect(master);
-    var t0 = ctx.currentTime;
-    try{ s.start(t0); }catch(e){ return false; }
-    showMute();
-    var applied = fx.map(function(){ return false; }); var raf = 0;
-    function clearFx(){
-      if(raf) cancelAnimationFrame(raf);
-      for(var i=0;i<fx.length;i++){
-        if(applied[i]){ if(fx[i].lights) document.body.classList.remove('blackout'); if(fx[i].master) setMaster(muted?0:1); }
-      }
-      try{ g.disconnect(); }catch(e){}
-    }
-    function tick(){
-      var el = ctx.currentTime - t0;
-      for(var i=0;i<fx.length;i++){
-        var w = fx[i], inW = el >= w.at && el < w.at + w.dur;
-        if(inW && !applied[i]){
-          applied[i]=true;
-          if(w.lights) document.body.classList.add('blackout');
-          if(w.duck) g.gain.setTargetAtTime(0,ctx.currentTime,0.02);
-          if(w.master) setMaster(0);
-        } else if(!inW && applied[i]){
-          applied[i]=false;
-          if(w.lights) document.body.classList.remove('blackout');
-          if(w.duck) g.gain.setTargetAtTime(baseGain,ctx.currentTime,0.02);
-          if(w.master) setMaster(muted?0:1);
-        }
-      }
-      if(el < (b.duration||0) + 0.05) raf = requestAnimationFrame(tick);
-    }
-    if(fx.length) raf = requestAnimationFrame(tick);
-    s.onended = function(){
-      clearFx();
-      if(cfg.breakOnEnd) runBreak(hooks);
-      else if(hooks && hooks.onEnd) hooks.onEnd(true);
-    };
-    return true;
+  function toggleMute(){
+    muted=!muted;
+    if(master && ctx) master.gain.setTargetAtTime(muted?0:1, ctx.currentTime, 0.03);
+    reg.forEach(function(el){ el.muted=muted; });
+    return muted;
   }
-
-  function start(onDone){
-    ensureCtx();
-    if(!ctx){ if(onDone) onDone(); return; }
-    var go = function(){
-      startDrone();
-      pageEls.forEach(function(p){ decodeOne(p.dataset.src); });
-      wreckEls.forEach(function(w){ decodeOne(w.dataset.src); });
-      decodeOne(INTRO, function(){
-        showMute();
-        if(buf[INTRO]) playSrc(INTRO, 1.0, { fx:INTRO_FX, breakOnEnd:false }, { onEnd:function(){ if(onDone) onDone(); } });
-        else if(onDone) setTimeout(onDone, 700);
-      });
-    };
-    if(ctx.state==='suspended'){ var pr=ctx.resume(); if(pr&&pr.then) pr.then(go,go); else go(); }
-    else go();
-  }
-  function playSrcPublic(src, baseGain, cfg, hooks){ return playSrc(src, baseGain, cfg, hooks); }
-
-  (function preload(){
-    var all = pageEls.map(function(p){ return p.dataset.src; })
-      .concat(wreckEls.map(function(w){ return w.dataset.src; }));
-    all.push(INTRO);
-    all.forEach(function(src){
-      if(!src){ raw[src]=null; return; }
-      fetch(src).then(function(r){ return r.ok ? r.arrayBuffer() : Promise.reject(); })
-        .then(function(ab){ raw[src]=ab; }).catch(function(){ raw[src]=null; });
-    });
-  })();
-
-  return { start:start, playSrc:playSrcPublic };
+  return { file:file, startDrone:startDrone, toggleMute:toggleMute };
 })();
 </script>
 </body>
