@@ -424,6 +424,116 @@ body.warded #ward{display:flex}
 </div>
 
 <script>
+var Audio = (function(){
+  var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
+
+  var ctx=null, master=null, drone=[], players=[], muted=false;
+
+  function ensure(){
+    if(ctx) return true;
+    try{
+      ctx = new (window.AudioContext||window.webkitAudioContext)();
+      var comp=ctx.createDynamicsCompressor(); comp.threshold.value=-14; comp.knee.value=20; comp.ratio.value=6;
+      master=ctx.createGain(); master.gain.value = muted?0:1;
+      master.connect(comp); comp.connect(ctx.destination);
+      return true;
+    }catch(e){ ctx=null; return false; }
+  }
+  function resumeCtx(){ if(ctx && ctx.state==='suspended'){ try{ctx.resume();}catch(e){} } }
+
+  function startDrone(){
+    if(!ensure()) return;
+    if(drone.length) return;
+    try{
+      resumeCtx();
+      var lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=320; lp.Q.value=0.7;
+      var lfo=ctx.createOscillator(); lfo.type='sine'; lfo.frequency.value=0.08;
+      var lfoG=ctx.createGain(); lfoG.gain.value=140; lfo.connect(lfoG); lfoG.connect(lp.frequency);
+      var dg=ctx.createGain(); dg.gain.value=0.0001; dg.gain.setTargetAtTime(0.2, ctx.currentTime, 1.4);
+      lp.connect(dg); dg.connect(master);
+      [55,82.4,110].forEach(function(f,i){ var o=ctx.createOscillator(); o.type=i===2?'triangle':'sine'; o.frequency.value=f; o.detune.value=(i-1)*7; var g=ctx.createGain(); g.gain.value=i===2?0.4:0.7; o.connect(g); g.connect(lp); o.start(); drone.push(o); });
+      var nlen=Math.floor(ctx.sampleRate*2), nb=ctx.createBuffer(1,nlen,ctx.sampleRate), nd=nb.getChannelData(0);
+      for(var i=0;i<nlen;i++) nd[i]=(Math.random()*2-1);
+      var ns=ctx.createBufferSource(); ns.buffer=nb; ns.loop=true;
+      var bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=420; bp.Q.value=0.6;
+      var ng=ctx.createGain(); ng.gain.value=0.04; ns.connect(bp); bp.connect(ng); ng.connect(dg); ns.start();
+      drone.push(ns); lfo.start(); drone.push(lfo);
+    }catch(e){}
+  }
+
+  function decode(src){
+    return fetch(src).then(function(r){
+      if(!r.ok) throw new Error('HTTP '+r.status+' for '+src);
+      return r.arrayBuffer();
+    }).then(function(ab){
+      if(!ensure()) throw new Error('no audio context');
+      return new Promise(function(res,rej){
+        try{ ctx.decodeAudioData(ab.slice(0), function(buf){ res(buf); }, function(){ rej(new Error('decode failed for '+src)); }); }
+        catch(e){ rej(new Error('decode threw for '+src)); }
+      });
+    });
+  }
+
+  function makePlayer(){
+    var P={ buf:null,dur:0,srcNode:null,gain:null,offset:0,t0:0,playing:false,endedCb:null,_ui:null,raf:0,_manual:false };
+    function arm(){ P.srcNode.onended=function(){ if(P._manual) return; P.playing=false; P.offset=0; stopRaf(); if(P.endedCb) P.endedCb(); }; }
+    function loop(){ if(!P.playing){ P.raf=0; return; } if(P._ui) P._ui(P.currentTime,P.dur); P.raf=requestAnimationFrame(loop); }
+    function startRaf(){ if(P.raf||!P._ui) return; P.raf=requestAnimationFrame(loop); }
+    function stopRaf(){ if(P.raf){ cancelAnimationFrame(P.raf); P.raf=0; } }
+    P.load=function(src){
+      return decode(src).then(function(buf){ P.buf=buf; P.dur=buf.duration; P.offset=0;
+        console.log('%c[BENEATH] ✓ decoded '+src,'color:#9bf3ea'); return buf;
+      }).catch(function(err){ console.warn('%c[BENEATH] ✗ FAILED '+src+' — '+err.message+'\n   expected folder: /sound/ at the site root (NOT /art/secret/).','color:#ff5a6e'); throw err; });
+    };
+    P.play=function(){
+      if(!P.buf) return Promise.reject(new Error('not loaded'));
+      if(P.playing) return Promise.resolve();
+      resumeCtx();
+      if(P.offset>=P.dur) P.offset=0;
+      P.srcNode=ctx.createBufferSource(); P.srcNode.buffer=P.buf;
+      P.gain=ctx.createGain(); P.gain.gain.value=muted?0:1;
+      P.srcNode.connect(P.gain); P.gain.connect(master);
+      if(players.indexOf(P)<0) players.push(P);
+      P._manual=false; arm();
+      try{ P.srcNode.start(0,P.offset); }catch(e){ return Promise.reject(new Error('start failed')); }
+      P.t0=ctx.currentTime; P.playing=true; startRaf();
+      return Promise.resolve();
+    };
+    P.pause=function(){
+      if(!P.playing) return;
+      P.offset=Math.min(P.dur, P.offset+(ctx.currentTime-P.t0));
+      P._manual=true; try{P.srcNode.stop();}catch(e){}
+      P.playing=false; stopRaf();
+    };
+    P.seek=function(t){
+      if(!P.buf) return; t=Math.max(0,Math.min(P.dur,t)); P.offset=t;
+      if(P.playing){
+        P._manual=true; try{P.srcNode.stop();}catch(e){}
+        P.srcNode=ctx.createBufferSource(); P.srcNode.buffer=P.buf; P.srcNode.connect(P.gain);
+        P._manual=false; arm();
+        try{P.srcNode.start(0,P.offset);}catch(e){}
+        P.t0=ctx.currentTime;
+      } else if(P._ui){ P._ui(P.currentTime,P.dur); }
+    };
+    P.stop=function(){ P.pause(); P.offset=0; if(P._ui) P._ui(0,P.dur); };
+    Object.defineProperty(P,'currentTime',{ get:function(){ return P.playing? Math.min(P.dur, P.offset+(ctx.currentTime-P.t0)) : P.offset; } });
+    P.setMuted=function(m){ if(P.gain) P.gain.gain.value=m?0:1; };
+    return P;
+  }
+
+  function toggleMute(){
+    muted=!muted;
+    if(master&&ctx) master.gain.setTargetAtTime(muted?0:1, ctx.currentTime, 0.03);
+    players.forEach(function(P){ P.setMuted(muted); });
+    return muted;
+  }
+
+  if(!WON){
+    return { makePlayer:function(){ return null; }, startDrone:function(){}, toggleMute:function(){ return false; } };
+  }
+  return { makePlayer:makePlayer, startDrone:startDrone, toggleMute:toggleMute };
+})();
+
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
@@ -463,54 +573,37 @@ body.warded #ward{display:flex}
 
   var broken=false, unlocked=false;
 
-  function setWarJoke(text, isErr){
-    if(!warJoke) return;
-    warJoke.textContent = text;
-    warJoke.classList.toggle('err', !!isErr);
-  }
+  var warPlayer = Audio.makePlayer();
+  var bookPlayer = Audio.makePlayer();
+
+  function setWarJoke(text, isErr){ if(!warJoke) return; warJoke.textContent=text; warJoke.classList.toggle('err', !!isErr); }
   function warIdle(){ warPlay.classList.remove('playing','err','loading'); warDisc.classList.remove('spin'); }
-
-  var warEl=null, seeking=false;
-  function getWar(){
-    if(warEl) return warEl;
-    warEl = Audio.file('sound/war.mp3');
-    warEl.addEventListener('loadedmetadata', function(){ warDur.textContent=fmtTime(warEl.duration); updateWarBar(); });
-    warEl.addEventListener('timeupdate', updateWarBar);
-    warEl.addEventListener('ended', function(){ warIdle(); warEl.currentTime=0; updateWarBar(); setWarJoke("WAR — I'm who I am", false); });
-    return warEl;
-  }
-  function warPct(){ return (warEl && warEl.duration) ? (warEl.currentTime/warEl.duration) : 0; }
-  function updateWarBar(){ var p=warPct()*100; warFill.style.width=p+'%'; warKnob.style.left=p+'%'; warCur.textContent=fmtTime(warEl?warEl.currentTime:0); }
-
-  warPlay.addEventListener('click', function(){
-    if(warPlay.classList.contains('playing')){ var e=getWar(); e.pause(); warIdle(); return; }
-    var el=getWar();
-    warPlay.classList.add('loading'); warPlay.classList.remove('err');
-    setWarJoke('loading…', false);
-    Audio.tryPlay(el).then(function(){
-      warPlay.classList.remove('loading'); warPlay.classList.add('playing'); warDisc.classList.add('spin');
-      setWarJoke("WAR — I'm who I am", false);
-    }).catch(function(err){
-      warPlay.classList.remove('loading'); warPlay.classList.add('err'); warDisc.classList.remove('spin');
-      setWarJoke('⚠ '+err.message+' — tap ▶ to retry', true);
-    });
-  });
-  function seekFrom(e){
-    var el=getWar(); var r=warTrack.getBoundingClientRect();
-    var cx = (e.touches?e.touches[0].clientX:e.clientX);
-    var x=Math.max(0,Math.min(1,(cx-r.left)/r.width));
-    if(el.duration){ el.currentTime=x*el.duration; } updateWarBar();
-  }
-  warTrack.addEventListener('pointerdown', function(e){ seeking=true; if(warTrack.setPointerCapture) try{warTrack.setPointerCapture(e.pointerId);}catch(_){} seekFrom(e); });
-  warTrack.addEventListener('pointermove', function(e){ if(seeking) seekFrom(e); });
-  warTrack.addEventListener('pointerup', function(){ seeking=false; });
-  warTrack.addEventListener('pointercancel', function(){ seeking=false; });
+  function updateWarBar(){ var d=warPlayer.dur, t=warPlayer.currentTime, p=d?(t/d):0; warFill.style.width=(p*100)+'%'; warKnob.style.left=(p*100)+'%'; warCur.textContent=fmtTime(t); if(d) warDur.textContent=fmtTime(d); }
+  warPlayer._ui = function(){ updateWarBar(); };
+  warPlayer.endedCb = function(){ warIdle(); updateWarBar(); setWarJoke("WAR — I'm who I am", false); };
 
   caseWar.addEventListener('click', function(){
     var open = specWar.classList.toggle('open');
     caseWar.setAttribute('aria-expanded', open?'true':'false');
-    if(open){ getWar(); } else { if(warEl){ warEl.pause(); } warIdle(); }
+    if(open){
+      if(!warPlayer.buf){
+        warPlayer.load('sound/war.mp3').then(updateWarBar).catch(function(err){ warPlay.classList.add('err'); setWarJoke('⚠ '+err.message+' — tap ▶ to retry', true); });
+      }
+    } else { warPlayer.pause(); warIdle(); }
   });
+  warPlay.addEventListener('click', function(){
+    if(warPlay.classList.contains('playing')){ warPlayer.pause(); warPlay.classList.remove('playing'); warDisc.classList.remove('spin'); return; }
+    warPlay.classList.add('loading'); warPlay.classList.remove('err'); setWarJoke('loading…', false);
+    var ready = warPlayer.buf ? Promise.resolve() : warPlayer.load('sound/war.mp3');
+    ready.then(function(){ return warPlayer.play(); })
+      .then(function(){ warPlay.classList.remove('loading'); warPlay.classList.add('playing'); warDisc.classList.add('spin'); setWarJoke("WAR — I'm who I am", false); updateWarBar(); })
+      .catch(function(err){ warPlay.classList.remove('loading'); warPlay.classList.add('err'); warDisc.classList.remove('spin'); setWarJoke('⚠ '+err.message+' — tap ▶ to retry', true); });
+  });
+  function seekFrom(e){ var r=warTrack.getBoundingClientRect(); var cx=(e.touches?e.touches[0].clientX:e.clientX); var x=Math.max(0,Math.min(1,(cx-r.left)/r.width)); if(!warPlayer.buf) return; warPlayer.seek(x*warPlayer.dur); updateWarBar(); }
+  warTrack.addEventListener('pointerdown', function(e){ if(warTrack.setPointerCapture) try{warTrack.setPointerCapture(e.pointerId);}catch(_){} seekFrom(e); });
+  warTrack.addEventListener('pointermove', function(e){ if(e.buttons) seekFrom(e); });
+  warTrack.addEventListener('pointerup', function(){});
+  warTrack.addEventListener('pointercancel', function(){});
 
   var LEAVES = [
     {type:'page', num:'01', src:'sound/nz1.mp3', line:'As I walk through the flames I breathe this damnation'},
@@ -521,43 +614,36 @@ body.warded #ward{display:flex}
     {type:'page', num:'05', src:'sound/nz5.mp3', line:"There's a void ..."}
   ];
   var REAL = LEAVES.filter(function(l){ return l.type==='page'; }).length;
-  var curLeaf=0, curBookEl=null, bookFailed=false;
-  function pauseBook(){ if(curBookEl){ try{curBookEl.pause();}catch(e){} } }
+  var curLeaf=0, bookToken=0, bookFailed=false;
   function setBookNote(text, isErr){ if(!bookNote) return; bookNote.textContent=text; bookNote.classList.toggle('err', !!isErr); }
   function renderLeaf(dir){
     var L=LEAVES[curLeaf];
     bookStage.innerHTML='';
     var div=document.createElement('div');
     div.className='book-page'+(L.type==='gap'?' gap':'')+(dir>0?' in-l':dir<0?' in-r':'');
-    if(L.type==='page'){
-      div.innerHTML='<span class="bp-num">FRAGMENT '+esc(L.num)+'</span><span class="bp-line">'+esc(L.line)+'</span>';
-    } else {
-      div.innerHTML='<span class="bp-num">— — —</span><span class="bp-line">[ three fragments, burned. they still scream a little. ]</span>';
-    }
+    if(L.type==='page'){ div.innerHTML='<span class="bp-num">FRAGMENT '+esc(L.num)+'</span><span class="bp-line">'+esc(L.line)+'</span>'; }
+    else { div.innerHTML='<span class="bp-num">— — —</span><span class="bp-line">[ three fragments, burned. they still scream a little. ]</span>'; }
     bookStage.appendChild(div);
-    pauseBook(); curBookEl=null; bookFailed=false;
+    bookPlayer.stop(); bookFailed=false;
     if(L.type==='page'){
-      var el=Audio.file(L.src); curBookEl=el;
+      var token=++bookToken;
       setBookNote('loading fragment '+L.num+'…', false);
-      try{ el.currentTime=0; }catch(e){}
-      Audio.tryPlay(el).then(function(){ setBookNote('', false); bookFailed=false; })
-        .catch(function(err){ bookFailed=true; setBookNote('⚠ fragment '+L.num+' won\'t load ('+err.message+') — tap the page to retry', true); });
-    } else {
-      setBookNote('3 fragments missing between 01 and 02', false);
-    }
+      bookPlayer.load(L.src).then(function(){ if(token!==bookToken) return; return bookPlayer.play(); })
+        .then(function(){ if(token!==bookToken) return; setBookNote('', false); })
+        .catch(function(err){ if(token!==bookToken) return; bookFailed=true; setBookNote('⚠ fragment '+L.num+' won\'t load ('+err.message+') — tap the page to retry', true); });
+    } else { setBookNote('3 fragments missing between 01 and 02', false); }
     bookCount.textContent = L.type==='page' ? ('FRAGMENT '+L.num+' / '+String(REAL).padStart(2,'0')) : ('— / '+String(REAL).padStart(2,'0'));
     bookPrev.disabled = curLeaf===0;
     bookNext.disabled = curLeaf===LEAVES.length-1;
   }
-  bookStage.addEventListener('click', function(){ if(bookFailed){ renderLeaf(0); } });
+  function showLeaf(i, noAnim){ if(i<0||i>=LEAVES.length) return; var dir=noAnim?0:(i>curLeaf?1:-1); curLeaf=i; renderLeaf(dir); }
+  bookStage.addEventListener('click', function(){ if(bookFailed) renderLeaf(0); });
   bookPrev.addEventListener('click', function(){ showLeaf(curLeaf-1); });
   bookNext.addEventListener('click', function(){ showLeaf(curLeaf+1); });
-  function showLeaf(i, noAnim){ if(i<0||i>=LEAVES.length) return; var dir=noAnim?0:(i>curLeaf?1:-1); curLeaf=i; renderLeaf(dir); }
-
   caseBook.addEventListener('click', function(){
     var open = specBook.classList.toggle('open');
     caseBook.setAttribute('aria-expanded', open?'true':'false');
-    if(open){ showLeaf(0, true); } else { pauseBook(); }
+    if(open){ showLeaf(0, true); } else { bookPlayer.stop(); }
   });
 
   if(muteBtn){
@@ -569,116 +655,23 @@ body.warded #ward{display:flex}
     });
   }
 
-  function introBlackout(){ if(!this || !isFinite(this.currentTime)) return; var t=this.currentTime; document.body.classList.toggle('blackout', t>=2 && t<4); }
   function descend(){
     if(broken) return; broken=true;
     document.body.classList.add('broken');
     document.body.classList.add('alive');
     if(muteBtn) muteBtn.hidden=false;
     Audio.startDrone();
-    var intro=Audio.file('sound/intro.mp3');
-    intro.addEventListener('timeupdate', introBlackout);
-    intro.addEventListener('ended', function(){ document.body.classList.remove('blackout'); }, {once:true});
-    intro.currentTime=0;
-    intro.play().catch(function(){});
     unlocked=true;
   }
   gate.addEventListener('click', descend);
   gate.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); descend(); } });
 })();
 
-var Audio = (function(){
-  var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
-
-  function tryPlay(el){
-    return new Promise(function(resolve, reject){
-      if(!el){ reject(new Error('no element')); return; }
-      var settled=false;
-      function done(ok, reason){
-        if(settled) return; settled=true; clearTimeout(to); el.removeEventListener('error', onErr);
-        if(ok) resolve(); else reject(reason || new Error('play failed'));
-      }
-      function onErr(){ done(false, new Error('decode/network error '+(el.error?'(code '+el.error.code+')':''))); }
-      var to=setTimeout(function(){ done(false, new Error('stalled — no audio data in 6s')); }, 6000);
-      el.addEventListener('error', onErr);
-      try{ if(el.readyState < 2){ el.load(); } }catch(e){}
-      var p = el.play();
-      if(p && p.then){ p.then(function(){ done(true); }).catch(function(err){ done(false, err && err.message ? new Error(err.message) : new Error('play rejected')); }); }
-      else { done(true); }
-    });
-  }
-
-  if(!WON){
-    return {
-      file:function(src){ var a=new window.Audio(src); a.preload='auto'; return a; },
-      tryPlay:tryPlay,
-      startDrone:function(){},
-      toggleMute:function(){ return false; }
-    };
-  }
-
-  var ctx=null, master=null, drone=[], pool={}, reg=new Set(), muted=false;
-
-  function ensure(){
-    if(ctx) return;
-    try{
-      ctx = new (window.AudioContext||window.webkitAudioContext)();
-      var comp = ctx.createDynamicsCompressor();
-      comp.threshold.value=-14; comp.knee.value=20; comp.ratio.value=6;
-      master = ctx.createGain(); master.gain.value = muted?0:1;
-      master.connect(comp); comp.connect(ctx.destination);
-    }catch(e){ ctx=null; }
-  }
-  function startDrone(){
-    ensure();
-    if(!ctx || drone.length) return;
-    try{
-      if(ctx.state==='suspended') ctx.resume();
-      var lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=320; lp.Q.value=0.7;
-      var lfo=ctx.createOscillator(); lfo.type='sine'; lfo.frequency.value=0.08;
-      var lfoG=ctx.createGain(); lfoG.gain.value=140; lfo.connect(lfoG); lfoG.connect(lp.frequency);
-      var dg=ctx.createGain(); dg.gain.value=0.0001; dg.gain.setTargetAtTime(0.2, ctx.currentTime, 1.4);
-      lp.connect(dg); dg.connect(master);
-      [55,82.4,110].forEach(function(f,i){
-        var o=ctx.createOscillator(); o.type = i===2?'triangle':'sine'; o.frequency.value=f; o.detune.value=(i-1)*7;
-        var g=ctx.createGain(); g.gain.value = i===2?0.4:0.7; o.connect(g); g.connect(lp); o.start(); drone.push(o);
-      });
-      var nlen=Math.floor(ctx.sampleRate*2), nb=ctx.createBuffer(1,nlen,ctx.sampleRate), nd=nb.getChannelData(0);
-      for(var i=0;i<nlen;i++) nd[i]=(Math.random()*2-1);
-      var ns=ctx.createBufferSource(); ns.buffer=nb; ns.loop=true;
-      var bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=420; bp.Q.value=0.6;
-      var ng=ctx.createGain(); ng.gain.value=0.04; ns.connect(bp); bp.connect(ng); ng.connect(dg); ns.start();
-      drone.push(ns); lfo.start(); drone.push(lfo);
-    }catch(e){}
-  }
-  function file(src){
-    if(pool[src]) return pool[src];
-    var el=new window.Audio(src); el.preload='auto'; el.muted=muted;
-    pool[src]=el; reg.add(el);
-    el.addEventListener('loadeddata', function once(){
-      console.log('%c[BENEATH] ✓ loaded  '+src, 'color:#9bf3ea');
-      el.removeEventListener('loadeddata', once);
-    });
-    el.addEventListener('error', function(){
-      var resolved = el.currentSrc || el.src;
-      console.warn('%c[BENEATH] ✗ FAILED  '+src+'  (media error '+(el.error?el.error.code:'?')+')\n   resolved URL: '+resolved+'\n   → the file is missing or at the wrong path. expected folder: /sound/ at the site root (NOT /art/secret/).', 'color:#ff5a6e');
-    });
-    return el;
-  }
-  function toggleMute(){
-    muted=!muted;
-    if(master && ctx) master.gain.setTargetAtTime(muted?0:1, ctx.currentTime, 0.03);
-    reg.forEach(function(el){ el.muted=muted; });
-    return muted;
-  }
-  return { file:file, tryPlay:tryPlay, startDrone:startDrone, toggleMute:toggleMute };
-})();
-
 (function(){
   var exp=['sound/intro.mp3','sound/war.mp3','sound/nz1.mp3','sound/nz2.mp3','sound/nz3.mp3','sound/nz4.mp3','sound/nz5.mp3'];
-  console.info('%c† NILOUVERSE // BENEATH — audio engine online', 'color:#ff2747;font-weight:bold');
+  console.info('%c† NILOUVERSE // BENEATH — audio engine online (Web Audio decode path)', 'color:#ff2747;font-weight:bold');
   console.info('%cexpected files (folder /sound/ at the site root — NOT /art/secret/):', 'color:#9bf3ea', exp);
-  console.info('%copen the Network tab, then open a specimen and press play: green ✓ = loaded, red ✗ = missing/mis-pathed (the red line prints the exact URL it tried).', 'color:#948a7c');
+  console.info('%cclips are fetched + decoded into memory (immune to service-worker range-request issues). open a specimen, press play: green ✓ = decoded & playing, red ✗ = missing/mis-pathed (the red line prints the exact HTTP status).', 'color:#948a7c');
 })();
 </script>
 </body>
