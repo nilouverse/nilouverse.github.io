@@ -21,7 +21,7 @@
 <style>
 :root{
   --ink:#050203; --glass:#0b0608;
-  --blood:#b3102a; --blood-deep:#5e0814; --blood-bright:#ff2747; --blood-wet:#7c0b1b;
+  --blood:#b3102a; --blood-deep:#7c0b1b; --blood-bright:#ff2747; --blood-wet:#7c0b1b;
   --violet:#b07cff;
   --bone:#efe6dd; --bone-dim:#b7aaa2; --bone-faint:#948a7c;
   --paper:#e7dccb; --paper-2:#cdbfa9; --inkpage:#241712;
@@ -84,7 +84,6 @@ body.broken #room{opacity:1;filter:none}
   box-shadow:0 0 0 2px rgba(239,230,221,.06),inset 0 0 24px rgba(0,0,0,.7);
   animation:skip 2.6s steps(8) infinite}
 
-/* containment header (opposes the surface) */
 .rhead{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:14px;
   padding:13px clamp(16px,4vw,40px);border-bottom:1px solid rgba(179,16,42,.3);font-family:var(--f-mono);
   background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 4px),rgba(8,4,5,.6)}
@@ -140,7 +139,6 @@ body.broken .specimen{opacity:1;transform:none}
 .specimen.open .spec-media{display:block;animation:fadeUp .5s var(--ease) both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
-/* WAR player */
 .war{display:flex;gap:clamp(16px,3vw,26px);align-items:center;flex-wrap:wrap;justify-content:center}
 .war-disc{position:relative;width:clamp(120px,30vw,170px);aspect-ratio:1;flex:none;border-radius:50%;background:#0a0608;
   box-shadow:0 0 0 2px rgba(239,230,221,.08),0 12px 28px rgba(0,0,0,.6),inset 0 0 24px rgba(0,0,0,.7)}
@@ -154,12 +152,17 @@ body.broken .specimen{opacity:1;transform:none}
 .war-ctrl{flex:1;min-width:170px;display:flex;flex-direction:column;gap:11px}
 .pp-row{display:flex;align-items:center;gap:12px}
 .pp-btn{width:48px;height:48px;flex:none;border-radius:50%;border:1.5px solid var(--bone);background:rgba(8,5,6,.6);
-  cursor:pointer;display:grid;place-items:center;transition:background var(--dur-1) var(--ease),border-color var(--dur-1) var(--ease)}
+  cursor:pointer;display:grid;place-items:center;transition:background var(--dur-1) var(--ease),border-color var(--dur-1) var(--ease),opacity var(--dur-1) var(--ease)}
 .pp-btn:hover{background:var(--blood);border-color:var(--blood)}
 .pp-btn .ico-play{width:0;height:0;border-left:14px solid var(--bone);border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:3px}
 .pp-btn .ico-pause{display:none;width:12px;height:14px;border-left:4px solid var(--bone);border-right:4px solid var(--bone)}
+.pp-btn .ico-err{display:none;font-family:var(--f-mono);font-size:1.1rem;line-height:1;color:var(--blood-bright);font-weight:700}
 .pp-btn.playing .ico-play{display:none}
 .pp-btn.playing .ico-pause{display:block}
+.pp-btn.loading{opacity:.5}
+.pp-btn.err{border-color:var(--blood-bright);background:rgba(124,11,27,.25)}
+.pp-btn.err .ico-play{display:none}
+.pp-btn.err .ico-err{display:block}
 .pp-track{position:relative;flex:1;height:6px;background:rgba(239,230,221,.12);border-radius:3px;cursor:pointer;touch-action:none}
 .pp-fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:3px;pointer-events:none;
   background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright))}
@@ -168,10 +171,10 @@ body.broken .specimen{opacity:1;transform:none}
 .pp-time{font-family:var(--f-mono);font-size:.55rem;color:var(--bone-faint);display:flex;justify-content:space-between}
 .war-meta .wm-title{font-family:var(--f-serif);font-style:italic;font-size:1.1rem;color:var(--bone)}
 .war-meta .wm-joke{font-family:var(--f-mono);font-size:.48rem;letter-spacing:.05em;color:var(--bone-faint);margin-top:5px;line-height:1.6}
+.war-meta .wm-joke.err{color:var(--blood-bright)}
 
-/* torn-poem book */
 .book{display:flex;flex-direction:column;gap:14px;align-items:center}
-.book-stage{position:relative;width:min(100%,330px);min-height:180px;display:grid;place-items:center}
+.book-stage{position:relative;width:min(100%,330px);min-height:180px;display:grid;place-items:center;cursor:pointer}
 .book-page{width:100%;padding:24px 26px;text-align:center;
   background:radial-gradient(130% 90% at 82% 8%,rgba(179,16,42,.18),transparent 58%),linear-gradient(160deg,var(--paper),var(--paper-2));
   color:var(--inkpage);
@@ -193,8 +196,8 @@ body.broken .specimen{opacity:1;transform:none}
 .book-nav button:disabled{opacity:.3;cursor:default}
 .book-count{font-family:var(--f-mono);font-size:.55rem;letter-spacing:.12em;color:var(--bone-faint);min-width:96px;text-align:center}
 .book-note{font-family:var(--f-mono);font-size:.46rem;letter-spacing:.06em;color:var(--bone-faint);text-align:center;min-height:1em}
+.book-note.err{color:var(--blood-bright)}
 
-/* containment footer (opposes the surface) */
 .rfoot{position:relative;z-index:3;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;
   padding:clamp(22px,5vw,40px) clamp(16px,4vw,40px);border-top:1px solid rgba(179,16,42,.3);font-family:var(--f-mono);
   background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 4px),rgba(8,4,5,.6)}
@@ -204,7 +207,6 @@ body.broken .specimen{opacity:1;transform:none}
 .rfoot-up:hover{color:var(--bone);border-color:var(--blood-bright)}
 .rfoot-joke{font-size:.46rem;letter-spacing:.05em;color:var(--bone-faint);line-height:1.7;max-width:62ch}
 
-/* glass / cracks / blood / gate / ward */
 #glass{position:fixed;inset:0;z-index:30;pointer-events:none;transition:opacity .12s linear;
   background:
     linear-gradient(115deg,transparent 38%,rgba(255,255,255,.05) 49%,rgba(255,255,255,.10) 50%,rgba(255,255,255,.04) 51%,transparent 62%),
@@ -266,9 +268,7 @@ body.warded #ward{display:flex}
   color:var(--bone-dim);border:1px solid rgba(239,230,221,.2);padding:9px 16px;transition:color .25s var(--ease),border-color .25s var(--ease)}
 .wd-up:hover{color:var(--bone);border-color:var(--blood-bright)}
 
-@media(max-width:760px){
-  .book-stage{width:88%}
-}
+@media(max-width:760px){ .book-stage{width:88%} }
 
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition-duration:.01ms!important}
@@ -333,11 +333,11 @@ body.warded #ward{display:flex}
             <div class="war-disc" id="warDisc"><span class="face"></span><span class="groove"></span><span class="hole"></span></div>
             <div class="war-ctrl">
               <div class="pp-row">
-                <button class="pp-btn" id="warPlay" type="button" aria-label="play or pause war"><span class="ico-play"></span><span class="ico-pause"></span></button>
+                <button class="pp-btn" id="warPlay" type="button" aria-label="play war"><span class="ico-play"></span><span class="ico-pause"></span><span class="ico-err">!</span></button>
                 <div class="pp-track" id="warTrack"><span class="pp-fill" id="warFill"></span><span class="pp-knob" id="warKnob"></span></div>
               </div>
               <div class="pp-time"><span id="warCur">0:00</span><span id="warDur">0:00</span></div>
-              <div class="war-meta"><span class="wm-title">WAR — I'm who I am</span><span class="wm-joke">if it skips, that's not a bug. it's remembering.</span></div>
+              <div class="war-meta"><span class="wm-title">WAR — I'm who I am</span><span class="wm-joke" id="warJoke">if it skips, that's not a bug. it's remembering.</span></div>
             </div>
           </div>
         </div>
@@ -451,6 +451,7 @@ body.warded #ward{display:flex}
   var warKnob  = document.getElementById('warKnob');
   var warCur   = document.getElementById('warCur');
   var warDur   = document.getElementById('warDur');
+  var warJoke  = document.getElementById('warJoke');
   var bookStage= document.getElementById('bookStage');
   var bookPrev = document.getElementById('bookPrev');
   var bookNext = document.getElementById('bookNext');
@@ -462,26 +463,38 @@ body.warded #ward{display:flex}
 
   var broken=false, unlocked=false;
 
-  /* ---- WAR player (real <audio>, lazy) ---- */
+  function setWarJoke(text, isErr){
+    if(!warJoke) return;
+    warJoke.textContent = text;
+    warJoke.classList.toggle('err', !!isErr);
+  }
+  function warIdle(){ warPlay.classList.remove('playing','err','loading'); warDisc.classList.remove('spin'); }
+
   var warEl=null, seeking=false;
   function getWar(){
     if(warEl) return warEl;
     warEl = Audio.file('sound/war.mp3');
     warEl.addEventListener('loadedmetadata', function(){ warDur.textContent=fmtTime(warEl.duration); updateWarBar(); });
     warEl.addEventListener('timeupdate', updateWarBar);
-    warEl.addEventListener('ended', function(){ warPlay.classList.remove('playing'); warDisc.classList.remove('spin'); warEl.currentTime=0; updateWarBar(); });
+    warEl.addEventListener('ended', function(){ warIdle(); warEl.currentTime=0; updateWarBar(); setWarJoke("WAR — I'm who I am", false); });
     return warEl;
   }
   function warPct(){ return (warEl && warEl.duration) ? (warEl.currentTime/warEl.duration) : 0; }
   function updateWarBar(){ var p=warPct()*100; warFill.style.width=p+'%'; warKnob.style.left=p+'%'; warCur.textContent=fmtTime(warEl?warEl.currentTime:0); }
-  function setWar(p){
+
+  warPlay.addEventListener('click', function(){
+    if(warPlay.classList.contains('playing')){ var e=getWar(); e.pause(); warIdle(); return; }
     var el=getWar();
-    warPlay.classList.toggle('playing',p); warDisc.classList.toggle('spin',p);
-    if(p){ el.play().catch(function(){ warPlay.classList.remove('playing'); warDisc.classList.remove('spin'); }); }
-    else el.pause();
-  }
-  function pauseWar(){ if(warEl){ warEl.pause(); warPlay.classList.remove('playing'); warDisc.classList.remove('spin'); } }
-  warPlay.addEventListener('click', function(){ setWar(!warPlay.classList.contains('playing')); });
+    warPlay.classList.add('loading'); warPlay.classList.remove('err');
+    setWarJoke('loading…', false);
+    Audio.tryPlay(el).then(function(){
+      warPlay.classList.remove('loading'); warPlay.classList.add('playing'); warDisc.classList.add('spin');
+      setWarJoke("WAR — I'm who I am", false);
+    }).catch(function(err){
+      warPlay.classList.remove('loading'); warPlay.classList.add('err'); warDisc.classList.remove('spin');
+      setWarJoke('⚠ '+err.message+' — tap ▶ to retry', true);
+    });
+  });
   function seekFrom(e){
     var el=getWar(); var r=warTrack.getBoundingClientRect();
     var cx = (e.touches?e.touches[0].clientX:e.clientX);
@@ -496,10 +509,9 @@ body.warded #ward{display:flex}
   caseWar.addEventListener('click', function(){
     var open = specWar.classList.toggle('open');
     caseWar.setAttribute('aria-expanded', open?'true':'false');
-    if(open){ getWar(); } else { pauseWar(); }
+    if(open){ getWar(); } else { if(warEl){ warEl.pause(); } warIdle(); }
   });
 
-  /* ---- TORN-POEM book ---- */
   var LEAVES = [
     {type:'page', num:'01', src:'sound/nz1.mp3', line:'As I walk through the flames I breathe this damnation'},
     {type:'gap'},
@@ -509,8 +521,9 @@ body.warded #ward{display:flex}
     {type:'page', num:'05', src:'sound/nz5.mp3', line:"There's a void ..."}
   ];
   var REAL = LEAVES.filter(function(l){ return l.type==='page'; }).length;
-  var curLeaf=0, curBookEl=null;
+  var curLeaf=0, curBookEl=null, bookFailed=false;
   function pauseBook(){ if(curBookEl){ try{curBookEl.pause();}catch(e){} } }
+  function setBookNote(text, isErr){ if(!bookNote) return; bookNote.textContent=text; bookNote.classList.toggle('err', !!isErr); }
   function renderLeaf(dir){
     var L=LEAVES[curLeaf];
     bookStage.innerHTML='';
@@ -522,19 +535,24 @@ body.warded #ward{display:flex}
       div.innerHTML='<span class="bp-num">— — —</span><span class="bp-line">[ three fragments, burned. they still scream a little. ]</span>';
     }
     bookStage.appendChild(div);
-    pauseBook(); curBookEl=null;
+    pauseBook(); curBookEl=null; bookFailed=false;
     if(L.type==='page'){
-      var el=Audio.file(L.src); curBookEl=el; el.currentTime=0;
-      el.play().catch(function(){});
+      var el=Audio.file(L.src); curBookEl=el;
+      setBookNote('loading fragment '+L.num+'…', false);
+      try{ el.currentTime=0; }catch(e){}
+      Audio.tryPlay(el).then(function(){ setBookNote('', false); bookFailed=false; })
+        .catch(function(err){ bookFailed=true; setBookNote('⚠ fragment '+L.num+' won\'t load ('+err.message+') — tap the page to retry', true); });
+    } else {
+      setBookNote('3 fragments missing between 01 and 02', false);
     }
-    if(L.type==='page'){ bookCount.textContent='FRAGMENT '+L.num+' / '+String(REAL).padStart(2,'0'); bookNote.textContent=''; }
-    else { bookCount.textContent='— / '+String(REAL).padStart(2,'0'); bookNote.textContent='3 fragments missing between 01 and 02'; }
+    bookCount.textContent = L.type==='page' ? ('FRAGMENT '+L.num+' / '+String(REAL).padStart(2,'0')) : ('— / '+String(REAL).padStart(2,'0'));
     bookPrev.disabled = curLeaf===0;
     bookNext.disabled = curLeaf===LEAVES.length-1;
   }
-  function showLeaf(i, noAnim){ if(i<0||i>=LEAVES.length) return; var dir=noAnim?0:(i>curLeaf?1:-1); curLeaf=i; renderLeaf(dir); }
+  bookStage.addEventListener('click', function(){ if(bookFailed){ renderLeaf(0); } });
   bookPrev.addEventListener('click', function(){ showLeaf(curLeaf-1); });
   bookNext.addEventListener('click', function(){ showLeaf(curLeaf+1); });
+  function showLeaf(i, noAnim){ if(i<0||i>=LEAVES.length) return; var dir=noAnim?0:(i>curLeaf?1:-1); curLeaf=i; renderLeaf(dir); }
 
   caseBook.addEventListener('click', function(){
     var open = specBook.classList.toggle('open');
@@ -542,7 +560,6 @@ body.warded #ward{display:flex}
     if(open){ showLeaf(0, true); } else { pauseBook(); }
   });
 
-  /* ---- mute ---- */
   if(muteBtn){
     muteBtn.addEventListener('click', function(){
       var m=Audio.toggleMute();
@@ -552,7 +569,6 @@ body.warded #ward{display:flex}
     });
   }
 
-  /* ---- descend ---- */
   function introBlackout(){ if(!this || !isFinite(this.currentTime)) return; var t=this.currentTime; document.body.classList.toggle('blackout', t>=2 && t<4); }
   function descend(){
     if(broken) return; broken=true;
@@ -573,9 +589,34 @@ body.warded #ward{display:flex}
 
 var Audio = (function(){
   var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
-  if(!WON){
-    return { file:function(){ var a=new window.Audio(); a.preload='auto'; return a; }, startDrone:function(){}, toggleMute:function(){ return false; } };
+
+  function tryPlay(el){
+    return new Promise(function(resolve, reject){
+      if(!el){ reject(new Error('no element')); return; }
+      var settled=false;
+      function done(ok, reason){
+        if(settled) return; settled=true; clearTimeout(to); el.removeEventListener('error', onErr);
+        if(ok) resolve(); else reject(reason || new Error('play failed'));
+      }
+      function onErr(){ done(false, new Error('decode/network error '+(el.error?'(code '+el.error.code+')':''))); }
+      var to=setTimeout(function(){ done(false, new Error('stalled — no audio data in 6s')); }, 6000);
+      el.addEventListener('error', onErr);
+      try{ if(el.readyState < 2){ el.load(); } }catch(e){}
+      var p = el.play();
+      if(p && p.then){ p.then(function(){ done(true); }).catch(function(err){ done(false, err && err.message ? new Error(err.message) : new Error('play rejected')); }); }
+      else { done(true); }
+    });
   }
+
+  if(!WON){
+    return {
+      file:function(src){ var a=new window.Audio(src); a.preload='auto'; return a; },
+      tryPlay:tryPlay,
+      startDrone:function(){},
+      toggleMute:function(){ return false; }
+    };
+  }
+
   var ctx=null, master=null, drone=[], pool={}, reg=new Set(), muted=false;
 
   function ensure(){
@@ -614,6 +655,14 @@ var Audio = (function(){
     if(pool[src]) return pool[src];
     var el=new window.Audio(src); el.preload='auto'; el.muted=muted;
     pool[src]=el; reg.add(el);
+    el.addEventListener('loadeddata', function once(){
+      console.log('%c[BENEATH] ✓ loaded  '+src, 'color:#9bf3ea');
+      el.removeEventListener('loadeddata', once);
+    });
+    el.addEventListener('error', function(){
+      var resolved = el.currentSrc || el.src;
+      console.warn('%c[BENEATH] ✗ FAILED  '+src+'  (media error '+(el.error?el.error.code:'?')+')\n   resolved URL: '+resolved+'\n   → the file is missing or at the wrong path. expected folder: /sound/ at the site root (NOT /art/secret/).', 'color:#ff5a6e');
+    });
     return el;
   }
   function toggleMute(){
@@ -622,7 +671,14 @@ var Audio = (function(){
     reg.forEach(function(el){ el.muted=muted; });
     return muted;
   }
-  return { file:file, startDrone:startDrone, toggleMute:toggleMute };
+  return { file:file, tryPlay:tryPlay, startDrone:startDrone, toggleMute:toggleMute };
+})();
+
+(function(){
+  var exp=['sound/intro.mp3','sound/war.mp3','sound/nz1.mp3','sound/nz2.mp3','sound/nz3.mp3','sound/nz4.mp3','sound/nz5.mp3'];
+  console.info('%c† NILOUVERSE // BENEATH — audio engine online', 'color:#ff2747;font-weight:bold');
+  console.info('%cexpected files (folder /sound/ at the site root — NOT /art/secret/):', 'color:#9bf3ea', exp);
+  console.info('%copen the Network tab, then open a specimen and press play: green ✓ = loaded, red ✗ = missing/mis-pathed (the red line prints the exact URL it tried).', 'color:#948a7c');
 })();
 </script>
 </body>
