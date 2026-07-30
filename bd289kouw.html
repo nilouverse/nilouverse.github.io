@@ -411,7 +411,7 @@ body.warded #ward{display:flex}
 </div>
 
 <div id="glassctl">
-  <button id="muteBtn" type="button" aria-pressed="false" aria-label="mute the ambient hum" hidden><span id="muteIco">♪</span> hum</button>
+  <button id="muteBtn" type="button" aria-pressed="false" aria-label="mute the ambient bed" hidden><span id="muteIco">♪</span> ambient</button>
   <a href="index.html" aria-label="return to the surface">↑ surface</a>
   <span class="gc-mark" aria-hidden="true">● marked</span>
 </div>
@@ -427,40 +427,19 @@ body.warded #ward{display:flex}
 var Audio = (function(){
   var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
 
-  var ctx=null, master=null, drone=[], droneGain=null, players=[], muted=false;
-  var DRONE_LEVEL=0.4;
+  var ctx=null, master=null, ambientGain=null, muted=false;
 
   function ensure(){
     if(ctx) return true;
     try{
       ctx = new (window.AudioContext||window.webkitAudioContext)();
       var comp=ctx.createDynamicsCompressor(); comp.threshold.value=-14; comp.knee.value=20; comp.ratio.value=6;
-      master=ctx.createGain(); master.gain.value=1;
-      master.connect(comp); comp.connect(ctx.destination);
+      master=ctx.createGain(); master.gain.value=1; master.connect(comp); comp.connect(ctx.destination);
+      ambientGain=ctx.createGain(); ambientGain.gain.value=muted?0:1; ambientGain.connect(master);
       return true;
     }catch(e){ ctx=null; return false; }
   }
   function resumeCtx(){ if(ctx && ctx.state==='suspended'){ try{ctx.resume();}catch(e){} } }
-
-  function startDrone(){
-    if(!ensure()) return;
-    if(drone.length) return;
-    try{
-      resumeCtx();
-      var lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=320; lp.Q.value=0.7;
-      var lfo=ctx.createOscillator(); lfo.type='sine'; lfo.frequency.value=0.08;
-      var lfoG=ctx.createGain(); lfoG.gain.value=140; lfo.connect(lfoG); lfoG.connect(lp.frequency);
-      droneGain=ctx.createGain(); droneGain.gain.value=0.0001; droneGain.gain.setTargetAtTime(muted?0:DRONE_LEVEL, ctx.currentTime, 1.4);
-      lp.connect(droneGain); droneGain.connect(master);
-      [55,82.4,110].forEach(function(f,i){ var o=ctx.createOscillator(); o.type=i===2?'triangle':'sine'; o.frequency.value=f; o.detune.value=(i-1)*7; var g=ctx.createGain(); g.gain.value=i===2?0.4:0.7; o.connect(g); g.connect(lp); o.start(); drone.push(o); });
-      var nlen=Math.floor(ctx.sampleRate*2), nb=ctx.createBuffer(1,nlen,ctx.sampleRate), nd=nb.getChannelData(0);
-      for(var i=0;i<nlen;i++) nd[i]=(Math.random()*2-1);
-      var ns=ctx.createBufferSource(); ns.buffer=nb; ns.loop=true;
-      var bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=420; bp.Q.value=0.6;
-      var ng=ctx.createGain(); ng.gain.value=0.04; ns.connect(bp); bp.connect(ng); ng.connect(droneGain); ns.start();
-      drone.push(ns); lfo.start(); drone.push(lfo);
-    }catch(e){}
-  }
 
   function decode(src){
     return fetch(src).then(function(r){
@@ -475,11 +454,12 @@ var Audio = (function(){
     });
   }
 
-  function makePlayer(){
-    var P={ buf:null,dur:0,srcNode:null,gain:null,offset:0,t0:0,playing:false,loop:false,endedCb:null,_ui:null,raf:0,_manual:false };
+  function makePlayer(busKey){
+    var P={ buf:null,dur:0,srcNode:null,gain:null,offset:0,t0:0,playing:false,loop:false,busKey:busKey||'master',endedCb:null,_ui:null,raf:0,_manual:false };
+    function bus(){ return (P.busKey==='ambient' && ambientGain) ? ambientGain : master; }
     function arm(){ P.srcNode.onended=function(){ if(P._manual) return; P.playing=false; P.offset=0; stopRaf(); if(P.endedCb) P.endedCb(); }; }
-    function loop(){ if(!P.playing){ P.raf=0; return; } if(P._ui) P._ui(P.currentTime,P.dur); P.raf=requestAnimationFrame(loop); }
-    function startRaf(){ if(P.raf||!P._ui) return; P.raf=requestAnimationFrame(loop); }
+    function loopFn(){ if(!P.playing){ P.raf=0; return; } if(P._ui) P._ui(P.currentTime,P.dur); P.raf=requestAnimationFrame(loopFn); }
+    function startRaf(){ if(P.raf||!P._ui) return; P.raf=requestAnimationFrame(loopFn); }
     function stopRaf(){ if(P.raf){ cancelAnimationFrame(P.raf); P.raf=0; } }
     P.load=function(src){
       return decode(src).then(function(buf){ P.buf=buf; P.dur=buf.duration; P.offset=0;
@@ -493,8 +473,7 @@ var Audio = (function(){
       if(P.offset>=P.dur) P.offset=0;
       P.srcNode=ctx.createBufferSource(); P.srcNode.buffer=P.buf; P.srcNode.loop=!!P.loop;
       P.gain=ctx.createGain(); P.gain.gain.value=1;
-      P.srcNode.connect(P.gain); P.gain.connect(master);
-      if(players.indexOf(P)<0) players.push(P);
+      P.srcNode.connect(P.gain); P.gain.connect(bus());
       P._manual=false; arm();
       try{ P.srcNode.start(0,P.offset); }catch(e){ return Promise.reject(new Error('start failed')); }
       P.t0=ctx.currentTime; P.playing=true; startRaf();
@@ -523,14 +502,14 @@ var Audio = (function(){
 
   function toggleMute(){
     muted=!muted;
-    if(droneGain && ctx) droneGain.gain.setTargetAtTime(muted?0:DRONE_LEVEL, ctx.currentTime, 0.05);
+    if(ambientGain && ctx) ambientGain.gain.setTargetAtTime(muted?0:1, ctx.currentTime, 0.05);
     return muted;
   }
 
   if(!WON){
-    return { makePlayer:function(){ return { load:function(){return Promise.reject(new Error('warded'));}, play:function(){return Promise.reject(new Error('warded'));}, pause:function(){}, stop:function(){}, seek:function(){}, currentTime:0, dur:0, loop:false }; }, startDrone:function(){}, toggleMute:function(){ return false; } };
+    return { makePlayer:function(){ return { load:function(){return Promise.reject(new Error('warded'));}, play:function(){return Promise.reject(new Error('warded'));}, pause:function(){}, stop:function(){}, seek:function(){}, currentTime:0, dur:0, loop:false }; }, toggleMute:function(){ return false; } };
   }
-  return { makePlayer:makePlayer, startDrone:startDrone, toggleMute:toggleMute };
+  return { makePlayer:makePlayer, toggleMute:toggleMute };
 })();
 
 (function(){
@@ -574,11 +553,16 @@ var Audio = (function(){
 
   var warPlayer   = Audio.makePlayer();
   var bookPlayer  = Audio.makePlayer();
-  var introPlayer = Audio.makePlayer();
-  var loopPlayer  = Audio.makePlayer(); loopPlayer.loop=true;
+  var introPlayer = Audio.makePlayer('ambient');
+  var loopPlayer  = Audio.makePlayer('ambient'); loopPlayer.loop=true;
 
   introPlayer._ui = function(t){ document.body.classList.toggle('blackout', t>=2 && t<4); };
-  introPlayer.endedCb = function(){ document.body.classList.remove('blackout'); };
+
+  function startBed(){
+    (loopPlayer.buf ? Promise.resolve() : loopPlayer.load('sound/nzintro.mp3'))
+      .then(function(){ return loopPlayer.play(); }).catch(function(){});
+  }
+  introPlayer.endedCb = function(){ document.body.classList.remove('blackout'); startBed(); };
 
   function setWarJoke(text, isErr){ if(!warJoke) return; warJoke.textContent=text; warJoke.classList.toggle('err', !!isErr); }
   function warIdle(){ warPlay.classList.remove('playing','err','loading'); warDisc.classList.remove('spin'); }
@@ -590,14 +574,10 @@ var Audio = (function(){
     var open = specWar.classList.toggle('open');
     caseWar.setAttribute('aria-expanded', open?'true':'false');
     if(open){
-      (introPlayer.buf ? Promise.resolve() : introPlayer.load('sound/intro.mp3'))
-        .then(function(){ return introPlayer.play(); }).catch(function(){});
       if(!warPlayer.buf){
         warPlayer.load('sound/war.mp3').then(updateWarBar).catch(function(err){ warPlay.classList.add('err'); setWarJoke('⚠ '+err.message+' — tap ▶ to retry', true); });
       }
     } else {
-      introPlayer.stop();
-      document.body.classList.remove('blackout');
       warPlayer.pause(); warIdle();
     }
   });
@@ -653,14 +633,8 @@ var Audio = (function(){
   caseBook.addEventListener('click', function(){
     var open = specBook.classList.toggle('open');
     caseBook.setAttribute('aria-expanded', open?'true':'false');
-    if(open){
-      (loopPlayer.buf ? Promise.resolve() : loopPlayer.load('sound/nzintro.mp3'))
-        .then(function(){ return loopPlayer.play(); }).catch(function(){});
-      showLeaf(0, true);
-    } else {
-      loopPlayer.stop();
-      bookPlayer.stop();
-    }
+    if(open){ showLeaf(0, true); }
+    else { bookPlayer.stop(); }
   });
 
   if(muteBtn){
@@ -677,7 +651,9 @@ var Audio = (function(){
     document.body.classList.add('broken');
     document.body.classList.add('alive');
     if(muteBtn) muteBtn.hidden=false;
-    Audio.startDrone();
+    introPlayer.load('sound/intro.mp3')
+      .then(function(){ return introPlayer.play(); })
+      .catch(function(){ document.body.classList.remove('blackout'); startBed(); });
     unlocked=true;
   }
   gate.addEventListener('click', descend);
@@ -688,7 +664,7 @@ var Audio = (function(){
   var exp=['sound/intro.mp3','sound/war.mp3','sound/nzintro.mp3','sound/nz1.mp3','sound/nz2.mp3','sound/nz3.mp3','sound/nz4.mp3','sound/nz5.mp3'];
   console.info('%c† NILOUVERSE // BENEATH — audio engine online (Web Audio decode path)', 'color:#ff2747;font-weight:bold');
   console.info('%cexpected files (folder /sound/ at the site root):', 'color:#9bf3ea', exp);
-  console.info('%cpress the glass = ambient hum (the mute button kills ONLY this). open FIGHT = the real intro stinger with the 2–4s blackout. open THE TORN POETRY = nzintro.mp3 loops underneath until you close the case.', 'color:#948a7c');
+  console.info('%cpress the glass = intro.mp3 stinger (lights out 2–4s), then nzintro.mp3 loops forever as the bed. the [ambient] button mutes ONLY that bed; FIGHT + the fragments stay audible and ignore the cases.', 'color:#948a7c');
 })();
 </script>
 </body>
