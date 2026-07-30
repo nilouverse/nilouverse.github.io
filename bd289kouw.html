@@ -312,32 +312,32 @@ body.warded #ward{display:flex}
 
     <div class="lib-head">
       <p class="lh-k">[ THE GRAVEYARD ]</p>
-      <h2 class="lh-t">the art that wouldn't stay buried</h2>
-      <p class="lh-s">we threw it in the trash. it grew a soul, crawled back through the server, and now it lives here — quarantined behind the grip.</p>
+      <h2 class="lh-t">the art we buried</h2>
+      <p class="lh-s">Here rest the material that didn't make it, but fought well defending the realm of Nilouverse Music. May they be remembered.</p>
     </div>
 
     <div class="specimens">
       <section class="specimen" id="specWar" style="--sd:.25s">
         <span class="spec-tag"><span class="blinkdot"></span>SPECIMEN 01</span>
-        <button class="case-btn" id="caseWar" type="button" aria-expanded="false" aria-label="open specimen 01 — war">
+        <button class="case-btn" id="caseWar" type="button" aria-expanded="false" aria-label="open specimen 01 — fight">
           <span class="case-glow"></span>
           <img src="art/aadown.png" alt="DOWN — 3D album case" draggable="false">
           <span class="case-hint">▸ open the case</span>
         </button>
         <div class="spec-plate">
-          <p class="sp-title">WAR</p>
-          <p class="sp-joke">recovered from /dev/null · purged 4× · still humming</p>
+          <p class="sp-title">FIGHT</p>
+          <p class="sp-joke">recovered from /dev[il]/null · purged 4×</p>
         </div>
         <div class="spec-media">
           <div class="war">
             <div class="war-disc" id="warDisc"><span class="face"></span><span class="groove"></span><span class="hole"></span></div>
             <div class="war-ctrl">
               <div class="pp-row">
-                <button class="pp-btn" id="warPlay" type="button" aria-label="play war"><span class="ico-play"></span><span class="ico-pause"></span><span class="ico-err">!</span></button>
+                <button class="pp-btn" id="warPlay" type="button" aria-label="play fight"><span class="ico-play"></span><span class="ico-pause"></span><span class="ico-err">!</span></button>
                 <div class="pp-track" id="warTrack"><span class="pp-fill" id="warFill"></span><span class="pp-knob" id="warKnob"></span></div>
               </div>
               <div class="pp-time"><span id="warCur">0:00</span><span id="warDur">0:00</span></div>
-              <div class="war-meta"><span class="wm-title">WAR — I'm who I am</span><span class="wm-joke" id="warJoke">if it skips, that's not a bug. it's remembering.</span></div>
+              <div class="war-meta"><span class="wm-title">Fight — let's start a war</span><span class="wm-joke" id="warJoke">if it skips, that's not a bug. it's remembering.</span></div>
             </div>
           </div>
         </div>
@@ -345,14 +345,14 @@ body.warded #ward{display:flex}
 
       <section class="specimen" id="specBook" style="--sd:.4s">
         <span class="spec-tag"><span class="blinkdot"></span>SPECIMEN 02</span>
-        <button class="case-btn" id="caseBook" type="button" aria-expanded="false" aria-label="open specimen 02 — the torn poem">
+        <button class="case-btn" id="caseBook" type="button" aria-expanded="false" aria-label="open specimen 02 — the torn poetry">
           <span class="case-glow"></span>
           <img src="art/aadown.png" alt="DOWN — 3D album case" draggable="false">
           <span class="case-hint">▸ open the case</span>
         </button>
         <div class="spec-plate">
-          <p class="sp-title">THE TORN POEM</p>
-          <p class="sp-joke">6 fragments survived · 3 we actually burned</p>
+          <p class="sp-title">THE TORN POETRY</p>
+          <p class="sp-joke">6 fragments survived · 3 were long since burned</p>
         </div>
         <div class="spec-media">
           <div class="book">
@@ -371,8 +371,8 @@ body.warded #ward{display:flex}
 
   <footer class="rfoot">
     <span class="rfoot-brand">NIL//SEC // QUARANTINE DIVISION</span>
-    <a class="rfoot-up" href="index.html">↑ return to the surface (if it still recognizes you)</a>
-    <p class="rfoot-joke">do not feed the art after midnight. do not name it. do not — actually you already did. †</p>
+    <a class="rfoot-up" href="index.html">↑ return to the surface</a>
+    <p class="rfoot-joke">THIS IS A PLACE FOR CRAZY PEOPLE. CONTAINS VIOLENT CONTENT — PARENTAL DISCRETION IS ADVISED. †</p>
   </footer>
 </div>
 
@@ -411,7 +411,7 @@ body.warded #ward{display:flex}
 </div>
 
 <div id="glassctl">
-  <button id="muteBtn" type="button" aria-pressed="false" aria-label="mute the chamber" hidden><span id="muteIco">♪</span> sound</button>
+  <button id="muteBtn" type="button" aria-pressed="false" aria-label="mute the ambient hum" hidden><span id="muteIco">♪</span> hum</button>
   <a href="index.html" aria-label="return to the surface">↑ surface</a>
   <span class="gc-mark" aria-hidden="true">● marked</span>
 </div>
@@ -427,14 +427,15 @@ body.warded #ward{display:flex}
 var Audio = (function(){
   var WON = (function(){ try{ return localStorage.getItem('nv_puzzle_won')==='1'; }catch(e){ return false; } })();
 
-  var ctx=null, master=null, drone=[], players=[], muted=false;
+  var ctx=null, master=null, drone=[], droneGain=null, players=[], muted=false;
+  var DRONE_LEVEL=0.4;
 
   function ensure(){
     if(ctx) return true;
     try{
       ctx = new (window.AudioContext||window.webkitAudioContext)();
       var comp=ctx.createDynamicsCompressor(); comp.threshold.value=-14; comp.knee.value=20; comp.ratio.value=6;
-      master=ctx.createGain(); master.gain.value = muted?0:1;
+      master=ctx.createGain(); master.gain.value=1;
       master.connect(comp); comp.connect(ctx.destination);
       return true;
     }catch(e){ ctx=null; return false; }
@@ -449,14 +450,14 @@ var Audio = (function(){
       var lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=320; lp.Q.value=0.7;
       var lfo=ctx.createOscillator(); lfo.type='sine'; lfo.frequency.value=0.08;
       var lfoG=ctx.createGain(); lfoG.gain.value=140; lfo.connect(lfoG); lfoG.connect(lp.frequency);
-      var dg=ctx.createGain(); dg.gain.value=0.0001; dg.gain.setTargetAtTime(0.2, ctx.currentTime, 1.4);
-      lp.connect(dg); dg.connect(master);
+      droneGain=ctx.createGain(); droneGain.gain.value=0.0001; droneGain.gain.setTargetAtTime(muted?0:DRONE_LEVEL, ctx.currentTime, 1.4);
+      lp.connect(droneGain); droneGain.connect(master);
       [55,82.4,110].forEach(function(f,i){ var o=ctx.createOscillator(); o.type=i===2?'triangle':'sine'; o.frequency.value=f; o.detune.value=(i-1)*7; var g=ctx.createGain(); g.gain.value=i===2?0.4:0.7; o.connect(g); g.connect(lp); o.start(); drone.push(o); });
       var nlen=Math.floor(ctx.sampleRate*2), nb=ctx.createBuffer(1,nlen,ctx.sampleRate), nd=nb.getChannelData(0);
       for(var i=0;i<nlen;i++) nd[i]=(Math.random()*2-1);
       var ns=ctx.createBufferSource(); ns.buffer=nb; ns.loop=true;
       var bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=420; bp.Q.value=0.6;
-      var ng=ctx.createGain(); ng.gain.value=0.04; ns.connect(bp); bp.connect(ng); ng.connect(dg); ns.start();
+      var ng=ctx.createGain(); ng.gain.value=0.04; ns.connect(bp); bp.connect(ng); ng.connect(droneGain); ns.start();
       drone.push(ns); lfo.start(); drone.push(lfo);
     }catch(e){}
   }
@@ -475,7 +476,7 @@ var Audio = (function(){
   }
 
   function makePlayer(){
-    var P={ buf:null,dur:0,srcNode:null,gain:null,offset:0,t0:0,playing:false,endedCb:null,_ui:null,raf:0,_manual:false };
+    var P={ buf:null,dur:0,srcNode:null,gain:null,offset:0,t0:0,playing:false,loop:false,endedCb:null,_ui:null,raf:0,_manual:false };
     function arm(){ P.srcNode.onended=function(){ if(P._manual) return; P.playing=false; P.offset=0; stopRaf(); if(P.endedCb) P.endedCb(); }; }
     function loop(){ if(!P.playing){ P.raf=0; return; } if(P._ui) P._ui(P.currentTime,P.dur); P.raf=requestAnimationFrame(loop); }
     function startRaf(){ if(P.raf||!P._ui) return; P.raf=requestAnimationFrame(loop); }
@@ -483,15 +484,15 @@ var Audio = (function(){
     P.load=function(src){
       return decode(src).then(function(buf){ P.buf=buf; P.dur=buf.duration; P.offset=0;
         console.log('%c[BENEATH] ✓ decoded '+src,'color:#9bf3ea'); return buf;
-      }).catch(function(err){ console.warn('%c[BENEATH] ✗ FAILED '+src+' — '+err.message+'\n   expected folder: /sound/ at the site root (NOT /art/secret/).','color:#ff5a6e'); throw err; });
+      }).catch(function(err){ console.warn('%c[BENEATH] ✗ FAILED '+src+' — '+err.message+'\n   expected folder: /sound/ at the site root.','color:#ff5a6e'); throw err; });
     };
     P.play=function(){
       if(!P.buf) return Promise.reject(new Error('not loaded'));
       if(P.playing) return Promise.resolve();
       resumeCtx();
       if(P.offset>=P.dur) P.offset=0;
-      P.srcNode=ctx.createBufferSource(); P.srcNode.buffer=P.buf;
-      P.gain=ctx.createGain(); P.gain.gain.value=muted?0:1;
+      P.srcNode=ctx.createBufferSource(); P.srcNode.buffer=P.buf; P.srcNode.loop=!!P.loop;
+      P.gain=ctx.createGain(); P.gain.gain.value=1;
       P.srcNode.connect(P.gain); P.gain.connect(master);
       if(players.indexOf(P)<0) players.push(P);
       P._manual=false; arm();
@@ -509,7 +510,7 @@ var Audio = (function(){
       if(!P.buf) return; t=Math.max(0,Math.min(P.dur,t)); P.offset=t;
       if(P.playing){
         P._manual=true; try{P.srcNode.stop();}catch(e){}
-        P.srcNode=ctx.createBufferSource(); P.srcNode.buffer=P.buf; P.srcNode.connect(P.gain);
+        P.srcNode=ctx.createBufferSource(); P.srcNode.buffer=P.buf; P.srcNode.loop=!!P.loop; P.srcNode.connect(P.gain);
         P._manual=false; arm();
         try{P.srcNode.start(0,P.offset);}catch(e){}
         P.t0=ctx.currentTime;
@@ -517,19 +518,17 @@ var Audio = (function(){
     };
     P.stop=function(){ P.pause(); P.offset=0; if(P._ui) P._ui(0,P.dur); };
     Object.defineProperty(P,'currentTime',{ get:function(){ return P.playing? Math.min(P.dur, P.offset+(ctx.currentTime-P.t0)) : P.offset; } });
-    P.setMuted=function(m){ if(P.gain) P.gain.gain.value=m?0:1; };
     return P;
   }
 
   function toggleMute(){
     muted=!muted;
-    if(master&&ctx) master.gain.setTargetAtTime(muted?0:1, ctx.currentTime, 0.03);
-    players.forEach(function(P){ P.setMuted(muted); });
+    if(droneGain && ctx) droneGain.gain.setTargetAtTime(muted?0:DRONE_LEVEL, ctx.currentTime, 0.05);
     return muted;
   }
 
   if(!WON){
-    return { makePlayer:function(){ return null; }, startDrone:function(){}, toggleMute:function(){ return false; } };
+    return { makePlayer:function(){ return { load:function(){return Promise.reject(new Error('warded'));}, play:function(){return Promise.reject(new Error('warded'));}, pause:function(){}, stop:function(){}, seek:function(){}, currentTime:0, dur:0, loop:false }; }, startDrone:function(){}, toggleMute:function(){ return false; } };
   }
   return { makePlayer:makePlayer, startDrone:startDrone, toggleMute:toggleMute };
 })();
@@ -573,30 +572,41 @@ var Audio = (function(){
 
   var broken=false, unlocked=false;
 
-  var warPlayer = Audio.makePlayer();
-  var bookPlayer = Audio.makePlayer();
+  var warPlayer   = Audio.makePlayer();
+  var bookPlayer  = Audio.makePlayer();
+  var introPlayer = Audio.makePlayer();
+  var loopPlayer  = Audio.makePlayer(); loopPlayer.loop=true;
+
+  introPlayer._ui = function(t){ document.body.classList.toggle('blackout', t>=2 && t<4); };
+  introPlayer.endedCb = function(){ document.body.classList.remove('blackout'); };
 
   function setWarJoke(text, isErr){ if(!warJoke) return; warJoke.textContent=text; warJoke.classList.toggle('err', !!isErr); }
   function warIdle(){ warPlay.classList.remove('playing','err','loading'); warDisc.classList.remove('spin'); }
   function updateWarBar(){ var d=warPlayer.dur, t=warPlayer.currentTime, p=d?(t/d):0; warFill.style.width=(p*100)+'%'; warKnob.style.left=(p*100)+'%'; warCur.textContent=fmtTime(t); if(d) warDur.textContent=fmtTime(d); }
   warPlayer._ui = function(){ updateWarBar(); };
-  warPlayer.endedCb = function(){ warIdle(); updateWarBar(); setWarJoke("WAR — I'm who I am", false); };
+  warPlayer.endedCb = function(){ warIdle(); updateWarBar(); setWarJoke("Fight — let's start a war", false); };
 
   caseWar.addEventListener('click', function(){
     var open = specWar.classList.toggle('open');
     caseWar.setAttribute('aria-expanded', open?'true':'false');
     if(open){
+      (introPlayer.buf ? Promise.resolve() : introPlayer.load('sound/intro.mp3'))
+        .then(function(){ return introPlayer.play(); }).catch(function(){});
       if(!warPlayer.buf){
         warPlayer.load('sound/war.mp3').then(updateWarBar).catch(function(err){ warPlay.classList.add('err'); setWarJoke('⚠ '+err.message+' — tap ▶ to retry', true); });
       }
-    } else { warPlayer.pause(); warIdle(); }
+    } else {
+      introPlayer.stop();
+      document.body.classList.remove('blackout');
+      warPlayer.pause(); warIdle();
+    }
   });
   warPlay.addEventListener('click', function(){
     if(warPlay.classList.contains('playing')){ warPlayer.pause(); warPlay.classList.remove('playing'); warDisc.classList.remove('spin'); return; }
     warPlay.classList.add('loading'); warPlay.classList.remove('err'); setWarJoke('loading…', false);
     var ready = warPlayer.buf ? Promise.resolve() : warPlayer.load('sound/war.mp3');
     ready.then(function(){ return warPlayer.play(); })
-      .then(function(){ warPlay.classList.remove('loading'); warPlay.classList.add('playing'); warDisc.classList.add('spin'); setWarJoke("WAR — I'm who I am", false); updateWarBar(); })
+      .then(function(){ warPlay.classList.remove('loading'); warPlay.classList.add('playing'); warDisc.classList.add('spin'); setWarJoke("Fight — let's start a war", false); updateWarBar(); })
       .catch(function(err){ warPlay.classList.remove('loading'); warPlay.classList.add('err'); warDisc.classList.remove('spin'); setWarJoke('⚠ '+err.message+' — tap ▶ to retry', true); });
   });
   function seekFrom(e){ var r=warTrack.getBoundingClientRect(); var cx=(e.touches?e.touches[0].clientX:e.clientX); var x=Math.max(0,Math.min(1,(cx-r.left)/r.width)); if(!warPlayer.buf) return; warPlayer.seek(x*warPlayer.dur); updateWarBar(); }
@@ -622,7 +632,7 @@ var Audio = (function(){
     var div=document.createElement('div');
     div.className='book-page'+(L.type==='gap'?' gap':'')+(dir>0?' in-l':dir<0?' in-r':'');
     if(L.type==='page'){ div.innerHTML='<span class="bp-num">FRAGMENT '+esc(L.num)+'</span><span class="bp-line">'+esc(L.line)+'</span>'; }
-    else { div.innerHTML='<span class="bp-num">— — —</span><span class="bp-line">[ three fragments, burned. they still scream a little. ]</span>'; }
+    else { div.innerHTML='<span class="bp-num">— — —</span><span class="bp-line">[ these lines are burned ]</span>'; }
     bookStage.appendChild(div);
     bookPlayer.stop(); bookFailed=false;
     if(L.type==='page'){
@@ -643,7 +653,14 @@ var Audio = (function(){
   caseBook.addEventListener('click', function(){
     var open = specBook.classList.toggle('open');
     caseBook.setAttribute('aria-expanded', open?'true':'false');
-    if(open){ showLeaf(0, true); } else { bookPlayer.stop(); }
+    if(open){
+      (loopPlayer.buf ? Promise.resolve() : loopPlayer.load('sound/nzintro.mp3'))
+        .then(function(){ return loopPlayer.play(); }).catch(function(){});
+      showLeaf(0, true);
+    } else {
+      loopPlayer.stop();
+      bookPlayer.stop();
+    }
   });
 
   if(muteBtn){
@@ -668,10 +685,10 @@ var Audio = (function(){
 })();
 
 (function(){
-  var exp=['sound/intro.mp3','sound/war.mp3','sound/nz1.mp3','sound/nz2.mp3','sound/nz3.mp3','sound/nz4.mp3','sound/nz5.mp3'];
+  var exp=['sound/intro.mp3','sound/war.mp3','sound/nzintro.mp3','sound/nz1.mp3','sound/nz2.mp3','sound/nz3.mp3','sound/nz4.mp3','sound/nz5.mp3'];
   console.info('%c† NILOUVERSE // BENEATH — audio engine online (Web Audio decode path)', 'color:#ff2747;font-weight:bold');
-  console.info('%cexpected files (folder /sound/ at the site root — NOT /art/secret/):', 'color:#9bf3ea', exp);
-  console.info('%cclips are fetched + decoded into memory (immune to service-worker range-request issues). open a specimen, press play: green ✓ = decoded & playing, red ✗ = missing/mis-pathed (the red line prints the exact HTTP status).', 'color:#948a7c');
+  console.info('%cexpected files (folder /sound/ at the site root):', 'color:#9bf3ea', exp);
+  console.info('%cpress the glass = ambient hum (the mute button kills ONLY this). open FIGHT = the real intro stinger with the 2–4s blackout. open THE TORN POETRY = nzintro.mp3 loops underneath until you close the case.', 'color:#948a7c');
 })();
 </script>
 </body>
