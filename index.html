@@ -128,9 +128,8 @@ a{color:inherit;text-decoration:none}
   ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--blood-deep),var(--blood));border-radius:8px;border:2px solid #0a0708}
   ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,var(--blood),var(--blood-bright))}
 }
-@media(pointer:coarse){:focus-visible{outline:none}}
 
-.ticket-head h2,.listen-head h2,.album-head h3,.contact-head h3,.singles-head h3{text-wrap:balance}
+.ticket-head h2,.listen-head h2,.album-head h3,.contact-head h3,.singles-head h3,.dlx-title{text-wrap:balance}
 .poem .ln,.contact-head .sub,.cnote,.legal,.feat-body .it{text-wrap:pretty}
 
 .brand-key,.finger,.pz-auth,.cover-btn,.ppc-cta,.cbtn,.foot-mark,.dlx-stack,.disc-coin,.ember-coin,.yt-play,
@@ -559,20 +558,17 @@ body::after{
 .deluxe-inner:hover .dlx-case{filter:grayscale(.2) brightness(.8) drop-shadow(0 24px 50px rgba(209,20,48,.3))}
 .dlx-scanlines{position:absolute;inset:0;pointer-events:none;opacity:.35;z-index:1;
   background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 4px)}
-.dlx-title{position:absolute;left:44%;top:48%;transform:translate(-50%,-50%) rotate(-2deg);z-index:3;pointer-events:none;
-  width:clamp(120px,52%,180px);box-sizing:border-box;overflow:hidden;text-align:center;white-space:normal;line-height:1.2;
-  overflow-wrap:break-word;word-wrap:break-word;
-  font-family:var(--f-disp);font-weight:800;letter-spacing:.08em;font-size:clamp(.58rem,2vw,.82rem);color:var(--bone);
-  border-top:1px solid rgba(239,230,221,.22);border-bottom:1px solid rgba(239,230,221,.22);padding:7px 4px;
-  background:rgba(6,3,4,.35);
+.dlx-title{position:absolute;left:56%;top:52%;transform:translate(-50%,-50%);z-index:3;pointer-events:none;
+  width:52%;box-sizing:border-box;overflow:hidden;text-align:center;white-space:normal;line-height:1.15;
+  font-family:var(--f-disp);font-weight:800;letter-spacing:.06em;font-size:clamp(.5rem,1.6vw,.8rem);color:var(--bone);
   text-shadow:0 0 14px rgba(209,20,48,.5),0 0 30px rgba(209,20,48,.25)}
 .glitch{position:relative}
-.glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;opacity:0;text-align:center;white-space:normal;overflow-wrap:break-word}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;opacity:0;text-align:center;white-space:normal}
 .deluxe-inner:hover .glitch::before{opacity:.7;color:var(--cyan);transform:translate(-2px,0);animation:gl1 .5s steps(2) infinite}
 .deluxe-inner:hover .glitch::after{opacity:.6;color:var(--blood-bright);transform:translate(2px,0);animation:gl2 .6s steps(2) infinite}
 @keyframes gl1{0%{clip-path:inset(0 0 70% 0)}50%{clip-path:inset(40% 0 30% 0)}100%{clip-path:inset(70% 0 0 0)}}
 @keyframes gl2{0%{clip-path:inset(60% 0 10% 0)}50%{clip-path:inset(10% 0 60% 0)}100%{clip-path:inset(30% 0 40% 0)}}
-.dlx-egg{position:absolute;z-index:5;left:44%;top:48%;transform:translate(-50%,-50%) scale(.9);width:46%;box-sizing:border-box;
+.dlx-egg{position:absolute;z-index:5;left:41%;top:52%;transform:translate(-50%,-50%) scale(.9);width:44%;box-sizing:border-box;
   text-align:center;font-family:var(--f-egg);font-style:normal;letter-spacing:.03em;line-height:1.2;
   font-size:clamp(.82rem,3vw,1.25rem);color:var(--blood-bright);
   text-shadow:0 0 12px rgba(255,39,71,.6),0 0 26px rgba(209,20,48,.4),0 2px 4px #000;
@@ -694,7 +690,7 @@ body::after{
 
 /* ===== (grip gate) — full-bleed descent ===== */
 #puzzle{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:clamp(10px,2vh,18px);padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));
+  gap:clamp(12px,2.6vh,22px);padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));
   overflow:hidden;opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility .5s}
 #puzzle.show{opacity:1;visibility:visible}
 
@@ -742,31 +738,6 @@ body::after{
 .pz-vignette{position:absolute;inset:0;
   background:radial-gradient(120% 100% at 50% 46%,transparent 50%,rgba(0,0,0,.55) 100%),linear-gradient(0deg,rgba(5,2,3,.9),transparent 30%)}
 
-/* the ritual medallion — the eclipse put to work */
-.pz-medallion{position:relative;z-index:3;width:min(72vw,40vh,330px);aspect-ratio:1/1;border-radius:50%;flex:none;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,1.4vh,12px);padding:11%;
-  background:radial-gradient(circle at 50% 40%, rgba(26,10,13,.94), rgba(10,4,6,.82) 56%, rgba(10,4,6,.4) 68%, transparent 74%);
-  box-shadow:0 0 0 2px rgba(209,20,48,.5), 0 0 44px 8px rgba(179,16,42,.30), inset 0 0 70px rgba(124,11,27,.42);
-  animation:medBreathe 7s ease-in-out infinite}
-@keyframes medBreathe{0%,100%{transform:scale(1);opacity:.94}50%{transform:scale(1.02);opacity:1}}
-.pz-medallion::before{content:"";position:absolute;inset:-7px;border-radius:50%;pointer-events:none;opacity:.75;
-  background:conic-gradient(from 0deg, transparent 0 10%, rgba(255,39,71,.55) 12% 19%, transparent 21% 46%, rgba(255,39,71,.35) 48% 55%, transparent 57% 81%, rgba(255,39,71,.55) 83% 90%, transparent 92% 100%);
-  -webkit-mask:radial-gradient(circle,transparent 0 60%,#000 61% 70%,transparent 71%);
-  mask:radial-gradient(circle,transparent 0 60%,#000 61% 70%,transparent 71%);
-  animation:medRing 16s linear infinite}
-@keyframes medRing{to{transform:rotate(360deg)}}
-.pz-medallion::after{content:"";position:absolute;inset:9%;border-radius:50%;pointer-events:none;
-  background:url('art/coin.png') center/contain no-repeat;
-  opacity:.10;filter:saturate(.7) brightness(1.15) drop-shadow(0 0 14px rgba(255,190,90,.3));
-  animation:medCoin 60s linear infinite}
-@keyframes medCoin{to{transform:rotate(360deg)}}
-#puzzle.seal-paid .pz-medallion{box-shadow:0 0 0 2px rgba(255,210,120,.6), 0 0 54px 10px rgba(255,120,70,.35), inset 0 0 70px rgba(209,20,48,.5)}
-#puzzle.seal-paid .pz-medallion::after{opacity:.2}
-
-.pz-medallion .pz-title{position:relative;z-index:1}
-.pz-medallion .relics{position:relative;z-index:1}
-.pz-medallion .pz-seal-txt{position:relative;z-index:1;max-width:78%;text-align:center}
-
 .pz-close{position:fixed;top:14px;right:14px;z-index:9;appearance:none;cursor:pointer;width:34px;height:34px;
   display:grid;place-items:center;font-family:var(--f-egg);font-size:1rem;line-height:1;color:var(--bone-dim);
   background:linear-gradient(180deg,#241712,#160d0a);border:0;border-radius:4px;
@@ -774,25 +745,36 @@ body::after{
   transition:color var(--dur-1) var(--ease),box-shadow var(--dur-1) var(--ease),transform var(--dur-1) var(--ease)}
 .pz-close:hover{color:var(--blood-bright);box-shadow:0 0 0 2px rgba(255,39,71,.6),0 8px 18px rgba(0,0,0,.5);transform:rotate(90deg)}
 
-.pz-title{font-family:var(--f-egg);font-size:clamp(1.05rem,3.8vw,1.6rem);letter-spacing:.06em;
-  color:var(--blood-wet);text-shadow:0 0 16px rgba(179,16,42,.4);text-align:center}
-
+/* the medallion — the circle that holds the rite */
+.pz-medal{position:relative;z-index:3;flex:none;width:min(78vw,340px);aspect-ratio:1/1;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:14%;text-align:center;
+  background:radial-gradient(circle at 50% 40%,#0d0507 0 46%,#160a0d 60%,rgba(124,11,27,.35) 73%,transparent 80%)}
+.pz-medal::before{content:"";position:absolute;inset:-2px;border-radius:50%;border:3px solid rgba(209,20,48,.7);
+  box-shadow:0 0 34px rgba(209,20,48,.5), inset 0 0 30px rgba(209,20,48,.35);
+  animation:medalPulse 4.5s ease-in-out infinite}
+@keyframes medalPulse{0%,100%{box-shadow:0 0 26px rgba(209,20,48,.4),inset 0 0 22px rgba(209,20,48,.3)}50%{box-shadow:0 0 48px rgba(255,39,71,.6),inset 0 0 34px rgba(255,39,71,.4)}}
+.pz-coinbg{position:absolute;inset:7%;border-radius:50%;pointer-events:none;opacity:.1;
+  background:url('art/coin.png') center/88% no-repeat;
+  filter:blur(.5px) saturate(.7) brightness(.9);animation:coinSlow 70s linear infinite}
+@keyframes coinSlow{to{transform:rotate(360deg)}}
+#puzzle.seal-paid .pz-medal::before{border-color:rgba(255,210,120,.8);
+  box-shadow:0 0 40px rgba(255,190,90,.55), inset 0 0 30px rgba(255,190,90,.4)}
+#puzzle.seal-paid .pz-coinbg{opacity:.2}
+.pz-title{font-family:var(--f-egg);font-size:clamp(1.15rem,4.6vw,1.7rem);letter-spacing:.06em;
+  color:var(--blood-wet);text-shadow:0 0 16px rgba(179,16,42,.4)}
 .relics{display:flex;gap:14px}
 .relics i{width:18px;height:18px;transform:rotate(45deg);background:#1a0d10;
   box-shadow:0 0 0 2px rgba(124,11,27,.5),inset 0 0 6px rgba(0,0,0,.7);
   transition:background .4s var(--ease),box-shadow .4s var(--ease)}
 .relics i.on{background:radial-gradient(circle at 38% 32%,#ffe6a0,#d11430 60%,#7c0b1b);
   box-shadow:0 0 0 2px rgba(255,210,120,.7),0 0 14px rgba(255,120,70,.7),inset 0 0 6px rgba(0,0,0,.5)}
-.pz-seal-txt{font-family:var(--f-serif);font-style:italic;font-size:.8rem;color:var(--bone-faint);letter-spacing:.04em}
+.pz-seal-txt{font-family:var(--f-serif);font-style:italic;font-size:.78rem;color:var(--bone-faint);letter-spacing:.04em;max-width:100%}
 
 .pz-pit{position:relative;z-index:2;width:min(92vw,540px)}
 .feed{position:relative;width:100%;background:transparent;border:0;box-shadow:none}
-.pz-stage{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;
-  border-radius:38% 38% 12px 12px/30% 30% 8px 8px;
-  background:radial-gradient(120% 95% at 50% 32%,#1a0d10 0%,#0a0506 68%,#050203 100%);
-  box-shadow:inset 0 0 70px rgba(0,0,0,.85),0 0 0 2px rgba(124,11,27,.4),0 0 0 5px rgba(0,0,0,.5),0 26px 60px rgba(0,0,0,.6)}
-.pz-stage::before{content:"";position:absolute;left:50%;top:-9px;transform:translateX(-50%);width:48px;height:18px;z-index:5;
-  background:linear-gradient(180deg,#241712,#160d0a);clip-path:polygon(18% 100%,0 0,100% 0,82% 100%);box-shadow:0 0 0 2px rgba(124,11,27,.45)}
+.pz-stage{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:16px;background:transparent}
+.pz-stage::before{content:"";position:absolute;left:0;right:0;bottom:0;height:30%;pointer-events:none;z-index:0;
+  background:radial-gradient(62% 74% at 50% 100%, rgba(0,0,0,.68), transparent 72%)}
 
 .gate{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .4s var(--ease)}
 .pz-stage.free .gate{opacity:1}
@@ -948,6 +930,31 @@ body::after{
 @keyframes pzShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
 @keyframes conPulse{0%,100%{opacity:.3}50%{opacity:1}}
 
+/* desktop: the rite becomes a two-column composition */
+@media(min-width:980px){
+  #puzzle{display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto auto;
+    grid-template-areas:"medal pit" "medal err" "medal auth";
+    align-items:center;align-content:center;justify-content:center;
+    column-gap:clamp(48px,7vw,110px);row-gap:16px;
+    padding-top:max(18px,env(safe-area-inset-top))}
+  .pz-medal{grid-area:medal;width:min(32vw,420px)}
+  .pz-pit{grid-area:pit;width:min(46vw,640px)}
+  .con-err{grid-area:err}
+  .pz-auth{grid-area:auth}
+  .pz-close{top:18px;right:18px}
+}
+@media(max-height:720px){
+  #puzzle{gap:10px}
+  .pz-medal{width:min(70vw,260px)}
+  .pz-pit{width:min(88vw,430px)}
+  .pz-auth{padding:10px 26px}
+  .grip-pips{margin-top:10px}
+}
+@media(min-width:980px) and (max-height:720px){
+  .pz-medal{width:min(26vw,300px)}
+  .pz-pit{width:min(44vw,520px)}
+}
+
 .foot{position:relative;z-index:1;padding:clamp(28px,5vw,46px) clamp(18px,5vw,46px) clamp(20px,3vw,28px);
   border-top:1px solid var(--line);background:rgba(7,4,5,.55);
   content-visibility:auto;contain-intrinsic-size:auto 260px;contain:layout style}
@@ -991,9 +998,9 @@ body::after{
   .pz-rune{opacity:.12;animation:none;transform:translateX(-50%) rotateX(58deg)}
   .pz-ash span{display:none}
   .pz-drips{display:none}
-  .pz-medallion{animation:none}
-  .pz-medallion::before,.pz-medallion::after{animation:none}
   .pz-mist i{animation:none}
+  .pz-medal::before{animation:none}
+  .pz-coinbg{animation:none}
   .pz-stage.free .pz-hand{opacity:0}
   .pz-stage.free .gate{opacity:1}
   .pz-stage.free .gate-grid,.pz-stage.free .gate-wall{opacity:1}
@@ -1286,10 +1293,11 @@ body::after{
 
   <button class="pz-close" id="pzClose" type="button" aria-label="close the threshold">✕</button>
 
-  <div class="pz-medallion">
-    <p class="pz-title" aria-hidden="true">† the backdoor †</p>
-    <span class="relics" aria-hidden="true"><i></i><i></i><i></i></span>
-    <span class="pz-seal-txt" aria-hidden="true">you've seen too much to turn back now</span>
+  <div class="pz-medal" aria-hidden="true">
+    <span class="pz-coinbg"></span>
+    <p class="pz-title">† the backdoor †</p>
+    <span class="relics"><i></i><i></i><i></i></span>
+    <span class="pz-seal-txt">you've seen too much to turn back now</span>
   </div>
 
   <div class="pz-pit">
@@ -1330,14 +1338,6 @@ body::after{
   var seen={};
   window.__pc=function(u){ if(seen[u])return; seen[u]=1; var l=document.createElement('link'); l.rel='preconnect'; l.href=u; document.head.appendChild(l); };
   window.__pf=function(u){ var l=document.createElement('link'); l.rel='prefetch'; l.href=u; document.head.appendChild(l); };
-})();
-
-/* touch devices: open external links in the same tab — kills the browser's dark "new tab" card */
-(function(){
-  if(!matchMedia('(pointer:coarse)').matches) return;
-  document.addEventListener('DOMContentLoaded',function(){
-    document.querySelectorAll('a[target="_blank"]').forEach(function(a){ a.removeAttribute('target'); });
-  });
 })();
 
 (function(){
@@ -1745,10 +1745,10 @@ body::after{
       closeBtn=document.getElementById('pzClose'),
       hand=document.getElementById('pzHand'),
       riteHint=document.getElementById('riteHint');
-  var pips=Array.prototype.slice.call(ov.querySelectorAll('.grip-pips i'));
   var relicPips=Array.prototype.slice.call(ov.querySelectorAll('.relics i'));
   var fpos=Array.prototype.slice.call(ov.querySelectorAll('.fpos'));
   var fingers=Array.prototype.slice.call(ov.querySelectorAll('.finger'));
+  var pips=Array.prototype.slice.call(ov.querySelectorAll('.grip-pips i'));
   var state=fingers.map(function(){return 'grip';});
   var freed=false, busy=false, puzzleWon=false, pendingRegrip=false, handSet=false, secretPf=false;
   var clawbacks=0, firstFreeDone=false;
