@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 — Nilouverse</title>
+<style>
+  :root {
+    --ink: #0a0708;
+    --bone: #efe6dd;
+    --blood-bright: #ff2747;
+    --bone-faint: #948a7c;
+    --f-logo: 'Metal Mania', cursive;
+    --f-body: 'Space Grotesk', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--ink);
+    color: var(--bone);
+    font-family: var(--f-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(60% 50% at 50% 42%, rgba(124,11,27,.42), transparent 70%);
+  }
+  h1 {
+    font-family: var(--f-logo);
+    font-size: clamp(4rem, 15vw, 10rem);
+    line-height: .9;
+    background: linear-gradient(180deg, #fff, var(--bone) 55%, #c9b6ac);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(124,11,27,.8);
+    text-shadow: 0 0 30px rgba(255,39,71,.4);
+    margin-bottom: 1rem;
+  }
+  p {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--bone-faint);
+    max-width: 40ch;
+    margin-bottom: 2rem;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: rgba(209,20,48,.15);
+    border: 1px solid var(--blood-bright);
+    color: var(--bone);
+    text-decoration: none;
+    font-size: .75rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: all .3s;
+  }
+  a:hover {
+    background: var(--blood-bright);
+    box-shadow: 0 0 20px rgba(255,39,71,.6);
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1>404</h1>
+  <p>You've been fallen, and it's a long way down.</p>
+  <a href="/">↑ back to the surface</a>
+</body>
+</html>
