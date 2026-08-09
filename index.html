@@ -123,7 +123,7 @@ h2,h3{text-wrap:balance}
 .poem .ln,.contact-head .sub,.cnote,.legal,.feat-body .it{text-wrap:pretty}
 .brand-key,.finger,.pz-auth,.cbtn,.foot-mark,.dlx-stack,.disc-coin,.ember-coin,.yt-play,
 .pill,.pcard,.single,.listen-pill,.topnav a,.foot-soc a,.socials a,.brand-name,.foot-top-link,
-.pz-close,.nm,.rail-btn,.rcard,.scard,.art-drop a,.au-tab,.pl-row,.menu-btn,.am-disc{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.pz-close,.nm,.rail-btn,.rcard,.scard,.art-drop a,.au-tab,.pl-row,.menu-btn,.am-disc,.pl-btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .nm{color:var(--blood-bright);font-style:italic;cursor:pointer;border-radius:3px;
   text-shadow:0 0 14px rgba(255,39,71,.3);transition:text-shadow var(--dur-1) var(--ease)}
 .nm:hover{text-shadow:0 0 20px rgba(255,39,71,.6)}
@@ -590,7 +590,7 @@ body.glow-on .cursor-glow{opacity:1}
 .scard .rc-play{width:44px;height:44px}
 .scard iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:4}
 .scard.playing::after,.scard.playing img,.scard.playing .rc-play,.scard.playing .sc-tag{opacity:0}
-/* custom liquid-glass player */
+/* liquid-glass player */
 .player{display:grid;grid-template-columns:1fr;gap:18px;flex:1}
 @media(min-width:860px){.player{grid-template-columns:.9fr 1.1fr;align-items:stretch}}
 .pl-now{position:relative;border-radius:16px;padding:18px;border:1px solid rgba(255,39,71,.2);
@@ -616,18 +616,14 @@ body.glow-on .cursor-glow{opacity:1}
   background:radial-gradient(circle,rgba(255,210,110,.55),transparent 70%);animation:authPulse 2.2s ease-in-out infinite}
 .disc-coin:hover{transform:translate(-50%,-50%) scale(1.1)}
 .disc-coin.taken{opacity:0;transform:translate(-50%,-50%) scale(.35);pointer-events:none}
-/* iframe stage */
-.am-stage{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;
-  border:1px solid rgba(255,39,71,.18);
-  background:linear-gradient(135deg,rgba(255,39,71,.08),rgba(10,4,7,.6));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
-.am-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
-.am-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:var(--f-serif);font-style:italic;color:var(--bone-faint);font-size:.95rem;letter-spacing:.04em;text-align:center;padding:16px;
-  background-image:var(--art-cover);background-size:cover;background-position:center}
-.am-empty::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,4,7,.6),rgba(10,4,7,.8))}
-.am-empty span{position:relative;z-index:1}
-.am-empty.hide{opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+.pl-art{position:relative;width:100%;aspect-ratio:1/1;border-radius:12px;overflow:hidden;
+  border:1px solid rgba(255,39,71,.2);box-shadow:0 14px 40px -18px rgba(255,39,71,.4), inset 0 1px 0 rgba(255,255,255,.16)}
+.pl-art img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.player.live .pl-art img{transform:scale(1.07)}
+.pl-eq{position:absolute;left:10px;bottom:10px;display:flex;gap:2px;height:14px;align-items:flex-end;opacity:0;transition:opacity .3s}
+.player.live .pl-eq{opacity:1}
+.pl-eq i{width:3px;background:var(--ember-soft);border-radius:1px;transform-origin:bottom;animation:eq 1s ease-in-out infinite}
+.pl-eq i:nth-child(2){animation-delay:.15s}.pl-eq i:nth-child(3){animation-delay:.3s}.pl-eq i:nth-child(4){animation-delay:.45s}
 .pl-meta{display:flex;flex-direction:column;gap:2px}
 .pl-meta b{font-family:var(--f-disp);font-weight:700;font-size:1.15rem;color:var(--bone)}
 .pl-meta i{font-family:var(--f-serif);font-style:italic;font-size:.85rem;color:var(--bone-faint)}
@@ -642,6 +638,11 @@ body.glow-on .cursor-glow{opacity:1}
   filter:drop-shadow(0 6px 18px rgba(255,39,71,.45))}
 .pl-btn.main svg{width:20px;height:20px}
 .pl-btn.main:hover{filter:drop-shadow(0 8px 24px rgba(255,39,71,.65))}
+.pl-bar{position:relative;height:6px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden;cursor:pointer}
+.pl-bar::after{content:"";position:absolute;inset:0;border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.pl-fill{position:absolute;inset:0;transform-origin:0 50%;transform:scaleX(0);border-radius:999px;
+  background:linear-gradient(90deg,var(--ember),var(--blood-bright));will-change:transform}
+.pl-times{display:flex;justify-content:space-between;font-size:.62rem;letter-spacing:.12em;color:var(--bone-faint);font-variant-numeric:tabular-nums}
 .pl-list{list-style:none;display:flex;flex-direction:column;gap:6px;max-height:400px;overflow:auto;scrollbar-width:thin;padding:2px}
 .pl-row{position:relative;display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;padding:10px 12px;
   border-radius:12px;border:1px solid transparent;cursor:pointer;
@@ -1354,29 +1355,31 @@ body.glow-on .cursor-glow{opacity:1}
                     <span class="disc-coin" id="discCoin" role="button" tabindex="0" aria-label="a coin pressed into the record"><img src="art/coin.png" alt="" draggable="false" decoding="async"></span>
                     <button class="am-disc" id="amDisc" type="button" aria-label="the record — slide it"><img src="art/adown.png" alt="" draggable="false" decoding="async"></button>
                   </div>
-                  <div class="am-stage" id="amStage">
-                    <div class="am-empty" id="amEmpty"><span>tap a track below — it streams here</span></div>
-                    <iframe id="amFrame" title="now playing" allow="autoplay" src="about:blank" style="display:none"></iframe>
+                  <div class="pl-art">
+                    <img src="art/adown.png" alt="DOWN — album art">
+                    <span class="pl-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
                   </div>
-                  <div class="pl-meta"><b id="npTitle">DOWN</b><i id="npSub">tap a track to play</i></div>
+                  <div class="pl-meta"><b id="npTitle">DOWN</b><i id="npSub">tap a track — it plays here</i></div>
                   <div class="pl-ctl">
                     <button class="pl-btn" id="plPrev" type="button" aria-label="previous track"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM18 6l-8 6 8 6z"/></svg></button>
-                    <button class="pl-btn main" id="plPlay" type="button" aria-label="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg></button>
+                    <button class="pl-btn main" id="plPlay" type="button" aria-label="play / pause"><svg id="icoPlay" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg><svg id="icoPause" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
                     <button class="pl-btn" id="plNext" type="button" aria-label="next track"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 6l8 6-8 6z"/></svg></button>
                   </div>
+                  <div class="pl-bar" id="plBar" aria-label="seek"><span class="pl-fill" id="plFill"></span></div>
+                  <div class="pl-times"><span id="tCur">0:00</span><span id="tDur">37:44</span></div>
                 </div>
                 <div>
                   <ol class="pl-list" id="plList">
-                    <li class="pl-row" data-i="0" data-slug="xero-intro"><span class="idx"><span class="n">01</span></span><span class="tt">Xero (Intro)</span><span class="du">3:26</span></li>
-                    <li class="pl-row" data-i="1" data-slug="down"><span class="idx"><span class="n">02</span></span><span class="tt">Down</span><span class="du">3:59</span></li>
-                    <li class="pl-row" data-i="2" data-slug="its-fine"><span class="idx"><span class="n">03</span></span><span class="tt">It's Fine</span><span class="du">3:56</span></li>
-                    <li class="pl-row" data-i="3" data-slug="better-left-alone"><span class="idx"><span class="n">04</span></span><span class="tt">Better Left Alone</span><span class="du">3:45</span></li>
-                    <li class="pl-row" data-i="4" data-slug="cant-escape"><span class="idx"><span class="n">05</span></span><span class="tt">Can't Escape</span><span class="du">3:36</span></li>
-                    <li class="pl-row" data-i="5" data-slug="failure"><span class="idx"><span class="n">06</span></span><span class="tt">Failure</span><span class="du">3:02</span></li>
-                    <li class="pl-row" data-i="6" data-slug="black-blood"><span class="idx"><span class="n">07</span></span><span class="tt">Black Blood</span><span class="du">3:33</span></li>
-                    <li class="pl-row" data-i="7" data-slug="its-over"><span class="idx"><span class="n">08</span></span><span class="tt">It's Over</span><span class="du">3:02</span></li>
-                    <li class="pl-row" data-i="8" data-slug="let-it-go"><span class="idx"><span class="n">09</span></span><span class="tt">Let It Go</span><span class="du">3:36</span></li>
-                    <li class="pl-row" data-i="9" data-slug="true-outro"><span class="idx"><span class="n">10</span></span><span class="tt">True (Outro)</span><span class="du">6:02</span></li>
+                    <li class="pl-row" data-i="0" data-slug="xero-intro"><span class="idx"><span class="n">01</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Xero (Intro)</span><span class="du">3:26</span></li>
+                    <li class="pl-row" data-i="1" data-slug="down"><span class="idx"><span class="n">02</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Down</span><span class="du">3:59</span></li>
+                    <li class="pl-row" data-i="2" data-slug="its-fine"><span class="idx"><span class="n">03</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">It's Fine</span><span class="du">3:56</span></li>
+                    <li class="pl-row" data-i="3" data-slug="better-left-alone"><span class="idx"><span class="n">04</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Better Left Alone</span><span class="du">3:45</span></li>
+                    <li class="pl-row" data-i="4" data-slug="cant-escape"><span class="idx"><span class="n">05</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Can't Escape</span><span class="du">3:36</span></li>
+                    <li class="pl-row" data-i="5" data-slug="failure"><span class="idx"><span class="n">06</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Failure</span><span class="du">3:02</span></li>
+                    <li class="pl-row" data-i="6" data-slug="black-blood"><span class="idx"><span class="n">07</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Black Blood</span><span class="du">3:33</span></li>
+                    <li class="pl-row" data-i="7" data-slug="its-over"><span class="idx"><span class="n">08</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">It's Over</span><span class="du">3:02</span></li>
+                    <li class="pl-row" data-i="8" data-slug="let-it-go"><span class="idx"><span class="n">09</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Let It Go</span><span class="du">3:36</span></li>
+                    <li class="pl-row" data-i="9" data-slug="true-outro"><span class="idx"><span class="n">10</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">True (Outro)</span><span class="du">6:02</span></li>
                   </ol>
                   <div class="pl-foot" style="margin-top:12px">
                     <a class="pill pill-am" href="https://audiomack.com/nilouversemusic/album/down" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg>Open on Audiomack</a>
@@ -1912,41 +1915,92 @@ body.glow-on .cursor-glow{opacity:1}
   }
   document.querySelectorAll('.scard').forEach(bindFacade);
 })();
-/* audiomack per-track player */
+/* liquid-glass player with audiomack streaming */
 (function(){
-  var rows=Array.prototype.slice.call(document.querySelectorAll('.pl-row[data-slug]'));
-  if(!rows.length) return;
-  var frame=document.getElementById('amFrame');
-  var empty=document.getElementById('amEmpty');
-  var npTitle=document.getElementById('npTitle');
-  var npSub=document.getElementById('npSub');
-  var btnPrev=document.getElementById('plPrev');
-  var btnPlay=document.getElementById('plPlay');
-  var btnNext=document.getElementById('plNext');
-  if(!frame||!empty) return;
+  var TRACKS=[
+    {t:'Xero (Intro)',d:206,s:'xero-intro'},{t:'Down',d:239,s:'down'},{t:"It's Fine",d:236,s:'its-fine'},
+    {t:'Better Left Alone',d:225,s:'better-left-alone'},{t:"Can't Escape",d:216,s:'cant-escape'},
+    {t:'Failure',d:182,s:'failure'},{t:'Black Blood',d:213,s:'black-blood'},{t:"It's Over",d:182,s:'its-over'},
+    {t:'Let It Go',d:216,s:'let-it-go'},{t:'True (Outro)',d:362,s:'true-outro'}
+  ];
+  var player=document.getElementById('player');
+  if(!player) return;
+  var rows=Array.prototype.slice.call(player.querySelectorAll('.pl-row'));
+  var npTitle=document.getElementById('npTitle'), npSub=document.getElementById('npSub');
+  var fill=document.getElementById('plFill'), bar=document.getElementById('plBar');
+  var tCur=document.getElementById('tCur'), tDur=document.getElementById('tDur');
+  var btnPlay=document.getElementById('plPlay'), btnPrev=document.getElementById('plPrev'), btnNext=document.getElementById('plNext');
+  var icoPlay=document.getElementById('icoPlay'), icoPause=document.getElementById('icoPause');
+  var audio=new Audio(); audio.preload='none';
   var cur=-1;
-  var AM_BASE='https://audiomack.com/embed/nilouversemusic/song/';
-  function clearActive(){ rows.forEach(function(r){ r.classList.remove('on'); }); }
-  function loadTrack(i){
-    if(i<0||i>=rows.length) return;
-    var row=rows[i];
-    var slug=row.getAttribute('data-slug');
-    var title=row.querySelector('.tt').textContent;
-    if(window.__pc) window.__pc('https://audiomack.com');
-    clearActive(); row.classList.add('on');
+  var AM_CDN='https://audiomack.com/stream/nilouversemusic/song/';
+  function norm(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim(); }
+  function fmtT(s){ s=Math.max(0,Math.round(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
+  function setRows(){
+    rows.forEach(function(r,i){
+      r.classList.toggle('on', i===cur);
+      r.classList.toggle('playing', i===cur && !audio.paused);
+    });
+  }
+  function live(on){
+    player.classList.toggle('live', on);
+    icoPlay.style.display = on? 'none':'block';
+    icoPause.style.display = on? 'block':'none';
+    setRows();
+  }
+  function loadAndPlay(i){
+    if(i<0||i>=TRACKS.length) return;
     cur=i;
-    npTitle.textContent=title;
-    npSub.textContent='Nilouverse — DOWN';
-    empty.classList.add('hide');
-    frame.src=AM_BASE+slug+'?background=1';
-    frame.style.display='block';
+    npTitle.textContent=TRACKS[i].t;
+    npSub.textContent='tuning the stream…';
+    tDur.textContent=fmtT(TRACKS[i].d);
+    fill.style.transform='scaleX(0)'; tCur.textContent='0:00';
+    if(window.__pc) window.__pc('https://audiomack.com');
+    audio.src=AM_CDN+TRACKS[i].s;
+    audio.play().then(function(){
+      npSub.textContent='Nilouverse — DOWN';
+      live(true);
+      if('mediaSession' in navigator){
+        try{
+          navigator.mediaSession.metadata=new MediaMetadata({
+            title:TRACKS[i].t, artist:'Nilouverse', album:'DOWN',
+            artwork:[{src:'https://nilouverse.github.io/art/adown.png',sizes:'1200x1200',type:'image/png'}]
+          });
+        }catch(e){}
+      }
+    }).catch(function(){
+      live(false);
+      npSub.textContent='tap the Audiomack link below to play';
+    });
   }
   rows.forEach(function(r){
-    r.addEventListener('click',function(){ loadTrack(+r.getAttribute('data-i')); });
+    r.addEventListener('click',function(){ loadAndPlay(+r.getAttribute('data-i')); });
   });
-  if(btnPrev) btnPrev.addEventListener('click',function(){ loadTrack(cur<=0? 0 : cur-1); });
-  if(btnNext) btnNext.addEventListener('click',function(){ loadTrack(cur>=rows.length-1? rows.length-1 : cur+1); });
-  if(btnPlay) btnPlay.addEventListener('click',function(){ if(cur<0) loadTrack(0); });
+  btnPlay.addEventListener('click',function(){
+    if(cur<0){ loadAndPlay(0); return; }
+    if(audio.paused){ audio.play().then(function(){live(true);}).catch(function(){}); }
+    else { audio.pause(); live(false); }
+  });
+  btnPrev.addEventListener('click',function(){ loadAndPlay(cur<=0? 0 : cur-1); });
+  btnNext.addEventListener('click',function(){ loadAndPlay(cur>=9? 9 : cur+1); });
+  audio.addEventListener('ended',function(){ if(cur<9) loadAndPlay(cur+1); else live(false); });
+  audio.addEventListener('pause',function(){ live(false); });
+  audio.addEventListener('play',function(){ live(true); });
+  audio.addEventListener('timeupdate',function(){
+    if(audio.duration){
+      fill.style.transform='scaleX('+(audio.currentTime/audio.duration)+')';
+      tCur.textContent=fmtT(audio.currentTime);
+    }
+  });
+  bar.addEventListener('click',function(e){
+    if(!audio.duration) return;
+    var r=bar.getBoundingClientRect();
+    audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
+  });
+  if('mediaSession' in navigator){
+    navigator.mediaSession.setActionHandler('previoustrack',function(){ loadAndPlay(cur<=0?0:cur-1); });
+    navigator.mediaSession.setActionHandler('nexttrack',function(){ loadAndPlay(cur>=9?9:cur+1); });
+  }
 })();
 (function(){
   var disc=document.getElementById('amDisc');
