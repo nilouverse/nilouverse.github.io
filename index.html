@@ -119,28 +119,24 @@ a{color:inherit;text-decoration:none}
 }
 h2,h3{text-wrap:balance}
 .poem .ln,.contact-head .sub,.cnote,.legal,.feat-body .it{text-wrap:pretty}
-.brand-key,.finger,.pz-auth,.cover-btn,.ppc-cta,.cbtn,.foot-mark,.dlx-stack,.disc-coin,.ember-coin,.yt-play,
+.brand-key,.finger,.pz-auth,.ppc-cta,.cbtn,.foot-mark,.dlx-stack,.disc-coin,.ember-coin,.yt-play,
 .pill,.pcard,.single,.listen-pill,.topnav a,.foot-soc a,.socials a,.brand-name,.foot-top-link,
-.pz-close,.pp-close,.nm,.rail-btn,.rcard,.art-drop a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.pz-close,.nm,.rail-btn,.rcard,.amcard,.art-drop a,.au-tab{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .nm{color:var(--blood-bright);font-style:italic;cursor:pointer;border-radius:3px;
   text-shadow:0 0 14px rgba(255,39,71,.3);transition:text-shadow var(--dur-1) var(--ease)}
 .nm:hover{text-shadow:0 0 20px rgba(255,39,71,.6)}
 .nm.ping{animation:nmPing .85s var(--ease)}
 @keyframes nmPing{0%{text-shadow:0 0 14px rgba(255,39,71,.3)}25%{text-shadow:0 0 30px rgba(255,39,71,.95),0 0 6px #fff}50%{text-shadow:0 0 8px rgba(255,39,71,.4)}75%{text-shadow:0 0 26px rgba(255,39,71,.85)}100%{text-shadow:0 0 14px rgba(255,39,71,.3)}}
 .dag{color:var(--bone-faint)}
-body::before{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;transform:translateZ(0);
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;transform:translateZ(0);
   background:
     radial-gradient(58% 48% at 22% 18%, rgba(124,11,27,.38), transparent 62%),
     radial-gradient(52% 44% at 82% 72%, rgba(209,20,48,.14), transparent 62%),
     radial-gradient(42% 42% at 50% 104%, rgba(255,45,126,.06), transparent 62%),
     radial-gradient(46% 40% at 8% 90%, rgba(52,227,214,.03), transparent 60%),
-    radial-gradient(80% 50% at 50% 120%, rgba(124,11,27,.10), transparent 70%);
-}
-body::after{
-  content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.012;transform:translateZ(0);
-  background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-}
+    radial-gradient(80% 50% at 50% 120%, rgba(124,11,27,.10), transparent 70%);}
+body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.012;transform:translateZ(0);
+  background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:2px}
 @keyframes authPulse{0%,100%{opacity:.2}50%{opacity:.75}}
 .cursor-glow{position:fixed;left:0;top:0;z-index:1;width:520px;height:520px;pointer-events:none;
@@ -257,7 +253,6 @@ body.glow-on .cursor-glow{opacity:1}
 .listen-pill{position:relative;overflow:hidden;border:1px solid var(--blood);color:var(--bone);padding:9px 16px;letter-spacing:.2em;text-transform:uppercase;
   font-size:.68rem;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
   clip-path:var(--cut);background:rgba(209,20,48,.08);
-  filter:drop-shadow(0 0 0 rgba(209,20,48,0));
   transition:background var(--dur-1) var(--ease),filter var(--dur-1) var(--ease),transform var(--dur-1) var(--ease)}
 .listen-pill::after{content:"";position:absolute;top:-60%;bottom:-60%;left:-70%;width:36%;transform:skewX(-20deg);
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transition:transform .55s var(--ease)}
@@ -371,10 +366,10 @@ body.glow-on .cursor-glow{opacity:1}
 [data-reveal].in{opacity:1;transform:none}
 .eyebrow,.side-tag{display:flex;align-items:center;gap:12px;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--blood-bright);margin-bottom:14px}
 .eyebrow .ln,.side-tag .ln{height:2px;width:42px;background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright));transform:skewX(-24deg);box-shadow:4px 0 0 -0px rgba(209,20,48,.35)}
-.ticket-head h2,.listen-head h2,.album-head h3,.singles-head h3,.contact-head h3,.ppc-title,.feat-body h3{
+.ticket-head h2,.listen-head h2,.deck-title,.singles-head h3,.contact-head h3,.feat-body h3{
   background:linear-gradient(180deg,#fff 0%,var(--bone) 55%,#c9b6ac 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent}
-.feat-body h3,.ppc-title{-webkit-text-stroke:1px rgba(124,11,27,.75)}
+.feat-body h3{-webkit-text-stroke:1px rgba(124,11,27,.75)}
 .art-drop{position:relative;z-index:1;display:flex;justify-content:center;padding:20px clamp(18px,5vw,40px) 4px}
 .art-drop::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--seam)}
 .art-drop a{display:inline-flex;align-items:center;gap:10px;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
@@ -405,7 +400,7 @@ body.glow-on .cursor-glow{opacity:1}
 .poem .dead{color:var(--bone-faint);text-decoration:line-through;text-decoration-color:var(--blood-deep);text-decoration-thickness:1px}
 .poem .teeth{color:var(--blood-bright);font-style:italic;text-shadow:0 0 16px rgba(255,39,71,.3)}
 .poem .redline{color:var(--bone);text-shadow:0 0 20px rgba(209,20,48,.25)}
-.for-fans{font-family:var(--f-body);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-faint);margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.for-fans{font-family:var(--f-body);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-faint);margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
 @media(min-width:820px){
   .ticket{grid-template-columns:.85fr 1.15fr;align-items:start;
     background-image:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 14px);
@@ -419,12 +414,12 @@ body.glow-on .cursor-glow{opacity:1}
     linear-gradient(90deg,transparent,rgba(209,20,48,.5),transparent) top/100% 1px no-repeat,
     radial-gradient(60% 40% at 80% 0%,rgba(209,20,48,.08),transparent 60%),
     radial-gradient(50% 40% at 10% 100%,rgba(52,227,214,.05),transparent 60%)}
-.listen-inner{position:relative;max-width:1180px;margin:0 auto}
+.listen-inner{position:relative;max-width:1240px;margin:0 auto}
 .listen-head{margin-bottom:clamp(34px,6vw,64px)}
 .listen-head h2{font-family:var(--f-disp);font-weight:800;line-height:.86;font-size:clamp(2.8rem,11vw,6rem);letter-spacing:-.01em}
 .listen-head h2 .per{color:var(--blood-bright);-webkit-text-fill-color:var(--blood-bright)}
 .feat{position:relative;display:grid;grid-template-columns:1fr;gap:clamp(22px,4vw,40px);padding:clamp(20px,4vw,34px);
-  background:var(--panel-bg);border:var(--panel-edge);border-radius:var(--rad);overflow:hidden;box-shadow:var(--panel-shadow);margin-bottom:clamp(40px,7vw,80px)}
+  background:var(--panel-bg);border:var(--panel-edge);border-radius:var(--rad);overflow:hidden;box-shadow:var(--panel-shadow);margin-bottom:clamp(40px,7vw,72px)}
 .feat-media{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--line);border-radius:14px;background-color:#000;
   background-image:
     linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),
@@ -470,56 +465,47 @@ body.glow-on .cursor-glow{opacity:1}
 .pill-yt:hover{border-color:var(--blood-bright);box-shadow:0 0 16px -4px var(--blood-bright)}
 .pill-tg:hover{border-color:var(--cyan-soft);box-shadow:0 0 16px -4px var(--cyan-soft)}
 @media(min-width:860px){.feat{grid-template-columns:1.05fr 1fr;align-items:center}}
-
-/* ——— UNIFIED ALBUM SECTION ——— */
-.album-unified{position:relative;z-index:1;overflow:hidden;margin-bottom:clamp(40px,7vw,80px);
-  padding:clamp(34px,6vw,64px) clamp(18px,4vw,44px);background:var(--panel-bg2);
-  border:var(--panel-edge);border-radius:var(--rad);box-shadow:var(--panel-shadow)}
-.album-unified::before{content:"";position:absolute;inset:0;border-radius:inherit;background-image:var(--art-cover);background-size:cover;background-position:center 30%;
-  opacity:.12;filter:saturate(1.1);transform:scale(1.04)}
-.album-unified::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-  background:
-    radial-gradient(70% 60% at 22% 30%,rgba(209,20,48,.18),transparent 60%),
-    radial-gradient(60% 60% at 88% 80%,rgba(52,227,214,.08),transparent 60%),
-    linear-gradient(180deg,rgba(10,7,8,.5),rgba(10,7,8,.4) 50%,rgba(10,7,8,.6))}
-.au-inner{position:relative;z-index:1}
-.au-head{margin-bottom:clamp(24px,4vw,38px)}
-.au-head h3{font-family:var(--f-disp);font-weight:800;font-size:clamp(2rem,7vw,3.4rem);line-height:.95;margin-bottom:8px}
-.au-head .rel{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bone-faint);margin-bottom:18px}
-.au-head .rel b{color:var(--bone-dim);font-weight:700}
-
-/* tab switcher */
-.au-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
-.au-tab{appearance:none;cursor:pointer;padding:10px 20px;font-family:var(--f-body);font-size:.7rem;letter-spacing:.2em;
+/* ——— THE VAULT : deck rail ——— */
+.vault{position:relative;z-index:1;margin-bottom:clamp(40px,7vw,80px)}
+.decks{display:grid;grid-auto-flow:column;grid-auto-columns:min(96%,940px);gap:16px;overflow-x:auto;
+  scroll-snap-type:x mandatory;scroll-padding-left:4px;padding:4px 4px 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent)}
+.decks::-webkit-scrollbar{display:none}
+.deck{scroll-snap-align:center;position:relative;border:1px solid var(--line);border-radius:var(--rad);
+  background:var(--panel-bg2);box-shadow:var(--panel-shadow);overflow:hidden;padding:clamp(20px,4vw,36px)}
+.deck::before{content:"";position:absolute;inset:0;background-size:cover;background-position:center 30%;pointer-events:none}
+.deck-down::before{background-image:var(--art-cover);opacity:.10;filter:saturate(1.1)}
+.deck-blood::before{background-image:var(--art-deluxe);opacity:.14;filter:grayscale(.7) brightness(.55)}
+.deck::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,7,8,.4),transparent 30%,transparent 70%,rgba(10,7,8,.55))}
+.deck>*{position:relative;z-index:1}
+.deck-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-bottom:20px}
+.deck-k{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-faint)}
+.deck-title{font-family:var(--f-disp);font-weight:800;font-size:clamp(1.7rem,6vw,2.8rem);line-height:.95}
+.deck-tabs{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.au-tab{appearance:none;cursor:pointer;padding:10px 18px;font-family:var(--f-body);font-size:.68rem;letter-spacing:.2em;
   text-transform:uppercase;font-weight:700;color:var(--bone-dim);background:rgba(20,12,12,.5);border:1px solid var(--line);
   border-radius:999px;display:inline-flex;align-items:center;gap:8px;transition:var(--dur-1) var(--ease)}
-.au-tab svg{width:16px;height:16px}
+.au-tab svg{width:15px;height:15px}
 .au-tab:hover{color:var(--bone);border-color:rgba(239,230,221,.3)}
-.au-tab.active{color:var(--bone);background:var(--blood);border-color:var(--blood);filter:drop-shadow(0 0 12px rgba(255,39,71,.4))}
-.au-tab[data-tab="yt"].active{background:rgba(209,20,48,.15);border-color:var(--blood-bright);color:var(--bone)}
-.au-tab[data-tab="am"].active{background:rgba(255,122,26,.15);border-color:var(--ember);color:var(--bone)}
-
-/* tab content */
-.au-content{position:relative}
-.au-panel{display:none;animation:auFadeIn .4s var(--ease)}
-.au-panel.active{display:block}
+.au-tab.active{color:var(--bone)}
+.au-tab[data-tab="yt"].active{background:rgba(209,20,48,.16);border-color:var(--blood-bright);filter:drop-shadow(0 0 10px rgba(255,39,71,.35))}
+.au-tab[data-tab="am"].active{background:rgba(255,122,26,.14);border-color:var(--ember);filter:drop-shadow(0 0 10px rgba(255,122,26,.35))}
+.deck-panel{display:none}
+.deck-panel.active{display:block;animation:auFadeIn .4s var(--ease)}
 @keyframes auFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-
-/* rail inside unified section */
-.au-rail{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(240px,66vw,340px);gap:12px;overflow-x:auto;
-  scroll-snap-type:x mandatory;scroll-padding-left:4px;padding:4px 4px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 20px,#000 calc(100% - 20px),transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 20px,#000 calc(100% - 20px),transparent)}
-.au-rail::-webkit-scrollbar{display:none}
-
-.rcard{position:relative;aspect-ratio:16/10;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0c0809;
+.trail{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(230px,64vw,320px);gap:12px;overflow-x:auto;
+  scroll-snap-type:x mandatory;scroll-padding-left:4px;padding:4px 4px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 16px),transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 16px),transparent)}
+.trail::-webkit-scrollbar{display:none}
+.rcard,.amcard{position:relative;aspect-ratio:16/10;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0c0809;
   scroll-snap-align:start;cursor:pointer;transition:transform var(--dur-1) var(--ease),box-shadow var(--dur-1) var(--ease)}
-.rcard:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(209,20,48,.45)}
-.rcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(7,4,5,.92));pointer-events:none}
+.rcard:hover,.amcard:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(209,20,48,.45)}
+.rcard::after,.amcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(7,4,5,.92));pointer-events:none}
 .rc-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease),filter .6s var(--ease)}
 .rcard:hover .rc-poster{transform:scale(1.05);filter:brightness(1.05)}
-.rc-tag{position:absolute;top:10px;left:10px;z-index:3;font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;
-  color:var(--bone);background:rgba(8,5,6,.72);padding:5px 9px;border:1px solid var(--line);clip-path:var(--cut-sm)}
 .rc-dur{position:absolute;top:10px;right:10px;z-index:3;font-size:.6rem;letter-spacing:.14em;color:var(--bone);
   background:rgba(8,5,6,.72);border:1px solid var(--line);padding:4px 7px;border-radius:6px;font-variant-numeric:tabular-nums}
 .rc-body{position:absolute;left:12px;right:12px;bottom:10px;z-index:2;display:flex;flex-direction:column;gap:2px;text-align:left}
@@ -529,67 +515,46 @@ body.glow-on .cursor-glow{opacity:1}
   display:grid;place-items:center;pointer-events:none;border:2px solid var(--bone);background:rgba(8,5,6,.55);
   transition:transform var(--dur-1) var(--ease),background var(--dur-1) var(--ease)}
 .rc-play .yt-play-ico{border-left-width:14px;border-top-width:9px;border-bottom-width:9px;margin-left:3px}
-.rcard:hover .rc-play{background:var(--blood);transform:translate(-50%,-50%) scale(1.08)}
-.rcard iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:4}
-.rcard.playing{cursor:default}
-.rcard.playing::after,.rcard.playing .rc-poster,.rcard.playing .rc-play,.rcard.playing .rc-dur{opacity:0}
-.rcard.playing .rc-body{opacity:0}
-
-/* audiomack panel */
-.au-am-wrap{display:grid;grid-template-columns:1fr;gap:24px;align-items:start}
-.au-am-player{position:relative}
-.au-am-frame{width:100%;height:440px;border:0;border-radius:14px;overflow:hidden;background:#0c0809;display:block}
-.au-am-load{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
-  background-image:var(--art-cover);background-size:cover;background-position:center;transition:opacity .5s ease,visibility .5s;border-radius:14px}
-.au-am-load::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,7,8,.7),rgba(10,7,8,.86));border-radius:14px}
-.au-am-load .spin{position:relative;z-index:1;width:42px;height:42px;border-radius:50%;border:2px solid rgba(239,230,221,.25);border-top-color:var(--ember);animation:spin2 .8s linear infinite}
-@keyframes spin2{to{transform:rotate(360deg)}}
-.au-am-load span:last-child{position:relative;z-index:1;font-size:.64rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-dim)}
-.au-am-load.gone{opacity:0;visibility:hidden;pointer-events:none}
-
-.au-am-info{display:flex;flex-direction:column;gap:16px}
-.au-am-info .tracklist{list-style:none;display:grid;gap:6px}
-.au-am-info .tracklist li{display:flex;gap:12px;font-size:.82rem;color:var(--bone-dim);letter-spacing:.04em;transition:color var(--dur-1) var(--ease),transform var(--dur-1) var(--ease)}
-.au-am-info .tracklist li:hover{color:var(--bone);transform:translateX(3px)}
-.au-am-info .tracklist li span{color:var(--bone-faint);font-variant-numeric:tabular-nums;width:1.6em}
-.au-am-info .tracklist li.more{font-family:var(--f-serif);font-style:italic;color:var(--bone-faint);font-size:.95rem}
-
-@media(min-width:860px){
-  .au-am-wrap{grid-template-columns:1fr 1fr}
-}
-
-.deluxe{position:relative;z-index:1;padding:clamp(40px,7vh,84px) clamp(18px,5vw,48px);
-  overflow:hidden;content-visibility:auto;contain-intrinsic-size:auto 700px;contain:layout style}
-.deluxe::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    linear-gradient(90deg,transparent,rgba(209,20,48,.5),transparent) top/100% 1px no-repeat,
-    radial-gradient(50% 60% at 12% 30%,rgba(209,20,48,.12),transparent 60%),
-    radial-gradient(45% 50% at 92% 70%,rgba(52,227,214,.08),transparent 60%)}
-.deluxe-inner{position:relative;max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:clamp(26px,5vw,52px);align-items:center}
-.dlx-art{position:relative;display:flex;align-items:center;justify-content:center;min-height:280px}
-.dlx-art::before,.dlx-art::after{content:"";position:absolute;width:34px;height:34px;pointer-events:none;opacity:.7;
-  background:
-    linear-gradient(var(--cyan-soft),var(--cyan-soft)) left top/100% 2px,
-    linear-gradient(var(--cyan-soft),var(--cyan-soft)) left top/2px 100%;
-  background-repeat:no-repeat;filter:drop-shadow(0 0 6px rgba(52,227,214,.5))}
-.dlx-art::before{left:4%;top:6%}
-.dlx-art::after{right:4%;bottom:6%;transform:rotate(180deg)}
+.rcard:hover .rc-play,.amcard:hover .rc-play{background:var(--blood);transform:translate(-50%,-50%) scale(1.08)}
+.rcard iframe,.amcard iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:4}
+.rcard.playing,.amcard.playing{cursor:default}
+.rcard.playing::after,.amcard.playing::after,.rcard.playing .rc-poster,.rcard.playing .rc-play,.rcard.playing .rc-dur,
+.amcard.playing .rc-play,.amcard.playing .am-art{opacity:0}
+.rcard.playing .rc-body,.amcard.playing .rc-body{opacity:0}
+.amcard .am-art{position:absolute;inset:0;background-image:var(--art-single);background-size:cover;background-position:center;
+  filter:saturate(.85) brightness(.8);transition:transform .6s var(--ease),filter .6s var(--ease)}
+.amcard:hover .am-art{transform:scale(1.05);filter:saturate(1) brightness(.95)}
+.am-ico{position:absolute;top:10px;left:10px;z-index:3;width:26px;height:26px;display:grid;place-items:center;
+  color:var(--ember-soft);background:rgba(8,5,6,.72);border:1px solid var(--line);clip-path:var(--cut-sm)}
+.am-ico svg{width:14px;height:14px}
+.deck-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px}
+.rail-btn{appearance:none;cursor:pointer;width:38px;height:38px;display:grid;place-items:center;
+  border:1px solid var(--line);background:rgba(20,12,12,.5);color:var(--bone-dim);clip-path:var(--cut-sm);
+  font-family:var(--f-body);font-size:1rem;line-height:1;transition:var(--dur-1) var(--ease)}
+.rail-btn:hover{color:var(--bone);border-color:var(--blood-bright);filter:drop-shadow(0 0 8px rgba(255,39,71,.4))}
+.dots{display:flex;gap:8px}
+.dots i{width:8px;height:8px;transform:rotate(45deg);background:rgba(239,230,221,.15);transition:var(--dur-1) var(--ease)}
+.dots i.on{background:var(--blood-bright);box-shadow:0 0 8px rgba(255,39,71,.6)}
+/* bloodbath deck */
+.db-grid{display:grid;grid-template-columns:1fr;gap:clamp(20px,4vw,36px);align-items:center}
+@media(min-width:760px){.db-grid{grid-template-columns:.9fr 1.1fr}}
+.db-holder{position:relative;display:flex;align-items:center;justify-content:center;min-height:280px}
 .dlx-stack{position:relative;width:min(72%,300px);aspect-ratio:1/1;transform:rotate(6deg);transition:transform var(--dur-2) var(--ease-soft);cursor:help;
   display:flex;align-items:center;justify-content:center;flex-direction:column}
 .dlx-stack:focus-visible{outline:2px solid var(--cyan);outline-offset:6px;border-radius:8px}
-.deluxe-inner:hover .dlx-stack{transform:rotate(2deg)}
+.deck-blood:hover .dlx-stack{transform:rotate(2deg)}
 .dlx-case{position:absolute;inset:0;background-image:var(--art-deluxe);background-size:contain;background-repeat:no-repeat;background-position:center;
   filter:grayscale(.6) brightness(.62) contrast(1.05) drop-shadow(0 20px 40px rgba(0,0,0,.6));transition:filter var(--dur-2) var(--ease-soft)}
-.deluxe-inner:hover .dlx-case{filter:grayscale(.2) brightness(.8) drop-shadow(0 24px 50px rgba(209,20,48,.3))}
+.deck-blood:hover .dlx-case{filter:grayscale(.2) brightness(.8) drop-shadow(0 24px 50px rgba(209,20,48,.3))}
 .dlx-scanlines{position:absolute;inset:0;pointer-events:none;opacity:.35;z-index:1;
   background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 4px)}
-.dlx-title{position:relative;left:auto;top:auto;transform:none;width:80%;box-sizing:border-box;overflow:hidden;text-align:center;white-space:normal;line-height:1.15;
+.dlx-title{position:relative;width:80%;box-sizing:border-box;overflow:hidden;text-align:center;white-space:normal;line-height:1.15;
   font-family:var(--f-disp);font-weight:800;letter-spacing:.06em;font-size:clamp(.5rem,1.6vw,.8rem);color:var(--bone);
   text-shadow:0 0 14px rgba(209,20,48,.5),0 0 30px rgba(209,20,48,.25);z-index:3;pointer-events:none}
 .glitch{position:relative}
 .glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;opacity:0;text-align:center;white-space:normal}
-.deluxe-inner:hover .glitch::before{opacity:.7;color:var(--cyan);transform:translate(-2px,0);animation:gl1 .5s steps(2) infinite}
-.deluxe-inner:hover .glitch::after{opacity:.6;color:var(--blood-bright);transform:translate(2px,0);animation:gl2 .6s steps(2) infinite}
+.deck-blood:hover .glitch::before{opacity:.7;color:var(--cyan);transform:translate(-2px,0);animation:gl1 .5s steps(2) infinite}
+.deck-blood:hover .glitch::after{opacity:.6;color:var(--blood-bright);transform:translate(2px,0);animation:gl2 .6s steps(2) infinite}
 @keyframes gl1{0%{clip-path:inset(0 0 70% 0)}50%{clip-path:inset(40% 0 30% 0)}100%{clip-path:inset(70% 0 0 0)}}
 @keyframes gl2{0%{clip-path:inset(60% 0 10% 0)}50%{clip-path:inset(10% 0 60% 0)}100%{clip-path:inset(30% 0 40% 0)}}
 .dlx-egg{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%) scale(.9);width:80%;box-sizing:border-box;
@@ -599,7 +564,7 @@ body.glow-on .cursor-glow{opacity:1}
   background:rgba(6,3,4,.5);padding:8px 6px;border-radius:8px;
   opacity:0;pointer-events:none;transition:opacity var(--dur-1) var(--ease),transform var(--dur-1) var(--ease)}
 .dlx-egg.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
-.dlx-lock{position:absolute;top:8%;right:-6%;transform:rotate(-12deg);pointer-events:none;font-family:var(--f-disp);font-weight:800;letter-spacing:.2em;
+.dlx-lock{position:absolute;top:6%;right:2%;transform:rotate(-12deg);pointer-events:none;font-family:var(--f-disp);font-weight:800;letter-spacing:.2em;
   text-transform:uppercase;font-size:clamp(.66rem,2.4vw,.9rem);color:var(--cyan-soft);border:1.5px solid var(--cyan);padding:6px 12px;
   background:repeating-linear-gradient(45deg,rgba(8,5,6,.7) 0 8px,rgba(52,227,214,.08) 8px 16px);
   box-shadow:0 0 18px -6px var(--cyan);animation:lockBreath 3.2s ease-in-out infinite}
@@ -611,10 +576,14 @@ body.glow-on .cursor-glow{opacity:1}
   50%{transform:translate(-4px,2px) rotate(-.3deg)}60%{transform:translate(4px,-2px) rotate(.4deg)}
   70%{transform:translate(-3px,1px) rotate(-.2deg)}80%{transform:translate(3px,-1px) rotate(.2deg)}
   90%{transform:translate(-1px,0) rotate(0)}}
-.deluxe-inner.shaking{animation:lockShake .7s cubic-bezier(.36,.07,.19,.97) both}
-.dlx-cta{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:6px}
+.db-holder.shaking{animation:lockShake .7s cubic-bezier(.36,.07,.19,.97) both}
+.db-info{display:flex;flex-direction:column;gap:14px}
+.db-info .eyebrow{margin-bottom:0}
+.db-title{font-family:var(--f-disp);font-weight:800;font-size:clamp(1.6rem,5vw,2.6rem);line-height:1;
+  background:linear-gradient(180deg,#fff,var(--bone) 60%,#c9b6ac);-webkit-background-clip:text;background-clip:text;color:transparent}
+.db-note{font-family:var(--f-serif);font-style:italic;color:var(--bone-dim);font-size:clamp(.95rem,3vw,1.15rem);max-width:42ch}
+.dlx-cta{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
 .dlx-when{font-family:var(--f-serif);font-style:italic;color:var(--bone-faint);font-size:.95rem;letter-spacing:.06em}
-@media(min-width:820px){.deluxe-inner{grid-template-columns:.85fr 1.15fr}}
 .tracks{position:relative;z-index:1;padding:clamp(40px,7vh,84px) clamp(18px,5vw,48px);
   content-visibility:auto;contain-intrinsic-size:auto 900px;contain:layout style}
 .tracks::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--seam)}
@@ -633,11 +602,11 @@ body.glow-on .cursor-glow{opacity:1}
   width:30px;height:30px;display:grid;place-items:center;border-radius:50%;color:#0a0708;background:var(--bone-dim);
   box-shadow:0 2px 8px rgba(0,0,0,.5);transition:transform var(--dur-1) var(--ease)}
 .single:hover .rk{transform:scale(1.12)}
-.single .ghost-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--f-disp);font-weight:800;font-size:8rem;line-height:1;color:var(--med);opacity:.08;pointer-events:none;z-index:1;transition:opacity .3s var(--ease)}
-.single:hover .ghost-num{opacity:.15}
-.single .waveform{position:absolute;bottom:45px;left:12px;right:12px;height:20px;display:flex;align-items:flex-end;gap:2px;z-index:2;opacity:.6}
-.single .waveform i{flex:1;background:var(--med2);border-radius:1px;transition:height .3s var(--ease)}
-.single:hover .waveform i{height:100%!important}
+.single .rank-ghost{position:absolute;top:4px;right:10px;z-index:1;font-family:var(--f-disp);font-weight:800;font-size:3.6rem;line-height:1;
+  color:transparent;-webkit-text-stroke:1px var(--med);opacity:.22;pointer-events:none;transition:opacity .3s var(--ease)}
+.single:hover .rank-ghost{opacity:.5}
+.mini-eq{position:absolute;left:12px;right:52px;bottom:46px;height:12px;display:flex;align-items:flex-end;gap:2px;z-index:2;opacity:.5}
+.mini-eq i{flex:1;background:var(--med2);border-radius:1px;min-height:2px}
 .single .cap{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .single .cap b{font-family:var(--f-disp);font-weight:700;font-size:clamp(.82rem,3.2vw,1.1rem);color:var(--bone);line-height:1}
 .single .cap .go{width:30px;height:30px;flex:none;display:grid;place-items:center;border:1px solid var(--line);color:var(--bone-dim);
@@ -714,7 +683,6 @@ body.glow-on .cursor-glow{opacity:1}
 .cbtn{position:relative;overflow:hidden;appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;font-family:var(--f-body);font-weight:700;
   letter-spacing:.2em;text-transform:uppercase;font-size:.7rem;color:var(--bone);background:var(--blood);border:1px solid var(--blood);
   padding:14px 22px;clip-path:var(--cut);
-  filter:drop-shadow(0 0 0 rgba(209,20,48,0));
   transition:background var(--dur-1) var(--ease),filter var(--dur-1) var(--ease),transform var(--dur-1) var(--ease)}
 .cbtn::after{content:"";position:absolute;top:-60%;bottom:-60%;left:-70%;width:36%;transform:skewX(-20deg);
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);transition:transform .55s var(--ease)}
@@ -727,8 +695,9 @@ body.glow-on .cursor-glow{opacity:1}
 .cstatus.show{opacity:1;transform:none}
 .cstatus.err{color:var(--blood-bright)}
 @media(min-width:680px){.cform{grid-template-columns:1fr 1fr}.cfield.full{grid-column:1/-1}.cfoot{grid-column:1/-1}}
+/* ——— THE BACKDOOR : fused arena game ——— */
 #puzzle{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:clamp(12px,2.6vh,22px);padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));
+  gap:clamp(10px,2vh,18px);padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));
   overflow:hidden;opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility .5s}
 #puzzle.show{opacity:1;visibility:visible}
 .pz-scene{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
@@ -740,13 +709,6 @@ body.glow-on .cursor-glow{opacity:1}
     linear-gradient(180deg,#0a0608,#070405 60%,#050203)}
 .pz-par{position:absolute;inset:0;will-change:transform;
   transform:translate3d(calc(var(--px,0)*-16px),calc(var(--py,0)*-12px),0);transition:transform .3s linear}
-.pz-rune{position:absolute;left:50%;bottom:-16%;width:min(150vw,760px);height:min(150vw,760px);opacity:.13;
-  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='47' fill='none' stroke='%23b3102a' stroke-width='1'/><circle cx='50' cy='50' r='40' fill='none' stroke='%23b3102a' stroke-width='.6'/><polygon points='50,4 77,87 6,36 94,36 23,87' fill='none' stroke='%23b3102a' stroke-width='1'/></svg>") center/contain no-repeat;
-  transform:translateX(-50%) rotateX(58deg);transform-origin:50% 100%;
-  animation:runeSpin 60s linear infinite}
-@keyframes runeSpin{from{transform:translateX(-50%) rotateX(58deg) rotate(0deg)}to{transform:translateX(-50%) rotateX(58deg) rotate(360deg)}}
-#puzzle.seal-paid .pz-rune{animation:runePaid 4s ease-in-out infinite}
-@keyframes runePaid{0%,100%{opacity:.18;transform:translateX(-50%) rotateX(58deg) rotate(0deg);filter:hue-rotate(0)}50%{opacity:.3;transform:translateX(-50%) rotateX(58deg) rotate(6deg) scale(1.02);filter:hue-rotate(280deg)}}
 .pz-drips{position:absolute;inset:0;overflow:hidden}
 .pz-drips span{position:absolute;top:0;width:2px;height:34vh;transform-origin:top;transform:scaleY(0);
   background:linear-gradient(180deg,transparent,rgba(179,16,42,.65));
@@ -775,34 +737,37 @@ body.glow-on .cursor-glow{opacity:1}
   box-shadow:0 0 0 2px rgba(124,11,27,.4),inset 0 1px 0 rgba(255,255,255,.06),0 8px 18px rgba(0,0,0,.5);
   transition:color var(--dur-1) var(--ease),box-shadow var(--dur-1) var(--ease),transform var(--dur-1) var(--ease)}
 .pz-close:hover{color:var(--blood-bright);box-shadow:0 0 0 2px rgba(255,39,71,.6),0 8px 18px rgba(0,0,0,.5);transform:rotate(90deg)}
-.pz-medal{position:relative;z-index:3;flex:none;width:min(78vw,340px);aspect-ratio:1/1;border-radius:50%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:14%;text-align:center;
-  background:radial-gradient(circle at 50% 40%,#0d0507 0 46%,#160a0d 60%,rgba(124,11,27,.35) 73%,transparent 80%)}
-.pz-medal::before{content:"";position:absolute;inset:-2px;border-radius:50%;border:3px solid rgba(209,20,48,.7);
+.pz-titlebar{position:relative;z-index:3;display:flex;align-items:center;gap:12px;font-family:var(--f-egg);
+  font-size:clamp(1.05rem,4vw,1.5rem);letter-spacing:.06em;color:var(--blood-wet);text-shadow:0 0 16px rgba(179,16,42,.4)}
+.pz-titlebar .tb-gem{width:8px;height:8px;background:var(--blood-bright);transform:rotate(45deg);box-shadow:0 0 10px var(--blood-bright);animation:authPulse 1.6s ease-in-out infinite}
+/* the fused circle */
+.pz-arena{position:relative;z-index:2;width:min(92vw,520px);aspect-ratio:1;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 50% 40%,#0d0507 0 46%,#160a0d 60%,rgba(124,11,27,.35) 73%,#070405 82%);
+  border:3px solid rgba(209,20,48,.7);
   box-shadow:0 0 34px rgba(209,20,48,.5), inset 0 0 30px rgba(209,20,48,.35);
   animation:medalPulse 4.5s ease-in-out infinite}
 @keyframes medalPulse{0%,100%{box-shadow:0 0 26px rgba(209,20,48,.4),inset 0 0 22px rgba(209,20,48,.3)}50%{box-shadow:0 0 48px rgba(255,39,71,.6),inset 0 0 34px rgba(255,39,71,.4)}}
-.pz-coinbg{position:absolute;inset:7%;border-radius:50%;pointer-events:none;opacity:.1;
-  background:url('art/coin.png') center/88% no-repeat;
-  filter:blur(.5px) saturate(.7) brightness(.9);animation:coinSlow 70s linear infinite}
-@keyframes coinSlow{to{transform:rotate(360deg)}}
-#puzzle.seal-paid .pz-medal::before{border-color:rgba(255,210,120,.8);
+#puzzle.seal-paid .pz-arena{border-color:rgba(255,210,120,.8);
   box-shadow:0 0 40px rgba(255,190,90,.55), inset 0 0 30px rgba(255,190,90,.4)}
-#puzzle.seal-paid .pz-coinbg{opacity:.2}
-.pz-title{font-family:var(--f-egg);font-size:clamp(1.15rem,4.6vw,1.7rem);letter-spacing:.06em;
-  color:var(--blood-wet);text-shadow:0 0 16px rgba(179,16,42,.4)}
-.relics{display:flex;gap:14px}
-.relics i{width:18px;height:18px;transform:rotate(45deg);background:#1a0d10;
-  box-shadow:0 0 0 2px rgba(124,11,27,.5),inset 0 0 6px rgba(0,0,0,.7);
-  transition:background .4s var(--ease),box-shadow .4s var(--ease)}
-.relics i.on{background:radial-gradient(circle at 38% 32%,#ffe6a0,#d11430 60%,#7c0b1b);
-  box-shadow:0 0 0 2px rgba(255,210,120,.7),0 0 14px rgba(255,120,70,.7),inset 0 0 6px rgba(0,0,0,.5)}
-.pz-seal-txt{font-family:var(--f-serif);font-style:italic;font-size:.78rem;color:var(--bone-faint);letter-spacing:.04em;max-width:100%}
-.pz-pit{position:relative;z-index:2;width:min(92vw,540px)}
-.feed{position:relative;width:100%;background:transparent;border:0;box-shadow:none}
-.pz-stage{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:16px;background:transparent}
-.pz-stage::before{content:"";position:absolute;left:0;right:0;bottom:0;height:30%;pointer-events:none;z-index:0;
+.pz-rune{position:absolute;inset:3%;pointer-events:none;opacity:.15;
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='47' fill='none' stroke='%23b3102a' stroke-width='1'/><circle cx='50' cy='50' r='40' fill='none' stroke='%23b3102a' stroke-width='.6'/><polygon points='50,4 77,87 6,36 94,36 23,87' fill='none' stroke='%23b3102a' stroke-width='1'/></svg>") center/contain no-repeat;
+  animation:runeRot 60s linear infinite}
+@keyframes runeRot{to{transform:rotate(360deg)}}
+#puzzle.seal-paid .pz-rune{animation:runeRot 12s linear infinite;opacity:.25}
+.pz-coinbg{position:absolute;inset:9%;border-radius:50%;pointer-events:none;opacity:.08;
+  background:url('art/coin.png') center/88% no-repeat;filter:blur(.5px) saturate(.7) brightness(.9);animation:coinSlow 70s linear infinite}
+@keyframes coinSlow{to{transform:rotate(360deg)}}
+#puzzle.seal-paid .pz-coinbg{opacity:.18}
+.pz-stage{position:absolute;inset:0;overflow:hidden;border-radius:50%}
+.pz-stage::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;pointer-events:none;z-index:0;
   background:radial-gradient(62% 74% at 50% 100%, rgba(0,0,0,.68), transparent 72%)}
+.hud{position:absolute;left:0;right:0;z-index:12;display:flex;align-items:center;justify-content:space-between;
+  padding:0 18%;pointer-events:none;font-family:var(--f-px);font-size:.6rem;color:var(--bone-dim);text-shadow:1px 1px 0 #000}
+.hud-top{top:7%}
+.hud-bot{bottom:6%;justify-content:center;gap:14px}
+.hud .wp{font-style:normal;color:var(--blood-bright);margin-left:4px;text-shadow:0 0 6px rgba(255,39,71,.6)}
+.hud .wp.off{color:rgba(239,230,221,.14);text-shadow:none}
+.hud-sev{color:var(--cyan-soft)}
 .gate{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .4s var(--ease)}
 .pz-stage.free .gate{opacity:1}
 .gate-grid{position:absolute;inset:0;opacity:0;transition:opacity .6s var(--ease) .5s;
@@ -815,19 +780,19 @@ body.glow-on .cursor-glow{opacity:1}
 .gate-wall.r{right:0;transform:perspective(220px) rotateY(-30deg);transform-origin:right center;-webkit-mask-image:linear-gradient(270deg,#000,transparent);mask-image:linear-gradient(270deg,#000,transparent)}
 .pz-stage.free .gate-wall{opacity:.7}
 .pz-stage.sealed .gate-wall{background:repeating-linear-gradient(90deg,rgba(255,39,71,.16) 0 2px,transparent 2px 12px)}
-.gate-light{position:absolute;left:50%;top:46%;width:48%;aspect-ratio:1/1;transform:translate(-50%,-50%);border-radius:50%;z-index:2;
+.gate-light{position:absolute;left:50%;top:42%;width:48%;aspect-ratio:1/1;transform:translate(-50%,-50%);border-radius:50%;z-index:2;
   background:radial-gradient(circle,rgba(245,235,255,.96),rgba(176,124,255,.5) 34%,rgba(124,11,27,.35) 60%,transparent 76%);opacity:0;filter:blur(2px)}
 .pz-stage.unlocked .gate-light{animation:lightUp .8s var(--ease) .5s both}
 @keyframes lightUp{from{opacity:0;transform:translate(-50%,-50%) scale(.4)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 .pz-stage.sealed .gate-light{animation:lightFlick 1.1s steps(2,end) .4s both}
 @keyframes lightFlick{0%{opacity:0}30%{opacity:.7}45%{opacity:.2}60%{opacity:.6}100%{opacity:.26}}
-.gate-shutter{position:absolute;left:50%;top:46%;width:48%;aspect-ratio:1/1;transform:translate(-50%,-50%);border-radius:50%;z-index:3;
+.gate-shutter{position:absolute;left:50%;top:42%;width:48%;aspect-ratio:1/1;transform:translate(-50%,-50%);border-radius:50%;z-index:3;
   background:radial-gradient(circle,#0a0505 60%,#140a09 100%);clip-path:circle(50% at 50% 50%)}
 .pz-stage.unlocked .gate-shutter{animation:irisOpen 1s cubic-bezier(.7,0,.3,1) .55s both}
 @keyframes irisOpen{0%{clip-path:circle(50% at 50% 50%)}100%{clip-path:circle(0% at 50% 50%)}}
 .pz-stage.sealed .gate-shutter{animation:irisDeny 1.2s var(--ease) .45s both}
 @keyframes irisDeny{0%{clip-path:circle(50% at 50% 50%)}40%{clip-path:circle(13% at 50% 50%)}70%{clip-path:circle(20% at 50% 50%)}100%{clip-path:circle(40% at 50% 50%)}}
-.gate-ring{position:absolute;left:50%;top:46%;border-radius:50%;transform:translate(-50%,-50%);opacity:0;z-index:3;
+.gate-ring{position:absolute;left:50%;top:42%;border-radius:50%;transform:translate(-50%,-50%);opacity:0;z-index:3;
   background:conic-gradient(from 0deg,transparent 0 10%,var(--rc,rgba(255,39,71,.9)) 10% 20%,transparent 20% 35%,var(--rc,rgba(255,39,71,.9)) 35% 45%,transparent 45% 60%,var(--rc,rgba(255,39,71,.9)) 60% 70%,transparent 70% 85%,var(--rc,rgba(255,39,71,.9)) 85% 95%,transparent 95% 100%);
   -webkit-mask:radial-gradient(circle,transparent 0 62%,#000 63% 72%,transparent 73%);mask:radial-gradient(circle,transparent 0 62%,#000 63% 72%,transparent 73%)}
 .gate-ring.r1{width:64%;aspect-ratio:1/1}
@@ -847,19 +812,19 @@ body.glow-on .cursor-glow{opacity:1}
 .pz-stage.denied .gate-shutter{animation:irisDeny .9s var(--ease) both}
 .pz-stage.denied .gate-light{animation:lightFlick .9s steps(2,end) both}
 .pz-stage.denied .pz-btn img{animation:coreDeny .9s steps(2,end) both}
-.rite-hint{position:absolute;left:50%;top:8%;transform:translateX(-50%);z-index:11;pointer-events:none;
+.rite-hint{position:absolute;left:50%;top:15%;transform:translateX(-50%);z-index:11;pointer-events:none;
   display:flex;flex-direction:column;align-items:center;gap:7px;font-family:var(--f-egg);
-  font-size:clamp(.9rem,3vw,1.25rem);letter-spacing:.05em;color:var(--bone-dim);text-shadow:0 0 14px rgba(0,0,0,.8);
-  opacity:1;transition:opacity .6s var(--ease)}
+  font-size:clamp(.85rem,3vw,1.2rem);letter-spacing:.05em;color:var(--bone-dim);text-shadow:0 0 14px rgba(0,0,0,.8);
+  opacity:1;transition:opacity .6s var(--ease);white-space:nowrap}
 .rite-hint.gone{opacity:0}
 .rite-hint .rh-arr{width:8px;height:8px;border-right:2px solid var(--blood-wet);border-bottom:2px solid var(--blood-wet);transform:rotate(45deg);animation:rhbob 1.1s steps(2) infinite}
 @keyframes rhbob{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(2px,2px)}}
-.pz-btn{position:absolute;left:50%;top:33%;width:52%;z-index:3;line-height:0;pointer-events:none;
+.pz-btn{position:absolute;left:50%;top:30%;width:52%;z-index:3;line-height:0;pointer-events:none;
   transform:translate(-50%,-50%);filter:drop-shadow(0 8px 20px rgba(0,0,0,.55));
   transition:top .7s var(--ease-soft),width .7s var(--ease-soft),filter .5s var(--ease)}
 .pz-btn img{width:100%;height:auto;display:block}
 .pz-btn::after{content:"";position:absolute;inset:-30%;border-radius:50%;pointer-events:none;opacity:0;background:radial-gradient(circle,rgba(176,124,255,.35),transparent 70%)}
-.pz-stage.free .pz-btn{top:46%;width:30%;filter:drop-shadow(0 0 22px rgba(255,120,70,.85))}
+.pz-stage.free .pz-btn{top:42%;width:30%;filter:drop-shadow(0 0 22px rgba(255,120,70,.85))}
 .pz-stage.free .pz-btn img{animation:coreFloat 3.2s ease-in-out .9s infinite alternate}
 @keyframes coreFloat{from{transform:translateY(-2px)}to{transform:translateY(3px)}}
 .pz-stage.unlocked .pz-btn{filter:drop-shadow(0 0 30px rgba(216,194,255,.95))}
@@ -873,11 +838,11 @@ body.glow-on .cursor-glow{opacity:1}
 .pz-stage.free .pz-hand{animation:handFall .95s cubic-bezier(.55,.05,.6,.2) .12s both}
 @keyframes handFall{0%{transform:translateY(0) rotate(0);opacity:1}26%{transform:translateY(3%) rotate(-1.5deg);opacity:1}100%{transform:translateY(140%) rotate(8deg);opacity:0}}
 .fpos{position:absolute;bottom:0;width:13%;z-index:7;transform-origin:bottom center}
-.f0{left:19%;height:50%;transform:rotate(-16deg);--bf:-1;--br:6deg;--bs:.82}
-.f1{left:33%;height:84%;--bf:1;--br:-5deg;--bs:1}
-.f2{left:43%;width:14%;height:96%;--bf:-1;--br:3deg;--bs:1.06}
-.f3{left:55%;height:86%;--bf:1;--br:-7deg;--bs:1}
-.f4{left:70%;width:14%;height:54%;transform:rotate(18deg);--bf:-1;--br:10deg;--bs:.84}
+.f0{left:13%;height:32%;transform:rotate(-14deg);--bf:-1;--br:6deg;--bs:.82}
+.f1{left:28%;height:48%;transform:rotate(-6deg);--bf:1;--br:-5deg;--bs:1}
+.f2{left:43.5%;height:54%;--bf:-1;--br:3deg;--bs:1.06}
+.f3{left:59%;height:48%;transform:rotate(6deg);--bf:1;--br:-7deg;--bs:1}
+.f4{left:74%;height:32%;transform:rotate(14deg);--bf:-1;--br:10deg;--bs:.84}
 .tap-hint{position:absolute;left:50%;top:-15px;transform:translateX(-50%);width:24px;height:24px;pointer-events:none;opacity:0;transition:opacity .3s var(--ease)}
 .fpos:not(.cleared) .tap-hint{opacity:1}
 .pz-stage.free .tap-hint{opacity:0}
@@ -886,8 +851,9 @@ body.glow-on .cursor-glow{opacity:1}
 .tap-hint::after{content:"";position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;background:var(--blood-bright);box-shadow:0 0 6px var(--blood-bright)}
 .fpos.crack .tap-hint::before{border-color:var(--blood-bright);animation:crackRing .5s steps(3)}
 @keyframes crackRing{0%,100%{transform:rotate(45deg) scale(1)}50%{transform:rotate(45deg) scale(1.4)}}
-.fpos.claw .tap-hint::before{border-color:var(--ember);animation:clawFlash .28s steps(2) 2}
-@keyframes clawFlash{0%,100%{opacity:.3}50%{opacity:1}}
+.fpos.claw .tap-hint{opacity:1}
+.fpos.claw .tap-hint::before{border-color:var(--ember);box-shadow:0 0 12px rgba(255,122,26,.8);animation:clawFlash .28s steps(2) infinite}
+@keyframes clawFlash{0%,100%{opacity:.35}50%{opacity:1}}
 .finger{position:absolute;inset:0;cursor:pointer;transition:transform .45s var(--ease-soft),opacity .45s var(--ease-soft)}
 .finger:active{background:radial-gradient(circle at 50% 28%,rgba(255,90,138,.22),transparent 72%)}
 .finger.out{transform:translateY(120%);opacity:0;pointer-events:none}
@@ -909,19 +875,16 @@ body.glow-on .cursor-glow{opacity:1}
 @keyframes scanWipe{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(280px)}}
 .px{position:absolute;width:4px;height:4px;z-index:8;pointer-events:none;animation:pxfly .65s steps(7) forwards}
 @keyframes pxfly{0%{transform:translate(0,0);opacity:1}100%{transform:translate(var(--dx),var(--dy));opacity:0}}
-.px-pop{position:absolute;z-index:9;pointer-events:none;font-family:var(--f-px);font-size:.8rem;letter-spacing:.04em;white-space:nowrap;text-shadow:2px 2px 0 #000;animation:pxpop .85s steps(9) forwards}
+.px-pop{position:absolute;z-index:9;pointer-events:none;font-family:var(--f-px);font-size:.7rem;letter-spacing:.04em;white-space:nowrap;text-shadow:2px 2px 0 #000;animation:pxpop .85s steps(9) forwards}
 @keyframes pxpop{0%{transform:translate(-50%,-20%);opacity:0}15%{opacity:1}100%{transform:translate(-50%,-170%);opacity:0}}
 .px-pop.cy{color:#d8c2ff}.px-pop.rd{color:#ff2747}.px-pop.em{color:var(--ember-soft)}.px-pop.gd{color:#ffd24a}
-.grip-pips{position:relative;z-index:3;display:flex;justify-content:center;gap:clamp(16px,5vw,34px);margin-top:16px}
-.grip-pips i{position:relative;width:10px;height:24px}
-.grip-pips i::before{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:6px;height:9px;background:#2a1c20;border-radius:2px;transition:background .3s var(--ease)}
-.grip-pips i::after{content:"";position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:8px;height:15px;
-  border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
-  background:radial-gradient(circle at 50% 70%,#fff3c4,#ff7a1a 45%,#d11430 80%);box-shadow:0 0 10px rgba(255,122,26,.7);
-  animation:flameFlick 1.4s steps(2) infinite;transition:opacity .3s var(--ease),transform .3s var(--ease)}
-@keyframes flameFlick{0%,100%{transform:translateX(-50%) scaleY(1) scaleX(1)}50%{transform:translateX(-50%) scaleY(1.12) scaleX(.9)}}
-.grip-pips i.off::after{opacity:0;transform:translateX(-50%) scaleY(.2)}
-.grip-pips i.off::before{background:#120b0d}
+.relics{display:flex;gap:14px}
+.relics i{width:18px;height:18px;transform:rotate(45deg);background:#1a0d10;
+  box-shadow:0 0 0 2px rgba(124,11,27,.5),inset 0 0 6px rgba(0,0,0,.7);
+  transition:background .4s var(--ease),box-shadow .4s var(--ease)}
+.relics i.on{background:radial-gradient(circle at 38% 32%,#ffe6a0,#d11430 60%,#7c0b1b);
+  box-shadow:0 0 0 2px rgba(255,210,120,.7),0 0 14px rgba(255,120,70,.7),inset 0 0 6px rgba(0,0,0,.5)}
+.pz-seal-txt{font-family:var(--f-serif);font-style:italic;font-size:.78rem;color:var(--bone-faint);letter-spacing:.04em;max-width:100%;text-align:center}
 .con-err{position:relative;z-index:3;min-height:1.3em;font-family:var(--f-egg);font-size:clamp(.9rem,3vw,1.2rem);letter-spacing:.04em;
   color:var(--blood-bright);text-shadow:0 0 14px rgba(255,39,71,.5);text-align:center;
   opacity:0;transform:translateY(4px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
@@ -944,33 +907,10 @@ body.glow-on .cursor-glow{opacity:1}
 .pz-auth.shake{animation:pzShake .4s steps(4)}
 @keyframes pzShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
 @keyframes conPulse{0%,100%{opacity:.3}50%{opacity:1}}
-@media(min-width:980px){
-  #puzzle{display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto auto;
-    grid-template-areas:"medal pit" "medal err" "medal auth";
-    align-items:center;align-content:center;justify-content:center;
-    column-gap:clamp(48px,7vw,110px);row-gap:16px;
-    padding-top:max(18px,env(safe-area-inset-top))}
-  .pz-medal{grid-area:medal;width:min(32vw,420px)}
-  .pz-pit{grid-area:pit;width:min(46vw,640px)}
-  .con-err{grid-area:err}
-  .pz-auth{grid-area:auth}
-  .pz-close{top:18px;right:18px}
-}
-@media(max-height:720px){
-  #puzzle{gap:10px}
-  .pz-medal{width:min(70vw,260px)}
-  .pz-pit{width:min(88vw,430px)}
-  .pz-auth{padding:10px 26px}
-  .grip-pips{margin-top:10px}
-}
-@media(min-width:980px) and (max-height:720px){
-  .pz-medal{width:min(26vw,300px)}
-  .pz-pit{width:min(44vw,520px)}
-}
 .foot{position:relative;z-index:1;padding:clamp(28px,5vw,46px) clamp(18px,5vw,46px) clamp(20px,3vw,28px);
   border-top:0;background:rgba(7,4,5,.55);
   content-visibility:auto;contain-intrinsic-size:auto 260px;contain:layout style;overflow:hidden}
-.foot::before{content:"NILOUVERSE";position:absolute;bottom:-16%;left:50%;transform:translateX(-50%);font-family:var(--f-logo);
+.foot::before{content:"NILOUVERSE";position:absolute;bottom:-22%;left:50%;transform:translateX(-50%);font-family:var(--f-logo);
   font-size:clamp(4rem,15vw,10rem);font-weight:700;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(209,20,48,.09);
   pointer-events:none;z-index:0;white-space:nowrap;letter-spacing:.02em;user-select:none;opacity:.85}
 .foot-line{position:absolute;top:-1px;left:0;right:0;height:1px;background:var(--seam)}
@@ -1010,17 +950,17 @@ body.glow-on .cursor-glow{opacity:1}
   .wordmark,.socials{opacity:1!important;transform:none!important}
   .photo{opacity:.97;transition:none}
   .blood>i{opacity:var(--o,.8);transform:scale(1)}
-  .pz-rune{opacity:.12;animation:none;transform:translateX(-50%) rotateX(58deg)}
+  .pz-rune{opacity:.12;animation:none}
   .pz-ash span{display:none}
   .pz-drips{display:none}
   .pz-mist i{animation:none}
-  .pz-medal::before{animation:none}
+  .pz-arena{animation:none}
   .pz-coinbg{animation:none}
   .pz-stage.free .pz-hand{opacity:0}
   .pz-stage.free .gate{opacity:1}
   .pz-stage.free .gate-grid,.pz-stage.free .gate-wall{opacity:1}
   .pz-stage.free .gate-ring{opacity:1}
-  .pz-stage.free .pz-btn{top:46%;width:30%}
+  .pz-stage.free .pz-btn{top:42%;width:30%}
   .pz-stage.unlocked .gate-light{opacity:1;transform:translate(-50%,-50%) scale(1)}
   .pz-stage.unlocked .gate-shutter{clip-path:circle(0% at 50% 50%)}
   .pz-stage.sealed .gate-light{opacity:.26}
@@ -1057,7 +997,7 @@ body.glow-on .cursor-glow{opacity:1}
   <nav class="topnav">
     <a class="nav-link" href="#intro">Intro</a>
     <a class="nav-link" href="#listen">Listen</a>
-    <a class="nav-link" href="#deluxe">Bloodbath</a>
+    <a class="nav-link" href="#album">Bloodbath</a>
     <a class="nav-link" href="#contact">Contact</a>
     <a class="listen-pill" href="https://audiomack.com/nilouversemusic/album/down" target="_blank" rel="noopener"><span class="tri"></span>Stream</a>
   </nav>
@@ -1146,29 +1086,26 @@ body.glow-on .cursor-glow{opacity:1}
         </div>
       </article>
 
-      <section class="album-unified" id="album" data-reveal>
-        <div class="au-inner">
-          <div class="au-head">
-            <p class="side-tag"><span class="ln"></span>The Debut LP</p>
-            <h3>DOWN</h3>
-            <p class="rel">Released <b>17 Jul 2026</b></p>
-            <p class="for-fans">for fans of Slipknot, Linkin Park, Deftones, Evanescence</p>
-          </div>
-          
-          <div class="au-tabs" role="tablist">
-            <button class="au-tab active" data-tab="yt" role="tab" aria-selected="true" aria-controls="panel-yt">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2 15 12l-5 2.8z" fill="currentColor" stroke="none"/></svg>
-              YouTube
-            </button>
-            <button class="au-tab" data-tab="am" role="tab" aria-selected="false" aria-controls="panel-am">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg>
-              Audiomack
-            </button>
-          </div>
-
-          <div class="au-content">
-            <div class="au-panel active" id="panel-yt" role="tabpanel">
-              <div class="au-rail" id="railYt" tabindex="0" aria-label="album tracks — YouTube">
+      <section class="vault" id="album" data-reveal>
+        <div class="decks" id="decks">
+          <article class="deck deck-down">
+            <div class="deck-head">
+              <div>
+                <p class="deck-k">the debut lp · out now</p>
+                <h3 class="deck-title">DOWN</h3>
+              </div>
+              <div class="deck-tabs" role="tablist">
+                <button class="au-tab active" data-tab="yt" role="tab" aria-selected="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2 15 12l-5 2.8z" fill="currentColor" stroke="none"/></svg>YouTube
+                </button>
+                <button class="au-tab" data-tab="am" role="tab" aria-selected="false">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg>Audiomack
+                </button>
+              </div>
+            </div>
+            <p class="for-fans" style="margin-top:0;padding-top:0;border-top:0;margin-bottom:16px">for fans of Slipknot, Linkin Park, Deftones, Evanescence</p>
+            <div class="deck-panel active" data-panel="yt">
+              <div class="trail" id="trailYt">
                 <article class="rcard vcard" data-embed="https://www.youtube.com/embed/Qvb4a_Z_lgc?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Xero (Intro)">
                   <img class="rc-poster" src="https://i.ytimg.com/vi/Qvb4a_Z_lgc/hqdefault.jpg" alt="" loading="lazy" decoding="async">
                   <span class="rc-dur">3:26</span>
@@ -1231,35 +1168,99 @@ body.glow-on .cursor-glow{opacity:1}
                 </article>
               </div>
             </div>
+            <div class="deck-panel" data-panel="am">
+              <div class="trail" id="trailAm">
+                <article class="amcard acard" data-embed="https://audiomack.com/embed/song/nilouversemusic/xero-intro?background=1" role="button" tabindex="0" aria-label="Stream Xero (Intro)">
+                  <span class="am-art" aria-hidden="true"></span>
+                  <span class="am-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></span>
+                  <span class="rc-body"><b>Xero (Intro)</b><i>track 01</i></span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+                <article class="amcard acard" data-embed="https://audiomack.com/embed/song/nilouversemusic/down?background=1" role="button" tabindex="0" aria-label="Stream Down">
+                  <span class="am-art" aria-hidden="true"></span>
+                  <span class="am-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></span>
+                  <span class="rc-body"><b>Down</b><i>track 02</i></span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+                <article class="amcard acard" data-embed="https://audiomack.com/embed/song/nilouversemusic/its-fine?background=1" role="button" tabindex="0" aria-label="Stream It's Fine">
+                  <span class="am-art" aria-hidden="true"></span>
+                  <span class="am-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></span>
+                  <span class="rc-body"><b>It's Fine</b><i>track 03</i></span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+                <article class="amcard acard" data-embed="https://audiomack.com/embed/song/nilouversemusic/better-left-alone?background=1" role="button" tabindex="0" aria-label="Stream Better Left Alone">
+                  <span class="am-art" aria-hidden="true"></span>
+                  <span class="am-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></span>
+                  <span class="rc-body"><b>Better Left Alone</b><i>track 04</i></span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+                <article class="amcard acard" data-embed="https://audiomack.com/embed/song/nilouversemusic/cant-escape?background=1" role="button" tabindex="0" aria-label="Stream Can't Escape">
+                  <span class="am-art" aria-hidden="true"></span>
+                  <span class="am-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></span>
+                  <span class="rc-body"><b>Can't Escape</b><i>track 05</i></span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+                <article class="amcard acard" data-embed="https://audiomack.com/embed/song/nilouversemusic/failure?background=1" role="button" tabindex="0" aria-label="Stream Failure">
+                  <span class="am-art" aria-hidden="true"></span>
+                  <span class="am-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></span>
+                  <span class="rc-body"><b>Failure</b><i>track 06</i></span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+                <article class="amcard acard" data-embed="https://audiomack.com/embed/song/nilouversemusic/black-blood?background=1" role="button" tabindex="0" aria-label="Stream Black Blood">
+                  <span class="am-art" aria-hidden="true"></span>
+                  <span class="am-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></span>
+                  <span class="rc-body"><b>Black Blood</b><i>track 07</i></span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+                <article class="amcard acard" data-embed="https://audiomack.com/embed/song/nilouversemusic/its-over?background=1" role="button" tabindex="0" aria-label="Stream It's Over">
+                  <span class="am-art" aria-hidden="true"></span>
+                  <span class="am-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></span>
+                  <span class="rc-body"><b>It's Over</b><i>track 08</i></span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+                <article class="amcard acard" data-embed="https://audiomack.com/embed/song/nilouversemusic/let-it-go?background=1" role="button" tabindex="0" aria-label="Stream Let It Go">
+                  <span class="am-art" aria-hidden="true"></span>
+                  <span class="am-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></span>
+                  <span class="rc-body"><b>Let It Go</b><i>track 09</i></span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+                <article class="amcard acard" data-embed="https://audiomack.com/embed/song/nilouversemusic/true-outro?background=1" role="button" tabindex="0" aria-label="Stream True (Outro)">
+                  <span class="am-art" aria-hidden="true"></span>
+                  <span class="am-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg></span>
+                  <span class="rc-body"><b>True (Outro)</b><i>track 10</i></span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+              </div>
+            </div>
+          </article>
 
-            <div class="au-panel" id="panel-am" role="tabpanel">
-              <div class="au-am-wrap">
-                <div class="au-am-player">
-                  <div class="au-am-load" id="amLoad"><span class="spin"></span><span>loading audiomack…</span></div>
-                  <iframe class="au-am-frame" id="amFrame" title="DOWN — full album on Audiomack" loading="lazy" src="about:blank"
-                    data-src="https://audiomack.com/embed/album/nilouversemusic/down?background=1"></iframe>
+          <article class="deck deck-blood">
+            <div class="db-grid">
+              <div class="db-holder" id="dbHolder">
+                <div class="dlx-stack" id="dlxStack" role="button" tabindex="0" aria-label="sealed edition">
+                  <div class="dlx-case"></div>
+                  <div class="dlx-scanlines"></div>
+                  <span class="dlx-title glitch" data-text="DOWN — BLOODBATH EDITION" aria-hidden="true">DOWN — BLOODBATH EDITION</span>
+                  <span class="dlx-egg" id="dlxEgg" aria-hidden="true">the lock is too strong. † not yet Paul :)</span>
                 </div>
-                <div class="au-am-info">
-                  <ul class="tracklist">
-                    <li><span>01</span>Xero (Intro)</li>
-                    <li><span>02</span>Down</li>
-                    <li><span>03</span>It's Fine</li>
-                    <li><span>04</span>Better Left Alone</li>
-                    <li><span>05</span>Can't Escape</li>
-                    <li><span>06</span>Failure</li>
-                    <li><span>07</span>Black Blood</li>
-                    <li><span>08</span>It's Over</li>
-                    <li><span>09</span>Let It Go</li>
-                    <li><span>10</span>True (Outro)</li>
-                  </ul>
-                  <a class="pill pill-am" href="https://audiomack.com/nilouversemusic/album/down" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg>
-                    Open on Audiomack
-                  </a>
+                <span class="dlx-lock" aria-hidden="true">[ locked ]</span>
+              </div>
+              <div class="db-info">
+                <p class="eyebrow"><span class="ln"></span>incoming</p>
+                <h3 class="db-title">BLOODBATH EDITION</h3>
+                <p class="db-note">the second pressing. sealed until the ritual is complete.</p>
+                <div class="dlx-cta">
+                  <a class="pill pill-tg" href="https://t.me/nilouversemusic" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M21 4 3 11l5 2 2 6 3-3 5 3 3-15z"/><path d="m8 13 9-6-6 8"/></svg>notify me on telegram</a>
+                  <span class="dlx-when">no date.</span>
                 </div>
               </div>
             </div>
-          </div>
+          </article>
+        </div>
+        <div class="deck-nav">
+          <button class="rail-btn" id="deckPrev" type="button" aria-label="previous album">←</button>
+          <div class="dots" id="deckDots" aria-hidden="true"><i class="on"></i><i></i></div>
+          <button class="rail-btn" id="deckNext" type="button" aria-label="next album">→</button>
         </div>
       </section>
 
@@ -1269,26 +1270,26 @@ body.glow-on .cursor-glow{opacity:1}
           <div class="singles" data-reveal>
             <a class="single rank-1" href="https://audiomack.com/nilouversemusic/song/better-left-alone" target="_blank" rel="noopener">
               <span class="rk">#1</span>
-              <span class="ghost-num">1</span>
-              <span class="waveform"><i style="height:40%"></i><i style="height:70%"></i><i style="height:50%"></i><i style="height:90%"></i><i style="height:60%"></i><i style="height:30%"></i></span>
+              <span class="rank-ghost">1</span>
+              <span class="mini-eq"><i style="height:40%"></i><i style="height:70%"></i><i style="height:50%"></i><i style="height:90%"></i><i style="height:60%"></i><i style="height:30%"></i><i style="height:75%"></i><i style="height:45%"></i></span>
               <span class="cap"><b>Better Left Alone</b><span class="go">↗</span></span>
             </a>
             <a class="single rank-2" href="https://audiomack.com/nilouversemusic/song/down" target="_blank" rel="noopener">
               <span class="rk">#2</span>
-              <span class="ghost-num">2</span>
-              <span class="waveform"><i style="height:60%"></i><i style="height:40%"></i><i style="height:80%"></i><i style="height:50%"></i><i style="height:70%"></i><i style="height:45%"></i></span>
+              <span class="rank-ghost">2</span>
+              <span class="mini-eq"><i style="height:60%"></i><i style="height:40%"></i><i style="height:80%"></i><i style="height:50%"></i><i style="height:70%"></i><i style="height:45%"></i><i style="height:85%"></i><i style="height:55%"></i></span>
               <span class="cap"><b>Down</b><span class="go">↗</span></span>
             </a>
             <a class="single rank-3" href="https://audiomack.com/nilouversemusic/song/cant-escape" target="_blank" rel="noopener">
               <span class="rk">#3</span>
-              <span class="ghost-num">3</span>
-              <span class="waveform"><i style="height:30%"></i><i style="height:85%"></i><i style="height:60%"></i><i style="height:40%"></i><i style="height:75%"></i><i style="height:50%"></i></span>
+              <span class="rank-ghost">3</span>
+              <span class="mini-eq"><i style="height:30%"></i><i style="height:85%"></i><i style="height:60%"></i><i style="height:40%"></i><i style="height:75%"></i><i style="height:50%"></i><i style="height:65%"></i><i style="height:35%"></i></span>
               <span class="cap"><b>Can't Escape</b><span class="go">↗</span></span>
             </a>
             <a class="single rank-4" href="https://audiomack.com/nilouversemusic/song/its-fine" target="_blank" rel="noopener">
               <span class="rk">#4</span>
-              <span class="ghost-num">4</span>
-              <span class="waveform"><i style="height:50%"></i><i style="height:65%"></i><i style="height:45%"></i><i style="height:80%"></i><i style="height:55%"></i><i style="height:70%"></i></span>
+              <span class="rank-ghost">4</span>
+              <span class="mini-eq"><i style="height:50%"></i><i style="height:65%"></i><i style="height:45%"></i><i style="height:80%"></i><i style="height:55%"></i><i style="height:70%"></i><i style="height:40%"></i><i style="height:60%"></i></span>
               <span class="cap"><b>It's Fine</b><span class="go">↗</span></span>
             </a>
           </div>
@@ -1304,28 +1305,6 @@ body.glow-on .cursor-glow{opacity:1}
           </div>
         </div>
       </section>
-    </div>
-  </section>
-
-  <section class="deluxe" id="deluxe">
-    <div class="deluxe-inner" data-reveal>
-      <div class="dlx-art">
-        <div class="dlx-stack" id="dlxStack" role="button" tabindex="0" aria-label="sealed edition">
-          <div class="dlx-case"></div>
-          <div class="dlx-scanlines"></div>
-          <span class="dlx-title glitch" data-text="DOWN — BLOODBATH EDITION" aria-hidden="true">DOWN — BLOODBATH EDITION</span>
-          <span class="dlx-egg" id="dlxEgg" aria-hidden="true">the lock is too strong. † not yet Paul :)</span>
-        </div>
-        <span class="dlx-lock" aria-hidden="true">[ locked ]</span>
-      </div>
-      <div class="dlx-body">
-        <h2 class="sr-only">Down — Bloodbath Edition</h2>
-        <p class="eyebrow"><span class="ln"></span>[ 04 ] — Bloodbath Edition</p>
-        <div class="dlx-cta">
-          <a class="pill pill-tg" href="https://t.me/nilouversemusic" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M21 4 3 11l5 2 2 6 3-3 5 3 3-15z"/><path d="m8 13 9-6-6 8"/></svg>notify me on telegram</a>
-          <span class="dlx-when">no date.</span>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1386,58 +1365,61 @@ body.glow-on .cursor-glow{opacity:1}
 <div id="puzzle" aria-hidden="true">
   <div class="pz-scene" aria-hidden="true">
     <div class="pz-fog"></div>
-    <div class="pz-par"><div class="pz-rune"></div></div>
-    <div class="pz-drips" aria-hidden="true">
-      <span style="left:12%;--dd:7s;--ddel:-2s"></span>
-      <span style="left:30%;--dd:9s;--ddel:-5s"></span>
-      <span style="left:55%;--dd:8s;--ddel:-1s"></span>
-      <span style="left:74%;--dd:10s;--ddel:-6s"></span>
-      <span style="left:90%;--dd:7.5s;--ddel:-3s"></span>
+    <div class="pz-par">
+      <div class="pz-drips" aria-hidden="true">
+        <span style="left:12%;--dd:7s;--ddel:-2s"></span>
+        <span style="left:30%;--dd:9s;--ddel:-5s"></span>
+        <span style="left:55%;--dd:8s;--ddel:-1s"></span>
+        <span style="left:74%;--dd:10s;--ddel:-6s"></span>
+        <span style="left:90%;--dd:7.5s;--ddel:-3s"></span>
+      </div>
+      <div class="pz-ash" aria-hidden="true">
+        <span style="left:10%;--ad:16s;--adel:-2s;--sway:14px"></span>
+        <span style="left:26%;--ad:20s;--adel:-9s;--sway:-12px"></span>
+        <span style="left:42%;--ad:14s;--adel:-5s;--sway:18px"></span>
+        <span style="left:58%;--ad:22s;--adel:-13s;--sway:-16px"></span>
+        <span style="left:72%;--ad:17s;--adel:-7s;--sway:12px"></span>
+        <span style="left:88%;--ad:19s;--adel:-11s;--sway:-10px"></span>
+      </div>
+      <div class="pz-trees" aria-hidden="true"></div>
+      <div class="pz-mist" aria-hidden="true"><i class="m1"></i><i class="m2"></i></div>
     </div>
-    <div class="pz-ash" aria-hidden="true">
-      <span style="left:10%;--ad:16s;--adel:-2s;--sway:14px"></span>
-      <span style="left:26%;--ad:20s;--adel:-9s;--sway:-12px"></span>
-      <span style="left:42%;--ad:14s;--adel:-5s;--sway:18px"></span>
-      <span style="left:58%;--ad:22s;--adel:-13s;--sway:-16px"></span>
-      <span style="left:72%;--ad:17s;--adel:-7s;--sway:12px"></span>
-      <span style="left:88%;--ad:19s;--adel:-11s;--sway:-10px"></span>
-    </div>
-    <div class="pz-trees" aria-hidden="true"></div>
-    <div class="pz-mist" aria-hidden="true"><i class="m1"></i><i class="m2"></i></div>
     <div class="pz-vignette"></div>
   </div>
   <button class="pz-close" id="pzClose" type="button" aria-label="close the threshold">✕</button>
-  <div class="pz-medal" aria-hidden="true">
-    <span class="pz-coinbg"></span>
-    <p class="pz-title">† the backdoor †</p>
-    <span class="relics"><i></i><i></i><i></i></span>
-    <span class="pz-seal-txt">you've seen too much to turn back now</span>
-  </div>
-  <div class="pz-pit">
-    <div class="feed" id="pzFeed">
-      <div class="pz-stage" id="pzStage">
-        <div class="gate" aria-hidden="true">
-          <span class="gate-grid"></span>
-          <span class="gate-wall l"></span>
-          <span class="gate-wall r"></span>
-          <span class="gate-light"></span>
-          <span class="gate-shutter"></span>
-          <span class="gate-ring r1"></span>
-          <span class="gate-ring r2"></span>
-          <span class="gate-scan"></span>
-        </div>
-        <span class="rite-hint" id="riteHint">pry each finger<span class="rh-arr"></span></span>
-        <span class="pz-btn" aria-hidden="true"><img src="art/button.png" alt="" draggable="false"></span>
-        <img class="pz-hand" id="pzHand" alt="" draggable="false">
-        <span class="fpos f0"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
-        <span class="fpos f1"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
-        <span class="fpos f2"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
-        <span class="fpos f3"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
-        <span class="fpos f4"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
+  <p class="pz-titlebar"><span class="tb-gem"></span>† the backdoor †</p>
+  <div class="pz-arena" id="pzArena">
+    <span class="pz-rune" aria-hidden="true"></span>
+    <span class="pz-coinbg" aria-hidden="true"></span>
+    <div class="pz-stage" id="pzStage">
+      <div class="gate" aria-hidden="true">
+        <span class="gate-grid"></span>
+        <span class="gate-wall l"></span>
+        <span class="gate-wall r"></span>
+        <span class="gate-light"></span>
+        <span class="gate-shutter"></span>
+        <span class="gate-ring r1"></span>
+        <span class="gate-ring r2"></span>
+        <span class="gate-scan"></span>
+      </div>
+      <div class="hud hud-top" aria-hidden="true">
+        <span id="hudWrath"><i class="wp">◆</i><i class="wp">◆</i><i class="wp">◆</i></span>
+        <span class="hud-sev" id="hudSev">0/5</span>
+      </div>
+      <span class="rite-hint" id="riteHint">pry when it flinches<span class="rh-arr"></span></span>
+      <span class="pz-btn" aria-hidden="true"><img src="art/button.png" alt="" draggable="false"></span>
+      <img class="pz-hand" id="pzHand" alt="" draggable="false">
+      <span class="fpos f0"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
+      <span class="fpos f1"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
+      <span class="fpos f2"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
+      <span class="fpos f3"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
+      <span class="fpos f4"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
+      <div class="hud hud-bot" aria-hidden="true">
+        <span class="relics"><i></i><i></i><i></i></span>
       </div>
     </div>
-    <div class="grip-pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
   </div>
+  <p class="pz-seal-txt">you've seen too much to turn back now</p>
   <div class="con-err" id="pzErr" role="alert" aria-hidden="true"></div>
   <button class="pz-auth locked" id="pzAuth" type="button">
     <span class="pa-glyph">▸</span><span class="pa-lbl" id="paLbl">break the seal</span><span class="pa-state" id="paState">the grip holds</span>
@@ -1710,52 +1692,58 @@ body.glow-on .cursor-glow{opacity:1}
   },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
   els.forEach(function(e){io.observe(e)});
 })();
-/* ——— unified album: tab switcher + rails ——— */
+/* ——— vault: decks slider + tabs + trails ——— */
 (function(){
-  var tabs=document.querySelectorAll('.au-tab');
-  var panels=document.querySelectorAll('.au-panel');
-  var amLoaded=false;
-  tabs.forEach(function(tab){
-    tab.addEventListener('click',function(){
-      tabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
-      panels.forEach(function(p){ p.classList.remove('active'); });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected','true');
-      var id='panel-'+tab.getAttribute('data-tab');
-      var panel=document.getElementById(id);
-      if(panel) panel.classList.add('active');
-      if(tab.getAttribute('data-tab')==='am' && !amLoaded){
-        amLoaded=true;
-        var frame=document.getElementById('amFrame');
-        var load=document.getElementById('amLoad');
-        if(window.__pc) window.__pc('https://audiomack.com');
-        if(frame) frame.src=frame.getAttribute('data-src');
-        var t=setTimeout(function(){ if(load) load.classList.add('gone'); },9000);
-        if(frame) frame.addEventListener('load',function(){ if(load) load.classList.add('gone'); },{once:true});
-      }
-    });
-  });
-  /* YouTube rail inside unified section */
-  var railYt=document.getElementById('railYt');
-  if(railYt){
-    railYt.addEventListener('pointerenter',function(){ if(window.__pc){ window.__pc('https://www.youtube.com'); window.__pc('https://i.ytimg.com'); } },{passive:true});
-    function playCard(card){
-      if(card.classList.contains('playing')) return;
-      var src=card.getAttribute('data-embed'); if(!src) return;
-      var ifr=document.createElement('iframe');
-      ifr.src=src;
-      ifr.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-      ifr.allowFullscreen=true;
-      var t=card.querySelector('b');
-      ifr.title=t? t.textContent : 'video';
-      card.classList.add('playing');
-      card.appendChild(ifr);
-    }
-    railYt.querySelectorAll('.vcard').forEach(function(card){
-      card.addEventListener('click',function(){ playCard(card); });
-      card.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); playCard(card); } });
+  var decks=document.getElementById('decks');
+  var dots=document.getElementById('deckDots');
+  var prev=document.getElementById('deckPrev'), next=document.getElementById('deckNext');
+  if(decks){
+    function step(){ var d=decks.querySelector('.deck'); return d? d.getBoundingClientRect().width+16 : 400; }
+    if(prev) prev.addEventListener('click',function(){ decks.scrollBy({left:-step(),behavior:'smooth'}); });
+    if(next) next.addEventListener('click',function(){ decks.scrollBy({left:step(),behavior:'smooth'}); });
+    decks.addEventListener('scroll',function(){
+      if(!dots) return;
+      var i=Math.round(decks.scrollLeft/step());
+      var ds=dots.children;
+      for(var k=0;k<ds.length;k++) ds[k].classList.toggle('on', k===i);
+    },{passive:true});
+  }
+  var deckDown=document.querySelector('.deck-down');
+  if(deckDown){
+    var tabs=deckDown.querySelectorAll('.au-tab');
+    var panels=deckDown.querySelectorAll('.deck-panel');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click',function(){
+        tabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+        panels.forEach(function(p){ p.classList.remove('active'); });
+        tab.classList.add('active'); tab.setAttribute('aria-selected','true');
+        var p=deckDown.querySelector('[data-panel="'+tab.getAttribute('data-tab')+'"]');
+        if(p) p.classList.add('active');
+        if(tab.getAttribute('data-tab')==='am' && window.__pc) window.__pc('https://audiomack.com');
+      });
     });
   }
+  function bindTrail(id, allowAutoplay){
+    var trail=document.getElementById(id); if(!trail) return;
+    trail.addEventListener('pointerenter',function(){ if(window.__pc){ window.__pc('https://www.youtube.com'); window.__pc('https://i.ytimg.com'); window.__pc('https://audiomack.com'); } },{passive:true});
+    trail.querySelectorAll('.vcard,.acard').forEach(function(card){
+      function play(){
+        if(card.classList.contains('playing')) return;
+        var src=card.getAttribute('data-embed'); if(!src) return;
+        var ifr=document.createElement('iframe');
+        ifr.src=src;
+        ifr.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        ifr.allowFullscreen=true;
+        var t=card.querySelector('b');
+        ifr.title=t? t.textContent : 'stream';
+        card.classList.add('playing');
+        card.appendChild(ifr);
+      }
+      card.addEventListener('click',play);
+      card.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); play(); } });
+    });
+  }
+  bindTrail('trailYt'); bindTrail('trailAm');
 })();
 (function(){
   var f=document.getElementById('ytFacade'); if(!f) return;
@@ -1776,28 +1764,15 @@ body.glow-on .cursor-glow{opacity:1}
   f.addEventListener('click',play);
 })();
 (function(){
-  var discCoin=document.getElementById('discCoin');
-  if(!discCoin) return;
-  if(window.__lore.has('disc')) discCoin.classList.add('taken');
-  function take(e){
-    if(e){ e.preventDefault(); e.stopPropagation(); }
-    if(window.__lore.has('disc')) return;
-    window.__lore.mark('disc', discCoin);
-    discCoin.classList.add('taken');
-  }
-  discCoin.addEventListener('click',take);
-  discCoin.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ take(e); } });
-})();
-(function(){
   var stack=document.getElementById('dlxStack'),
-      inner=document.querySelector('.deluxe-inner'),
+      holder=document.getElementById('dbHolder'),
       egg=document.getElementById('dlxEgg'),n=0,t;
-  if(!stack||!inner||!egg) return;
+  if(!stack||!holder||!egg) return;
   function hit(){
     n++;
-    inner.classList.remove('shaking');
-    requestAnimationFrame(function(){requestAnimationFrame(function(){ inner.classList.add('shaking'); });});
-    setTimeout(function(){inner.classList.remove('shaking');},720);
+    holder.classList.remove('shaking');
+    requestAnimationFrame(function(){requestAnimationFrame(function(){ holder.classList.add('shaking'); });});
+    setTimeout(function(){holder.classList.remove('shaking');},720);
     if(n>=3){ n=0; egg.classList.add('show'); clearTimeout(t); t=setTimeout(function(){egg.classList.remove('show');},3600); }
   }
   stack.addEventListener('click',hit);
@@ -1855,31 +1830,32 @@ body.glow-on .cursor-glow{opacity:1}
     clearTimeout(fw._t); fw._t=setTimeout(function(){fw.classList.remove('show');},2600);
   });
 })();
+/* ——— THE BACKDOOR : timing-puzzle game ——— */
 (function(){
   var ov=document.getElementById('puzzle'); if(!ov) return;
   var stage=document.getElementById('pzStage'),
-      feed=document.getElementById('pzFeed'),
       errEl=document.getElementById('pzErr'),
       authBtn=document.getElementById('pzAuth'),
       paLbl=document.getElementById('paLbl'),
       paState=document.getElementById('paState'),
       closeBtn=document.getElementById('pzClose'),
       hand=document.getElementById('pzHand'),
-      riteHint=document.getElementById('riteHint');
+      riteHint=document.getElementById('riteHint'),
+      hudWrath=document.getElementById('hudWrath'),
+      hudSev=document.getElementById('hudSev');
   var relicPips=Array.prototype.slice.call(ov.querySelectorAll('.relics i'));
   var fpos=Array.prototype.slice.call(ov.querySelectorAll('.fpos'));
   var fingers=Array.prototype.slice.call(ov.querySelectorAll('.finger'));
-  var pips=Array.prototype.slice.call(ov.querySelectorAll('.grip-pips i'));
   var state=fingers.map(function(){return 'grip';});
-  var freed=false, busy=false, puzzleWon=false, pendingRegrip=false, handSet=false, secretPf=false;
-  var clawbacks=0, firstFreeDone=false;
-  var MERCY=4, gen=0, errT=null, riteT=null;
+  var freed=false, busy=false, puzzleWon=false, handSet=false, secretPf=false;
+  var wrath=0, sevN=0, teleIdx=-1, teleT=null, gapT=null, gen=0, errT=null, riteT=null;
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var BASE_WIN=reduce?2000:1100, MIN_WIN=reduce?1400:520;
+  var windowMs=BASE_WIN;
   var PWON='nv_puzzle_won';
   var SECRET='bd289'+'kouw.html';
   var ERR_NOCRED='the grip still holds the key';
   var ERR_CLEAR='the seal demands the relics';
-  var WARN_REGRIP='it clings again';
   var WORD_FREE=['severed','snap','free','gone'];
   var WORD_CRACK=['crack','split'];
   var pzMoveRAF=null;
@@ -1891,16 +1867,20 @@ body.glow-on .cursor-glow{opacity:1}
   function loreDone(){return !!(window.__lore&&window.__lore.isComplete());}
   function pWon(){try{return localStorage.getItem(PWON)==='1';}catch(e){return false;}}
   function setPWon(){try{localStorage.setItem(PWON,'1');}catch(e){}}
-  function freedN(){var n=0;state.forEach(function(s){if(s==='out')n++;});return n;}
   function prefetchSecret(){ if(secretPf) return; secretPf=true; if(window.__pf) window.__pf(SECRET); }
   function applyVisual(i){
     var out=state[i]==='out', crack=state[i]==='crack';
     fingers[i].classList.toggle('out',out);
     if(fpos[i]){ fpos[i].classList.toggle('cleared',out); fpos[i].classList.toggle('crack',crack); }
-    if(pips[i]) pips[i].classList.toggle('off',out);
+  }
+  function hud(){
+    if(hudSev) hudSev.textContent=sevN+'/5';
+    if(hudWrath){
+      var ws=hudWrath.children;
+      for(var k=0;k<ws.length;k++) ws[k].classList.toggle('off', k < (2-wrath) ? false : false) , ws[k].classList.toggle('off', k >= (3-wrath));
+    }
   }
   function syncCoins(){ var n=loreN(); relicPips.forEach(function(p,i){ p.classList.toggle('on', i<n); }); }
-  function syncAuth(){ if(feed) feed.classList.toggle('extracted', freedN()===5); ov.classList.toggle('seal-paid', freedN()===5); }
   function fingerXY(i){ var r=fpos[i].getBoundingClientRect(), s=stage.getBoundingClientRect(); return [r.left-s.left+r.width/2, r.top-s.top+r.height*0.32]; }
   function px(x,y,colors,n,spread){
     if(reduce) return;
@@ -1938,42 +1918,98 @@ body.glow-on .cursor-glow{opacity:1}
     requestAnimationFrame(function(){requestAnimationFrame(function(){ authBtn.classList.add('shake'); });});
   }
   function hideRite(){ if(riteHint) riteHint.classList.add('gone'); }
-  function regrip(){ var fr=[];state.forEach(function(s,i){if(s==='out')fr.push(i);}); if(!fr.length||clawbacks>=MERCY)return false;
-    var i=fr[Math.floor(Math.random()*fr.length)],fp=fpos[i]; pendingRegrip=true;clawbacks++; if(fp)fp.classList.add('claw'); buzz([15,30,15]);
-    setTimeout(function(){ state[i]='grip';applyVisual(i);syncAuth(); if(fp)fp.classList.remove('claw'); pendingRegrip=false; hitFx(i,'regrip','it clings'); banner(WARN_REGRIP);recoil(); },reduce?0:280); return true; }
-  function maybeRegrip(chance){if(chance>0&&Math.random()<chance&&clawbacks<MERCY){if(regrip())return true;}return false;}
-  function onFree(i){ state[i]='out';applyVisual(i);syncAuth();buzz(9);
-    if(state.every(function(s){return s==='out';})){win();return;}
-    var holding=5-freedN(); var chance=!firstFreeDone?0:(holding>=4?.25:holding===3?.4:holding===2?.6:.7); maybeRegrip(chance); firstFreeDone=true;twitch(); }
+  function clearTele(){
+    if(teleT){ clearTimeout(teleT); teleT=null; }
+    if(teleIdx>=0 && fpos[teleIdx]) fpos[teleIdx].classList.remove('claw');
+    teleIdx=-1;
+  }
+  function telegraph(){
+    if(freed||busy||!ov.classList.contains('show')) return;
+    var cand=[]; state.forEach(function(s,i){ if(s!=='out') cand.push(i); });
+    if(!cand.length) return;
+    teleIdx=cand[(Math.random()*cand.length)|0];
+    if(fpos[teleIdx]) fpos[teleIdx].classList.add('claw');
+    buzz(8);
+    teleT=setTimeout(function(){
+      if(fpos[teleIdx]) fpos[teleIdx].classList.remove('claw');
+      teleIdx=-1; teleT=null;
+      gapT=setTimeout(telegraph, 350+Math.random()*550);
+    }, windowMs);
+  }
+  function stopLoop(){ clearTele(); if(gapT){ clearTimeout(gapT); gapT=null; } }
+  function resetGrip(){
+    state=state.map(function(s){ return s==='out'?'out':'grip'; });
+    state.forEach(function(s,i){ applyVisual(i); });
+  }
+  function tap(i){
+    if(freed||busy) return;
+    hideRite();
+    if(state[i]==='out') return;
+    if(i===teleIdx){
+      clearTele();
+      if(state[i]==='grip'){ state[i]='crack'; hitFx(i,'crack',pick(WORD_CRACK)); buzz(14); }
+      else { state[i]='out'; sevN++; hitFx(i,'free',pick(WORD_FREE)); buzz(9); }
+      applyVisual(i); hud();
+      if(sevN>=5){ win(); return; }
+      windowMs=Math.max(MIN_WIN, windowMs-70);
+      gapT=setTimeout(telegraph, 300+Math.random()*500);
+    } else {
+      wrath++;
+      if(state[i]==='crack'){ state[i]='grip'; applyVisual(i); hitFx(i,'regrip','it clings'); }
+      else hitFx(i,'regrip','denied');
+      recoil(); twitch(); buzz([30,40,30]); hud();
+      if(wrath>=3){
+        wrath=0; resetGrip(); hud();
+        banner('the grip remembers');
+        stopLoop(); gapT=setTimeout(telegraph, 700);
+      } else {
+        banner('WRATH ' + wrath + '/3');
+      }
+    }
+  }
   function applyDoorState(){ var u=loreDone(); stage.classList.remove('unlocked','sealed','denied'); stage.classList.add(u?'unlocked':'sealed'); setAuthState(u?'cleared':'ready'); setLabels(u?'cleared':'ready'); if(u) prefetchSecret(); }
-  function win(){ freed=true;puzzleWon=true;setPWon(); stage.classList.add('free');syncAuth();buzz([25,45,25]);
-    px(stage.offsetWidth/2, stage.offsetHeight*0.45, ['#ffd24a','#ff2747','#d8c2ff','#e8dccb'],26,72); popup('the key is yours', stage.offsetWidth/2, stage.offsetHeight*0.45, 'gd');
-    applyDoorState(); }
-  function tap(i){ if(busy||pendingRegrip)return; hideRite(); if(state[i]==='out')return;
-    if(state[i]==='crack'){hitFx(i,'crack',pick(WORD_CRACK));recoil();onFree(i);return;}
-    var grip=0;state.forEach(function(s){if(s==='grip')grip++;});
-    if(grip===1){state[i]='crack';applyVisual(i);syncAuth();buzz(14);hitFx(i,'crack',pick(WORD_CRACK));recoil();maybeRegrip(.7);twitch();return;}
-    hitFx(i,'loose',pick(WORD_FREE)); onFree(i); }
+  function win(){
+    freed=true;puzzleWon=true;setPWon(); stopLoop();
+    stage.classList.add('free'); buzz([25,45,25]);
+    px(stage.offsetWidth/2, stage.offsetHeight*0.42, ['#ffd24a','#ff2747','#d8c2ff','#e8dccb'],26,72);
+    popup('the key is yours', stage.offsetWidth/2, stage.offsetHeight*0.42, 'gd');
+    ov.classList.add('seal-paid');
+    applyDoorState();
+  }
   function denyFlick(){
     if(reduce)return;
     stage.classList.remove('denied');
     requestAnimationFrame(function(){requestAnimationFrame(function(){ stage.classList.add('denied'); });});
     setTimeout(function(){stage.classList.remove('denied');},950);
   }
-  function attempt(){ if(busy)return; if(!freed){banner(ERR_NOCRED);shakeAuth();buzz([30,40,30]);return;} if(!loreDone()){banner(fmt(ERR_CLEAR,loreN()+'/'+loreTotal()));denyFlick();recoil();shakeAuth();buzz([35,30,35]);return;} busy=true;setAuthState('busy');paLbl.textContent='descending';paState.textContent=''; prefetchSecret(); setTimeout(function(){window.location.href=SECRET;},720); }
+  function attempt(){
+    if(busy)return;
+    if(!freed){banner(ERR_NOCRED);shakeAuth();buzz([30,40,30]);return;}
+    if(!loreDone()){banner(fmt(ERR_CLEAR,loreN()+'/'+loreTotal()));denyFlick();recoil();shakeAuth();buzz([35,30,35]);return;}
+    busy=true;setAuthState('busy');paLbl.textContent='descending';paState.textContent=''; prefetchSecret();
+    setTimeout(function(){window.location.href=SECRET;},720);
+  }
   function ensureHand(){ if(!hand||handSet) return; handSet=true; hand.onload=function(){ stage.classList.add('has-hand'); }; hand.onerror=function(){ hand.style.display='none'; }; hand.src='art/grip.png'; }
-  function openPuzzle(){ if(window.__ensureLateCSS)window.__ensureLateCSS(); gen++;busy=false;pendingRegrip=false; ensureHand();syncCoins();
+  function openPuzzle(){
+    if(window.__ensureLateCSS)window.__ensureLateCSS();
+    gen++;busy=false; ensureHand();syncCoins();
     freed=puzzleWon||pWon(); if(freed) puzzleWon=true;
+    stopLoop();
     stage.classList.remove('free','unlocked','sealed','denied','recoil','twitch');
-    state=fingers.map(function(){return freed?'out':'grip';}); if(!freed){clawbacks=0;firstFreeDone=false;}
-    fingers.forEach(function(f,i){applyVisual(i);}); syncAuth(); stage.classList.toggle('free',freed);
+    state=fingers.map(function(){return freed?'out':'grip';});
+    sevN=freed?5:0; wrath=0; windowMs=BASE_WIN;
+    state.forEach(function(s,i){ applyVisual(i); });
+    hud();
+    stage.classList.toggle('free',freed);
+    ov.classList.toggle('seal-paid',freed);
     if(freed){ applyDoorState(); } else { setAuthState('locked'); paLbl.textContent='break the seal'; paState.textContent='the grip holds'; }
     if(errEl) errEl.classList.remove('show');
-    if(riteHint){ if(freed) riteHint.classList.add('gone'); else { riteHint.classList.remove('gone'); clearTimeout(riteT); riteT=setTimeout(hideRite,6000); } }
+    if(riteHint){ if(freed) riteHint.classList.add('gone'); else { riteHint.classList.remove('gone'); clearTimeout(riteT); riteT=setTimeout(hideRite,7000); } }
     ov.classList.add('show');ov.setAttribute('aria-hidden','false');lockScroll();
     if(!reduce){ ov.style.setProperty('--px',0); ov.style.setProperty('--py',0); }
+    if(!freed){ gapT=setTimeout(telegraph, 900); }
   }
-  function closePuzzle(){gen++;clearTimeout(riteT);ov.classList.remove('show');ov.setAttribute('aria-hidden','true');unlockScroll();}
+  function closePuzzle(){gen++;stopLoop();clearTimeout(riteT);ov.classList.remove('show');ov.setAttribute('aria-hidden','true');unlockScroll();}
   window.__openPuzzle=openPuzzle;
   window.addEventListener('nv-lore',function(){ syncCoins(); if(ov.classList.contains('show')&&freed) applyDoorState(); if(loreDone()) prefetchSecret(); });
   if(!reduce){
