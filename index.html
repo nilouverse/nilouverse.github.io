@@ -123,7 +123,7 @@ h2,h3{text-wrap:balance}
 .poem .ln,.contact-head .sub,.cnote,.legal,.feat-body .it{text-wrap:pretty}
 .brand-key,.finger,.pz-auth,.cbtn,.foot-mark,.dlx-stack,.disc-coin,.ember-coin,.yt-play,
 .pill,.pcard,.single,.listen-pill,.topnav a,.foot-soc a,.socials a,.brand-name,.foot-top-link,
-.pz-close,.nm,.rail-btn,.rcard,.art-drop a,.au-tab,.pl-row,.pl-btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.pz-close,.nm,.rail-btn,.rcard,.scard,.art-drop a,.au-tab,.pl-row,.pl-btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .nm{color:var(--blood-bright);font-style:italic;cursor:pointer;border-radius:3px;
   text-shadow:0 0 14px rgba(255,39,71,.3);transition:text-shadow var(--dur-1) var(--ease)}
 .nm:hover{text-shadow:0 0 20px rgba(255,39,71,.6)}
@@ -318,7 +318,6 @@ body.glow-on .cursor-glow{opacity:1}
   padding:clamp(96px,14vh,132px) clamp(20px,6vw,64px) clamp(96px,17vh,150px)}
 .hero-inner a{pointer-events:auto}
 .hero-bottom{width:100%;max-width:none;display:flex;flex-direction:column;align-items:center;text-align:center}
-/* wordmark: compositor-only entrance + glow */
 .wordmark{font-family:var(--f-logo);line-height:.82;font-size:clamp(2.8rem,13vw,8rem);letter-spacing:.01em;
   display:inline-block;text-align:center;opacity:0;position:relative;
   -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;
@@ -505,6 +504,7 @@ body.glow-on .cursor-glow{opacity:1}
   background:var(--glass);
   -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
   box-shadow:var(--panel-shadow);overflow:hidden;padding:clamp(20px,4vw,36px)}
+.deck-down{display:flex;flex-direction:column}
 .deck::before{content:"";position:absolute;inset:0;background-size:cover;background-position:center 30%;pointer-events:none}
 .deck-down::before{background-image:var(--art-cover);opacity:.10;filter:saturate(1.1)}
 .deck-blood::before{background-image:var(--art-deluxe);opacity:.14;filter:grayscale(.7) brightness(.55)}
@@ -525,8 +525,8 @@ body.glow-on .cursor-glow{opacity:1}
 .au-tab.active{color:var(--bone)}
 .au-tab[data-tab="yt"].active{background:rgba(209,20,48,.18);border-color:var(--blood-bright);filter:drop-shadow(0 0 10px rgba(255,39,71,.35))}
 .au-tab[data-tab="am"].active{background:rgba(255,122,26,.16);border-color:var(--ember);filter:drop-shadow(0 0 10px rgba(255,122,26,.35))}
-.deck-panel{display:none}
-.deck-panel.active{display:block;animation:auFadeIn .4s var(--ease)}
+.deck-panel{display:none;flex:1}
+.deck-panel.active{display:flex;flex-direction:column;animation:auFadeIn .4s var(--ease)}
 @keyframes auFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .trail{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(230px,64vw,320px);gap:12px;overflow-x:auto;
   scroll-snap-type:x mandatory;scroll-padding-left:4px;padding:4px 4px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
@@ -554,8 +554,21 @@ body.glow-on .cursor-glow{opacity:1}
 .rcard.playing{cursor:default}
 .rcard.playing::after,.rcard.playing .rc-poster,.rcard.playing .rc-play,.rcard.playing .rc-dur{opacity:0}
 .rcard.playing .rc-body{opacity:0}
-/* ——— liquid-glass music player ——— */
-.player{display:grid;grid-template-columns:1fr;gap:18px}
+/* shorts teasers */
+.teasers{display:grid;grid-template-columns:repeat(2,minmax(0,170px));justify-content:center;gap:12px;margin-top:auto;padding-top:16px}
+.teasers-k{grid-column:1/-1;text-align:center;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-faint)}
+.scard{position:relative;aspect-ratio:9/16;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.16);background:#0c0809;cursor:pointer;
+  box-shadow:var(--panel-shadow);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.scard:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(209,20,48,.5)}
+.scard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.scard:hover img{transform:scale(1.05)}
+.scard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(7,4,5,.9));pointer-events:none}
+.sc-tag{position:absolute;left:10px;bottom:8px;z-index:2;font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--bone-dim)}
+.scard .rc-play{width:44px;height:44px}
+.scard iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:4}
+.scard.playing::after,.scard.playing img,.scard.playing .rc-play,.scard.playing .sc-tag{opacity:0}
+/* player */
+.player{display:grid;grid-template-columns:1fr;gap:18px;flex:1}
 @media(min-width:860px){.player{grid-template-columns:.9fr 1.1fr;align-items:stretch}}
 .pl-now{position:relative;border-radius:16px;padding:18px;border:1px solid rgba(255,255,255,.14);
   background:linear-gradient(160deg,rgba(255,122,26,.12),rgba(255,255,255,.05) 45%,rgba(12,8,9,.35));
@@ -846,15 +859,24 @@ body.glow-on .cursor-glow{opacity:1}
   background:url('art/coin.png') center/88% no-repeat;filter:blur(.5px) saturate(.7) brightness(.9);animation:coinSlow 70s linear infinite}
 @keyframes coinSlow{to{transform:rotate(360deg)}}
 #puzzle.seal-paid .pz-coinbg{opacity:.18}
+/* floating wrath coins */
+.wcoin{position:absolute;z-index:13;width:34px;height:34px;pointer-events:none;
+  filter:drop-shadow(0 0 8px rgba(255,190,90,.55));
+  animation:wfloat 3s ease-in-out infinite;transition:filter .4s var(--ease),opacity .4s var(--ease)}
+.wcoin img{width:100%;height:100%;object-fit:contain;transition:filter .4s var(--ease)}
+.wcoin.w0{top:2%;left:50%;margin-left:-17px}
+.wcoin.w1{top:50%;left:1%;margin-top:-17px;animation-delay:.7s}
+.wcoin.w2{top:50%;right:1%;margin-top:-17px;animation-delay:1.4s}
+@keyframes wfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.wcoin.off{filter:none;opacity:.55}
+.wcoin.off img{filter:grayscale(1) brightness(.45)}
 .pz-stage{position:absolute;inset:0;overflow:hidden;border-radius:50%}
 .pz-stage::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;pointer-events:none;z-index:0;
   background:radial-gradient(62% 74% at 50% 100%, rgba(0,0,0,.68), transparent 72%)}
-.hud{position:absolute;left:0;right:0;z-index:12;display:flex;align-items:center;justify-content:space-between;
+.hud{position:absolute;left:0;right:0;z-index:12;display:flex;align-items:center;justify-content:center;
   padding:0 18%;pointer-events:none;font-family:var(--f-px);font-size:.6rem;color:var(--bone-dim);text-shadow:1px 1px 0 #000}
 .hud-top{top:7%}
-.hud-bot{bottom:6%;justify-content:center;gap:14px}
-.hud .wp{font-style:normal;color:var(--blood-bright);margin-left:4px;text-shadow:0 0 6px rgba(255,39,71,.6)}
-.hud .wp.off{color:rgba(239,230,221,.14);text-shadow:none}
+.hud-bot{bottom:6%;gap:14px}
 .hud-sev{color:var(--cyan-soft)}
 .gate{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .4s var(--ease)}
 .pz-stage.free .gate{opacity:1}
@@ -1050,6 +1072,7 @@ body.glow-on .cursor-glow{opacity:1}
   .pz-mist i{animation:none}
   .pz-arena{animation:none}
   .pz-coinbg{animation:none}
+  .wcoin{animation:none}
   .pz-stage.free .pz-hand{opacity:0}
   .pz-stage.free .gate{opacity:1}
   .pz-stage.free .gate-grid,.pz-stage.free .gate-wall{opacity:1}
@@ -1261,6 +1284,19 @@ body.glow-on .cursor-glow{opacity:1}
                   <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
                 </article>
               </div>
+              <div class="teasers">
+                <p class="teasers-k">— teasers —</p>
+                <article class="scard" data-embed="https://www.youtube.com/embed/t9ioTRgErGA?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play teaser I">
+                  <img src="https://i.ytimg.com/vi/t9ioTRgErGA/hqdefault.jpg" alt="" loading="lazy" decoding="async">
+                  <span class="sc-tag">teaser I</span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+                <article class="scard" data-embed="https://www.youtube.com/embed/LkbeXkLjXHw?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play teaser II">
+                  <img src="https://i.ytimg.com/vi/LkbeXkLjXHw/hqdefault.jpg" alt="" loading="lazy" decoding="async">
+                  <span class="sc-tag">teaser II</span>
+                  <span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span>
+                </article>
+              </div>
             </div>
             <div class="deck-panel active" data-panel="am">
               <div class="player" id="player">
@@ -1276,12 +1312,12 @@ body.glow-on .cursor-glow{opacity:1}
                     <button class="pl-btn" id="plNext" type="button" aria-label="next track"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 6l8 6-8 6z"/></svg></button>
                   </div>
                   <div class="pl-bar" id="plBar" aria-label="seek"><span class="pl-fill" id="plFill"></span></div>
-                  <div class="pl-times"><span id="tCur">0:00</span><span id="tDur">37:45</span></div>
+                  <div class="pl-times"><span id="tCur">0:00</span><span id="tDur">37:44</span></div>
                 </div>
                 <div>
                   <ol class="pl-list" id="plList">
                     <li class="pl-row" data-i="0"><span class="idx"><span class="n">01</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Xero (Intro)</span><span class="du">3:26</span></li>
-                    <li class="pl-row" data-i="1"><span class="idx"><span class="n">02</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Down</span><span class="du">4:00</span></li>
+                    <li class="pl-row" data-i="1"><span class="idx"><span class="n">02</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Down</span><span class="du">3:59</span></li>
                     <li class="pl-row" data-i="2"><span class="idx"><span class="n">03</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">It's Fine</span><span class="du">3:56</span></li>
                     <li class="pl-row" data-i="3"><span class="idx"><span class="n">04</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Better Left Alone</span><span class="du">3:45</span></li>
                     <li class="pl-row" data-i="4"><span class="idx"><span class="n">05</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Can't Escape</span><span class="du">3:36</span></li>
@@ -1456,6 +1492,9 @@ body.glow-on .cursor-glow{opacity:1}
   <div class="pz-arena" id="pzArena">
     <span class="pz-rune" aria-hidden="true"></span>
     <span class="pz-coinbg" aria-hidden="true"></span>
+    <span class="wcoin w0" aria-hidden="true"><img src="art/coin.png" alt=""></span>
+    <span class="wcoin w1" aria-hidden="true"><img src="art/coin.png" alt=""></span>
+    <span class="wcoin w2" aria-hidden="true"><img src="art/coin.png" alt=""></span>
     <div class="pz-stage" id="pzStage">
       <div class="gate" aria-hidden="true">
         <span class="gate-grid"></span>
@@ -1468,7 +1507,6 @@ body.glow-on .cursor-glow{opacity:1}
         <span class="gate-scan"></span>
       </div>
       <div class="hud hud-top" aria-hidden="true">
-        <span id="hudWrath"><i class="wp">◆</i><i class="wp">◆</i><i class="wp">◆</i></span>
         <span class="hud-sev" id="hudSev">0/5</span>
       </div>
       <span class="rite-hint" id="riteHint">pry when it flinches<span class="rh-arr"></span></span>
@@ -1757,7 +1795,7 @@ body.glow-on .cursor-glow{opacity:1}
   },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
   els.forEach(function(e){io.observe(e)});
 })();
-/* vault decks + tabs + yt trail */
+/* vault: decks + tabs + trails + teasers */
 (function(){
   var decks=document.getElementById('decks');
   var dots=document.getElementById('deckDots');
@@ -1787,31 +1825,33 @@ body.glow-on .cursor-glow{opacity:1}
       });
     });
   }
+  function bindFacade(card){
+    function play(){
+      if(card.classList.contains('playing')) return;
+      var src=card.getAttribute('data-embed'); if(!src) return;
+      var ifr=document.createElement('iframe');
+      ifr.src=src;
+      ifr.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      ifr.allowFullscreen=true;
+      var t=card.querySelector('b')||card.querySelector('.sc-tag');
+      ifr.title=t? t.textContent : 'video';
+      card.classList.add('playing');
+      card.appendChild(ifr);
+    }
+    card.addEventListener('click',play);
+    card.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); play(); } });
+  }
   var trail=document.getElementById('trailYt');
   if(trail){
     trail.addEventListener('pointerenter',function(){ if(window.__pc){ window.__pc('https://www.youtube.com'); window.__pc('https://i.ytimg.com'); } },{passive:true});
-    trail.querySelectorAll('.vcard').forEach(function(card){
-      function play(){
-        if(card.classList.contains('playing')) return;
-        var src=card.getAttribute('data-embed'); if(!src) return;
-        var ifr=document.createElement('iframe');
-        ifr.src=src;
-        ifr.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-        ifr.allowFullscreen=true;
-        var t=card.querySelector('b');
-        ifr.title=t? t.textContent : 'video';
-        card.classList.add('playing');
-        card.appendChild(ifr);
-      }
-      card.addEventListener('click',play);
-      card.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); play(); } });
-    });
+    trail.querySelectorAll('.vcard').forEach(bindFacade);
   }
+  document.querySelectorAll('.scard').forEach(bindFacade);
 })();
-/* ——— liquid-glass player (streams via Audius open API; links stay Audiomack) ——— */
+/* liquid-glass player with fuzzy track resolution */
 (function(){
   var TRACKS=[
-    {t:'Xero (Intro)',d:206},{t:'Down',d:240},{t:"It's Fine",d:236},{t:'Better Left Alone',d:225},
+    {t:'Xero (Intro)',d:206},{t:'Down',d:239},{t:"It's Fine",d:236},{t:'Better Left Alone',d:225},
     {t:"Can't Escape",d:216},{t:'Failure',d:182},{t:'Black Blood',d:213},{t:"It's Over",d:182},
     {t:'Let It Go',d:216},{t:'True (Outro)',d:362}
   ];
@@ -1828,6 +1868,19 @@ body.glow-on .cursor-glow{opacity:1}
   function norm(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim(); }
   function fmtT(s){ s=Math.max(0,Math.round(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
   function apiGet(u){ return fetch(u).then(function(r){ if(!r.ok) throw 0; return r.json(); }); }
+  function fuzzy(map, target, expDur){
+    var t=norm(target);
+    if(map[t]) return map[t];
+    var best=null, bestScore=1e9;
+    for(var k in map){
+      var info=map[k];
+      if(k.indexOf(t)>-1 || t.indexOf(k)>-1){
+        var score=Math.abs((info.dur||expDur)-expDur);
+        if(score<bestScore){ bestScore=score; best=info; }
+      }
+    }
+    return best;
+  }
   function resolve(){
     if(API) return Promise.resolve(API);
     return apiGet('https://api.audius.co').then(function(j){
@@ -1838,9 +1891,9 @@ body.glow-on .cursor-glow{opacity:1}
         return apiGet(h+'/v1/tracks/search?query=Nilouverse&app_name=nilouverse-site').then(function(s){
           var map={};
           (s.data||[]).forEach(function(tr){
-            if(tr.user && /nilouverse/i.test(tr.user.name)) map[norm(tr.title)]={id:tr.id,host:h};
+            if(tr.user && /nilouverse/i.test(tr.user.name)) map[norm(tr.title)]={id:tr.id,host:h,dur:tr.duration};
           });
-          if(!map[norm('Down')]) throw 0;
+          if(!fuzzy(map,'Down',239)) throw 0;
           API={map:map}; return API;
         }).catch(function(){ return tryHost(k+1); });
       }
@@ -1867,7 +1920,7 @@ body.glow-on .cursor-glow{opacity:1}
     tDur.textContent=fmtT(TRACKS[i].d);
     fill.style.transform='scaleX(0)'; tCur.textContent='0:00';
     resolve().then(function(api){
-      var m=api.map[norm(TRACKS[i].t)];
+      var m=fuzzy(api.map, TRACKS[i].t, TRACKS[i].d);
       if(!m) throw 0;
       audio.src=m.host+'/v1/tracks/'+m.id+'/stream?app_name=nilouverse-site';
       return audio.play();
@@ -2001,7 +2054,7 @@ body.glow-on .cursor-glow{opacity:1}
     clearTimeout(fw._t); fw._t=setTimeout(function(){fw.classList.remove('show');},2600);
   });
 })();
-/* backdoor game */
+/* backdoor game: floating coins + reward chime */
 (function(){
   var ov=document.getElementById('puzzle'); if(!ov) return;
   var stage=document.getElementById('pzStage'),
@@ -2012,8 +2065,8 @@ body.glow-on .cursor-glow{opacity:1}
       closeBtn=document.getElementById('pzClose'),
       hand=document.getElementById('pzHand'),
       riteHint=document.getElementById('riteHint'),
-      hudWrath=document.getElementById('hudWrath'),
       hudSev=document.getElementById('hudSev');
+  var wcoins=Array.prototype.slice.call(ov.querySelectorAll('.wcoin'));
   var relicPips=Array.prototype.slice.call(ov.querySelectorAll('.relics i'));
   var fpos=Array.prototype.slice.call(ov.querySelectorAll('.fpos'));
   var fingers=Array.prototype.slice.call(ov.querySelectorAll('.finger'));
@@ -2039,6 +2092,24 @@ body.glow-on .cursor-glow{opacity:1}
   function pWon(){try{return localStorage.getItem(PWON)==='1';}catch(e){return false;}}
   function setPWon(){try{localStorage.setItem(PWON,'1');}catch(e){}}
   function prefetchSecret(){ if(secretPf) return; secretPf=true; if(window.__pf) window.__pf(SECRET); }
+  function rewardSound(){
+    try{
+      var Ctx=window.AudioContext||window.webkitAudioContext; if(!Ctx) return;
+      var ctx=rewardSound.ctx||(rewardSound.ctx=new Ctx());
+      if(ctx.state==='suspended') ctx.resume();
+      var t0=ctx.currentTime;
+      [880,1108.73,1318.51,1760].forEach(function(f,i){
+        var o=ctx.createOscillator(), g=ctx.createGain();
+        o.type='triangle'; o.frequency.value=f;
+        var t=t0+i*0.09;
+        g.gain.setValueAtTime(0.0001,t);
+        g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001,t+0.5);
+        o.connect(g); g.connect(ctx.destination);
+        o.start(t); o.stop(t+0.55);
+      });
+    }catch(e){}
+  }
   function applyVisual(i){
     var out=state[i]==='out', crack=state[i]==='crack';
     fingers[i].classList.toggle('out',out);
@@ -2046,10 +2117,7 @@ body.glow-on .cursor-glow{opacity:1}
   }
   function hud(){
     if(hudSev) hudSev.textContent=sevN+'/5';
-    if(hudWrath){
-      var ws=hudWrath.children;
-      for(var k=0;k<ws.length;k++) ws[k].classList.toggle('off', k >= (3-wrath));
-    }
+    wcoins.forEach(function(c,k){ c.classList.toggle('off', k < wrath); });
   }
   function syncCoins(){ var n=loreN(); relicPips.forEach(function(p,i){ p.classList.toggle('on', i<n); }); }
   function fingerXY(i){ var r=fpos[i].getBoundingClientRect(), s=stage.getBoundingClientRect(); return [r.left-s.left+r.width/2, r.top-s.top+r.height*0.32]; }
@@ -2079,7 +2147,7 @@ body.glow-on .cursor-glow{opacity:1}
   function unlockScroll(){document.documentElement.style.overflow='';document.body.style.overflow='';if(window.__lenis)window.__lenis.start();}
   function setAuthState(mode){authBtn.classList.remove('locked','ready','cleared','busy');authBtn.classList.add(mode);}
   function setLabels(mode){
-    if(mode==='cleared'){paLbl.textContent='descend';paState.textContent='the way is open';}
+    if(mode==='cleared'){paLbl.textContent='descend';paState.textContent='to claim your reward';}
     else if(mode==='ready'){paLbl.textContent='break the seal';paState.textContent='pry the grip first';}
     else if(mode!=='busy'){paLbl.textContent='break the seal';paState.textContent='the grip holds';}
   }
@@ -2142,6 +2210,7 @@ body.glow-on .cursor-glow{opacity:1}
   function win(){
     freed=true;puzzleWon=true;setPWon(); stopLoop();
     stage.classList.add('free'); buzz([25,45,25]);
+    rewardSound();
     px(stage.offsetWidth/2, stage.offsetHeight*0.42, ['#ffd24a','#ff2747','#d8c2ff','#e8dccb'],26,72);
     popup('the key is yours', stage.offsetWidth/2, stage.offsetHeight*0.42, 'gd');
     ov.classList.add('seal-paid');
