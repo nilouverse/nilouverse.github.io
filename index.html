@@ -262,7 +262,6 @@ body.glow-on .cursor-glow{opacity:1}
 .listen-pill:hover{background:var(--blood);filter:drop-shadow(0 0 12px rgba(209,20,48,.55));transform:translateY(-1px)}
 .listen-pill:hover::after{transform:translateX(420%) skewX(-20deg)}
 .listen-pill .tri{width:0;height:0;border-left:7px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent}
-/* mobile menu */
 .menu-btn{display:none;position:relative;width:40px;height:40px;cursor:pointer;border:1px solid rgba(255,39,71,.35);border-radius:10px;
   background:rgba(255,39,71,.10);clip-path:var(--cut-sm);transition:background var(--dur-1) var(--ease),filter var(--dur-1) var(--ease)}
 .menu-btn:hover{background:rgba(255,39,71,.2);filter:drop-shadow(0 0 10px rgba(255,39,71,.4))}
@@ -519,7 +518,6 @@ body.glow-on .cursor-glow{opacity:1}
 .pill-yt:hover{border-color:var(--blood-bright);box-shadow:0 0 16px -4px var(--blood-bright)}
 .pill-tg:hover{border-color:var(--cyan-soft);box-shadow:0 0 16px -4px var(--cyan-soft)}
 @media(min-width:860px){.feat{grid-template-columns:1.05fr 1fr;align-items:center}}
-/* ——— THE VAULT ——— */
 .vault{position:relative;z-index:1;margin-bottom:clamp(40px,7vw,80px)}
 .decks{display:grid;grid-auto-flow:column;grid-auto-columns:min(96%,940px);gap:16px;overflow-x:auto;
   scroll-snap-type:x mandatory;scroll-padding-left:4px;padding:4px 4px 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
@@ -592,24 +590,18 @@ body.glow-on .cursor-glow{opacity:1}
 .scard .rc-play{width:44px;height:44px}
 .scard iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:4}
 .scard.playing::after,.scard.playing img,.scard.playing .rc-play,.scard.playing .sc-tag{opacity:0}
-/* audiomack embed panel */
-.am-wrap{display:grid;grid-template-columns:1fr;gap:18px;flex:1}
-@media(min-width:860px){.am-wrap{grid-template-columns:1.1fr .9fr;align-items:stretch}}
-.am-frame{position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(255,39,71,.2);
+/* custom liquid-glass player */
+.player{display:grid;grid-template-columns:1fr;gap:18px;flex:1}
+@media(min-width:860px){.player{grid-template-columns:.9fr 1.1fr;align-items:stretch}}
+.pl-now{position:relative;border-radius:16px;padding:18px;border:1px solid rgba(255,39,71,.2);
   background:linear-gradient(160deg,rgba(255,39,71,.14),rgba(124,11,27,.06) 45%,rgba(10,4,7,.5));
   -webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
-  box-shadow:inset 0 1px 0 rgba(255,120,140,.18),0 18px 50px -30px rgba(0,0,0,.85);min-height:420px}
-.am-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#0c0809}
-.am-load{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
-  background-image:var(--art-cover);background-size:cover;background-position:center;transition:opacity .5s ease,visibility .5s}
-.am-load::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,7,8,.7),rgba(10,7,8,.86))}
-.am-load .spin{position:relative;z-index:1;width:42px;height:42px;border-radius:50%;border:2px solid rgba(239,230,221,.25);border-top-color:var(--blood-bright);animation:spin2 .8s linear infinite}
-@keyframes spin2{to{transform:rotate(360deg)}}
-.am-load span:last-child{position:relative;z-index:1;font-size:.64rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-dim)}
-.am-load.gone{opacity:0;visibility:hidden;pointer-events:none}
-.am-side{display:flex;flex-direction:column}
+  box-shadow:inset 0 1px 0 rgba(255,120,140,.18), inset 0 -1px 0 rgba(255,255,255,.06), 0 18px 50px -30px rgba(0,0,0,.85);
+  display:flex;flex-direction:column;gap:14px;overflow:hidden}
+.pl-now::before{content:"";position:absolute;top:-40%;left:-20%;width:140%;height:80%;pointer-events:none;
+  background:radial-gradient(60% 60% at 50% 0%,rgba(255,120,140,.12),transparent 70%)}
 /* spinning record + hidden coin */
-.disc-slot{position:relative;width:92px;height:92px;margin-bottom:14px;flex:none}
+.disc-slot{position:relative;width:92px;height:92px;flex:none;align-self:flex-start}
 .am-disc{position:absolute;inset:0;border:0;padding:0;border-radius:50%;overflow:hidden;cursor:pointer;z-index:2;
   box-shadow:0 10px 30px -12px rgba(255,39,71,.5), inset 0 0 0 1px rgba(255,255,255,.14);
   transition:transform .6s var(--ease-soft),box-shadow .3s var(--ease);will-change:transform}
@@ -624,16 +616,48 @@ body.glow-on .cursor-glow{opacity:1}
   background:radial-gradient(circle,rgba(255,210,110,.55),transparent 70%);animation:authPulse 2.2s ease-in-out infinite}
 .disc-coin:hover{transform:translate(-50%,-50%) scale(1.1)}
 .disc-coin.taken{opacity:0;transform:translate(-50%,-50%) scale(.35);pointer-events:none}
-.pl-list{list-style:none;display:flex;flex-direction:column;gap:6px;max-height:360px;overflow:auto;scrollbar-width:thin;padding:2px}
+/* iframe stage */
+.am-stage{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;
+  border:1px solid rgba(255,39,71,.18);
+  background:linear-gradient(135deg,rgba(255,39,71,.08),rgba(10,4,7,.6));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.am-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.am-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-serif);font-style:italic;color:var(--bone-faint);font-size:.95rem;letter-spacing:.04em;text-align:center;padding:16px;
+  background-image:var(--art-cover);background-size:cover;background-position:center}
+.am-empty::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,4,7,.6),rgba(10,4,7,.8))}
+.am-empty span{position:relative;z-index:1}
+.am-empty.hide{opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+.pl-meta{display:flex;flex-direction:column;gap:2px}
+.pl-meta b{font-family:var(--f-disp);font-weight:700;font-size:1.15rem;color:var(--bone)}
+.pl-meta i{font-family:var(--f-serif);font-style:italic;font-size:.85rem;color:var(--bone-faint)}
+.pl-ctl{display:flex;align-items:center;justify-content:center;gap:14px}
+.pl-btn{appearance:none;cursor:pointer;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+  color:var(--bone);background:rgba(255,39,71,.12);border:1px solid rgba(255,39,71,.22);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  transition:transform .2s var(--ease),background .2s var(--ease),filter .2s var(--ease)}
+.pl-btn:hover{transform:scale(1.1);background:rgba(255,39,71,.22)}
+.pl-btn svg{width:16px;height:16px}
+.pl-btn.main{width:54px;height:54px;border:none;background:linear-gradient(140deg,var(--ember),var(--blood));
+  filter:drop-shadow(0 6px 18px rgba(255,39,71,.45))}
+.pl-btn.main svg{width:20px;height:20px}
+.pl-btn.main:hover{filter:drop-shadow(0 8px 24px rgba(255,39,71,.65))}
+.pl-list{list-style:none;display:flex;flex-direction:column;gap:6px;max-height:400px;overflow:auto;scrollbar-width:thin;padding:2px}
 .pl-row{position:relative;display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;padding:10px 12px;
-  border-radius:12px;border:1px solid transparent;
+  border-radius:12px;border:1px solid transparent;cursor:pointer;
   transition:background .25s var(--ease),border-color .25s var(--ease),transform .2s var(--ease)}
-.pl-row.static{cursor:default}
-.pl-row.static:hover{background:rgba(255,39,71,.06);border-color:rgba(255,39,71,.14);transform:translateX(2px)}
+.pl-row:hover{background:rgba(255,39,71,.08);border-color:rgba(255,39,71,.18);transform:translateX(2px)}
 .pl-row .idx{position:relative;width:34px;height:14px;display:grid;place-items:center}
 .pl-row .idx .n{font-family:var(--f-mono);font-size:.68rem;color:var(--bone-faint)}
+.pl-row .idx .req{position:absolute;inset:0;display:none;align-items:flex-end;justify-content:center;gap:2px}
+.pl-row .idx .req i{width:2px;height:100%;background:var(--ember-soft);border-radius:1px;transform-origin:bottom;animation:eq 1s ease-in-out infinite}
+.pl-row .idx .req i:nth-child(2){animation-delay:.2s}.pl-row .idx .req i:nth-child(3){animation-delay:.4s}
 .pl-row .tt{font-size:.9rem;color:var(--bone-dim);transition:color .2s}
 .pl-row .du{font-size:.68rem;color:var(--bone-faint);font-variant-numeric:tabular-nums}
+.pl-row.on{background:linear-gradient(90deg,rgba(255,39,71,.18),rgba(255,255,255,.04));border-color:rgba(255,39,71,.35)}
+.pl-row.on .tt{color:var(--bone)}
+.pl-row.on .n{display:none}
+.pl-row.on .req{display:flex}
 .pl-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .deck-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px}
 .rail-btn{appearance:none;cursor:pointer;width:38px;height:38px;display:grid;place-items:center;
@@ -644,7 +668,6 @@ body.glow-on .cursor-glow{opacity:1}
 .dots{display:flex;gap:8px}
 .dots i{width:8px;height:8px;transform:rotate(45deg);background:rgba(239,230,221,.15);transition:var(--dur-1) var(--ease)}
 .dots i.on{background:var(--blood-bright);box-shadow:0 0 8px rgba(255,39,71,.6)}
-/* bloodbath deck */
 .db-grid{display:grid;grid-template-columns:1fr;gap:clamp(20px,4vw,36px);align-items:center}
 @media(min-width:760px){.db-grid{grid-template-columns:.9fr 1.1fr}}
 .db-holder{position:relative;display:flex;align-items:center;justify-content:center;min-height:280px}
@@ -810,7 +833,6 @@ body.glow-on .cursor-glow{opacity:1}
 .cstatus.show{opacity:1;transform:none}
 .cstatus.err{color:var(--blood-bright)}
 @media(min-width:680px){.cform{grid-template-columns:1fr 1fr}.cfield.full{grid-column:1/-1}.cfoot{grid-column:1/-1}}
-/* ——— THE BACKDOOR ——— */
 #puzzle{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:clamp(10px,2vh,18px);padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));
   overflow:hidden;opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility .5s}
@@ -1066,15 +1088,14 @@ body.glow-on .cursor-glow{opacity:1}
   transform:scaleX(0);transform-origin:right;transition:transform var(--dur-1) var(--ease)}
 .foot-top-link:hover{color:var(--blood-bright)}
 .foot-top-link:hover::after{transform:scaleX(1)}
-/* mobile: kill backdrop-filter on big surfaces = the smoothness win */
 @media(max-width:820px){
-  .ticket,.feat,.deck,.pcard,.contact-card,.am-frame{
+  .ticket,.feat,.deck,.pcard,.contact-card,.pl-now{
     -webkit-backdrop-filter:none;backdrop-filter:none;
     background:linear-gradient(160deg,rgba(255,39,71,.10),rgba(22,7,12,.9) 40%,rgba(10,4,7,.94));}
-  .pl-now,.m-menu{ -webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(16,5,10,.94);}
+  .m-menu{ -webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(16,5,10,.94);}
 }
 @supports not ((backdrop-filter:blur(4px)) or (-webkit-backdrop-filter:blur(4px))){
-  .ticket,.feat,.deck,.pcard,.contact-card,.am-frame,.topbar.scrolled,.au-tab,.pill,.socials a,.foot-soc a,.cinput,.carea{
+  .ticket,.feat,.deck,.pcard,.contact-card,.topbar.scrolled,.au-tab,.pill,.socials a,.foot-soc a,.cinput,.carea{
     background-color:rgba(20,7,12,.94)}
 }
 @media(prefers-reduced-motion:reduce){
@@ -1327,28 +1348,35 @@ body.glow-on .cursor-glow{opacity:1}
               </div>
             </div>
             <div class="deck-panel active" data-panel="am">
-              <div class="am-wrap">
-                <div class="am-frame">
-                  <div class="am-load" id="amLoad"><span class="spin"></span><span>loading audiomack…</span></div>
-                  <iframe id="amFrame" title="DOWN — full album on Audiomack" loading="lazy" src="about:blank"
-                    data-src="https://audiomack.com/embed/album/nilouversemusic/down?background=1"></iframe>
-                </div>
-                <div class="am-side">
+              <div class="player" id="player">
+                <div class="pl-now">
                   <div class="disc-slot">
                     <span class="disc-coin" id="discCoin" role="button" tabindex="0" aria-label="a coin pressed into the record"><img src="art/coin.png" alt="" draggable="false" decoding="async"></span>
                     <button class="am-disc" id="amDisc" type="button" aria-label="the record — slide it"><img src="art/adown.png" alt="" draggable="false" decoding="async"></button>
                   </div>
-                  <ol class="pl-list">
-                    <li class="pl-row static"><span class="idx"><span class="n">01</span></span><span class="tt">Xero (Intro)</span><span class="du">3:26</span></li>
-                    <li class="pl-row static"><span class="idx"><span class="n">02</span></span><span class="tt">Down</span><span class="du">3:59</span></li>
-                    <li class="pl-row static"><span class="idx"><span class="n">03</span></span><span class="tt">It's Fine</span><span class="du">3:56</span></li>
-                    <li class="pl-row static"><span class="idx"><span class="n">04</span></span><span class="tt">Better Left Alone</span><span class="du">3:45</span></li>
-                    <li class="pl-row static"><span class="idx"><span class="n">05</span></span><span class="tt">Can't Escape</span><span class="du">3:36</span></li>
-                    <li class="pl-row static"><span class="idx"><span class="n">06</span></span><span class="tt">Failure</span><span class="du">3:02</span></li>
-                    <li class="pl-row static"><span class="idx"><span class="n">07</span></span><span class="tt">Black Blood</span><span class="du">3:33</span></li>
-                    <li class="pl-row static"><span class="idx"><span class="n">08</span></span><span class="tt">It's Over</span><span class="du">3:02</span></li>
-                    <li class="pl-row static"><span class="idx"><span class="n">09</span></span><span class="tt">Let It Go</span><span class="du">3:36</span></li>
-                    <li class="pl-row static"><span class="idx"><span class="n">10</span></span><span class="tt">True (Outro)</span><span class="du">6:02</span></li>
+                  <div class="am-stage" id="amStage">
+                    <div class="am-empty" id="amEmpty"><span>tap a track below — it streams here</span></div>
+                    <iframe id="amFrame" title="now playing" allow="autoplay" src="about:blank" style="display:none"></iframe>
+                  </div>
+                  <div class="pl-meta"><b id="npTitle">DOWN</b><i id="npSub">tap a track to play</i></div>
+                  <div class="pl-ctl">
+                    <button class="pl-btn" id="plPrev" type="button" aria-label="previous track"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM18 6l-8 6 8 6z"/></svg></button>
+                    <button class="pl-btn main" id="plPlay" type="button" aria-label="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg></button>
+                    <button class="pl-btn" id="plNext" type="button" aria-label="next track"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 6l8 6-8 6z"/></svg></button>
+                  </div>
+                </div>
+                <div>
+                  <ol class="pl-list" id="plList">
+                    <li class="pl-row" data-i="0" data-slug="xero-intro"><span class="idx"><span class="n">01</span></span><span class="tt">Xero (Intro)</span><span class="du">3:26</span></li>
+                    <li class="pl-row" data-i="1" data-slug="down"><span class="idx"><span class="n">02</span></span><span class="tt">Down</span><span class="du">3:59</span></li>
+                    <li class="pl-row" data-i="2" data-slug="its-fine"><span class="idx"><span class="n">03</span></span><span class="tt">It's Fine</span><span class="du">3:56</span></li>
+                    <li class="pl-row" data-i="3" data-slug="better-left-alone"><span class="idx"><span class="n">04</span></span><span class="tt">Better Left Alone</span><span class="du">3:45</span></li>
+                    <li class="pl-row" data-i="4" data-slug="cant-escape"><span class="idx"><span class="n">05</span></span><span class="tt">Can't Escape</span><span class="du">3:36</span></li>
+                    <li class="pl-row" data-i="5" data-slug="failure"><span class="idx"><span class="n">06</span></span><span class="tt">Failure</span><span class="du">3:02</span></li>
+                    <li class="pl-row" data-i="6" data-slug="black-blood"><span class="idx"><span class="n">07</span></span><span class="tt">Black Blood</span><span class="du">3:33</span></li>
+                    <li class="pl-row" data-i="7" data-slug="its-over"><span class="idx"><span class="n">08</span></span><span class="tt">It's Over</span><span class="du">3:02</span></li>
+                    <li class="pl-row" data-i="8" data-slug="let-it-go"><span class="idx"><span class="n">09</span></span><span class="tt">Let It Go</span><span class="du">3:36</span></li>
+                    <li class="pl-row" data-i="9" data-slug="true-outro"><span class="idx"><span class="n">10</span></span><span class="tt">True (Outro)</span><span class="du">6:02</span></li>
                   </ol>
                   <div class="pl-foot" style="margin-top:12px">
                     <a class="pill pill-am" href="https://audiomack.com/nilouversemusic/album/down" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2l2-5 3 12 3-15 3 11 2-3h3"/></svg>Open on Audiomack</a>
@@ -1822,7 +1850,6 @@ body.glow-on .cursor-glow{opacity:1}
   },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
   els.forEach(function(e){io.observe(e)});
 })();
-/* mobile menu */
 (function(){
   var btn=document.getElementById('menuBtn'), menu=document.getElementById('mobileMenu');
   if(!btn||!menu) return;
@@ -1833,7 +1860,6 @@ body.glow-on .cursor-glow{opacity:1}
   document.addEventListener('click',function(e){ if(!e.target.closest('#menuBtn')&&!e.target.closest('#mobileMenu')) close(); });
   addEventListener('scroll',close,{passive:true});
 })();
-/* vault: decks + tabs + facades */
 (function(){
   var decks=document.getElementById('decks');
   var dots=document.getElementById('deckDots');
@@ -1886,33 +1912,42 @@ body.glow-on .cursor-glow{opacity:1}
   }
   document.querySelectorAll('.scard').forEach(bindFacade);
 })();
-/* audiomack album embed, lazy */
+/* audiomack per-track player */
 (function(){
+  var rows=Array.prototype.slice.call(document.querySelectorAll('.pl-row[data-slug]'));
+  if(!rows.length) return;
   var frame=document.getElementById('amFrame');
-  var load=document.getElementById('amLoad');
-  if(!frame) return;
-  var deck=document.getElementById('deckDown');
-  var loaded=false;
-  function warm(){ if(window.__pc) window.__pc('https://audiomack.com'); }
-  function loadEmbed(){
-    if(loaded) return; loaded=true; warm();
-    frame.src=frame.getAttribute('data-src');
-    setTimeout(function(){ if(load) load.classList.add('gone'); },9000);
-    frame.addEventListener('load',function(){ if(load) load.classList.add('gone'); },{once:true});
+  var empty=document.getElementById('amEmpty');
+  var npTitle=document.getElementById('npTitle');
+  var npSub=document.getElementById('npSub');
+  var btnPrev=document.getElementById('plPrev');
+  var btnPlay=document.getElementById('plPlay');
+  var btnNext=document.getElementById('plNext');
+  if(!frame||!empty) return;
+  var cur=-1;
+  var AM_BASE='https://audiomack.com/embed/nilouversemusic/song/';
+  function clearActive(){ rows.forEach(function(r){ r.classList.remove('on'); }); }
+  function loadTrack(i){
+    if(i<0||i>=rows.length) return;
+    var row=rows[i];
+    var slug=row.getAttribute('data-slug');
+    var title=row.querySelector('.tt').textContent;
+    if(window.__pc) window.__pc('https://audiomack.com');
+    clearActive(); row.classList.add('on');
+    cur=i;
+    npTitle.textContent=title;
+    npSub.textContent='Nilouverse — DOWN';
+    empty.classList.add('hide');
+    frame.src=AM_BASE+slug+'?background=1';
+    frame.style.display='block';
   }
-  if(deck){
-    var tab=deck.querySelector('.au-tab[data-tab="am"]');
-    if(tab) tab.addEventListener('click',loadEmbed);
-    deck.addEventListener('pointerenter',warm,{passive:true});
-    if('IntersectionObserver' in window){
-      var io=new IntersectionObserver(function(es){
-        es.forEach(function(en){ if(en.isIntersecting){ loadEmbed(); io.disconnect(); } });
-      },{rootMargin:'300px'});
-      io.observe(deck);
-    } else loadEmbed();
-  }
+  rows.forEach(function(r){
+    r.addEventListener('click',function(){ loadTrack(+r.getAttribute('data-i')); });
+  });
+  if(btnPrev) btnPrev.addEventListener('click',function(){ loadTrack(cur<=0? 0 : cur-1); });
+  if(btnNext) btnNext.addEventListener('click',function(){ loadTrack(cur>=rows.length-1? rows.length-1 : cur+1); });
+  if(btnPlay) btnPlay.addEventListener('click',function(){ if(cur<0) loadTrack(0); });
 })();
-/* hidden coin behind the spinning record */
 (function(){
   var disc=document.getElementById('amDisc');
   var coin=document.getElementById('discCoin');
@@ -2013,7 +2048,6 @@ body.glow-on .cursor-glow{opacity:1}
     clearTimeout(fw._t); fw._t=setTimeout(function(){fw.classList.remove('show');},2600);
   });
 })();
-/* backdoor game */
 (function(){
   var ov=document.getElementById('puzzle'); if(!ov) return;
   var stage=document.getElementById('pzStage'),
