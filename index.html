@@ -38,7 +38,8 @@
 <noscript><style>#preloader{display:none!important}html,body{overflow:auto!important}.wordmark,.socials{opacity:1!important;transform:none!important}.wordmark::before,.wordmark::after{display:none!important}.photo{opacity:.97!important}[data-reveal]{opacity:1!important;transform:none!important}.m-menu{position:static!important;opacity:1!important;transform:none!important;pointer-events:auto!important}.pl-list{max-height:none!important;-webkit-mask-image:none!important;mask-image:none!important}</style></noscript>
 <style>
 :root{color-scheme:dark;--ink:#0a0608;--ink2:#0e0709;--blood:#b3102a;--blood-deep:#7c0b1b;--blood-bright:#ff2747;--blood-wet:#7c0b1b;--ember:#ff7a1a;--ember-soft:#ffb24d;--cyan:#34e3d6;--cyan-soft:#9bf3ea;--magenta:#ff2d7e;--magenta-soft:#ff86b6;--violet:#b07cff;--bone:#efe6dd;--bone-dim:#b7a6ab;--bone-faint:#94808a;--line:rgba(239,230,221,.12);--edge:rgba(239,230,221,.06);--ease:cubic-bezier(.22,.61,.36,1);--ease-soft:cubic-bezier(.16,.84,.44,1);--dur-1:.35s;--dur-2:.7s;--f-logo:'Metal Mania',cursive;--f-disp:'Syne',sans-serif;--f-serif:'Instrument Serif',serif;--f-body:'Space Grotesk',sans-serif;--f-egg:'Creepster',cursive;--f-px:'Press Start 2P',var(--f-mono);--f-mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;--rad:clamp(14px,2.2vw,22px);--panel-edge:1px solid rgba(255,39,71,.16);--panel-shadow:0 24px 70px -38px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,120,140,.14),inset 0 -1px 0 rgba(255,255,255,.04);
---glass:linear-gradient(158deg,rgba(255,39,71,.13),rgba(24,9,14,.82) 38%,rgba(9,4,6,.94) 80%);--glass-blur:blur(20px) saturate(1.6);--coin2:20px;--cut:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);--cut-sm:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);--seam:linear-gradient(90deg,transparent,rgba(209,20,48,.55) 18%,rgba(255,122,26,.4) 50%,rgba(209,20,48,.55) 82%,transparent);--art-hero:url('art/hero.jpg');--art-cover:url('art/cdown.jpg');--art-album:url('art/adown.png');--art-deluxe:url('art/ablank.png');--art-single:url('art/acdown.jpg');--art-trees:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'><path fill='%23040209' d='M0,320 L0,210 L30,150 L55,235 L95,120 L130,250 L170,170 L210,90 L250,240 L300,140 L340,250 L380,60 L420,250 L470,160 L520,250 L560,110 L610,240 L660,180 L700,70 L740,250 L800,150 L850,250 L900,100 L950,240 L1000,170 L1050,80 L1100,250 L1150,150 L1200,240 L1250,120 L1300,250 L1350,160 L1400,210 L1440,250 L1440,320 Z'/></svg>");--beat:.63s;}
+--glass:linear-gradient(158deg,rgba(255,39,71,.13),rgba(24,9,14,.82) 38%,rgba(9,4,6,.94) 80%);--glass-blur:blur(20px) saturate(1.6);--coin2:20px;--cut:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);--cut-sm:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);--seam:linear-gradient(90deg,transparent,rgba(209,20,48,.55) 18%,rgba(255,122,26,.4) 50%,rgba(209,20,48,.55) 82%,transparent);--art-hero:url('art/hero.jpg');--art-cover:url('art/cdown.jpg');--art-album:url('art/adown.png');--art-deluxe:url('art/ablank.png');--art-single:url('art/acdown.jpg');--art-trees:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'><path fill='%23040209' d='M0,320 L0,210 L30,150 L55,235 L95,120 L130,250 L170,170 L210,90 L250,240 L300,140 L340,250 L380,60 L420,250 L470,160 L520,250 L560,110 L610,240 L660,180 L700,70 L740,250 L800,150 L850,250 L900,100 L950,240 L1000,170 L1050,80 L1100,250 L1150,150 L1200,240 L1250,120 L1300,250 L1350,160 L1400,210 L1440,250 L1440,320 Z'/></svg>");--beat:.63s;
+--motion-scale:1;--motion-ease:var(--ease);--glow-boost:1;}
 *{box-sizing:border-box;margin:0;padding:0}
 html{overflow-x:clip;scrollbar-gutter:stable}
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
@@ -69,6 +70,10 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 @keyframes bdFlick{0%,100%{opacity:1}43%{opacity:.78}47%{opacity:.95}52%{opacity:.6}57%{opacity:.92}}
 .scroll-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:80;transform:scaleX(0);transform-origin:0 50%;will-change:transform;background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright),var(--ember));box-shadow:0 0 10px rgba(255,39,71,.5)}
 @supports (animation-timeline: scroll()){.scroll-progress{animation:scaleProgress linear;animation-timeline:scroll()}@keyframes scaleProgress{from{transform:scaleX(0)}to{transform:scaleX(1)}}}
+.descent-veil{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .8s var(--ease);background:linear-gradient(180deg,transparent 32%,rgba(5,2,3,.14) 60%,rgba(5,2,3,.36) 100%);will-change:opacity}
+body.depth-1 .descent-veil{opacity:.34}
+body.depth-2 .descent-veil{opacity:.58}
+body.depth-3 .descent-veil{opacity:.8}
 .lore-toast{position:fixed;left:50%;bottom:86px;z-index:340;max-width:80vw;transform:translateX(-50%) translateY(8px);font-family:var(--f-egg);font-size:1.05rem;letter-spacing:.03em;color:var(--cyan-soft);text-align:center;background:rgba(8,5,6,.9);border:1px solid var(--line);border-radius:10px;padding:8px 16px;box-shadow:0 12px 30px -14px rgba(0,0,0,.8);opacity:0;transition:opacity .4s var(--ease),transform .4s var(--ease);pointer-events:none}
 .lore-toast.show{opacity:1;transform:translateX(-50%)}
 .lore-fly{position:fixed;z-index:450;width:calc(var(--coin2)*1.5);height:calc(var(--coin2)*1.5);margin:calc(var(--coin2)*-0.75) 0 0 calc(var(--coin2)*-0.75);background:url('art/coin.png') center/contain no-repeat;pointer-events:none;filter:drop-shadow(0 0 8px rgba(255,190,90,.55));transition:transform .85s cubic-bezier(.5,-0.2,.5,1.15),opacity .85s ease}
@@ -89,8 +94,8 @@ body.beat-live .key-ring::after{animation:ringBeat var(--beat,.63s) ease-in-out 
 @keyframes ringBeat{0%,100%{opacity:0}40%{opacity:.85}}
 .brand-logo.has-coin .key-ring{border-color:rgba(239,230,221,.34)}
 .brand-logo.done .key-ring{border-style:solid;border-color:rgba(255,210,120,.6);background:radial-gradient(circle,rgba(255,190,90,.10),transparent 70%);box-shadow:0 0 16px -4px rgba(255,190,90,.55),inset 0 0 10px -4px rgba(255,190,90,.45)}
-.brand-key{position:absolute;left:50%;top:52%;width:clamp(42px,5.4vw,58px);transform:translate(-50%,-50%);line-height:0;cursor:pointer;transition:transform .35s var(--ease)}
-.brand-key .bk-bob{display:block;animation:keyBob 3s ease-in-out infinite}
+.brand-key{position:absolute;left:50%;top:52%;width:clamp(42px,5.4vw,58px);transform:translate(-50%,-50%);line-height:0;cursor:pointer;transition:transform .35s var(--motion-ease)}
+.brand-key .bk-bob{display:block;animation:keyBob calc(3s / var(--motion-scale,1)) ease-in-out infinite}
 .brand-key img{width:100%;height:auto;display:block;pointer-events:none;filter:drop-shadow(0 0 9px rgba(209,20,48,.55));transition:filter .35s var(--ease)}
 @keyframes keyBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-2px) rotate(2deg)}}
 .brand-key:hover{transform:translate(-50%,-50%) scale(1.12)}.brand-key:hover img{filter:drop-shadow(0 0 15px rgba(255,39,71,.8))}
@@ -177,15 +182,21 @@ body.beat-live .key-ring::after{animation:ringBeat var(--beat,.63s) ease-in-out 
 .is-ready .wordmark::after{animation:wmGhost 1.1s cubic-bezier(.2,.7,.2,1) .15s both}
 @keyframes wmIn{0%{opacity:0;transform:translateY(26px)}100%{opacity:1;transform:none}}
 @keyframes wmGhost{0%{opacity:.7;transform:translateX(-16px)}100%{opacity:0;transform:translateX(10px)}}
-.wordmark:hover{animation:flick .9s steps(1) 1}
+.wordmark:hover{animation:flick calc(.9s / var(--motion-scale,1)) steps(1) 1}
 @keyframes flick{0%,100%{opacity:1}42%{opacity:.72}47%{opacity:.95}52%{opacity:.66}58%{opacity:.9}}
 .wm-sub{display:block;font-family:var(--f-body);font-weight:400;-webkit-text-stroke:0;letter-spacing:.62em;font-size:clamp(.62rem,2.4vw,1rem);color:var(--bone-dim);margin-top:.5em;padding-left:.62em;-webkit-background-clip:border-box;background:none;color:var(--bone-dim)}
 /* blood splatters — messy ink vibe. plain = rewards-only, bs-ambient = always (faint) */
-.blood-splatter{position:absolute;pointer-events:none;opacity:0;transition:opacity .8s var(--ease);z-index:1;transform:rotate(var(--rot,0deg)) scaleX(var(--flip,1))}
+.blood-splatter{position:absolute;pointer-events:none;opacity:0;transition:opacity .8s var(--ease),transform .8s var(--ease-soft),filter .8s var(--ease);z-index:1;transform:rotate(var(--rot,0deg)) scaleX(var(--flip,1))}
 .blood-splatter img{width:100%;height:auto;filter:drop-shadow(0 4px 12px rgba(124,11,27,.55)) saturate(1.05)}
 .blood-splatter.bs-ambient{opacity:.18}
 body.rewards .blood-splatter{opacity:.8}
 body.rewards .blood-splatter.bs-ambient{opacity:.32}
+/* POST-PUZZLE BLOOD STATE: intentionally obvious. Do not make this subtle again. */
+body.blood-revealed .blood-splatter{opacity:1;transform:rotate(var(--rot,0deg)) scaleX(var(--flip,1)) scale(1.18)}
+body.blood-revealed .blood-splatter img{filter:drop-shadow(0 8px 20px rgba(124,11,27,.72)) saturate(1.28) contrast(1.08)}
+body.blood-revealed .blood-splatter.bs-ambient{opacity:.72;transform:rotate(var(--rot,0deg)) scaleX(var(--flip,1)) scale(1.12)}
+.blood-extra{opacity:0;transform:rotate(var(--rot,0deg)) scaleX(var(--flip,1)) scale(.82)}
+body.blood-revealed .blood-extra{opacity:.96;transform:rotate(var(--rot,0deg)) scaleX(var(--flip,1)) scale(1.08)}
 .socials{display:flex;justify-content:center;gap:8px;margin-top:1.5rem;opacity:0}
 .is-ready .socials{animation:socIn .8s .55s both}
 @keyframes socIn{from{opacity:0}to{opacity:1}}
@@ -197,9 +208,9 @@ body.rewards .blood-splatter.bs-ambient{opacity:.32}
 .hero-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:1.5rem}
 .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:clamp(22px,4.5vh,38px);color:var(--cyan-soft);font-size:.56rem;letter-spacing:.34em;text-transform:uppercase;opacity:.9}
 .sc-mouse{width:20px;height:32px;border:1.5px solid rgba(155,243,234,.55);border-radius:11px;position:relative;box-shadow:0 0 12px -4px rgba(52,227,214,.5)}
-.sc-mouse::after{content:"";position:absolute;left:50%;top:5px;width:4px;height:6px;margin-left:-2px;border-radius:45% 45% 65% 65%;background:var(--blood-bright);box-shadow:0 0 6px rgba(255,39,71,.6);animation:scDrop 2s var(--ease) infinite}
+.sc-mouse::after{content:"";position:absolute;left:50%;top:5px;width:4px;height:6px;margin-left:-2px;border-radius:45% 45% 65% 65%;background:var(--blood-bright);box-shadow:0 0 6px rgba(255,39,71,.6);animation:scDrop calc(2s / var(--motion-scale,1)) var(--ease) infinite}
 @keyframes scDrop{0%{opacity:0;transform:translateY(0)}25%{opacity:1}60%{opacity:1}85%{opacity:0;transform:translateY(13px)}100%{opacity:0;transform:translateY(13px)}}
-.sc-chev{width:9px;height:9px;border-right:1.5px solid var(--cyan-soft);border-bottom:1.5px solid var(--cyan-soft);transform:rotate(45deg);animation:scBounce 1.8s var(--ease) infinite;margin-top:-3px}
+.sc-chev{width:9px;height:9px;border-right:1.5px solid var(--cyan-soft);border-bottom:1.5px solid var(--cyan-soft);transform:rotate(45deg);animation:scBounce calc(1.8s / var(--motion-scale,1)) var(--ease) infinite;margin-top:-3px}
 @keyframes scBounce{0%,100%{transform:rotate(45deg) translate(0,0);opacity:.5}50%{transform:rotate(45deg) translate(2px,2px);opacity:1}}
 @media(min-width:820px){.photo{height:100%;object-fit:cover;object-position:50% 28%;-webkit-mask-image:radial-gradient(150% 125% at 50% 44%,#000 64%,transparent 100%);mask-image:radial-gradient(150% 125% at 50% 44%,#000 64%,transparent 100%)}}
 @media(max-width:820px){.hero,.hero-inner{min-height:112svh}.photo{top:-13%}.hero-inner{padding-bottom:clamp(64px,10vh,110px)}}
@@ -209,7 +220,7 @@ body.rewards .blood-splatter.bs-ambient{opacity:.32}
 .eyebrow .ln,.side-tag .ln{height:2px;width:42px;background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright));transform:skewX(-24deg);box-shadow:4px 0 0 -0px rgba(209,20,48,.35)}
 /* ekg pulse-line: paused until its [data-reveal] parent is .in (no offscreen paint) */
 .ekg{flex:none;margin-left:2px;opacity:.85;overflow:visible}
-.ekg path{stroke:var(--blood-bright);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;fill:none;stroke-dasharray:100;stroke-dashoffset:100;filter:drop-shadow(0 0 4px rgba(255,39,71,.5));animation:ekgDraw 2.6s var(--ease) infinite;animation-play-state:paused}
+.ekg path{stroke:var(--blood-bright);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;fill:none;stroke-dasharray:100;stroke-dashoffset:100;filter:drop-shadow(0 0 4px rgba(255,39,71,.5));animation:ekgDraw calc(2.6s / var(--motion-scale,1)) var(--ease) infinite;animation-play-state:paused}
 [data-reveal].in .ekg path{animation-play-state:running}
 @keyframes ekgDraw{0%{stroke-dashoffset:100;opacity:0}12%{opacity:1}55%{stroke-dashoffset:0;opacity:1}78%{opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 .ticket-head h2,.listen-head h2,.releases-head h2,.singles-head h3,.contact-head h3,.feat-body h3{background:linear-gradient(180deg,#fff 0%,var(--bone) 55%,#c9b6ac 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -241,16 +252,18 @@ body.rewards .art-drop{display:flex}
 .for-fans{font-family:var(--f-body);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-faint);margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
 @media(min-width:820px){.ticket{grid-template-columns:.85fr 1.15fr;align-items:start;background-image:var(--glass),repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 14px);background-size:auto,1px 100%;background-position:0 0,calc(42%) 0;background-repeat:no-repeat,no-repeat}.ticket-head{position:sticky;top:98px}}
 .listen{position:relative;z-index:1;padding:clamp(40px,7vh,84px) clamp(18px,5vw,48px);overflow:hidden;content-visibility:auto;contain-intrinsic-size:auto 1200px;contain:layout style}
-.listen::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(209,20,48,.5),transparent) top/100% 1px no-repeat,radial-gradient(60% 40% at 80% 0%,rgba(209,20,48,.08),transparent 60%),radial-gradient(50% 40% at 10% 100%,rgba(52,227,214,.05),transparent 60%)}
-.listen::after{content:"SIDE A";position:absolute;top:6%;right:-1.5%;z-index:0;font-family:var(--f-logo);font-size:clamp(5.5rem,17vw,13rem);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(209,20,48,.07);pointer-events:none;user-select:none}
-.vault::after{content:"SIDE B";position:absolute;top:-2%;left:-1.5%;z-index:0;font-family:var(--f-logo);font-size:clamp(5.5rem,17vw,13rem);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(209,20,48,.07);pointer-events:none;user-select:none}
+.listen::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(209,20,48,.5),transparent) top/100% 1px no-repeat,radial-gradient(60% 40% at 80% 0%,rgba(209,20,48,.08),transparent 60%),radial-gradient(50% 40% at 10% 100%,rgba(52,227,214,.05),transparent 60%);opacity:.72;transition:opacity .8s var(--ease)}
+.listen::after{content:"SIDE A";position:absolute;top:6%;right:-1.5%;z-index:0;font-family:var(--f-logo);font-size:clamp(5.5rem,17vw,13rem);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(209,20,48,.07);pointer-events:none;user-select:none;opacity:.75;transition:opacity .8s var(--ease)}
+.vault::after{content:"SIDE B";position:absolute;top:-2%;left:-1.5%;z-index:0;font-family:var(--f-logo);font-size:clamp(5.5rem,17vw,13rem);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(209,20,48,.07);pointer-events:none;user-select:none;opacity:.75;transition:opacity .8s var(--ease)}
+body.depth-1 .listen::before,body.depth-2 .listen::before,body.depth-3 .listen::before{opacity:1}
+body.depth-2 .listen::after,body.depth-2 .vault::after{opacity:1}
 .listen-inner{position:relative;z-index:1;max-width:1240px;margin:0 auto}
 .listen-head{margin-bottom:clamp(34px,6vw,64px)}
 .listen-head h2{font-family:var(--f-disp);font-weight:800;line-height:.86;font-size:clamp(2.8rem,11vw,6rem);letter-spacing:-.01em}
 .listen-head h2 .per{color:var(--blood-bright);-webkit-text-fill-color:var(--blood-bright);animation:perPulse 2.4s ease-in-out infinite}
 @keyframes perPulse{0%,100%{opacity:.6}50%{opacity:1}}
 .feat{position:relative;display:grid;grid-template-columns:1fr;gap:clamp(22px,4vw,40px);padding:clamp(20px,4vw,34px);background:var(--glass);border:var(--panel-edge);border-radius:var(--rad);overflow:hidden;box-shadow:var(--panel-shadow);margin-bottom:clamp(40px,7vw,72px)}
-.feat-media{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(255,39,71,.2);border-radius:14px;background-color:#000;background-image:linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5));background-size:16px 2px,2px 16px,16px 2px,2px 16px,16px 2px,2px 16px,16px 2px,2px 16px;background-position:8px 8px,8px 8px,calc(100% - 8px) 8px,calc(100% - 8px) 8px,8px calc(100% - 8px),8px calc(100% - 8px),calc(100% - 8px) calc(100% - 8px),calc(100% - 8px) calc(100% - 8px);background-repeat:no-repeat;box-shadow:0 24px 50px -24px rgba(209,20,48,.4),inset 0 1px 0 rgba(255,120,140,.12);transition:box-shadow var(--dur-2) var(--ease)}
+.feat-media{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(255,39,71,.2);border-radius:14px;background-color:#000;background-image:linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5)),linear-gradient(rgba(239,230,221,.5),rgba(239,230,221,.5));background-size:16px 2px,2px 16px,16px 2px,2px 16px,16px 2px,2px 16px,16px 2px,2px 16px;background-position:8px 8px,8px 8px,calc(100% - 8px) 8px,calc(100% - 8px) 8px,8px calc(100% - 8px),8px calc(100% - 8px),calc(100% - 8px) calc(100% - 8px),calc(100% - 8px) calc(100% - 8px);background-repeat:no-repeat;box-shadow:0 24px 50px -24px rgba(209,20,48,.4),inset 0 1px 0 rgba(255,120,140,.12);transition:box-shadow var(--dur-2) var(--ease),border-color var(--dur-2) var(--ease)}
 .feat:hover .feat-media{box-shadow:0 30px 70px -24px rgba(209,20,48,.55),inset 0 1px 0 rgba(255,120,140,.12)}
 .feat-media iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:0}
 .feat-media .scan{position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.3),transparent 16%,transparent 84%,rgba(0,0,0,.45)),repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 1px,transparent 1px 3px)}
@@ -288,7 +301,8 @@ body.rewards .art-drop{display:flex}
 .stat svg{width:14px;height:14px;color:var(--blood-bright);flex:none}
 .stat b{color:var(--bone);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
 .vault{position:relative;z-index:1;margin-bottom:clamp(40px,7vw,80px)}
-.vault::before{content:"";position:absolute;top:0;left:10%;right:10%;height:1px;background:var(--seam);opacity:.6}
+.vault::before{content:"";position:absolute;top:0;left:10%;right:10%;height:1px;background:var(--seam);opacity:.55;transition:opacity .8s var(--ease)}
+body.depth-2 .vault::before,body.depth-3 .vault::before{opacity:.9}
 .releases-head{max-width:940px;margin:0 auto clamp(14px,3vw,24px);padding:0 clamp(12px,4vw,32px)}
 .releases-head .eyebrow{margin-bottom:10px}
 .releases-head h2{font-family:var(--f-disp);font-weight:800;line-height:.9;font-size:clamp(2rem,8vw,3.8rem);letter-spacing:-.01em}
@@ -320,7 +334,7 @@ body.rewards .art-drop{display:flex}
 .deck-blood::before{background-image:var(--art-deluxe);opacity:.14;filter:grayscale(.7) brightness(.55)}
 .deck::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(255,120,140,.08),transparent 18%,transparent 82%,rgba(10,4,7,.35))}
 .deck>*{position:relative;z-index:1}
-.pulse-glow{position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:.35;box-shadow:0 0 64px -22px rgba(209,20,48,.9),inset 0 0 34px rgba(209,20,48,.14);animation:authPulse 3.2s ease-in-out infinite}
+.pulse-glow{position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:.35;box-shadow:0 0 64px -22px rgba(209,20,48,.9),inset 0 0 34px rgba(209,20,48,.14);animation:authPulse calc(3.2s / var(--motion-scale,1)) ease-in-out infinite}
 .alb-hero{display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,4vw,34px);align-items:center;margin-bottom:clamp(14px,3vw,24px)}
 .alb-art{position:relative;width:clamp(150px,24vw,216px);aspect-ratio:1/1;border-radius:18px;overflow:hidden;border:1px solid rgba(255,39,71,.24);box-shadow:0 24px 60px -24px rgba(209,20,48,.5),inset 0 1px 0 rgba(255,120,140,.2);background:#0c0809;flex:none;perspective:600px}
 .alb-art>img{width:100%;height:100%;object-fit:cover;transition:transform .45s var(--ease);backface-visibility:hidden}
@@ -345,7 +359,7 @@ body.rewards .art-drop{display:flex}
 @media(max-width:640px){.au-tab{padding:9px 14px}}
 .deck-panel{display:none}
 .deck-panel.active{display:block;animation:auFadeIn .4s var(--ease)}
-.pl-now{position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:14px;padding:12px 14px 15px;margin:clamp(10px,2vw,16px) 0;border-radius:14px;border:1px solid rgba(255,39,71,.2);background:linear-gradient(90deg,rgba(255,39,71,.12),rgba(10,4,7,.4) 60%);box-shadow:inset 0 1px 0 rgba(255,120,140,.16);overflow:hidden}
+.pl-now{position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:14px;padding:12px 14px 15px;margin:clamp(10px,2vw,16px) 0;border-radius:14px;border:1px solid rgba(255,39,71,.2);background:linear-gradient(90deg,rgba(255,39,71,.12),rgba(10,4,7,.4) 60%);box-shadow:inset 0 1px 0 rgba(255,120,140,.16);overflow:hidden;transition:border-color var(--dur-2) var(--ease)}
 .pl-now::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:repeating-linear-gradient(90deg,rgba(209,20,48,.75) 0 10px,rgba(209,20,48,.22) 10px 20px);opacity:.7}
 .pl-art{position:relative;width:56px;height:56px;flex:none;border-radius:10px;overflow:hidden;border:1px solid rgba(255,39,71,.24)}
 .pl-art img{width:100%;height:100%;object-fit:cover}
@@ -382,7 +396,6 @@ body.beat-live .rec{animation-duration:var(--beat)}
 .pl-row .idx .req i:nth-child(2){animation-delay:.2s}.pl-row .idx .req i:nth-child(3){animation-delay:.4s}
 .pl-row .tt{font-size:.92rem;color:var(--bone-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .2s}
 .pl-row:hover .tt{color:var(--bone)}
-.pl-row.faved .tt::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blood-bright);box-shadow:0 0 7px rgba(255,39,71,.8);margin-right:7px;vertical-align:1px}
 .pl-row .du{font-size:.7rem;color:var(--bone-faint);font-variant-numeric:tabular-nums}
 .pl-row .stats-mini{display:inline-flex;align-items:center;gap:5px;font-size:.64rem;color:var(--bone-faint);font-variant-numeric:tabular-nums;min-width:40px;justify-content:flex-end}
 .pl-row .stats-mini svg{width:12px;height:12px;color:var(--blood-bright)}
@@ -527,7 +540,8 @@ body.beat-live .rec{animation-duration:var(--beat)}
 .dlx-cta{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
 .dlx-when{font-family:var(--f-serif);font-style:italic;color:var(--bone-faint);font-size:.95rem;letter-spacing:.06em}
 .contact{position:relative;z-index:1;padding:clamp(40px,7vh,84px) clamp(18px,5vw,40px);content-visibility:auto;contain-intrinsic-size:auto 640px;contain:layout style}
-.contact::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--seam)}
+.contact::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--seam);opacity:.65;transition:opacity .8s var(--ease)}
+body.depth-3 .contact::before{opacity:1}
 .contact-card{position:relative;max-width:760px;margin:0 auto;overflow:hidden;background:var(--glass);border:var(--panel-edge);border-radius:var(--rad);box-shadow:var(--panel-shadow);padding:clamp(28px,5vw,52px) clamp(22px,5vw,48px);outline:1px dashed rgba(239,230,221,.09);outline-offset:-10px}
 .contact-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright),var(--blood-deep))}
 .contact-card::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(45deg,rgba(255,120,140,.08) 0 14px,transparent 14px) top left/70px 70px no-repeat,linear-gradient(-45deg,rgba(255,120,140,.08) 0 14px,transparent 14px) top right/70px 70px no-repeat}
@@ -683,7 +697,7 @@ body.rewards .np-dl{display:grid}
 .np-queue .qn{font-family:var(--f-mono);font-size:.6rem;color:var(--bone-faint);width:16px;text-align:center;flex:none}
 .np-queue .qt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .np-queue .qd{font-size:.62rem;color:var(--bone-faint);font-variant-numeric:tabular-nums;flex:none}
-#puzzle{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2vh,18px);padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));overflow:hidden;opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility .5s}
+#puzzle{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2vh,18px);padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));overflow:hidden;opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility .5s,transform .8s var(--ease-soft)}
 #puzzle.show{opacity:1;visibility:visible}
 .pz-scene{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .pz-fog{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 30%, rgba(124,11,27,.34), transparent 60%),radial-gradient(90% 70% at 50% 120%, rgba(80,8,20,.6), transparent 65%),radial-gradient(70% 50% at 80% 8%, rgba(176,124,255,.10), transparent 60%),linear-gradient(180deg,#0a0608,#070405 60%,#050203)}
@@ -709,9 +723,11 @@ body.rewards .np-dl{display:grid}
 .pz-arena{position:relative;z-index:2;width:min(92vw,520px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 40%,#0d0507 0 46%,#160a0d 60%,rgba(124,11,27,.35) 73%,#070405 82%);border:3px solid rgba(209,20,48,.7);box-shadow:0 0 34px rgba(209,20,48,.5),inset 0 0 30px rgba(209,20,48,.35);animation:medalPulse 4.5s ease-in-out infinite}
 @keyframes medalPulse{0%,100%{box-shadow:0 0 26px rgba(209,20,48,.4),inset 0 0 22px rgba(209,20,48,.3)}50%{box-shadow:0 0 48px rgba(255,39,71,.6),inset 0 0 34px rgba(255,39,71,.4)}}
 #puzzle.seal-paid .pz-arena{border-color:rgba(255,210,120,.8);box-shadow:0 0 40px rgba(255,190,90,.55),inset 0 0 30px rgba(255,190,90,.4)}
+#puzzle.pz-shake .pz-arena{animation:pzArenaShake .55s cubic-bezier(.36,.07,.19,.97) both}
+@keyframes pzArenaShake{0%,100%{transform:translate(0,0) rotate(0)}15%{transform:translate(-7px,4px) rotate(-1.2deg)}30%{transform:translate(8px,-5px) rotate(1.4deg)}45%{transform:translate(-9px,3px) rotate(-1.6deg)}60%{transform:translate(7px,-3px) rotate(1.2deg)}75%{transform:translate(-5px,2px) rotate(-.8deg)}90%{transform:translate(4px,-2px) rotate(.6deg)}}
+#puzzle.pz-fall{opacity:0 !important;transform:translateY(26vh) rotate(4deg) scale(.96);pointer-events:none;transition:opacity .75s ease-in,transform .75s cubic-bezier(.5,.05,.75,.3),visibility .75s}
 .pz-rune{position:absolute;inset:3%;pointer-events:none;opacity:.15;background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='47' fill='none' stroke='%23b3102a' stroke-width='1'/><circle cx='50' cy='50' r='40' fill='none' stroke='%23b3102a' stroke-width='.6'/><polygon points='50,4 77,87 6,36 94,36 23,87' fill='none' stroke='%23b3102a' stroke-width='1'/></svg>") center/contain no-repeat;animation:runeRot 60s linear infinite}
 @keyframes runeRot{to{transform:rotate(360deg)}}
-#puzzle.seal-paid .pz-rune{animation:runeRot 12s linear infinite;opacity:.25}
 .pz-coinbg{position:absolute;inset:9%;border-radius:50%;pointer-events:none;opacity:.08;background:url('art/coin.png') center/88% no-repeat;filter:blur(.5px) saturate(.7) brightness(.9);animation:coinSlow 70s linear infinite}
 @keyframes coinSlow{to{transform:rotate(360deg)}}
 #puzzle.seal-paid .pz-coinbg{opacity:.18}
@@ -878,7 +894,34 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
 }
 @media(max-width:820px){.ticket,.feat,.deck,.pcard,.contact-card,.pl-now{background:linear-gradient(160deg,rgba(255,39,71,.10),rgba(22,7,12,.9) 40%,rgba(10,4,7,.94));}.m-menu{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(16,5,10,.94);}}
 @supports not ((backdrop-filter:blur(4px)) or (-webkit-backdrop-filter:blur(4px))){.ticket,.feat,.deck,.pcard,.contact-card,.topbar.scrolled,.au-tab,.pill,.socials a,.foot-soc a,.cinput,.carea{background-color:rgba(20,7,12,.94)}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}[data-reveal]{opacity:1;transform:none}#preloader{display:none}.wordmark,.socials{opacity:1!important;transform:none!important}.wordmark::before,.wordmark::after{display:none!important}.photo{opacity:.97;transition:none;animation:none!important}.blood>i{opacity:var(--o,.8);transform:scale(1)}.pz-rune{opacity:.12;animation:none}.pz-ash span{display:none}.pz-drips{display:none}.pz-mist i{animation:none}.pz-arena{animation:none}.pz-coinbg{animation:none}.wcoin{animation:none}.pz-stage.free .pz-hand{opacity:0}.pz-stage.free .gate{opacity:1}.pz-stage.free .gate-grid,.pz-stage.free .gate-wall{opacity:1}.pz-stage.free .gate-ring{opacity:1}.pz-stage.free .pz-btn{top:42%;width:30%}.pz-stage.unlocked .gate-light{opacity:1;transform:translate(-50%,-50%) scale(1)}.pz-stage.unlocked .gate-shutter{clip-path:circle(0% at 50% 50%)}.pz-stage.sealed .gate-light{opacity:.26}.pz-stage.sealed .gate-shutter{clip-path:circle(40% at 50% 50%)}.coin-orbit .coin{opacity:1}.beam,.beam.b2{animation:none}.now-playing.open .np-art img{animation:none}.mp-thumb.spin{animation:none}.np-sheen{display:none}.blood-splatter{opacity:.7!important}.ekg path{animation:none;stroke-dashoffset:0;opacity:.5}.np-stage[class*="slide-"]{animation:none!important}}
+/* TRACK ESSENCE: mood-driven motion. Do not remove these body[data-mood] rules. */
+body[data-mood="heavy"]{--motion-scale:1.14;--motion-ease:cubic-bezier(.36,.07,.19,.97);--glow-boost:1.25}
+body[data-mood="mixed"]{--motion-scale:1.04;--motion-ease:cubic-bezier(.34,1.45,.5,1);--glow-boost:1}
+body[data-mood="soft"]{--motion-scale:.9;--motion-ease:cubic-bezier(.22,.61,.36,1);--glow-boost:.72}
+body[data-mood="heavy"] .scroll-progress{background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright),#ff5c1a)}
+body[data-mood="mixed"] .scroll-progress{background:linear-gradient(90deg,var(--blood-deep),var(--ember),var(--ember-soft))}
+body[data-mood="soft"] .scroll-progress{background:linear-gradient(90deg,rgba(52,227,214,.4),var(--cyan-soft),rgba(176,124,255,.65))}
+body[data-mood="heavy"] .mp-fill,body[data-mood="heavy"] .np-fill{background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright),#ff5c1a)}
+body[data-mood="mixed"] .mp-fill,body[data-mood="mixed"] .np-fill{background:linear-gradient(90deg,var(--blood-deep),var(--ember),var(--ember-soft))}
+body[data-mood="soft"] .mp-fill,body[data-mood="soft"] .np-fill{background:linear-gradient(90deg,rgba(52,227,214,.45),var(--cyan-soft),rgba(176,124,255,.7))}
+body[data-mood="heavy"] .inkpulse{opacity:.65}
+body[data-mood="mixed"] .inkpulse{opacity:.5}
+body[data-mood="soft"] .inkpulse{opacity:.28}
+body[data-mood="heavy"] .feat-media{border-color:rgba(255,39,71,.34)}
+body[data-mood="mixed"] .feat-media{border-color:rgba(255,122,26,.28)}
+body[data-mood="soft"] .feat-media{border-color:rgba(52,227,214,.22)}
+body[data-mood="heavy"] .pl-now{border-color:rgba(255,39,71,.34)}
+body[data-mood="mixed"] .pl-now{border-color:rgba(255,122,26,.3)}
+body[data-mood="soft"] .pl-now{border-color:rgba(52,227,214,.24)}
+/* SOUND-REACTIVE EQ: lightweight level classes only. Do not replace with continuous layout animations. */
+body[data-audio="1"] .inkpulse{opacity:.6}
+body[data-audio="2"] .inkpulse{opacity:.85}
+body[data-audio="1"] .brand-key img{filter:drop-shadow(0 0 13px rgba(255,39,71,.72))}
+body[data-audio="2"] .brand-key img{filter:drop-shadow(0 0 18px rgba(255,39,71,.9))}
+body[data-audio="1"] .pl-now::after{opacity:.9}
+body[data-audio="2"] .pl-now::after{opacity:1}
+body[data-audio="2"] .mp-fill,body[data-audio="2"] .np-fill{filter:brightness(1.25)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}[data-reveal]{opacity:1;transform:none}#preloader{display:none}.wordmark,.socials{opacity:1!important;transform:none!important}.wordmark::before,.wordmark::after{display:none!important}.photo{opacity:.97;transition:none;animation:none!important}.blood>i{opacity:var(--o,.8);transform:scale(1)}.pz-rune{opacity:.12;animation:none}.pz-ash span{display:none}.pz-drips{display:none}.pz-mist i{animation:none}.pz-arena{animation:none}.pz-coinbg{animation:none}.wcoin{animation:none}.pz-stage.free .pz-hand{opacity:0}.pz-stage.free .gate{opacity:1}.pz-stage.free .gate-grid,.pz-stage.free .gate-wall{opacity:1}.pz-stage.free .gate-ring{opacity:1}.pz-stage.free .pz-btn{top:42%;width:30%}.pz-stage.unlocked .gate-light{opacity:1;transform:translate(-50%,-50%) scale(1)}.pz-stage.unlocked .gate-shutter{clip-path:circle(0% at 50% 50%)}.pz-stage.sealed .gate-light{opacity:.26}.pz-stage.sealed .gate-shutter{clip-path:circle(40% at 50% 50%)}.coin-orbit .coin{opacity:1}.beam,.beam.b2{animation:none}.now-playing.open .np-art img{animation:none}.mp-thumb.spin{animation:none}.np-sheen{display:none}.blood-splatter{opacity:.7!important}.ekg path{animation:none;stroke-dashoffset:0;opacity:.5}.np-stage[class*="slide-"]{animation:none!important}#puzzle.pz-fall{transition:none;transform:none}}
 </style>
 </head>
 <body class="loading">
@@ -890,6 +933,7 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   <div class="pre-status" id="preStatus">tuning the strings…</div>
 </div>
 <div class="scroll-progress" id="progress"></div>
+<div class="descent-veil" aria-hidden="true"></div>
 <div class="lore-toast" id="loreToast" aria-hidden="true"></div>
 <div id="inkFlash" aria-hidden="true"></div>
 <header class="topbar" id="topbar">
@@ -985,8 +1029,14 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
       <article class="feat" data-reveal>
         <div class="blood-splatter" style="bottom:-24px;left:44%;width:clamp(80px,15vw,160px);--rot:-8deg;--flip:-1" aria-hidden="true"><img src="art/blood.png" alt="" draggable="false" decoding="async" loading="lazy"></div>
         <div class="blood-splatter bs-ambient" style="top:-30px;left:-44px;width:clamp(100px,18vw,200px);--rot:-30deg" aria-hidden="true"><img src="art/blood.png" alt="" draggable="false" decoding="async" loading="lazy"></div>
-        <!-- autoplay=1 so the video starts with ONE tap. Do not remove. -->
-        <div class="feat-media" id="ytFacade" data-embed="https://www.youtube.com/embed/J85KUlsWypQ?rel=0&modestbranding=1&playsinline=1&autoplay=1">
+        <!--
+          YOUTUBE EMBED RULE — DO NOT CHANGE:
+          DO NOT add autoplay=1 to the embed URL.
+          DO NOT add allow="autoplay" to the iframe.
+          Autoplay can trigger YouTube's "Sign in to confirm you're not a bot" screen.
+          Keep this click-to-play facade exactly as-is.
+        -->
+        <div class="feat-media" id="ytFacade" data-embed="https://www.youtube.com/embed/J85KUlsWypQ?rel=0&modestbranding=1&playsinline=1">
           <span class="feat-tag"><i class="rec" aria-hidden="true"></i><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>Featured Track</span>
           <img class="yt-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/maxresdefault.jpg" width="1280" height="720" alt="DOWN — official video" fetchpriority="high" decoding="async">
           <button class="yt-play" type="button" aria-label="Play DOWN — official video"><span class="yt-play-ico" aria-hidden="true"></span></button>
@@ -1087,23 +1137,28 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
 
             <div class="deck-panel" data-panel="yt">
               <div class="trail-wrap">
+                <!--
+                  YOUTUBE EMBED RULE — DO NOT CHANGE:
+                  These cards intentionally have NO autoplay=1.
+                  Adding autoplay can trigger YouTube bot verification.
+                -->
                 <div class="trail" id="trailYt">
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/Qvb4a_Z_lgc?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Xero (Intro)"><img class="rc-poster" src="https://i.ytimg.com/vi/Qvb4a_Z_lgc/mqdefault.jpg" srcset="https://i.ytimg.com/vi/Qvb4a_Z_lgc/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:26</span><span class="rc-body"><b>Xero (Intro)</b><i>track 01</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/J85KUlsWypQ?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Down"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">4:00</span><span class="rc-body"><b>Down</b><i>track 02</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/tV-rsQFb3Mw?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play It's Fine"><img class="rc-poster" src="https://i.ytimg.com/vi/tV-rsQFb3Mw/mqdefault.jpg" srcset="https://i.ytimg.com/vi/tV-rsQFb3Mw/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:56</span><span class="rc-body"><b>It's Fine</b><i>track 03</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/SsFccrmKlrM?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Better Left Alone"><img class="rc-poster" src="https://i.ytimg.com/vi/SsFccrmKlrM/mqdefault.jpg" srcset="https://i.ytimg.com/vi/SsFccrmKlrM/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:45</span><span class="rc-body"><b>Better Left Alone</b><i>track 04</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/Boxkbo6RGHs?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Can't Escape"><img class="rc-poster" src="https://i.ytimg.com/vi/Boxkbo6RGHs/mqdefault.jpg" srcset="https://i.ytimg.com/vi/Boxkbo6RGHs/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:36</span><span class="rc-body"><b>Can't Escape</b><i>track 05</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/8Zsx1DevsIU?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Failure"><img class="rc-poster" src="https://i.ytimg.com/vi/8Zsx1DevsIU/mqdefault.jpg" srcset="https://i.ytimg.com/vi/8Zsx1DevsIU/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:02</span><span class="rc-body"><b>Failure</b><i>track 06</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/vf8PtUU66vs?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Black Blood"><img class="rc-poster" src="https://i.ytimg.com/vi/vf8PtUU66vs/mqdefault.jpg" srcset="https://i.ytimg.com/vi/vf8PtUU66vs/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:33</span><span class="rc-body"><b>Black Blood</b><i>track 07</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/3or51wqfiw0?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play It's Over"><img class="rc-poster" src="https://i.ytimg.com/vi/3or51wqfiw0/mqdefault.jpg" srcset="https://i.ytimg.com/vi/3or51wqfiw0/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:02</span><span class="rc-body"><b>It's Over</b><i>track 08</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/HY6o-m_NjCk?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Let It Go"><img class="rc-poster" src="https://i.ytimg.com/vi/HY6o-m_NjCk/mqdefault.jpg" srcset="https://i.ytimg.com/vi/HY6o-m_NjCk/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:36</span><span class="rc-body"><b>Let It Go</b><i>track 09</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/k-s2e1m7YHE?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play True (Outro)"><img class="rc-poster" src="https://i.ytimg.com/vi/k-s2e1m7YHE/mqdefault.jpg" srcset="https://i.ytimg.com/vi/k-s2e1m7YHE/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">6:02</span><span class="rc-body"><b>True (Outro)</b><i>track 10</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/Qvb4a_Z_lgc?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Xero (Intro)"><img class="rc-poster" src="https://i.ytimg.com/vi/Qvb4a_Z_lgc/mqdefault.jpg" srcset="https://i.ytimg.com/vi/Qvb4a_Z_lgc/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:26</span><span class="rc-body"><b>Xero (Intro)</b><i>track 01</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/J85KUlsWypQ?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Down"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">4:00</span><span class="rc-body"><b>Down</b><i>track 02</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/tV-rsQFb3Mw?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play It's Fine"><img class="rc-poster" src="https://i.ytimg.com/vi/tV-rsQFb3Mw/mqdefault.jpg" srcset="https://i.ytimg.com/vi/tV-rsQFb3Mw/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:56</span><span class="rc-body"><b>It's Fine</b><i>track 03</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/SsFccrmKlrM?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Better Left Alone"><img class="rc-poster" src="https://i.ytimg.com/vi/SsFccrmKlrM/mqdefault.jpg" srcset="https://i.ytimg.com/vi/SsFccrmKlrM/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:45</span><span class="rc-body"><b>Better Left Alone</b><i>track 04</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/Boxkbo6RGHs?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Can't Escape"><img class="rc-poster" src="https://i.ytimg.com/vi/Boxkbo6RGHs/mqdefault.jpg" srcset="https://i.ytimg.com/vi/Boxkbo6RGHs/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:36</span><span class="rc-body"><b>Can't Escape</b><i>track 05</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/8Zsx1DevsIU?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Failure"><img class="rc-poster" src="https://i.ytimg.com/vi/8Zsx1DevsIU/mqdefault.jpg" srcset="https://i.ytimg.com/vi/8Zsx1DevsIU/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:02</span><span class="rc-body"><b>Failure</b><i>track 06</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/vf8PtUU66vs?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Black Blood"><img class="rc-poster" src="https://i.ytimg.com/vi/vf8PtUU66vs/mqdefault.jpg" srcset="https://i.ytimg.com/vi/vf8PtUU66vs/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:33</span><span class="rc-body"><b>Black Blood</b><i>track 07</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/3or51wqfiw0?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play It's Over"><img class="rc-poster" src="https://i.ytimg.com/vi/3or51wqfiw0/mqdefault.jpg" srcset="https://i.ytimg.com/vi/3or51wqfiw0/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:02</span><span class="rc-body"><b>It's Over</b><i>track 08</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/HY6o-m_NjCk?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Let It Go"><img class="rc-poster" src="https://i.ytimg.com/vi/HY6o-m_NjCk/mqdefault.jpg" srcset="https://i.ytimg.com/vi/HY6o-m_NjCk/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:36</span><span class="rc-body"><b>Let It Go</b><i>track 09</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/k-s2e1m7YHE?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play True (Outro)"><img class="rc-poster" src="https://i.ytimg.com/vi/k-s2e1m7YHE/mqdefault.jpg" srcset="https://i.ytimg.com/vi/k-s2e1m7YHE/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">6:02</span><span class="rc-body"><b>True (Outro)</b><i>track 10</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
                 </div>
               </div>
               <div class="teasers">
                 <p class="teasers-k">— teasers —</p>
-                <article class="scard" data-embed="https://www.youtube.com/embed/t9ioTRgErGA?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play teaser I"><img src="https://i.ytimg.com/vi/t9ioTRgErGA/mqdefault.jpg" srcset="https://i.ytimg.com/vi/t9ioTRgErGA/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="sc-tag">teaser I</span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                <article class="scard" data-embed="https://www.youtube.com/embed/LkbeXkLjXHw?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play teaser II"><img src="https://i.ytimg.com/vi/LkbeXkLjXHw/mqdefault.jpg" srcset="https://i.ytimg.com/vi/LkbeXkLjXHw/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="sc-tag">teaser II</span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                <article class="scard" data-embed="https://www.youtube.com/embed/t9ioTRgErGA?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play teaser I"><img src="https://i.ytimg.com/vi/t9ioTRgErGA/mqdefault.jpg" srcset="https://i.ytimg.com/vi/t9ioTRgErGA/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="sc-tag">teaser I</span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                <article class="scard" data-embed="https://www.youtube.com/embed/LkbeXkLjXHw?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play teaser II"><img src="https://i.ytimg.com/vi/LkbeXkLjXHw/mqdefault.jpg" srcset="https://i.ytimg.com/vi/LkbeXkLjXHw/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="sc-tag">teaser II</span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
               </div>
             </div>
 
@@ -1395,12 +1450,22 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   var cssParallax=!reduce&&window.CSS&&CSS.supports&&CSS.supports('animation-timeline','scroll()');
   var heroH=innerHeight,docH=1;
   var supportsScrollTimeline=CSS.supports&&CSS.supports('animation-timeline','scroll()');
+  var curDepth=-1;
   function measure(){ if(hero)heroH=hero.offsetHeight||innerHeight; docH=document.documentElement.scrollHeight-innerHeight; }
   measure();
   var tS=scrollY,sS=tS,tX=0,tY=0,sX=0,sY=0,running=false,desktop=matchMedia('(min-width:980px)').matches;
   function apply(){
     if(top)top.classList.toggle('scrolled',sS>30);
     if(bar&&!supportsScrollTimeline){var r=docH>0?(sS/docH):0;bar.style.transform='scaleX('+(r<0?0:(r>1?1:r))+')';}
+    var d=0;
+    if(sS>heroH*0.45)d=1;
+    if(sS>heroH*1.05)d=2;
+    if(docH>0&&sS>docH*0.55)d=3;
+    if(d!==curDepth){
+      document.body.classList.remove('depth-0','depth-1','depth-2','depth-3');
+      if(d>0)document.body.classList.add('depth-'+d);
+      curDepth=d;
+    }
     if(reduce||sS>heroH+60){return;}
     var p=sS<0?0:(sS>heroH?heroH:sS),r=heroH?p/heroH:0,px=sX*8,py=sY*5;
     if(!cssParallax){
@@ -1467,8 +1532,13 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   });
 })();
 (function(){
-  /* autoplay=1 in data-embed + allow="autoplay" => starts with ONE tap. Do not remove. */
-  function bindFacade(card){ function play(){ if(card.classList.contains('playing'))return; var src=card.getAttribute('data-embed'); if(!src)return; var ifr=document.createElement('iframe'); ifr.src=src; ifr.allow='autoplay; encrypted-media; picture-in-picture'; ifr.allowFullscreen=true; var t=card.querySelector('b')||card.querySelector('.sc-tag'); ifr.title=t?t.textContent:'video'; card.classList.add('playing'); card.appendChild(ifr); }
+  /*
+    YOUTUBE EMBED RULE — DO NOT CHANGE:
+    Do not add autoplay=1 to data-embed.
+    Do not add allow="autoplay" to the iframe.
+    Autoplay can trigger YouTube's bot / sign-in wall.
+  */
+  function bindFacade(card){ function play(){ if(card.classList.contains('playing'))return; var src=card.getAttribute('data-embed'); if(!src)return; var ifr=document.createElement('iframe'); ifr.src=src; ifr.allow='encrypted-media; picture-in-picture'; ifr.allowFullscreen=true; var t=card.querySelector('b')||card.querySelector('.sc-tag'); ifr.title=t?t.textContent:'video'; card.classList.add('playing'); card.appendChild(ifr); }
     card.addEventListener('click',play);
     card.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); play(); } }); }
   var trail=document.getElementById('trailYt');
@@ -1478,17 +1548,43 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
 /* ---------- APP PLAYER ---------- */
 (function(){
   var YT_API_KEY='AIzaSyCNlkHrOlmmb69hFs7KCQaL9RzVU_UqjHQ';
+  /*
+    TRACK ESSENCE DATA:
+    Current player uses TRACKS only.
+    FUTURE_TRACK_ESSENCE contains unreleased tracks intentionally.
+    Do not remove future entries; they are reserved for later releases.
+  */
+  var FUTURE_TRACK_ESSENCE=[
+    {no:1,title:'Boot',mood:'heavy'},
+    {no:2,title:'Devastate',mood:'heavy'},
+    {no:3,title:'Down',mood:'mixed'},
+    {no:4,title:"It's Over",mood:'mixed'},
+    {no:5,title:"It's Fine",mood:'mixed'},
+    {no:6,title:'Better Left Alone',mood:'soft'},
+    {no:7,title:"Can't Escape",mood:'soft'},
+    {no:8,title:'Failure',mood:'heavy'},
+    {no:9,title:'Let It Go',mood:'soft'},
+    {no:10,title:'Red',mood:'mixed'},
+    {no:11,title:'Sidewalk Poetry (True (outro))',mood:'soft'},
+    {no:12,title:'Bloody Boot',mood:'mixed'},
+    {no:13,title:'Black Blood',mood:'heavy'},
+    {no:14,title:'Shameless',mood:'heavy'},
+    {no:15,title:'Red Ink',mood:'soft'},
+    {no:16,title:'Enemy',mood:'heavy'},
+    {no:17,title:'Abandoned',mood:'soft'},
+    {no:18,title:'Reboot',mood:'soft'}
+  ];
   var TRACKS=[
-    {t:'Xero (Intro)',d:206,s:'xero-intro',yt:'Qvb4a_Z_lgc',bpm:72},
-    {t:'Down',d:239,s:'down',yt:'J85KUlsWypQ',bpm:95},
-    {t:"It's Fine",d:236,s:'its-fine',yt:'tV-rsQFb3Mw',bpm:88},
-    {t:'Better Left Alone',d:225,s:'better-left-alone',yt:'SsFccrmKlrM',bpm:84},
-    {t:"Can't Escape",d:216,s:'cant-escape',yt:'Boxkbo6RGHs',bpm:92},
-    {t:'Failure',d:182,s:'failure',yt:'8Zsx1DevsIU',bpm:100},
-    {t:'Black Blood',d:213,s:'black-blood',yt:'vf8PtUU66vs',bpm:96},
-    {t:"It's Over",d:182,s:'its-over',yt:'3or51wqfiw0',bpm:82},
-    {t:'Let It Go',d:216,s:'let-it-go',yt:'HY6o-m_NjCk',bpm:90},
-    {t:'True (Outro)',d:362,s:'true-outro',yt:'k-s2e1m7YHE',bpm:70}
+    {t:'Xero (Intro)',d:206,s:'xero-intro',yt:'Qvb4a_Z_lgc',bpm:72,mood:'mixed'},
+    {t:'Down',d:239,s:'down',yt:'J85KUlsWypQ',bpm:95,mood:'mixed'},
+    {t:"It's Fine",d:236,s:'its-fine',yt:'tV-rsQFb3Mw',bpm:88,mood:'mixed'},
+    {t:'Better Left Alone',d:225,s:'better-left-alone',yt:'SsFccrmKlrM',bpm:84,mood:'soft'},
+    {t:"Can't Escape",d:216,s:'cant-escape',yt:'Boxkbo6RGHs',bpm:92,mood:'soft'},
+    {t:'Failure',d:182,s:'failure',yt:'8Zsx1DevsIU',bpm:100,mood:'heavy'},
+    {t:'Black Blood',d:213,s:'black-blood',yt:'vf8PtUU66vs',bpm:96,mood:'heavy'},
+    {t:"It's Over",d:182,s:'its-over',yt:'3or51wqfiw0',bpm:82,mood:'mixed'},
+    {t:'Let It Go',d:216,s:'let-it-go',yt:'HY6o-m_NjCk',bpm:90,mood:'soft'},
+    {t:'True (Outro)',d:362,s:'true-outro',yt:'k-s2e1m7YHE',bpm:70,mood:'soft'}
   ];
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var app=document.getElementById('playerApp'); if(!app)return;
@@ -1527,7 +1623,8 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
     setRows();
     if(window.__faviconLive)window.__faviconLive(on);
   }
-  function setBeat(){ if(cur>=0&&TRACKS[cur].bpm){ document.documentElement.style.setProperty('--beat',(60/TRACKS[cur].bpm).toFixed(3)+'s'); } }
+  function setBeat(){ if(cur<0||!TRACKS[cur].bpm)return; var base=60/TRACKS[cur].bpm; var mood=TRACKS[cur].mood||'mixed'; if(mood==='heavy')base*=0.94; else if(mood==='soft')base*=1.24; else base*=1.03; document.documentElement.style.setProperty('--beat',base.toFixed(3)+'s'); }
+  function setMood(mood){ document.body.dataset.mood=mood; }
   var preAudio=null,preIdx=-1;
   function prefetchNext(n){ if(n<0||n===preIdx||n===cur)return; if(!preAudio)preAudio=new Audio(); try{ preAudio.src='down/'+TRACKS[n].s+'.mp3'; preAudio.preload='auto'; preIdx=n; }catch(e){} }
   function pushRecent(i){ try{ var arr=JSON.parse(localStorage.getItem(RECENT_KEY)||'[]'); arr=arr.filter(function(x){return x!==i;}); arr.unshift(i); arr=arr.slice(0,8); localStorage.setItem(RECENT_KEY,JSON.stringify(arr)); renderRecent(); }catch(e){} }
@@ -1550,17 +1647,37 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
       li.addEventListener('click',go);
       li.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
     }); }
-  /* ---- audio-reactive visualizer (same-origin mp3, safe fallback) ---- */
+  /* ---- audio-reactive visualizer + lightweight global EQ ---- */
   var vizCanvas=$('vizCanvas'),vizReady=false,vizFailed=false,vizOn=false,vizRAF=null,lastViz=0,actx=null,analyser=null,vizData=null,cctx=null;
+  var eqRAF=null,eqLast=0,bassSm=0,midSm=0,highSm=0;
   function ensureViz(){ if(vizReady||vizFailed||reduce||!vizCanvas)return; try{ var AC=window.AudioContext||window.webkitAudioContext; if(!AC){vizFailed=true;return;} actx=new AC(); var src=actx.createMediaElementSource(audio); analyser=actx.createAnalyser(); analyser.fftSize=128; analyser.smoothingTimeConstant=.82; src.connect(analyser); analyser.connect(actx.destination); vizData=new Uint8Array(analyser.frequencyBinCount); cctx=vizCanvas.getContext('2d'); vizReady=true; }catch(e){ vizFailed=true; } }
-  function drawViz(){ if(!cctx||!analyser)return; var W=vizCanvas.width,cx=W/2,cy=W/2; cctx.clearRect(0,0,W,W); analyser.getByteFrequencyData(vizData);
+  function startEQ(){ if(reduce||!vizReady||eqRAF)return; eqRAF=requestAnimationFrame(eqFrame); }
+  function stopEQ(){ if(eqRAF){cancelAnimationFrame(eqRAF);eqRAF=null;} if(document.body.dataset.audio!=='0')document.body.dataset.audio='0'; bassSm=midSm=highSm=0; }
+  function eqFrame(t){ if(audio.paused){ stopEQ(); return; } eqRAF=requestAnimationFrame(eqFrame); if(t-eqLast<100)return; eqLast=t; if(!analyser||!vizData)return;
+    analyser.getByteFrequencyData(vizData);
     var bass=(vizData[1]+vizData[2]+vizData[3]+vizData[4])/4/255;
-    if(npArt) npArt.style.transform='scale('+(1+bass*0.03).toFixed(3)+')';
+    var mid=(vizData[10]+vizData[14]+vizData[18]+vizData[22])/4/255;
+    var high=(vizData[30]+vizData[36]+vizData[42]+vizData[48])/4/255;
+    bassSm+=(bass-bassSm)*0.25; midSm+=(mid-midSm)*0.25; highSm+=(high-highSm)*0.25;
+    var lvl=0;
+    if(bassSm>0.14||midSm>0.18)lvl=1;
+    if(bassSm>0.3||midSm>0.34||highSm>0.3)lvl=2;
+    var s=String(lvl);
+    if(document.body.dataset.audio!==s)document.body.dataset.audio=s;
+  }
+  function drawViz(){ if(!cctx||!analyser)return; var W=vizCanvas.width,cx=W/2,cy=W/2; cctx.clearRect(0,0,W,W); analyser.getByteFrequencyData(vizData);
+    var mood=document.body.dataset.mood||'mixed';
+    var bass=(vizData[1]+vizData[2]+vizData[3]+vizData[4])/4/255;
+    var bassBoost=mood==='heavy'?0.05:(mood==='soft'?0.02:0.035);
+    if(npArt) npArt.style.transform='scale('+(1+bass*bassBoost).toFixed(3)+')';
     cctx.lineCap='round'; cctx.lineWidth=3;
+    var boost=mood==='heavy'?1.35:(mood==='soft'?0.68:1);
     var N=54,R=170;
-    for(var i=0;i<N;i++){ var bin=1+Math.floor(i/N*vizData.length*0.7); var v=vizData[bin]/255; var len=4+v*22; var a=i/N*Math.PI*2-Math.PI/2;
+    for(var i=0;i<N;i++){ var bin=1+Math.floor(i/N*vizData.length*0.7); var v=vizData[bin]/255; var len=3+v*20*boost; var a=i/N*Math.PI*2-Math.PI/2;
       var x1=cx+Math.cos(a)*R, y1=cy+Math.sin(a)*R, x2=cx+Math.cos(a)*(R+len), y2=cy+Math.sin(a)*(R+len);
-      cctx.strokeStyle= v>.62 ? 'rgba(255,122,26,'+(0.35+v*0.55)+')' : 'rgba(255,39,71,'+(0.22+v*0.6)+')';
+      if(mood==='soft'){ cctx.strokeStyle= v>.62 ? 'rgba(155,243,234,'+(0.25+v*0.4)+')' : 'rgba(176,124,255,'+(0.18+v*0.38)+')'; }
+      else if(mood==='mixed'){ cctx.strokeStyle= v>.62 ? 'rgba(255,122,26,'+(0.3+v*0.5)+')' : 'rgba(255,39,71,'+(0.2+v*0.55)+')'; }
+      else { cctx.strokeStyle= v>.62 ? 'rgba(255,92,26,'+(0.35+v*0.55)+')' : 'rgba(255,39,71,'+(0.22+v*0.6)+')'; }
       cctx.beginPath(); cctx.moveTo(x1,y1); cctx.lineTo(x2,y2); cctx.stroke(); }
     cctx.strokeStyle='rgba(255,39,71,.12)'; cctx.lineWidth=1; cctx.beginPath(); cctx.arc(cx,cy,198,0,Math.PI*2); cctx.stroke(); }
   function vizFrame(t){ if(!vizOn){vizRAF=null;return;} vizRAF=requestAnimationFrame(vizFrame); if(t-lastViz<33)return; lastViz=t; drawViz(); }
@@ -1572,6 +1689,7 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
     if(i<0||i>=TRACKS.length)return;
     ensureViz();
     cur=i;
+    setMood(TRACKS[i].mood||'mixed');
     npTitle.textContent=TRACKS[i].t; npSub.textContent='Nilouverse Music — DOWN';
     npFullTitle.textContent=TRACKS[i].t; npSubFull.textContent='Nilouverse Music — DOWN';
     mpTitle.textContent=TRACKS[i].t;
@@ -1655,9 +1773,9 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
     else if(e.key==='ArrowUp'){ e.preventDefault(); setVol(audio.volume*100+5); }
     else if(e.key==='ArrowDown'){ e.preventDefault(); setVol(audio.volume*100-5); }
   });
-  audio.addEventListener('ended',function(){ if(repeat===2){ loadTrack(cur); } else { var n=nextIndex(true); if(n>=0) loadTrack(n,1); else live(false); } });
-  audio.addEventListener('pause',function(){ live(false); setVizOn(false); });
-  audio.addEventListener('play',function(){ live(true); if(actx&&actx.state==='suspended'){ actx.resume().catch(function(){}); } setVizOn(nowPlaying.classList.contains('open')); });
+  audio.addEventListener('ended',function(){ stopEQ(); if(repeat===2){ loadTrack(cur); } else { var n=nextIndex(true); if(n>=0) loadTrack(n,1); else live(false); } });
+  audio.addEventListener('pause',function(){ live(false); setVizOn(false); stopEQ(); });
+  audio.addEventListener('play',function(){ live(true); if(actx&&actx.state==='suspended'){ actx.resume().catch(function(){}); } setVizOn(nowPlaying.classList.contains('open')); startEQ(); });
   audio.addEventListener('timeupdate',syncTime);
   if('mediaSession' in navigator){ navigator.mediaSession.setActionHandler('previoustrack',function(){ loadTrack(prevIndex(),-1); }); navigator.mediaSession.setActionHandler('nexttrack',function(){ var n=nextIndex(false); if(n>=0) loadTrack(n,1); }); }
   function renderTop(items){ if(!singlesGrid)return;
@@ -1712,8 +1830,12 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   var btn=f.querySelector('.yt-play');
   f.addEventListener('pointerenter',function(){ if(window.__pc){ window.__pc('https://www.youtube.com'); window.__pc('https://i.ytimg.com'); } },{passive:true});
   function play(){ var src=f.getAttribute('data-embed'); if(!src)return; var ifr=document.createElement('iframe');
-    /* autoplay=1 in data-embed + allow="autoplay" => ONE tap plays. Do not remove. */
-    ifr.src=src; ifr.allow='autoplay; encrypted-media; picture-in-picture'; ifr.allowFullscreen=true; ifr.title='DOWN — official video'; var poster=f.querySelector('.yt-poster'); if(poster)poster.remove(); if(btn)btn.remove(); f.appendChild(ifr); f.classList.add('playing'); }
+    /*
+      YOUTUBE EMBED RULE — DO NOT CHANGE:
+      No autoplay=1 and no allow="autoplay" here.
+      Autoplay can trigger YouTube's bot / sign-in wall.
+    */
+    ifr.src=src; ifr.allow='encrypted-media; picture-in-picture'; ifr.allowFullscreen=true; ifr.title='DOWN — official video'; var poster=f.querySelector('.yt-poster'); if(poster)poster.remove(); if(btn)btn.remove(); f.appendChild(ifr); f.classList.add('playing'); }
   f.addEventListener('click',play);
 })();
 (function(){
@@ -1729,7 +1851,7 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   if(!key)return; var ht;
   function hintText(){ var t=(window.__lore&&window.__lore.total)||3, f=window.__lore?window.__lore.count():0;
     if(window.__lore&&window.__lore.isComplete()) return 'all '+t+' relics found — tap the key to log in';
-    if(f>0) return f+'/'+t+' relics found — find them all';
+    if(f>0) return f/'+t+' relics found — find them all';
     return "I'm just a simple button. Button? no I mean logo :)"; }
   function showHint(dur){ if(!hint)return; hint.textContent=hintText(); hint.classList.add('show'); clearTimeout(ht); ht=setTimeout(function(){ hint.classList.remove('show'); },dur||4200); }
   function deny(){ key.classList.remove('deny'); requestAnimationFrame(function(){ requestAnimationFrame(function(){ key.classList.add('deny'); }); }); showHint(4200); }
@@ -1765,6 +1887,41 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
     if(taps>=3){ taps=0; if(!window.__lore.has('disc')){ coin.classList.add('revealed'); window.__lore.mark('disc',coin); setTimeout(function(){ coin.classList.add('taken'); },1400); } }
   });
   coin.addEventListener('click',function(e){ e.stopPropagation(); if(!window.__lore.has('disc')){ window.__lore.mark('disc',coin); coin.classList.add('taken'); } });
+})();
+/* POST-PUZZLE BLOOD FLOOD: adds extra section blood after the ritual is won. */
+(function(){
+  var added=false;
+  function addSectionBlood(){
+    if(added)return;
+    added=true;
+    var defs=[
+      {sel:'#intro',style:'top:-28px;right:6%;width:clamp(120px,24vw,260px);--rot:-14deg;--flip:-1'},
+      {sel:'#listen .listen-inner',style:'bottom:3%;left:-42px;width:clamp(150px,28vw,320px);--rot:18deg'},
+      {sel:'#contact .contact-card',style:'top:10%;right:-38px;width:clamp(120px,24vw,280px);--rot:34deg;--flip:-1'},
+      {sel:'.foot',style:'top:-26px;right:16%;width:clamp(140px,26vw,300px);--rot:-9deg;--flip:-1'}
+    ];
+    defs.forEach(function(def){
+      var host=document.querySelector(def.sel);
+      if(!host||host.querySelector('.blood-extra-generated'))return;
+      var el=document.createElement('div');
+      el.className='blood-splatter blood-extra blood-extra-generated';
+      el.setAttribute('aria-hidden','true');
+      el.style.cssText=def.style;
+      var img=document.createElement('img');
+      img.src='art/blood.png';
+      img.alt='';
+      img.draggable=false;
+      img.decoding='async';
+      img.loading='lazy';
+      el.appendChild(img);
+      host.appendChild(el);
+    });
+  }
+  window.__bloodFlood=function(){
+    addSectionBlood();
+    requestAnimationFrame(function(){ document.body.classList.add('blood-revealed'); });
+  };
+  try{ if(localStorage.getItem('nv_puzzle_won')==='1') window.__bloodFlood(); }catch(e){}
 })();
 (function(){
   var ov=document.getElementById('puzzle'); if(!ov)return;
@@ -1834,12 +1991,18 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
       if(wrath>=3){ wrath=0; resetGrip(); hud(); banner('the grip tightens'); stopLoop(); gapT=setTimeout(telegraph,700); }
       else { banner('WRATH '+wrath+'/3'); } } }
   function applyDoorState(){ stage.classList.remove('unlocked','sealed','denied'); stage.classList.add('unlocked'); setAuthState('cleared'); setLabels('cleared'); }
-  function win(){ freed=true; puzzleWon=true; setPWon(); stopLoop(); stage.classList.add('free'); buzz([25,45,25]); rewardSound();
+  function win(){
+    freed=true; puzzleWon=true; setPWon(); stopLoop(); stage.classList.add('free'); buzz([25,45,25]); rewardSound();
     if(window.__unlockDownloads)window.__unlockDownloads();
+    if(window.__bloodFlood)window.__bloodFlood();
     px(stage.offsetWidth/2,stage.offsetHeight*0.42,['#ffd24a','#ff2747','#d8c2ff','#e8dccb'],26,72);
     popup('the key is yours',stage.offsetWidth/2,stage.offsetHeight*0.42,'gd');
     ov.classList.add('seal-paid'); applyDoorState();
-    setTimeout(function(){ authBtn.classList.add('fade-out'); },800); }
+    setTimeout(function(){ authBtn.classList.add('fade-out'); },450);
+    setTimeout(function(){ ov.classList.add('pz-shake'); buzz([18,30,18]); },650);
+    setTimeout(function(){ ov.classList.add('pz-fall'); }, reduce?650:1150);
+    setTimeout(function(){ closePuzzle(); ov.classList.remove('pz-shake','pz-fall'); }, reduce?900:2050);
+  }
   function attempt(){ if(busy)return;
     if(!freed){ banner(ERR_NOCRED); shakeAuth(); buzz([30,40,30]); return; }
     busy=true; setAuthState('busy'); paLbl.textContent='returning'; paState.textContent='';
@@ -1859,7 +2022,7 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
     ov.classList.add('show'); ov.setAttribute('aria-hidden','false'); lockScroll();
     if(!reduce){ ov.style.setProperty('--px',0); ov.style.setProperty('--py',0); }
     if(!freed){ gapT=setTimeout(telegraph,900); } }
-  function closePuzzle(){ gen++; stopLoop(); clearTimeout(riteT); ov.classList.remove('show'); ov.setAttribute('aria-hidden','true'); unlockScroll(); }
+  function closePuzzle(){ gen++; stopLoop(); clearTimeout(riteT); ov.classList.remove('show','pz-shake','pz-fall'); ov.setAttribute('aria-hidden','true'); unlockScroll(); }
   window.__openPuzzle=openPuzzle;
   window.addEventListener('nv-lore',function(){ syncCoins(); if(ov.classList.contains('show')&&freed) applyDoorState(); });
   if(!reduce){ ov.addEventListener('pointermove',function(e){ if(pzMoveRAF)return; pzMoveRAF=requestAnimationFrame(function(){ var r=ov.getBoundingClientRect(); ov.style.setProperty('--px',(((e.clientX-r.left)/r.width)-.5)*2); ov.style.setProperty('--py',(((e.clientY-r.top)/r.height)-.5)*2); pzMoveRAF=null; }); },{passive:true}); }
@@ -1902,15 +2065,9 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   (function(){ var h=new Date().getHours(); if(h>=23||h<5)document.body.classList.add('midnight'); })();
   (function(){
-    var buf='',flash=document.getElementById('inkFlash'),toast=document.getElementById('loreToast');
-    if(!flash)return;
+    var toast=document.getElementById('loreToast');
     window.__toastNow=function(txt){ if(!toast)return; toast.textContent=txt; toast.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(function(){ toast.classList.remove('show'); },2200); };
-    addEventListener('keydown',function(e){
-      var t=e.target; if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable))return;
-      if(!e.key||e.key.length!==1)return;
-      buf=(buf+e.key.toLowerCase()).slice(-4);
-      if(buf==='down'){ buf=''; flash.classList.remove('on'); void flash.offsetWidth; flash.classList.add('on'); window.__toastNow("Yeah, Nilouverse! Don't ever forget it."); }
-    });
+    /* Removed typed "down" keyboard easter egg by request. Do not re-add. */
   })();
   (function(){
     var link=document.querySelector('link[rel="icon"]'); if(!link)return;
