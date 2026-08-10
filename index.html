@@ -1851,7 +1851,7 @@ body[data-audio="2"] .mp-fill,body[data-audio="2"] .np-fill{filter:brightness(1.
   if(!key)return; var ht;
   function hintText(){ var t=(window.__lore&&window.__lore.total)||3, f=window.__lore?window.__lore.count():0;
     if(window.__lore&&window.__lore.isComplete()) return 'all '+t+' relics found — tap the key to log in';
-    if(f>0) return f/'+t+' relics found — find them all';
+    if(f>0) return f + '/' + t + ' relics found — find them all';
     return "I'm just a simple button. Button? no I mean logo :)"; }
   function showHint(dur){ if(!hint)return; hint.textContent=hintText(); hint.classList.add('show'); clearTimeout(ht); ht=setTimeout(function(){ hint.classList.remove('show'); },dur||4200); }
   function deny(){ key.classList.remove('deny'); requestAnimationFrame(function(){ requestAnimationFrame(function(){ key.classList.add('deny'); }); }); showHint(4200); }
