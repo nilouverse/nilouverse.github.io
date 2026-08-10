@@ -187,7 +187,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 [data-reveal].in{opacity:1;transform:none}
 .eyebrow,.side-tag{display:flex;align-items:center;gap:12px;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--blood-bright);margin-bottom:14px}
 .eyebrow .ln,.side-tag .ln{height:2px;width:42px;background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright));transform:skewX(-24deg);box-shadow:4px 0 0 -0px rgba(209,20,48,.35)}
-.ticket-head h2,.listen-head h2,.singles-head h3,.contact-head h3,.feat-body h3{background:linear-gradient(180deg,#fff 0%,var(--bone) 55%,#c9b6ac 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ticket-head h2,.listen-head h2,.releases-head h2,.singles-head h3,.contact-head h3,.feat-body h3{background:linear-gradient(180deg,#fff 0%,var(--bone) 55%,#c9b6ac 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .feat-body h3{-webkit-text-stroke:1px rgba(124,11,27,.75)}
 .art-drop{position:relative;z-index:1;display:none;justify-content:center;padding:20px clamp(18px,5vw,40px) 4px}
 body.rewards .art-drop{display:flex}
@@ -252,8 +252,12 @@ body.rewards .art-drop{display:flex}
 .stat{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;color:var(--bone-dim);letter-spacing:.04em}
 .stat svg{width:14px;height:14px;color:var(--blood-bright);flex:none}
 .stat b{color:var(--bone);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
-/* ============================ ALBUM SHELF + VIEW ============================ */
+/* ============================ RELEASES / ALBUM SHELF ============================ */
 .vault{position:relative;z-index:1;margin-bottom:clamp(40px,7vw,80px)}
+.releases-head{max-width:940px;margin:0 auto clamp(14px,3vw,24px);padding:0 clamp(12px,4vw,32px)}
+.releases-head .eyebrow{margin-bottom:10px}
+.releases-head h2{font-family:var(--f-disp);font-weight:800;line-height:.9;font-size:clamp(2rem,8vw,3.8rem);letter-spacing:-.01em}
+.releases-head h2 .per{color:var(--blood-bright);-webkit-text-fill-color:var(--blood-bright)}
 .shelf-wrap{position:relative;padding:4px clamp(12px,4vw,32px) 14px}
 .shelf-wrap::after{content:"";position:absolute;left:10%;right:10%;bottom:6px;height:1px;background:var(--seam);opacity:.7}
 .shelf{position:relative;display:flex;justify-content:center;align-items:flex-end;gap:clamp(18px,6vw,40px)}
@@ -267,7 +271,6 @@ body.rewards .art-drop{display:flex}
 .shelf-item.sealed img{filter:grayscale(.55) brightness(.6) drop-shadow(0 14px 22px rgba(0,0,0,.55))}
 .shelf-item.sealed::before{content:"";position:absolute;top:2%;right:4%;width:10px;height:10px;transform:rotate(45deg);background:#1a0d10;box-shadow:0 0 0 2px rgba(52,227,214,.55),inset 0 0 6px rgba(0,0,0,.7);z-index:2;animation:authPulse 2.4s ease-in-out infinite}
 .album-view{max-width:940px;margin:0 auto;padding:0 clamp(4px,1vw,8px)}
-/* only ONE album open at a time (higher specificity than .deck-down) */
 .album-view .album-panel{display:none}
 .album-view .album-panel.active{display:block;animation:auFadeIn .45s var(--ease)}
 .album-view .deck-down.active{display:flex;flex-direction:column}
@@ -304,7 +307,6 @@ body.rewards .art-drop{display:flex}
 @media(max-width:640px){.au-tab{padding:9px 14px}}
 .deck-panel{display:none}
 .deck-panel.active{display:block;animation:auFadeIn .4s var(--ease)}
-/* now-playing strip with primary round controls */
 .pl-now{display:flex;align-items:center;flex-wrap:wrap;gap:14px;padding:12px 14px;margin:clamp(10px,2vw,16px) 0;border-radius:14px;border:1px solid rgba(255,39,71,.2);background:linear-gradient(90deg,rgba(255,39,71,.12),rgba(10,4,7,.4) 60%);box-shadow:inset 0 1px 0 rgba(255,120,140,.16)}
 .pl-art{position:relative;width:56px;height:56px;flex:none;border-radius:10px;overflow:hidden;border:1px solid rgba(255,39,71,.24)}
 .pl-art img{width:100%;height:100%;object-fit:cover}
@@ -317,7 +319,9 @@ body.rewards .art-drop{display:flex}
 .pl-meta i{font-family:var(--f-serif);font-style:italic;font-size:.78rem;color:var(--bone-faint)}
 .pl-tags{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px}
 .app-k{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-faint)}
-.app-dl-status{display:none;font-family:var(--f-egg);font-size:.95rem;color:var(--ember-soft);letter-spacing:.04em;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(255,122,26,.5);border-radius:999px}
+/* sleek one-line download hint */
+.app-dl-status{display:none;font-family:var(--f-body);font-weight:500;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ember-soft);align-items:center;gap:6px;padding:4px 10px;border:1px solid rgba(255,122,26,.35);border-radius:999px;white-space:nowrap;background:rgba(255,122,26,.06)}
+.app-dl-status svg{width:10px;height:10px;flex:none}
 .app.rewards-unlocked .app-dl-status{display:inline-flex}
 .pl-ctl{display:flex;align-items:center;gap:10px;margin-left:auto}
 .round-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--bone);background:rgba(255,39,71,.10);border:1px solid rgba(255,39,71,.3);transition:var(--dur-1) var(--ease)}
@@ -327,7 +331,6 @@ body.rewards .art-drop{display:flex}
 .round-btn.main svg{width:20px;height:20px}
 .app.live .album-play .ap-play{display:none}
 .app:not(.live) .album-play .ap-pause{display:none}
-/* tracklist — collapsed to a peek-fade by default */
 .pl-list{list-style:none;display:flex;flex-direction:column;gap:2px;padding:2px}
 .app:not(.list-open) .pl-list{max-height:224px;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 74%,transparent 99%);mask-image:linear-gradient(180deg,#000 74%,transparent 99%)}
 .pl-row{position:relative;display:grid;grid-template-columns:44px 1fr auto auto auto;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:background .22s var(--ease),border-color .22s var(--ease)}
@@ -394,7 +397,7 @@ body.rewards .art-drop{display:flex}
 .scard .rc-play{width:44px;height:44px}
 .scard iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:4}
 .scard.playing::after,.scard.playing img,.scard.playing .rc-play,.scard.playing .sc-tag{opacity:0}
-/* top tracks — compact subsection */
+/* top tracks — compact subsection with cover art */
 .topwrap{margin-top:clamp(16px,3vw,24px);padding-top:clamp(12px,2.5vw,18px);position:relative;border-top:1px solid var(--line)}
 .topwrap::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1px;background:var(--seam);opacity:.6}
 .topwrap .platforms{margin-top:clamp(12px,2.5vw,18px)}
@@ -402,12 +405,13 @@ body.rewards .art-drop{display:flex}
 .singles-head h3{font-family:var(--f-disp);font-weight:800;font-size:clamp(1.1rem,4vw,1.5rem)}
 .singles-head .more{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-faint)}
 .chart{display:flex;flex-direction:column;gap:8px}
-.chart-row{--med:var(--bone-dim);--med2:var(--bone);position:relative;display:grid;grid-template-columns:44px 1fr auto auto;grid-template-areas:"num name stats play";align-items:center;gap:12px;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,39,71,.16);background:var(--glass);box-shadow:var(--panel-shadow);cursor:pointer;transition:transform .25s var(--ease),border-color .25s var(--ease),box-shadow .25s var(--ease);overflow:hidden}
+.chart-row{--med:var(--bone-dim);--med2:var(--bone);position:relative;display:grid;grid-template-columns:30px 44px 1fr auto auto;grid-template-areas:"num art name stats play";align-items:center;gap:12px;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,39,71,.16);background:var(--glass);box-shadow:var(--panel-shadow);cursor:pointer;transition:transform .25s var(--ease),border-color .25s var(--ease),box-shadow .25s var(--ease);overflow:hidden}
 .chart-row:hover{transform:translateY(-2px);border-color:rgba(255,39,71,.4)}
 .chart-row::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 160% at 0% 50%,rgba(255,39,71,.10),transparent 55%);opacity:0;transition:opacity .3s;pointer-events:none}
 .chart-row:hover::before{opacity:1}
 .cr-num{grid-area:num;font-family:var(--f-disp);font-weight:800;font-size:clamp(1.2rem,4.5vw,1.7rem);line-height:1;color:transparent;-webkit-text-stroke:1.3px var(--med);text-align:center;transition:.3s}
 .chart-row:hover .cr-num{-webkit-text-stroke-color:var(--med2);text-shadow:0 0 14px var(--med)}
+.cr-art{grid-area:art;width:44px;height:44px;border-radius:9px;object-fit:cover;border:1px solid rgba(255,39,71,.22);box-shadow:0 4px 12px -6px rgba(0,0,0,.7)}
 .cr-name{grid-area:name;font-family:var(--f-disp);font-weight:700;font-size:clamp(.9rem,3vw,1.05rem);color:var(--bone);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cr-stats{grid-area:stats;display:flex;gap:12px;font-size:.6rem;color:var(--bone-faint);font-variant-numeric:tabular-nums}
 .cr-stats .cr-v,.cr-stats .cr-l{display:inline-flex;align-items:center;gap:4px}
@@ -420,8 +424,8 @@ body.rewards .art-drop{display:flex}
 .chart-row.rank-3{--med:#d08a4a;--med2:#ffcf9a}
 .chart-row.rank-4{--med:#9fb0bb;--med2:#d6e2ea}
 @media(max-width:600px){
-  .chart-row{grid-template-columns:36px 1fr auto;grid-template-areas:"num name play" "num stats play";row-gap:4px;gap:10px;padding:9px 12px}
-  .cr-stats{display:flex}
+  .chart-row{grid-template-columns:26px 40px 1fr auto;grid-template-areas:"num art name play" "num art stats play";row-gap:4px;gap:10px;padding:9px 12px}
+  .cr-art{width:40px;height:40px}
 }
 .platforms{display:grid;grid-template-columns:1fr;gap:14px}
 .topwrap .pcard{padding:14px 16px}
@@ -510,9 +514,9 @@ body.rewards .art-drop{display:flex}
 .cstatus.show{opacity:1;transform:none}
 .cstatus.err{color:var(--blood-bright)}
 @media(min-width:680px){.cform{grid-template-columns:1fr 1fr}.cfield.full{grid-column:1/-1}.cfoot{grid-column:1/-1}}
-/* mini player */
-.mini-player{position:fixed;left:0;right:0;bottom:0;z-index:65;transform:translateY(110%);transition:transform .45s var(--ease-soft);will-change:transform;background:rgba(12,6,8,.92);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);border-top:1px solid rgba(255,39,71,.25);box-shadow:0 -12px 40px -20px rgba(0,0,0,.8);padding-bottom:env(safe-area-inset-bottom)}
-.mini-player.show{transform:translateY(0)}
+/* mini player — hidden from paint when closed (no fast-scroll ghost) */
+.mini-player{position:fixed;left:0;right:0;bottom:0;z-index:65;transform:translateY(110%);visibility:hidden;transition:transform .45s var(--ease-soft),visibility 0s linear .45s;will-change:transform;background:rgba(12,6,8,.92);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);border-top:1px solid rgba(255,39,71,.25);box-shadow:0 -12px 40px -20px rgba(0,0,0,.8);padding-bottom:env(safe-area-inset-bottom)}
+.mini-player.show{transform:translateY(0);visibility:visible;transition:transform .45s var(--ease-soft)}
 .mp-bar{position:relative;height:5px;background:rgba(255,255,255,.10);cursor:pointer}
 .mp-fill{position:absolute;inset:0;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright),var(--ember));box-shadow:0 0 10px rgba(255,39,71,.55)}
 .mp-row{display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer}
@@ -534,11 +538,11 @@ body.rewards .art-drop{display:flex}
 .mp-close:hover{color:var(--bone)}
 .mp-close svg{width:14px;height:14px}
 @media(max-width:560px){.mp-times,.mp-stats{display:none}}
-/* full player — overlays the topbar so its close button is visible */
-.now-playing{position:fixed;inset:0;z-index:90;background:linear-gradient(180deg,rgba(26,7,12,.97),rgba(7,3,5,.99) 62%);-webkit-backdrop-filter:blur(24px) saturate(1.4);backdrop-filter:blur(24px) saturate(1.4);transform:translateY(100%);transition:transform .5s var(--ease-soft);will-change:transform;display:flex;flex-direction:column;align-items:center;gap:16px;padding:calc(16px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom));overflow-y:auto}
+/* full player — overlays topbar; hidden from paint when closed */
+.now-playing{position:fixed;inset:0;z-index:90;background:linear-gradient(180deg,rgba(26,7,12,.97),rgba(7,3,5,.99) 62%);-webkit-backdrop-filter:blur(24px) saturate(1.4);backdrop-filter:blur(24px) saturate(1.4);transform:translateY(100%);visibility:hidden;transition:transform .5s var(--ease-soft),visibility 0s linear .5s;will-change:transform;display:flex;flex-direction:column;align-items:center;gap:16px;padding:calc(16px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom));overflow-y:auto}
+.now-playing.open{transform:translateY(0);visibility:visible;transition:transform .5s var(--ease-soft)}
 .now-playing::before{content:"";position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:150%;height:55%;background:radial-gradient(50% 60% at 50% 0%,rgba(209,20,48,.30),transparent 70%);pointer-events:none}
 .now-playing>*{position:relative;z-index:1}
-.now-playing.open{transform:translateY(0)}
 .np-top{position:relative;width:100%;max-width:420px;display:flex;justify-content:center;align-items:center}
 .np-down{position:absolute;left:0;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--bone-dim);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);cursor:pointer}
 .np-down:hover{color:var(--bone)}
@@ -562,7 +566,6 @@ body.rewards .art-drop{display:flex}
 .np-btn.tgl.on{color:var(--blood-bright);border-color:rgba(255,39,71,.5)}
 .np-btn svg{width:16px;height:16px}
 #npRepeatLbl{position:absolute;top:2px;right:2px;font-size:.5rem;font-family:var(--f-mono);color:var(--blood-bright)}
-/* volume slider */
 .np-vol{display:flex;align-items:center;gap:10px;width:min(78vw,340px);color:var(--bone-faint)}
 .np-vol svg{width:16px;height:16px;flex:none}
 .np-vol input{flex:1;appearance:none;-webkit-appearance:none;height:4px;border-radius:999px;background:linear-gradient(90deg,var(--blood-bright) 0 var(--v,100%),rgba(255,255,255,.12) var(--v,100%) 100%);outline:none;cursor:pointer}
@@ -885,6 +888,10 @@ body.mini-on .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
       </article>
 
       <section class="vault" id="album" data-reveal>
+        <div class="releases-head" data-reveal>
+          <p class="eyebrow"><span class="ln"></span>the shelf</p>
+          <h2>Releases<span class="per">.</span></h2>
+        </div>
         <div class="shelf-wrap" data-reveal>
           <div class="shelf" role="tablist" aria-label="albums">
             <button class="shelf-item active" type="button" data-album="down" role="tab" aria-selected="true" aria-label="DOWN — the debut lp">
@@ -922,7 +929,7 @@ body.mini-on .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
                   </div>
                   <div class="pl-meta">
                     <b id="npTitle">DOWN</b><i id="npSub">tap a track — it plays here</i>
-                    <span class="pl-tags"><span class="app-k">the debut lp · hq</span><span class="app-dl-status" id="dlStatus">downloads unlocked †</span></span>
+                    <span class="pl-tags"><span class="app-k">the debut lp · hq</span><span class="app-dl-status" id="dlStatus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg>download available</span></span>
                   </div>
                   <div class="pl-ctl">
                     <button class="round-btn" id="shufflePlay" type="button" aria-label="shuffle play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4l5 5"/></svg></button>
@@ -980,10 +987,10 @@ body.mini-on .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
             <div class="topwrap" data-reveal>
               <div class="singles-head"><h3>Top Tracks</h3><span class="more" id="rankNote">ranked by plays</span></div>
               <div class="chart" id="singlesGrid">
-                <div class="chart-row rank-1" role="button" tabindex="0" data-i="3"><span class="cr-num">1</span><span class="cr-name">Better Left Alone</span><span class="cr-stats"><span class="cr-v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>—</span><span class="cr-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>—</span></span><span class="cr-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg></span></div>
-                <div class="chart-row rank-2" role="button" tabindex="0" data-i="1"><span class="cr-num">2</span><span class="cr-name">Down</span><span class="cr-stats"><span class="cr-v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>—</span><span class="cr-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>—</span></span><span class="cr-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg></span></div>
-                <div class="chart-row rank-3" role="button" tabindex="0" data-i="4"><span class="cr-num">3</span><span class="cr-name">Can't Escape</span><span class="cr-stats"><span class="cr-v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>—</span><span class="cr-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>—</span></span><span class="cr-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg></span></div>
-                <div class="chart-row rank-4" role="button" tabindex="0" data-i="2"><span class="cr-num">4</span><span class="cr-name">It's Fine</span><span class="cr-stats"><span class="cr-v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>—</span><span class="cr-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>—</span></span><span class="cr-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg></span></div>
+                <div class="chart-row rank-1" role="button" tabindex="0" data-i="3"><span class="cr-num">1</span><img class="cr-art" src="art/acdown.jpg" alt="" loading="lazy" decoding="async"><span class="cr-name">Better Left Alone</span><span class="cr-stats"><span class="cr-v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>—</span><span class="cr-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>—</span></span><span class="cr-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg></span></div>
+                <div class="chart-row rank-2" role="button" tabindex="0" data-i="1"><span class="cr-num">2</span><img class="cr-art" src="art/acdown.jpg" alt="" loading="lazy" decoding="async"><span class="cr-name">Down</span><span class="cr-stats"><span class="cr-v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>—</span><span class="cr-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>—</span></span><span class="cr-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg></span></div>
+                <div class="chart-row rank-3" role="button" tabindex="0" data-i="4"><span class="cr-num">3</span><img class="cr-art" src="art/acdown.jpg" alt="" loading="lazy" decoding="async"><span class="cr-name">Can't Escape</span><span class="cr-stats"><span class="cr-v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>—</span><span class="cr-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>—</span></span><span class="cr-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg></span></div>
+                <div class="chart-row rank-4" role="button" tabindex="0" data-i="2"><span class="cr-num">4</span><img class="cr-art" src="art/acdown.jpg" alt="" loading="lazy" decoding="async"><span class="cr-name">It's Fine</span><span class="cr-stats"><span class="cr-v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>—</span><span class="cr-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>—</span></span><span class="cr-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg></span></div>
               </div>
               <div class="platforms">
                 <a class="pcard pcard-yt" href="https://youtube.com/playlist?list=PLBZZGekBTa3s" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2 15 12l-5 2.8z" fill="currentColor" stroke="none"/></svg></span><span class="tx"><span class="k">Watch the full playlist on</span><span class="v">YouTube</span></span><span class="arrow">→</span></a>
@@ -1399,6 +1406,7 @@ body.mini-on .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
     singlesGrid.innerHTML=items.slice(0,4).map(function(it,idx){ var rank=idx+1;
       return '<div class="chart-row rank-'+rank+'" role="button" tabindex="0" data-i="'+it._i+'">'
         +'<span class="cr-num">'+rank+'</span>'
+        +'<img class="cr-art" src="art/acdown.jpg" alt="" loading="lazy" decoding="async">'
         +'<span class="cr-name">'+it.t+'</span>'
         +'<span class="cr-stats"><span class="cr-v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'+fmtN(it._v)+'</span><span class="cr-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>'+fmtN(it._l)+'</span></span>'
         +'<span class="cr-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg></span>'
