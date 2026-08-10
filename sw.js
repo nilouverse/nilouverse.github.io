@@ -1,9 +1,10 @@
 /* nilouverse service worker — offline shell + cache-first static assets */
-var CACHE = 'nv-v3';
+var CACHE = 'nv-v4';
 var PRECACHE = [
   './','./index.html','./manifest.webmanifest',
-  './art/hero.jpg','./art/cdown.jpg','./art/contact.svg','./art/contact-open.svg',
-  './art/adown.png','./art/ablank.png','./art/acdown.jpg','./art/button.png'
+  './art/hero.jpg','./art/hero.webp','./art/cdown.jpg',
+  './art/adown.png','./art/ablank.png','./art/acdown.jpg',
+  './art/button.png','./art/coin.png','./art/grip.png','./art/blood.png'
 ];
 
 self.addEventListener('install', function(e){
