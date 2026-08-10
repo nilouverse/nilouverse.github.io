@@ -17,6 +17,7 @@
 </script>
 <link rel="preload" as="image" href="art/hero.webp" fetchpriority="high">
 <link rel="preload" as="image" href="art/button.png">
+<!-- coin.png: CORE reward-system asset — keep this preload AND the preloader gate below. Do not remove. -->
 <link rel="preload" as="image" href="art/coin.png">
 <link rel="preload" as="image" href="art/grip.png">
 <link rel="preload" as="image" href="art/cdown.jpg">
@@ -40,6 +41,8 @@
 --glass:linear-gradient(158deg,rgba(255,39,71,.13),rgba(24,9,14,.82) 38%,rgba(9,4,6,.94) 80%);--glass-blur:blur(20px) saturate(1.6);--coin2:20px;--cut:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);--cut-sm:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);--seam:linear-gradient(90deg,transparent,rgba(209,20,48,.55) 18%,rgba(255,122,26,.4) 50%,rgba(209,20,48,.55) 82%,transparent);--art-hero:url('art/hero.jpg');--art-cover:url('art/cdown.jpg');--art-album:url('art/adown.png');--art-deluxe:url('art/ablank.png');--art-single:url('art/acdown.jpg');--art-trees:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'><path fill='%23040209' d='M0,320 L0,210 L30,150 L55,235 L95,120 L130,250 L170,170 L210,90 L250,240 L300,140 L340,250 L380,60 L420,250 L470,160 L520,250 L560,110 L610,240 L660,180 L700,70 L740,250 L800,150 L850,250 L900,100 L950,240 L1000,170 L1050,80 L1100,250 L1150,150 L1200,240 L1250,120 L1300,250 L1350,160 L1400,210 L1440,250 L1440,320 Z'/></svg>");--beat:.63s;}
 *{box-sizing:border-box;margin:0;padding:0}
 html{overflow-x:clip;scrollbar-gutter:stable}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+section[id]{scroll-margin-top:84px}
 body{background:var(--ink);color:var(--bone);font-family:var(--f-body);overflow-x:clip;overscroll-behavior-y:none;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 img{display:block;max-width:100%}a{color:inherit;text-decoration:none}::selection{background:var(--blood-bright);color:#fff}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -80,6 +83,10 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .brand-logo{position:relative;width:46px;height:46px;flex:none;transform-origin:left center;transition:transform .45s var(--ease)}
 .topbar.scrolled .brand-logo{transform:scale(.8)}
 .key-ring{position:absolute;inset:2px;border-radius:50%;border:1px dashed rgba(239,230,221,.2);transition:border-color .5s var(--ease),box-shadow .5s var(--ease),background .5s var(--ease)}
+/* beat-synced glow ring while a track is playing (opacity-only = cheap) */
+.key-ring::after{content:"";position:absolute;inset:-5px;border-radius:50%;box-shadow:0 0 16px 3px rgba(255,39,71,.5);opacity:0;pointer-events:none}
+body.beat-live .key-ring::after{animation:ringBeat var(--beat,.63s) ease-in-out infinite}
+@keyframes ringBeat{0%,100%{opacity:0}40%{opacity:.85}}
 .brand-logo.has-coin .key-ring{border-color:rgba(239,230,221,.34)}
 .brand-logo.done .key-ring{border-style:solid;border-color:rgba(255,210,120,.6);background:radial-gradient(circle,rgba(255,190,90,.10),transparent 70%);box-shadow:0 0 16px -4px rgba(255,190,90,.55),inset 0 0 10px -4px rgba(255,190,90,.45)}
 .brand-key{position:absolute;left:50%;top:52%;width:clamp(42px,5.4vw,58px);transform:translate(-50%,-50%);line-height:0;cursor:pointer;transition:transform .35s var(--ease)}
@@ -200,6 +207,11 @@ body.rewards .blood-splatter.bs-ambient{opacity:.32}
 [data-reveal].in{opacity:1;transform:none}
 .eyebrow,.side-tag{display:flex;align-items:center;gap:12px;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--blood-bright);margin-bottom:14px}
 .eyebrow .ln,.side-tag .ln{height:2px;width:42px;background:linear-gradient(90deg,var(--blood-deep),var(--blood-bright));transform:skewX(-24deg);box-shadow:4px 0 0 -0px rgba(209,20,48,.35)}
+/* ekg pulse-line: paused until its [data-reveal] parent is .in (no offscreen paint) */
+.ekg{flex:none;margin-left:2px;opacity:.85;overflow:visible}
+.ekg path{stroke:var(--blood-bright);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;fill:none;stroke-dasharray:100;stroke-dashoffset:100;filter:drop-shadow(0 0 4px rgba(255,39,71,.5));animation:ekgDraw 2.6s var(--ease) infinite;animation-play-state:paused}
+[data-reveal].in .ekg path{animation-play-state:running}
+@keyframes ekgDraw{0%{stroke-dashoffset:100;opacity:0}12%{opacity:1}55%{stroke-dashoffset:0;opacity:1}78%{opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 .ticket-head h2,.listen-head h2,.releases-head h2,.singles-head h3,.contact-head h3,.feat-body h3{background:linear-gradient(180deg,#fff 0%,var(--bone) 55%,#c9b6ac 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .feat-body h3{-webkit-text-stroke:1px rgba(124,11,27,.75)}
 @supports not ((background-clip:text) or (-webkit-background-clip:text)){
@@ -282,6 +294,8 @@ body.rewards .art-drop{display:flex}
 .releases-head h2{font-family:var(--f-disp);font-weight:800;line-height:.9;font-size:clamp(2rem,8vw,3.8rem);letter-spacing:-.01em}
 .releases-head h2 .per{color:var(--blood-bright);-webkit-text-fill-color:var(--blood-bright)}
 .shelf-wrap{position:relative;padding:4px clamp(12px,4vw,32px) 14px}
+/* spotlight under the shelf */
+.shelf-wrap::before{content:"";position:absolute;left:50%;bottom:2px;width:min(64%,560px);height:64px;transform:translateX(-50%);background:radial-gradient(50% 100% at 50% 100%,rgba(255,39,71,.16),transparent 72%);pointer-events:none;z-index:0}
 .shelf-wrap::after{content:"";position:absolute;left:10%;right:10%;bottom:6px;height:1px;background:var(--seam);opacity:.7}
 .shelf{position:relative;display:flex;justify-content:center;align-items:flex-end;gap:clamp(18px,6vw,40px)}
 .shelf-item{position:relative;width:clamp(78px,19vw,116px);aspect-ratio:1/1;background:none;border:0;cursor:pointer;padding:0;transition:opacity .35s var(--ease)}
@@ -308,9 +322,8 @@ body.rewards .art-drop{display:flex}
 .deck>*{position:relative;z-index:1}
 .pulse-glow{position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:.35;box-shadow:0 0 64px -22px rgba(209,20,48,.9),inset 0 0 34px rgba(209,20,48,.14);animation:authPulse 3.2s ease-in-out infinite}
 .alb-hero{display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,4vw,34px);align-items:center;margin-bottom:clamp(14px,3vw,24px)}
-.alb-art{position:relative;width:clamp(150px,24vw,216px);aspect-ratio:1/1;border-radius:18px;overflow:hidden;border:1px solid rgba(255,39,71,.24);box-shadow:0 24px 60px -24px rgba(209,20,48,.5),inset 0 1px 0 rgba(255,120,140,.2);background:#0c0809;flex:none}
-.alb-art>img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
-.deck-down:hover .alb-art>img{transform:scale(1.05)}
+.alb-art{position:relative;width:clamp(150px,24vw,216px);aspect-ratio:1/1;border-radius:18px;overflow:hidden;border:1px solid rgba(255,39,71,.24);box-shadow:0 24px 60px -24px rgba(209,20,48,.5),inset 0 1px 0 rgba(255,120,140,.2);background:#0c0809;flex:none;perspective:600px}
+.alb-art>img{width:100%;height:100%;object-fit:cover;transition:transform .45s var(--ease);backface-visibility:hidden}
 .alb-meta{display:flex;flex-direction:column;gap:9px;min-width:0}
 .alb-k{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-faint)}
 .alb-title{font-family:var(--f-disp);font-weight:800;font-size:clamp(2.2rem,7vw,4.2rem);line-height:.95;background:linear-gradient(180deg,#fff,var(--bone) 55%,#c9b6ac);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -391,7 +404,7 @@ body.beat-live .rec{animation-duration:var(--beat)}
 .app.list-open .list-more svg{transform:rotate(180deg)}
 .recent-wrap{margin-top:14px}
 .recent-k{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--bone-faint);margin-bottom:8px}
-.recent-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.recent-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .recent-row::-webkit-scrollbar{display:none}
 .recent-chip{flex:none;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid rgba(255,39,71,.2);border-radius:999px;background:rgba(255,39,71,.06);color:var(--bone-dim);font-size:.7rem;cursor:pointer}
 .recent-chip:hover{color:var(--bone);border-color:rgba(255,39,71,.4)}
@@ -570,9 +583,8 @@ body.beat-live .rec{animation-duration:var(--beat)}
 .mp-info{flex:1;min-width:0}
 .mp-info b{display:block;font-family:var(--f-disp);font-weight:700;font-size:.88rem;color:var(--bone);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mp-info i{display:block;font-family:var(--f-serif);font-style:italic;font-size:.66rem;color:var(--bone-faint)}
-.mp-stats{display:flex;gap:10px;align-items:center;font-size:.62rem;color:var(--bone-faint);font-variant-numeric:tabular-nums}
-.mp-stats .mv{display:inline-flex;gap:4px;align-items:center}
-.mp-stats svg{width:11px;height:11px}
+.mp-info.swap{animation:mpSwap .28s var(--ease)}
+@keyframes mpSwap{from{opacity:.15;transform:translateY(5px)}to{opacity:1;transform:none}}
 .mp-times{font-size:.6rem;color:var(--bone-faint);font-variant-numeric:tabular-nums;flex:none}
 .mp-ctl{display:flex;gap:6px;flex:none}
 .mp-btn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--bone);background:rgba(255,39,71,.12);border:1px solid rgba(255,39,71,.22);cursor:pointer}
@@ -581,7 +593,7 @@ body.beat-live .rec{animation-duration:var(--beat)}
 .mp-close{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:var(--bone-faint);background:transparent;border:none;flex:none;cursor:pointer}
 .mp-close:hover{color:var(--bone)}
 .mp-close svg{width:14px;height:14px}
-@media(max-width:560px){.mp-times,.mp-stats{display:none}}
+@media(max-width:560px){.mp-times{display:none}}
 .now-playing{position:fixed;inset:0;z-index:90;background:linear-gradient(180deg,rgba(26,7,12,.97),rgba(7,3,5,.99) 62%);-webkit-backdrop-filter:blur(24px) saturate(1.4);backdrop-filter:blur(24px) saturate(1.4);transform:translateY(100%);visibility:hidden;transition:transform .5s var(--ease-soft),visibility 0s linear .5s;will-change:transform;display:flex;flex-direction:column;align-items:center;gap:16px;padding:calc(16px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom));overflow-y:auto;overflow-x:hidden;max-width:100vw}
 .now-playing.open{transform:translateY(0);visibility:visible;transition:transform .5s var(--ease-soft)}
 .now-playing::before{content:"";position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:150%;height:55%;background:radial-gradient(50% 60% at 50% 0%,rgba(209,20,48,.30),transparent 70%);pointer-events:none}
@@ -591,7 +603,20 @@ body.beat-live .rec{animation-duration:var(--beat)}
 .np-down:hover{color:var(--bone)}
 .np-down svg{width:16px;height:16px}
 .np-album{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-faint)}
-.np-art{position:relative;width:min(78vw,340px);aspect-ratio:1/1;border-radius:50%;overflow:hidden;border:1px solid rgba(255,39,71,.22);box-shadow:0 30px 70px -30px rgba(209,20,48,.6),inset 0 0 80px -20px rgba(255,255,255,.08);flex:none}
+/* sliding stage for prev/next swipe animation (transform-only) */
+.np-stage{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;min-width:0}
+.np-stage.slide-out-l{animation:npOutL .17s var(--ease) forwards}
+.np-stage.slide-out-r{animation:npOutR .17s var(--ease) forwards}
+.np-stage.slide-in-l{animation:npInL .23s var(--ease-soft)}
+.np-stage.slide-in-r{animation:npInR .23s var(--ease-soft)}
+@keyframes npOutL{to{transform:translateX(-7%);opacity:0}}
+@keyframes npOutR{to{transform:translateX(7%);opacity:0}}
+@keyframes npInL{from{transform:translateX(7%);opacity:0}to{transform:none;opacity:1}}
+@keyframes npInR{from{transform:translateX(-7%);opacity:0}to{transform:none;opacity:1}}
+.np-disc{position:relative;width:min(92vw,400px);aspect-ratio:1/1;display:grid;place-items:center;flex:none}
+.np-disc canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.np-disc .np-art{width:min(78vw,340px)}
+.np-art{position:relative;aspect-ratio:1/1;border-radius:50%;overflow:hidden;border:1px solid rgba(255,39,71,.22);box-shadow:0 30px 70px -30px rgba(209,20,48,.6),inset 0 0 80px -20px rgba(255,255,255,.08);flex:none;transition:transform .2s var(--ease)}
 .now-playing.open .np-art img{animation:thumbSpin 5.5s linear infinite}
 .now-playing.v-paused .np-art img{animation-play-state:paused}
 .np-art img{width:100%;height:100%;object-fit:cover}
@@ -620,9 +645,9 @@ body.beat-live .rec{animation-duration:var(--beat)}
 .np-vol input{flex:1;appearance:none;-webkit-appearance:none;height:4px;border-radius:999px;background:linear-gradient(90deg,var(--blood-bright) 0 var(--v,100%),rgba(255,255,255,.12) var(--v,100%) 100%);outline:none;cursor:pointer}
 .np-vol input::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--bone);box-shadow:0 0 8px rgba(255,39,71,.7)}
 .np-vol input::-moz-range-thumb{width:12px;height:12px;border:none;border-radius:50%;background:var(--bone)}
-/* bottom bar: two glass chips — your controls | youtube data */
-.np-extra{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;justify-content:center;max-width:100%;padding:0 4px}
-.np-func{display:flex;gap:14px;align-items:center;padding:9px 16px;border:1px solid rgba(255,255,255,.10);border-radius:999px;background:rgba(255,255,255,.045)}
+/* bottom bar: sec1 (your controls) | sec2 (youtube data) — ALWAYS one line */
+.np-extra{display:flex;gap:8px;align-items:stretch;flex-wrap:nowrap;justify-content:center;width:min(94vw,460px);max-width:100%;padding:0 2px}
+.np-func{display:flex;gap:14px;align-items:center;padding:9px 16px;border:1px solid rgba(255,255,255,.10);border-radius:999px;background:rgba(255,255,255,.045);flex:0 0 auto}
 .np-func button,.np-func a{width:32px;height:32px;display:grid;place-items:center;color:var(--bone-dim);background:none;border:0;cursor:pointer;border-radius:50%;transition:color var(--dur-1) var(--ease),background var(--dur-1) var(--ease)}
 .np-func button:hover,.np-func a:hover{color:var(--bone);background:rgba(255,255,255,.07)}
 .np-func svg{width:16px;height:16px}
@@ -630,17 +655,27 @@ body.beat-live .rec{animation-duration:var(--beat)}
 .np-func .fav.on svg path{fill:var(--blood-bright)}
 .np-dl{display:none}
 body.rewards .np-dl{display:grid}
-.np-yt{display:flex;gap:12px;align-items:center;padding:9px 16px;border:1px solid rgba(255,39,71,.18);border-radius:999px;background:rgba(255,39,71,.06)}
+.np-yt{display:flex;gap:12px;align-items:center;padding:9px 16px;border:1px solid rgba(255,39,71,.18);border-radius:999px;background:rgba(255,39,71,.06);flex:1 1 auto;min-width:0;justify-content:center}
 .np-yt-logo{width:17px;height:17px;color:var(--blood-bright);flex:none}
-.np-stats{display:flex;gap:14px;align-items:center;font-size:.72rem;color:var(--bone-dim);font-variant-numeric:tabular-nums}
+.np-stats{display:flex;gap:14px;align-items:center;font-size:.72rem;color:var(--bone-dim);font-variant-numeric:tabular-nums;white-space:nowrap}
 .np-stats .mv{display:inline-flex;gap:5px;align-items:center}
 .np-stats a{color:var(--bone-dim);display:inline-flex;gap:5px;align-items:center}
 .np-stats a:hover{color:var(--bone)}
-.np-stats svg{width:14px;height:14px}
+.np-stats svg{width:14px;height:14px;flex:none}
+@media(max-width:430px){
+  .np-extra{gap:6px}
+  .np-func{padding:8px 10px;gap:8px}
+  .np-func button,.np-func a{width:28px;height:28px}
+  .np-func svg{width:14px;height:14px}
+  .np-yt{padding:8px 10px;gap:8px}
+  .np-yt-logo{width:14px;height:14px}
+  .np-stats{gap:8px;font-size:.64rem}
+  .np-stats svg{width:12px;height:12px}
+}
 /* up-next queue */
 .np-queue-wrap{width:min(88vw,420px);margin-top:2px}
 .np-queue-k{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-faint);margin-bottom:8px;text-align:center}
-.np-queue{list-style:none;display:flex;flex-direction:column;gap:4px;max-height:170px;overflow-y:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.np-queue{list-style:none;display:flex;flex-direction:column;gap:4px;max-height:170px;overflow-y:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .np-queue::-webkit-scrollbar{display:none}
 .np-queue li{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;border:1px solid transparent;cursor:pointer;color:var(--bone-dim);font-size:.8rem;transition:background .2s var(--ease),border-color .2s var(--ease),color .2s}
 .np-queue li:hover{background:rgba(255,39,71,.08);border-color:rgba(255,39,71,.15);color:var(--bone)}
@@ -843,7 +878,7 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
 }
 @media(max-width:820px){.ticket,.feat,.deck,.pcard,.contact-card,.pl-now{background:linear-gradient(160deg,rgba(255,39,71,.10),rgba(22,7,12,.9) 40%,rgba(10,4,7,.94));}.m-menu{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(16,5,10,.94);}}
 @supports not ((backdrop-filter:blur(4px)) or (-webkit-backdrop-filter:blur(4px))){.ticket,.feat,.deck,.pcard,.contact-card,.topbar.scrolled,.au-tab,.pill,.socials a,.foot-soc a,.cinput,.carea{background-color:rgba(20,7,12,.94)}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}[data-reveal]{opacity:1;transform:none}#preloader{display:none}.wordmark,.socials{opacity:1!important;transform:none!important}.wordmark::before,.wordmark::after{display:none!important}.photo{opacity:.97;transition:none;animation:none!important}.blood>i{opacity:var(--o,.8);transform:scale(1)}.pz-rune{opacity:.12;animation:none}.pz-ash span{display:none}.pz-drips{display:none}.pz-mist i{animation:none}.pz-arena{animation:none}.pz-coinbg{animation:none}.wcoin{animation:none}.pz-stage.free .pz-hand{opacity:0}.pz-stage.free .gate{opacity:1}.pz-stage.free .gate-grid,.pz-stage.free .gate-wall{opacity:1}.pz-stage.free .gate-ring{opacity:1}.pz-stage.free .pz-btn{top:42%;width:30%}.pz-stage.unlocked .gate-light{opacity:1;transform:translate(-50%,-50%) scale(1)}.pz-stage.unlocked .gate-shutter{clip-path:circle(0% at 50% 50%)}.pz-stage.sealed .gate-light{opacity:.26}.pz-stage.sealed .gate-shutter{clip-path:circle(40% at 50% 50%)}.coin-orbit .coin{opacity:1}.beam,.beam.b2{animation:none}.now-playing.open .np-art img{animation:none}.mp-thumb.spin{animation:none}.np-sheen{display:none}.blood-splatter{opacity:.7!important}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}[data-reveal]{opacity:1;transform:none}#preloader{display:none}.wordmark,.socials{opacity:1!important;transform:none!important}.wordmark::before,.wordmark::after{display:none!important}.photo{opacity:.97;transition:none;animation:none!important}.blood>i{opacity:var(--o,.8);transform:scale(1)}.pz-rune{opacity:.12;animation:none}.pz-ash span{display:none}.pz-drips{display:none}.pz-mist i{animation:none}.pz-arena{animation:none}.pz-coinbg{animation:none}.wcoin{animation:none}.pz-stage.free .pz-hand{opacity:0}.pz-stage.free .gate{opacity:1}.pz-stage.free .gate-grid,.pz-stage.free .gate-wall{opacity:1}.pz-stage.free .gate-ring{opacity:1}.pz-stage.free .pz-btn{top:42%;width:30%}.pz-stage.unlocked .gate-light{opacity:1;transform:translate(-50%,-50%) scale(1)}.pz-stage.unlocked .gate-shutter{clip-path:circle(0% at 50% 50%)}.pz-stage.sealed .gate-light{opacity:.26}.pz-stage.sealed .gate-shutter{clip-path:circle(40% at 50% 50%)}.coin-orbit .coin{opacity:1}.beam,.beam.b2{animation:none}.now-playing.open .np-art img{animation:none}.mp-thumb.spin{animation:none}.np-sheen{display:none}.blood-splatter{opacity:.7!important}.ekg path{animation:none;stroke-dashoffset:0;opacity:.5}.np-stage[class*="slide-"]{animation:none!important}}
 </style>
 </head>
 <body class="loading">
@@ -925,7 +960,7 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
       <div class="blood-splatter" style="bottom:-22px;left:50%;width:clamp(70px,14vw,150px);--rot:4deg" aria-hidden="true"><img src="art/blood.png" alt="" draggable="false" decoding="async" loading="lazy"></div>
       <div class="blood-splatter bs-ambient" style="top:-26px;right:-34px;width:clamp(90px,16vw,180px);--rot:38deg" aria-hidden="true"><img src="art/blood.png" alt="" draggable="false" decoding="async" loading="lazy"></div>
       <div class="ticket-head">
-        <p class="eyebrow"><span class="ln"></span>[ 01 ] — The Opening</p>
+        <p class="eyebrow"><span class="ln"></span>[ 01 ] — The Opening<svg class="ekg" viewBox="0 0 60 18" width="60" height="18" aria-hidden="true"><path d="M1 9h16l4-6 6 13 4-7h28" pathLength="100"/></svg></p>
         <h2>Intro<span class="per">.</span></h2>
         <div class="meta"><span>Debut LP</span><span><b>'Down'</b> · out now</span></div>
       </div>
@@ -943,14 +978,15 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   <section class="listen" id="listen">
     <div class="listen-inner">
       <div class="listen-head" data-reveal>
-        <p class="eyebrow"><span class="ln"></span>[ 02 ] — The Listen Room</p>
+        <p class="eyebrow"><span class="ln"></span>[ 02 ] — The Listen Room<svg class="ekg" viewBox="0 0 60 18" width="60" height="18" aria-hidden="true"><path d="M1 9h16l4-6 6 13 4-7h28" pathLength="100"/></svg></p>
         <h2>Listen<span class="per">.</span></h2>
       </div>
 
       <article class="feat" data-reveal>
         <div class="blood-splatter" style="bottom:-24px;left:44%;width:clamp(80px,15vw,160px);--rot:-8deg;--flip:-1" aria-hidden="true"><img src="art/blood.png" alt="" draggable="false" decoding="async" loading="lazy"></div>
         <div class="blood-splatter bs-ambient" style="top:-30px;left:-44px;width:clamp(100px,18vw,200px);--rot:-30deg" aria-hidden="true"><img src="art/blood.png" alt="" draggable="false" decoding="async" loading="lazy"></div>
-        <div class="feat-media" id="ytFacade" data-embed="https://www.youtube.com/embed/J85KUlsWypQ?rel=0&modestbranding=1&playsinline=1">
+        <!-- autoplay=1 so the video starts with ONE tap. Do not remove. -->
+        <div class="feat-media" id="ytFacade" data-embed="https://www.youtube.com/embed/J85KUlsWypQ?rel=0&modestbranding=1&playsinline=1&autoplay=1">
           <span class="feat-tag"><i class="rec" aria-hidden="true"></i><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>Featured Track</span>
           <img class="yt-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/maxresdefault.jpg" width="1280" height="720" alt="DOWN — official video" fetchpriority="high" decoding="async">
           <button class="yt-play" type="button" aria-label="Play DOWN — official video"><span class="yt-play-ico" aria-hidden="true"></span></button>
@@ -972,7 +1008,7 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
 
       <section class="vault" id="album" data-reveal>
         <div class="releases-head" data-reveal>
-          <p class="eyebrow"><span class="ln"></span>the shelf</p>
+          <p class="eyebrow"><span class="ln"></span>the shelf<svg class="ekg" viewBox="0 0 60 18" width="60" height="18" aria-hidden="true"><path d="M1 9h16l4-6 6 13 4-7h28" pathLength="100"/></svg></p>
           <h2>Releases<span class="per">.</span></h2>
         </div>
         <div class="shelf-wrap" data-reveal>
@@ -1052,22 +1088,22 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
             <div class="deck-panel" data-panel="yt">
               <div class="trail-wrap">
                 <div class="trail" id="trailYt">
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/Qvb4a_Z_lgc?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Xero (Intro)"><img class="rc-poster" src="https://i.ytimg.com/vi/Qvb4a_Z_lgc/mqdefault.jpg" srcset="https://i.ytimg.com/vi/Qvb4a_Z_lgc/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:26</span><span class="rc-body"><b>Xero (Intro)</b><i>track 01</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/J85KUlsWypQ?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Down"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">4:00</span><span class="rc-body"><b>Down</b><i>track 02</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/tV-rsQFb3Mw?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play It's Fine"><img class="rc-poster" src="https://i.ytimg.com/vi/tV-rsQFb3Mw/mqdefault.jpg" srcset="https://i.ytimg.com/vi/tV-rsQFb3Mw/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:56</span><span class="rc-body"><b>It's Fine</b><i>track 03</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/SsFccrmKlrM?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Better Left Alone"><img class="rc-poster" src="https://i.ytimg.com/vi/SsFccrmKlrM/mqdefault.jpg" srcset="https://i.ytimg.com/vi/SsFccrmKlrM/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:45</span><span class="rc-body"><b>Better Left Alone</b><i>track 04</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/Boxkbo6RGHs?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Can't Escape"><img class="rc-poster" src="https://i.ytimg.com/vi/Boxkbo6RGHs/mqdefault.jpg" srcset="https://i.ytimg.com/vi/Boxkbo6RGHs/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:36</span><span class="rc-body"><b>Can't Escape</b><i>track 05</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/8Zsx1DevsIU?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Failure"><img class="rc-poster" src="https://i.ytimg.com/vi/8Zsx1DevsIU/mqdefault.jpg" srcset="https://i.ytimg.com/vi/8Zsx1DevsIU/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:02</span><span class="rc-body"><b>Failure</b><i>track 06</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/vf8PtUU66vs?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Black Blood"><img class="rc-poster" src="https://i.ytimg.com/vi/vf8PtUU66vs/mqdefault.jpg" srcset="https://i.ytimg.com/vi/vf8PtUU66vs/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:33</span><span class="rc-body"><b>Black Blood</b><i>track 07</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/3or51wqfiw0?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play It's Over"><img class="rc-poster" src="https://i.ytimg.com/vi/3or51wqfiw0/mqdefault.jpg" srcset="https://i.ytimg.com/vi/3or51wqfiw0/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:02</span><span class="rc-body"><b>It's Over</b><i>track 08</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/HY6o-m_NjCk?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play Let It Go"><img class="rc-poster" src="https://i.ytimg.com/vi/HY6o-m_NjCk/mqdefault.jpg" srcset="https://i.ytimg.com/vi/HY6o-m_NjCk/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:36</span><span class="rc-body"><b>Let It Go</b><i>track 09</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/k-s2e1m7YHE?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play True (Outro)"><img class="rc-poster" src="https://i.ytimg.com/vi/k-s2e1m7YHE/mqdefault.jpg" srcset="https://i.ytimg.com/vi/k-s2e1m7YHE/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">6:02</span><span class="rc-body"><b>True (Outro)</b><i>track 10</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/Qvb4a_Z_lgc?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Xero (Intro)"><img class="rc-poster" src="https://i.ytimg.com/vi/Qvb4a_Z_lgc/mqdefault.jpg" srcset="https://i.ytimg.com/vi/Qvb4a_Z_lgc/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:26</span><span class="rc-body"><b>Xero (Intro)</b><i>track 01</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/J85KUlsWypQ?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Down"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">4:00</span><span class="rc-body"><b>Down</b><i>track 02</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/tV-rsQFb3Mw?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play It's Fine"><img class="rc-poster" src="https://i.ytimg.com/vi/tV-rsQFb3Mw/mqdefault.jpg" srcset="https://i.ytimg.com/vi/tV-rsQFb3Mw/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:56</span><span class="rc-body"><b>It's Fine</b><i>track 03</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/SsFccrmKlrM?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Better Left Alone"><img class="rc-poster" src="https://i.ytimg.com/vi/SsFccrmKlrM/mqdefault.jpg" srcset="https://i.ytimg.com/vi/SsFccrmKlrM/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:45</span><span class="rc-body"><b>Better Left Alone</b><i>track 04</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/Boxkbo6RGHs?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Can't Escape"><img class="rc-poster" src="https://i.ytimg.com/vi/Boxkbo6RGHs/mqdefault.jpg" srcset="https://i.ytimg.com/vi/Boxkbo6RGHs/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:36</span><span class="rc-body"><b>Can't Escape</b><i>track 05</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/8Zsx1DevsIU?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Failure"><img class="rc-poster" src="https://i.ytimg.com/vi/8Zsx1DevsIU/mqdefault.jpg" srcset="https://i.ytimg.com/vi/8Zsx1DevsIU/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:02</span><span class="rc-body"><b>Failure</b><i>track 06</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/vf8PtUU66vs?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Black Blood"><img class="rc-poster" src="https://i.ytimg.com/vi/vf8PtUU66vs/mqdefault.jpg" srcset="https://i.ytimg.com/vi/vf8PtUU66vs/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:33</span><span class="rc-body"><b>Black Blood</b><i>track 07</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/3or51wqfiw0?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play It's Over"><img class="rc-poster" src="https://i.ytimg.com/vi/3or51wqfiw0/mqdefault.jpg" srcset="https://i.ytimg.com/vi/3or51wqfiw0/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:02</span><span class="rc-body"><b>It's Over</b><i>track 08</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/HY6o-m_NjCk?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play Let It Go"><img class="rc-poster" src="https://i.ytimg.com/vi/HY6o-m_NjCk/mqdefault.jpg" srcset="https://i.ytimg.com/vi/HY6o-m_NjCk/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:36</span><span class="rc-body"><b>Let It Go</b><i>track 09</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                  <article class="rcard vcard" data-embed="https://www.youtube.com/embed/k-s2e1m7YHE?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play True (Outro)"><img class="rc-poster" src="https://i.ytimg.com/vi/k-s2e1m7YHE/mqdefault.jpg" srcset="https://i.ytimg.com/vi/k-s2e1m7YHE/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">6:02</span><span class="rc-body"><b>True (Outro)</b><i>track 10</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
                 </div>
               </div>
               <div class="teasers">
                 <p class="teasers-k">— teasers —</p>
-                <article class="scard" data-embed="https://www.youtube.com/embed/t9ioTRgErGA?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play teaser I"><img src="https://i.ytimg.com/vi/t9ioTRgErGA/mqdefault.jpg" srcset="https://i.ytimg.com/vi/t9ioTRgErGA/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="sc-tag">teaser I</span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
-                <article class="scard" data-embed="https://www.youtube.com/embed/LkbeXkLjXHw?rel=0&playsinline=1" role="button" tabindex="0" aria-label="Play teaser II"><img src="https://i.ytimg.com/vi/LkbeXkLjXHw/mqdefault.jpg" srcset="https://i.ytimg.com/vi/LkbeXkLjXHw/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="sc-tag">teaser II</span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                <article class="scard" data-embed="https://www.youtube.com/embed/t9ioTRgErGA?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play teaser I"><img src="https://i.ytimg.com/vi/t9ioTRgErGA/mqdefault.jpg" srcset="https://i.ytimg.com/vi/t9ioTRgErGA/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="sc-tag">teaser I</span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                <article class="scard" data-embed="https://www.youtube.com/embed/LkbeXkLjXHw?rel=0&playsinline=1&autoplay=1" role="button" tabindex="0" aria-label="Play teaser II"><img src="https://i.ytimg.com/vi/LkbeXkLjXHw/mqdefault.jpg" srcset="https://i.ytimg.com/vi/LkbeXkLjXHw/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="sc-tag">teaser II</span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
               </div>
             </div>
 
@@ -1099,7 +1135,7 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
                 <span class="dlx-lock" aria-hidden="true">[ locked ]</span>
               </div>
               <div class="db-info">
-                <p class="eyebrow"><span class="ln"></span>incoming</p>
+                <p class="eyebrow"><span class="ln"></span>incoming<svg class="ekg" viewBox="0 0 60 18" width="60" height="18" aria-hidden="true"><path d="M1 9h16l4-6 6 13 4-7h28" pathLength="100"/></svg></p>
                 <h3 class="db-title">BLOODBATH EDITION</h3>
                 <p class="db-note">the second pressing. sealed until the ritual is complete.</p>
                 <div class="dlx-cta">
@@ -1123,7 +1159,7 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
           <span class="seal-coin" id="sealCoin"><img src="art/coin.png" alt="" width="64" height="64" draggable="false" decoding="async"></span>
           <span class="seal-hint" id="sealHint">tap 3 times</span>
         </div>
-        <p class="eyebrow"><span class="ln"></span>[ 03 ] — the line is open</p>
+        <p class="eyebrow"><span class="ln"></span>[ 03 ] — the line is open<svg class="ekg" viewBox="0 0 60 18" width="60" height="18" aria-hidden="true"><path d="M1 9h16l4-6 6 13 4-7h28" pathLength="100"/></svg></p>
         <h3>say something.</h3>
         <p class="sub">a friendly note, a question, suggestion — we read every one. no shit, no newsletter, no spam.</p>
       </div>
@@ -1168,7 +1204,7 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   <div class="mp-bar" id="mpBar"><span class="mp-fill" id="mpFill"></span></div>
   <div class="mp-row" id="mpRow">
     <img class="mp-thumb" id="mpThumb" src="art/cdown.jpg" width="42" height="42" alt="">
-    <div class="mp-info">
+    <div class="mp-info" id="mpInfo">
       <b id="mpTitle">—</b><i id="mpArtist">Nilouverse Music</i>
     </div>
     <span class="mp-times"><span id="mpCur">0:00</span>/<span id="mpDur">0:00</span></span>
@@ -1186,11 +1222,16 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
     <button class="np-down" id="npClose" aria-label="close now playing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
     <span class="np-album">DOWN — Nilouverse Music</span>
   </div>
-  <div class="np-art"><img src="art/cdown.jpg" width="340" height="340" alt=""><span class="np-sheen" aria-hidden="true"></span></div>
-  <div class="np-title" id="npFullTitle">—</div>
-  <div class="np-sub" id="npSubFull">Nilouverse Music — DOWN</div>
-  <div class="np-bar" id="npBar"><span class="np-fill" id="npFill"></span></div>
-  <div class="np-times"><span id="npCur">0:00</span><span id="npDur">0:00</span></div>
+  <div class="np-stage" id="npStage">
+    <div class="np-disc">
+      <canvas id="vizCanvas" width="400" height="400" aria-hidden="true"></canvas>
+      <div class="np-art" id="npArt"><img src="art/cdown.jpg" width="340" height="340" alt=""><span class="np-sheen" aria-hidden="true"></span></div>
+    </div>
+    <div class="np-title" id="npFullTitle">—</div>
+    <div class="np-sub" id="npSubFull">Nilouverse Music — DOWN</div>
+    <div class="np-bar" id="npBar"><span class="np-fill" id="npFill"></span></div>
+    <div class="np-times"><span id="npCur">0:00</span><span id="npDur">0:00</span></div>
+  </div>
   <div class="np-ctl">
     <button class="np-btn tgl" id="npShuffle" aria-label="shuffle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4l5 5"/></svg></button>
     <button class="np-btn" id="npPrev" aria-label="previous"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM18 6l-8 6 8 6z"/></svg></button>
@@ -1243,17 +1284,17 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   <div class="pz-arena" id="pzArena">
     <span class="pz-rune" aria-hidden="true"></span>
     <span class="pz-coinbg" aria-hidden="true"></span>
-    <span class="wcoin w0" aria-hidden="true"><img src="art/coin.png" width="34" height="34" alt=""></span>
-    <span class="wcoin w1" aria-hidden="true"><img src="art/coin.png" width="34" height="34" alt=""></span>
-    <span class="wcoin w2" aria-hidden="true"><img src="art/coin.png" width="34" height="34" alt=""></span>
+    <span class="wcoin w0" aria-hidden="true"><img src="art/coin.png" width="34" height="34" alt="" decoding="async"></span>
+    <span class="wcoin w1" aria-hidden="true"><img src="art/coin.png" width="34" height="34" alt="" decoding="async"></span>
+    <span class="wcoin w2" aria-hidden="true"><img src="art/coin.png" width="34" height="34" alt="" decoding="async"></span>
     <div class="pz-stage" id="pzStage">
       <div class="gate" aria-hidden="true">
         <span class="gate-grid"></span><span class="gate-wall l"></span><span class="gate-wall r"></span><span class="gate-light"></span><span class="gate-shutter"></span><span class="gate-ring r1"></span><span class="gate-ring r2"></span><span class="gate-scan"></span>
       </div>
       <div class="hud hud-top" aria-hidden="true"><span class="hud-sev" id="hudSev">0/5</span></div>
       <span class="rite-hint" id="riteHint">pry when it flinches<span class="rh-arr"></span></span>
-      <span class="pz-btn" aria-hidden="true"><img src="art/button.png" alt="" draggable="false"></span>
-      <img class="pz-hand" id="pzHand" alt="" draggable="false">
+      <span class="pz-btn" aria-hidden="true"><img src="art/button.png" alt="" draggable="false" decoding="async"></span>
+      <img class="pz-hand" id="pzHand" alt="" draggable="false" decoding="async">
       <span class="fpos f0"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
       <span class="fpos f1"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
       <span class="fpos f2"><span class="tap-hint" aria-hidden="true"></span><span class="scan-col"></span><span class="blood"><i></i></span><span class="finger" role="button" tabindex="0" aria-label="grip"></span></span>
@@ -1299,8 +1340,9 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   var pre=document.getElementById('preloader'),fill=document.getElementById('preFill'),pct=document.getElementById('prePct'),status=document.getElementById('preStatus'),photo=document.getElementById('photo');
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fontReqs=['400 1em "Metal Mania"','700 1em "Syne"','800 1em "Syne"','400 1em "Space Grotesk"','700 1em "Space Grotesk"','1em "Instrument Serif"','italic 1em "Instrument Serif"'];
-  var deferredAssets=['art/coin.png','art/grip.png','art/button.png','art/cdown.jpg','art/acdown.jpg','art/ablank.png','art/adown.png','art/blood.png','down/xero-intro.mp3','down/down.mp3'];
-  var total=fontReqs.length+1; var done=0, revealed=false, statusTimer=null;
+  var deferredAssets=['art/grip.png','art/button.png','art/cdown.jpg','art/acdown.jpg','art/ablank.png','art/adown.png','art/blood.png','down/xero-intro.mp3','down/down.mp3'];
+  /* gate = fonts + hero photo + coin.png */
+  var total=fontReqs.length+2; var done=0, revealed=false, statusTimer=null;
   var lines=["tuning the strings…","warming the tubes…","the gentle thing stirs…","dropping the needle…","the floor gives out…"]; var li=0;
   if(!reduce){ statusTimer=setInterval(function(){ li=(li+1)%lines.length; if(status)status.textContent=lines[li]; },820); }
   function heroIn(){ if(photo)photo.classList.add('loaded'); }
@@ -1311,6 +1353,8 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   function tick(){ done++; updatePct(); if(done>=total) finish(); }
   if(document.fonts&&document.fonts.load){ fontReqs.forEach(function(f){ document.fonts.load(f).then(tick,tick); }); } else { for(var i=0;i<fontReqs.length;i++) tick(); }
   if(photo){ if(photo.complete&&photo.naturalWidth>0) tick(); else { photo.addEventListener('load',tick,{once:true}); photo.addEventListener('error',tick,{once:true}); } } else tick();
+  /* coin.png is a CORE asset of the reward system (the relic coins) — it must be fully loaded before the site is revealed, alongside the fonts. Do not remove. */
+  var coinPre=new Image(); coinPre.onload=tick; coinPre.onerror=tick; coinPre.src='art/coin.png';
   setTimeout(finish,5000);
   if(reduce) setTimeout(finish,300);
 })();
@@ -1423,7 +1467,8 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   });
 })();
 (function(){
-  function bindFacade(card){ function play(){ if(card.classList.contains('playing'))return; var src=card.getAttribute('data-embed'); if(!src)return; var ifr=document.createElement('iframe'); ifr.src=src; ifr.allow='accelerometer; encrypted-media; picture-in-picture'; ifr.allowFullscreen=true; var t=card.querySelector('b')||card.querySelector('.sc-tag'); ifr.title=t?t.textContent:'video'; card.classList.add('playing'); card.appendChild(ifr); }
+  /* autoplay=1 in data-embed + allow="autoplay" => starts with ONE tap. Do not remove. */
+  function bindFacade(card){ function play(){ if(card.classList.contains('playing'))return; var src=card.getAttribute('data-embed'); if(!src)return; var ifr=document.createElement('iframe'); ifr.src=src; ifr.allow='autoplay; encrypted-media; picture-in-picture'; ifr.allowFullscreen=true; var t=card.querySelector('b')||card.querySelector('.sc-tag'); ifr.title=t?t.textContent:'video'; card.classList.add('playing'); card.appendChild(ifr); }
     card.addEventListener('click',play);
     card.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); play(); } }); }
   var trail=document.getElementById('trailYt');
@@ -1450,11 +1495,11 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   var rows=Array.prototype.slice.call(app.querySelectorAll('.pl-row'));
   function $(id){return document.getElementById(id);}
   var npTitle=$('npTitle'),npSub=$('npSub'),albumPlay=$('albumPlay'),shufflePlay=$('shufflePlay'),listMore=$('listMore'),
-    mini=$('miniPlayer'),mpRow=$('mpRow'),mpBar=$('mpBar'),mpFill=$('mpFill'),mpTitle=$('mpTitle'),mpThumb=$('mpThumb'),mpCur=$('mpCur'),mpDur=$('mpDur'),mpPlay=$('mpPlay'),mpPrev=$('mpPrev'),mpNext=$('mpNext'),mpIcoPlay=$('mpIcoPlay'),mpIcoPause=$('mpIcoPause'),mpClose=$('mpClose'),
-    nowPlaying=$('nowPlaying'),npBar=$('npBar'),npFill=$('npFill'),npFullTitle=$('npFullTitle'),npSubFull=$('npSubFull'),npCur=$('npCur'),npDur=$('npDur'),npPlay=$('npPlay'),npPrev=$('npPrev'),npNext=$('npNext'),npIcoPlay=$('npIcoPlay'),npIcoPause=$('npIcoPause'),npShuffle=$('npShuffle'),npRepeat=$('npRepeat'),npRepeatLbl=$('npRepeatLbl'),npViews=$('npViews'),npLikes=$('npLikes'),npComments=$('npComments'),npLike=$('npLike'),npComment=$('npComment'),npClose=$('npClose'),npVol=$('npVol'),npDownload=$('npDownload'),npFav=$('npFav'),npShare=$('npShare'),npQueue=$('npQueue'),yourPlays=$('yourPlays'),
+    mini=$('miniPlayer'),mpRow=$('mpRow'),mpBar=$('mpBar'),mpFill=$('mpFill'),mpTitle=$('mpTitle'),mpThumb=$('mpThumb'),mpCur=$('mpCur'),mpDur=$('mpDur'),mpPlay=$('mpPlay'),mpPrev=$('mpPrev'),mpNext=$('mpNext'),mpIcoPlay=$('mpIcoPlay'),mpIcoPause=$('mpIcoPause'),mpClose=$('mpClose'),mpInfo=$('mpInfo'),
+    nowPlaying=$('nowPlaying'),npStage=$('npStage'),npArt=$('npArt'),npBar=$('npBar'),npFill=$('npFill'),npFullTitle=$('npFullTitle'),npSubFull=$('npSubFull'),npCur=$('npCur'),npDur=$('npDur'),npPlay=$('npPlay'),npPrev=$('npPrev'),npNext=$('npNext'),npIcoPlay=$('npIcoPlay'),npIcoPause=$('npIcoPause'),npShuffle=$('npShuffle'),npRepeat=$('npRepeat'),npRepeatLbl=$('npRepeatLbl'),npViews=$('npViews'),npLikes=$('npLikes'),npComments=$('npComments'),npLike=$('npLike'),npComment=$('npComment'),npClose=$('npClose'),npVol=$('npVol'),npDownload=$('npDownload'),npFav=$('npFav'),npShare=$('npShare'),npQueue=$('npQueue'),yourPlays=$('yourPlays'),
     featStats=$('featStats'),fViews=$('fViews'),fLikes=$('fLikes'),singlesGrid=$('singlesGrid'),rankNote=$('rankNote'),recentWrap=$('recentWrap'),recentRow=$('recentRow');
   var audio=new Audio(); audio.preload='metadata';
-  var cur=-1, shuffle=false, repeat=0;
+  var cur=-1, shuffle=false, repeat=0, navBusy=false;
   var RECENT_KEY='nv_recent', FAVS_KEY='nv_favs', PLAYS_KEY='nv_plays';
   var FAVS=new Set(), PLAYS={};
   try{ FAVS=new Set(JSON.parse(localStorage.getItem(FAVS_KEY)||'[]')); }catch(e){}
@@ -1494,7 +1539,6 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   function nextIndex(auto){ if(shuffle){ var n; do{ n=Math.floor(Math.random()*TRACKS.length);}while(n===cur&&TRACKS.length>1); return n; }
     var n=cur+1; if(n>=TRACKS.length){ if(repeat===1)return 0; if(auto)return -1; return TRACKS.length-1; } return n; }
   function prevIndex(){ if(cur<=0){ return repeat===1? TRACKS.length-1 : 0; } return cur-1; }
-  /* up-next queue: album order, or shuffled preview when shuffle is on */
   function queueOrder(){ var rem=[],i; for(i=0;i<TRACKS.length;i++){ if(i!==cur)rem.push(i); }
     if(shuffle){ for(i=rem.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=rem[i];rem[i]=rem[j];rem[j]=t; } }
     else { rem.sort(function(a,b){return a-b;}); var after=rem.filter(function(x){return x>cur;}); var before=rem.filter(function(x){return x<cur;}); rem=after.concat(before); }
@@ -1506,8 +1550,27 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
       li.addEventListener('click',go);
       li.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
     }); }
-  function loadTrack(i){
+  /* ---- audio-reactive visualizer (same-origin mp3, safe fallback) ---- */
+  var vizCanvas=$('vizCanvas'),vizReady=false,vizFailed=false,vizOn=false,vizRAF=null,lastViz=0,actx=null,analyser=null,vizData=null,cctx=null;
+  function ensureViz(){ if(vizReady||vizFailed||reduce||!vizCanvas)return; try{ var AC=window.AudioContext||window.webkitAudioContext; if(!AC){vizFailed=true;return;} actx=new AC(); var src=actx.createMediaElementSource(audio); analyser=actx.createAnalyser(); analyser.fftSize=128; analyser.smoothingTimeConstant=.82; src.connect(analyser); analyser.connect(actx.destination); vizData=new Uint8Array(analyser.frequencyBinCount); cctx=vizCanvas.getContext('2d'); vizReady=true; }catch(e){ vizFailed=true; } }
+  function drawViz(){ if(!cctx||!analyser)return; var W=vizCanvas.width,cx=W/2,cy=W/2; cctx.clearRect(0,0,W,W); analyser.getByteFrequencyData(vizData);
+    var bass=(vizData[1]+vizData[2]+vizData[3]+vizData[4])/4/255;
+    if(npArt) npArt.style.transform='scale('+(1+bass*0.03).toFixed(3)+')';
+    cctx.lineCap='round'; cctx.lineWidth=3;
+    var N=54,R=170;
+    for(var i=0;i<N;i++){ var bin=1+Math.floor(i/N*vizData.length*0.7); var v=vizData[bin]/255; var len=4+v*22; var a=i/N*Math.PI*2-Math.PI/2;
+      var x1=cx+Math.cos(a)*R, y1=cy+Math.sin(a)*R, x2=cx+Math.cos(a)*(R+len), y2=cy+Math.sin(a)*(R+len);
+      cctx.strokeStyle= v>.62 ? 'rgba(255,122,26,'+(0.35+v*0.55)+')' : 'rgba(255,39,71,'+(0.22+v*0.6)+')';
+      cctx.beginPath(); cctx.moveTo(x1,y1); cctx.lineTo(x2,y2); cctx.stroke(); }
+    cctx.strokeStyle='rgba(255,39,71,.12)'; cctx.lineWidth=1; cctx.beginPath(); cctx.arc(cx,cy,198,0,Math.PI*2); cctx.stroke(); }
+  function vizFrame(t){ if(!vizOn){vizRAF=null;return;} vizRAF=requestAnimationFrame(vizFrame); if(t-lastViz<33)return; lastViz=t; drawViz(); }
+  function setVizOn(on){ var should=!!(on&&vizReady&&!vizFailed&&!reduce); if(should===vizOn)return; vizOn=should;
+    if(vizOn){ vizRAF=requestAnimationFrame(vizFrame); }
+    else { if(vizRAF){cancelAnimationFrame(vizRAF);vizRAF=null;} if(cctx)cctx.clearRect(0,0,vizCanvas.width,vizCanvas.height); if(npArt)npArt.style.transform=''; } }
+  /* ---- track loading with slide animation ---- */
+  function setTrack(i){
     if(i<0||i>=TRACKS.length)return;
+    ensureViz();
     cur=i;
     npTitle.textContent=TRACKS[i].t; npSub.textContent='Nilouverse Music — DOWN';
     npFullTitle.textContent=TRACKS[i].t; npSubFull.textContent='Nilouverse Music — DOWN';
@@ -1517,6 +1580,7 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
     var w=watchUrl(TRACKS[i].yt); npLike.href=w; npComment.href=w;
     if(npDownload) npDownload.href='down/'+TRACKS[i].s+'.mp3';
     mini.classList.add('show'); document.body.classList.add('mini-on');
+    if(mpInfo&&!reduce){ mpInfo.classList.remove('swap'); void mpInfo.offsetWidth; mpInfo.classList.add('swap'); }
     setBeat(); paintFavs(); renderQueue();
     try{ history.replaceState(null,'','#t='+TRACKS[i].s); }catch(e){}
     audio.src='down/'+TRACKS[i].s+'.mp3';
@@ -1527,8 +1591,21 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
     }).catch(function(){ live(false); npSub.textContent='press play to start'; });
     updateMiniStats();
   }
+  function loadTrack(i,dir){
+    if(i<0||i>=TRACKS.length)return;
+    var animate=!reduce&&npStage&&nowPlaying.classList.contains('open')&&cur>=0&&i!==cur&&!navBusy;
+    if(!animate){ setTrack(i); return; }
+    var d=(dir!==undefined?dir:(i>cur?1:-1));
+    navBusy=true; npStage.style.willChange='transform';
+    npStage.classList.add(d>0?'slide-out-l':'slide-out-r');
+    setTimeout(function(){ setTrack(i);
+      npStage.classList.remove('slide-out-l','slide-out-r'); void npStage.offsetWidth;
+      npStage.classList.add(d>0?'slide-in-r':'slide-in-l');
+      setTimeout(function(){ npStage.classList.remove('slide-in-r','slide-in-l'); npStage.style.willChange=''; navBusy=false; },240);
+    },170);
+  }
   function togglePlay(){ if(cur<0){ loadTrack(0); return; } if(audio.paused){ audio.play().then(function(){live(true); mini.classList.add('show'); document.body.classList.add('mini-on');}).catch(function(){}); } else { audio.pause(); live(false); } }
-  function stopAll(){ audio.pause(); try{audio.currentTime=0;}catch(e){} live(false); mpFill.style.transform='scaleX(0)'; npFill.style.transform='scaleX(0)'; mpCur.textContent='0:00'; npCur.textContent='0:00'; mini.classList.remove('show'); document.body.classList.remove('mini-on'); nowPlaying.classList.remove('open'); }
+  function stopAll(){ audio.pause(); try{audio.currentTime=0;}catch(e){} live(false); mpFill.style.transform='scaleX(0)'; npFill.style.transform='scaleX(0)'; mpCur.textContent='0:00'; npCur.textContent='0:00'; mini.classList.remove('show'); document.body.classList.remove('mini-on'); nowPlaying.classList.remove('open'); setVizOn(false); }
   function setVol(v){ v=Math.max(0,Math.min(100,Math.round(v))); audio.volume=v/100; if(npVol){ npVol.value=v; npVol.style.setProperty('--v',v+'%'); } }
   rows.forEach(function(r){ r.addEventListener('click',function(e){ if(e.target.closest('.dl-mini'))return; loadTrack(+r.getAttribute('data-i')); }); });
   if(albumPlay) albumPlay.addEventListener('click',function(){ togglePlay(); });
@@ -1536,49 +1613,53 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   if(listMore) listMore.addEventListener('click',function(){ var open=app.classList.toggle('list-open'); listMore.setAttribute('aria-expanded',String(open)); });
   mpPlay.addEventListener('click',function(e){ e.stopPropagation(); togglePlay(); });
   npPlay.addEventListener('click',function(){ togglePlay(); });
-  mpPrev.addEventListener('click',function(e){ e.stopPropagation(); loadTrack(prevIndex()); });
-  npPrev.addEventListener('click',function(){ loadTrack(prevIndex()); });
-  mpNext.addEventListener('click',function(e){ e.stopPropagation(); var n=nextIndex(false); if(n>=0) loadTrack(n); });
-  npNext.addEventListener('click',function(){ var n=nextIndex(false); if(n>=0) loadTrack(n); });
+  mpPrev.addEventListener('click',function(e){ e.stopPropagation(); loadTrack(prevIndex(),-1); });
+  npPrev.addEventListener('click',function(){ loadTrack(prevIndex(),-1); });
+  mpNext.addEventListener('click',function(e){ e.stopPropagation(); var n=nextIndex(false); if(n>=0) loadTrack(n,1); });
+  npNext.addEventListener('click',function(){ var n=nextIndex(false); if(n>=0) loadTrack(n,1); });
   npShuffle.addEventListener('click',function(){ shuffle=!shuffle; npShuffle.classList.toggle('on',shuffle); renderQueue(); });
   npRepeat.addEventListener('click',function(){ repeat=(repeat+1)%3; npRepeat.classList.toggle('on',repeat!==0); npRepeatLbl.textContent= repeat===2?'1':''; });
   if(npFav) npFav.addEventListener('click',function(){ if(cur<0)return; if(FAVS.has(cur))FAVS.delete(cur); else FAVS.add(cur); saveFavs(); paintFavs(); });
-  /* share = copy the track's YouTube link */
   if(npShare) npShare.addEventListener('click',function(){ if(cur<0)return; var url='https://youtu.be/'+TRACKS[cur].yt;
     if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(function(){ if(window.__toastNow)window.__toastNow('link copied'); },function(){ window.location.href=url; }); } else { window.open(url,'_blank'); } });
   if(npVol){ npVol.addEventListener('input',function(){ setVol(+npVol.value); }); }
   function seekFrom(e,el){ if(!audio.duration)return; var r=el.getBoundingClientRect(); audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration; }
   mpBar.addEventListener('click',function(e){ seekFrom(e,mpBar); });
   npBar.addEventListener('click',function(e){ seekFrom(e,npBar); });
-  mpRow.addEventListener('click',function(e){ if(e.target.closest('.mp-ctl')||e.target.closest('.mp-close'))return; nowPlaying.classList.add('open'); });
-  npClose.addEventListener('click',function(){ nowPlaying.classList.remove('open'); });
+  mpRow.addEventListener('click',function(e){ if(e.target.closest('.mp-ctl')||e.target.closest('.mp-close'))return; nowPlaying.classList.add('open'); setVizOn(!audio.paused); });
+  npClose.addEventListener('click',function(){ nowPlaying.classList.remove('open'); setVizOn(false); });
   mpClose.addEventListener('click',function(e){ e.stopPropagation(); stopAll(); });
-  function addSwipeDown(el,onDown,min){ var sy=null; var m=min||60;
-    el.addEventListener('touchstart',function(e){ sy=e.touches[0].clientY; },{passive:true});
-    el.addEventListener('touchend',function(e){ if(sy==null)return; var dy=e.changedTouches[0].clientY-sy; if(dy>m) onDown(); sy=null; },{passive:true}); }
-  /* swipe left = next, swipe right = prev */
-  function addSwipeX(el,onNext,onPrev){ var sx=null,sy=null;
-    el.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; sy=e.touches[0].clientY; },{passive:true});
-    el.addEventListener('touchend',function(e){ if(sx==null)return; var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
-      if(Math.abs(dx)>64&&Math.abs(dx)>Math.abs(dy)*1.4){ if(dx<0)onNext(); else onPrev(); } sx=sy=null; },{passive:true}); }
-  addSwipeX(nowPlaying,function(){ var n=nextIndex(false); if(n>=0)loadTrack(n); },function(){ loadTrack(prevIndex()); });
-  addSwipeX(mini,function(){ var n=nextIndex(false); if(n>=0)loadTrack(n); },function(){ loadTrack(prevIndex()); });
-  addSwipeDown(mini,function(){ stopAll(); },40);
-  addSwipeDown(nowPlaying,function(){ nowPlaying.classList.remove('open'); },60);
+  /* swipe helpers with ignore-lists so controls/scrollables never trigger gestures */
+  function addSwipeX(el,onNext,onPrev,ignore){ var sx=null,sy=null;
+    el.addEventListener('touchstart',function(e){ if(ignore&&e.target.closest(ignore)){sx=null;return;} sx=e.touches[0].clientX; sy=e.touches[0].clientY; },{passive:true});
+    el.addEventListener('touchend',function(e){ if(sx==null)return; var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy; sx=sy=null; if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.3){ if(dx<0)onNext(); else onPrev(); } },{passive:true}); }
+  function addSwipeDown(el,onDown,min,ignore){ var sy=null; var m=min||60;
+    el.addEventListener('touchstart',function(e){ if(ignore&&e.target.closest(ignore)){sy=null;return;} sy=e.touches[0].clientY; },{passive:true});
+    el.addEventListener('touchend',function(e){ if(sy==null)return; var dy=e.changedTouches[0].clientY-sy; sy=null; if(dy>m) onDown(); },{passive:true}); }
+  addSwipeX(nowPlaying,function(){var n=nextIndex(false); if(n>=0)loadTrack(n,1);},function(){loadTrack(prevIndex(),-1);},'.np-queue,.np-bar,.np-ctl,.np-extra,.np-vol,button,a,input');
+  addSwipeX(mini,function(){var n=nextIndex(false); if(n>=0)loadTrack(n,1);},function(){loadTrack(prevIndex(),-1);},'.mp-bar,.mp-ctl,.mp-close,button');
+  addSwipeDown(mini,function(){stopAll();},40,'.mp-bar,.mp-ctl,.mp-close,button');
+  /* dismiss full player: ONLY when touch starts outside queue/controls and overlay is at top — queue scrolling can never close it */
+  (function(){ var sy=null,active=false;
+    nowPlaying.addEventListener('touchstart',function(e){ var t=e.target;
+      if(t.closest('.np-queue')||t.closest('.np-vol')||t.closest('.np-bar')||t.closest('.np-ctl')||t.closest('.np-extra')||t.closest('button')||t.closest('a')||t.closest('input')||nowPlaying.scrollTop>4){ active=false; sy=null; return; }
+      active=true; sy=e.touches[0].clientY; },{passive:true});
+    nowPlaying.addEventListener('touchend',function(e){ if(!active||sy==null){sy=null;active=false;return;} var dy=e.changedTouches[0].clientY-sy; sy=null; active=false; if(dy>90){ nowPlaying.classList.remove('open'); setVizOn(false); } },{passive:true});
+  })();
   addEventListener('keydown',function(e){
     var t=e.target; if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable))return;
     if(!mini.classList.contains('show'))return;
     if(e.code==='Space'){ e.preventDefault(); togglePlay(); }
-    else if(e.key==='ArrowRight'){ var n=nextIndex(false); if(n>=0)loadTrack(n); }
-    else if(e.key==='ArrowLeft'){ loadTrack(prevIndex()); }
+    else if(e.key==='ArrowRight'){ var n=nextIndex(false); if(n>=0)loadTrack(n,1); }
+    else if(e.key==='ArrowLeft'){ loadTrack(prevIndex(),-1); }
     else if(e.key==='ArrowUp'){ e.preventDefault(); setVol(audio.volume*100+5); }
     else if(e.key==='ArrowDown'){ e.preventDefault(); setVol(audio.volume*100-5); }
   });
-  audio.addEventListener('ended',function(){ if(repeat===2){ loadTrack(cur); } else { var n=nextIndex(true); if(n>=0) loadTrack(n); else live(false); } });
-  audio.addEventListener('pause',function(){ live(false); });
-  audio.addEventListener('play',function(){ live(true); });
+  audio.addEventListener('ended',function(){ if(repeat===2){ loadTrack(cur); } else { var n=nextIndex(true); if(n>=0) loadTrack(n,1); else live(false); } });
+  audio.addEventListener('pause',function(){ live(false); setVizOn(false); });
+  audio.addEventListener('play',function(){ live(true); if(actx&&actx.state==='suspended'){ actx.resume().catch(function(){}); } setVizOn(nowPlaying.classList.contains('open')); });
   audio.addEventListener('timeupdate',syncTime);
-  if('mediaSession' in navigator){ navigator.mediaSession.setActionHandler('previoustrack',function(){ loadTrack(prevIndex()); }); navigator.mediaSession.setActionHandler('nexttrack',function(){ var n=nextIndex(false); if(n>=0) loadTrack(n); }); }
+  if('mediaSession' in navigator){ navigator.mediaSession.setActionHandler('previoustrack',function(){ loadTrack(prevIndex(),-1); }); navigator.mediaSession.setActionHandler('nexttrack',function(){ var n=nextIndex(false); if(n>=0) loadTrack(n,1); }); }
   function renderTop(items){ if(!singlesGrid)return;
     var first={};
     if(!reduce){ singlesGrid.querySelectorAll('.chart-row').forEach(function(r){ first[r.getAttribute('data-i')]=r.getBoundingClientRect().top; }); }
@@ -1606,7 +1687,6 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
       row.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
     }); }
   bindSingles();
-  /* YouTube stats — EXACT original logic: immediate call, original parse chain, + silent retry */
   function fetchStats(){ if(!YT_API_KEY)return;
     var ids=TRACKS.map(function(t){return t.yt;}).join(',');
     var url='https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id='+ids+'&key='+YT_API_KEY;
@@ -1631,7 +1711,9 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
   var f=document.getElementById('ytFacade'); if(!f)return;
   var btn=f.querySelector('.yt-play');
   f.addEventListener('pointerenter',function(){ if(window.__pc){ window.__pc('https://www.youtube.com'); window.__pc('https://i.ytimg.com'); } },{passive:true});
-  function play(){ var src=f.getAttribute('data-embed'); if(!src)return; var ifr=document.createElement('iframe'); ifr.src=src; ifr.allow='accelerometer; encrypted-media; picture-in-picture'; ifr.allowFullscreen=true; ifr.title='DOWN — official video'; var poster=f.querySelector('.yt-poster'); if(poster)poster.remove(); if(btn)btn.remove(); f.appendChild(ifr); f.classList.add('playing'); }
+  function play(){ var src=f.getAttribute('data-embed'); if(!src)return; var ifr=document.createElement('iframe');
+    /* autoplay=1 in data-embed + allow="autoplay" => ONE tap plays. Do not remove. */
+    ifr.src=src; ifr.allow='autoplay; encrypted-media; picture-in-picture'; ifr.allowFullscreen=true; ifr.title='DOWN — official video'; var poster=f.querySelector('.yt-poster'); if(poster)poster.remove(); if(btn)btn.remove(); f.appendChild(ifr); f.classList.add('playing'); }
   f.addEventListener('click',play);
 })();
 (function(){
@@ -1849,6 +1931,22 @@ body.midnight body::before{background:radial-gradient(58% 48% at 22% 18%, rgba(1
     addEventListener('appinstalled',function(){ pill.classList.remove('show'); });
   })();
   try{ console.log('%c † Nilouverse † ','background:#0a0608;color:#ff2747;font-size:16px;padding:6px 10px;border:1px solid #b3102a;font-weight:bold'); console.log('%c independent nu-metal ','background:#0a0608;color:#94808a;font-size:10px;padding:3px 10px'); }catch(e){}
+})();
+/* album cover micro-tilt — pointer-fine only, transform-only, rAF-throttled */
+(function(){
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var art=document.querySelector('.alb-art'),img=art&&art.querySelector('img');
+  if(!art||!img)return;
+  var raf=null,rx=0,ry=0;
+  art.addEventListener('pointermove',function(e){
+    var r=art.getBoundingClientRect();
+    ry=((e.clientX-r.left)/r.width-.5)*10;
+    rx=((e.clientY-r.top)/r.height-.5)*-10;
+    if(raf)return;
+    raf=requestAnimationFrame(function(){ img.style.transform='scale(1.04) rotateX('+rx.toFixed(2)+'deg) rotateY('+ry.toFixed(2)+'deg)'; raf=null; });
+  });
+  art.addEventListener('pointerleave',function(){ img.style.transform=''; });
 })();
 (function(){
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
