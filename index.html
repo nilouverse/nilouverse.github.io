@@ -36,15 +36,18 @@
 <link rel="icon" type="image/png" href="art/button.png">
 <link rel="apple-touch-icon" href="art/button.png">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Nilouverse">
-<noscript><style>#preloader{display:none!important}html,body{overflow:auto!important}.wordmark,.socials{opacity:1!important;transform:none!important}.wordmark::before,.wordmark::after{display:none!important}.photo{opacity:.97!important}[data-reveal]{opacity:1!important;transform:none!important}.m-menu{position:static!important;opacity:1!important;transform:none!important;pointer-events:auto!important}.pl-list{max-height:none!important;-webkit-mask-image:none!important;mask:none!important}.album-stage{grid-template-rows:1fr!important}</style></noscript>
+<noscript><style>#preloader{display:none!important}html,body{overflow:auto!important}.wordmark,.socials{opacity:1!important;transform:none!important}.wordmark::before,.wordmark::after{display:none!important}.photo{opacity:.97!important}[data-reveal]{opacity:1!important;transform:none!important}.m-menu{position:static!important;opacity:1!important;transform:none!important;pointer-events:auto!important}.pl-list{max-height:none!important;-webkit-mask-image:none!important;mask:none!important}.album-stage{grid-template-rows:1fr!important}#insiderModal{display:none!important}</style></noscript>
 <style>
 :root{color-scheme:dark;--ink:#0a0608;--ink2:#0e0709;--blood:#b3102a;--blood-deep:#7c0b1b;--blood-bright:#ff2747;--blood-wet:#7c0b1b;--ember:#ff7a1a;--ember-soft:#ffb24d;--cyan:#34e3d6;--cyan-soft:#9bf3ea;--magenta:#ff2d7e;--magenta-soft:#ff86b6;--violet:#b07cff;--bone:#efe6dd;--bone-dim:#b7a6ab;--bone-faint:#94808a;--line:rgba(239,230,221,.12);--edge:rgba(239,230,221,.06);--ease:cubic-bezier(.22,.61,.36,1);--ease-soft:cubic-bezier(.16,.84,.44,1);--dur-1:.35s;--dur-2:.7s;--f-logo:'Metal Mania',cursive;--f-disp:'Syne',sans-serif;--f-serif:'Instrument Serif',serif;--f-body:'Space Grotesk',sans-serif;--f-egg:'Creepster',cursive;--f-px:'Press Start 2P',var(--f-mono);--f-mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;--rad:clamp(14px,2.2vw,22px);
 /* ACCENT SYSTEM — LOCKED. Do not retheme without owner approval. */
 --accent:#ff2747;--accent-deep:#7c0b1b;--accent-2:#ff6a3d;--accent-glow:rgba(255,39,71,.5);--accent-soft:#ff9db4;--on-accent:#ffffff;
 --accent-line:rgba(255,39,71,.22);--accent-line-strong:rgba(255,39,71,.55);--accent-tint:rgba(255,39,71,.07);--accent-tint-2:rgba(255,39,71,.13);--accent-mist:rgba(255,39,71,.18);--accent-faint:rgba(209,20,48,.08);--accent-edge:rgba(255,120,140,.14);
+/* ember palette (hero sparks) — follows the mood accent */
+--emb1:#ff7a1a;--emb2:#ffb24d;--emb3:#ff2d7e;--emb4:#ff86b6;
 --panel-edge:1px solid var(--accent-line);--panel-shadow:0 24px 70px -38px rgba(0,0,0,.9),inset 0 1px 0 var(--accent-edge),inset 0 -1px 0 rgba(255,255,255,.04);
 --glass:linear-gradient(158deg,var(--accent-tint-2),rgba(24,9,14,.82) 38%,rgba(9,4,6,.94) 80%);--glass-blur:blur(20px) saturate(1.6);--coin2:20px;--cut:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);--cut-sm:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);--seam:linear-gradient(90deg,transparent,var(--accent-line-strong) 18%,var(--accent-glow) 50%,var(--accent-line-strong) 82%,transparent);--art-hero:url('art/hero.jpg');--art-cover:url('art/cdown.jpg');--art-album:url('art/adown.png');--art-deluxe:url('art/ablank.png');--art-single:url('art/acdown.jpg');--art-trees:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'><path fill='%23040209' d='M0,320 L0,210 L30,150 L55,235 L95,120 L130,250 L170,170 L210,90 L250,240 L300,140 L340,250 L380,60 L420,250 L470,160 L520,250 L560,110 L610,240 L660,180 L700,70 L740,250 L800,150 L850,250 L900,100 L950,240 L1000,170 L1050,80 L1100,250 L1150,150 L1200,240 L1250,120 L1300,250 L1350,160 L1400,210 L1440,250 L1440,320 Z'/></svg>");--beat:.63s;
 --motion-scale:1;--motion-ease:var(--ease);--glow-boost:1;}
+[hidden]{display:none!important}
 *{box-sizing:border-box;margin:0;padding:0}
 html{overflow-x:clip;scrollbar-gutter:stable}
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
@@ -54,11 +57,14 @@ img{display:block;max-width:100%}a{color:inherit;text-decoration:none}::selectio
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .skip-link{position:absolute;top:-100px;left:0;background:var(--accent-deep);color:var(--bone);padding:10px 20px;z-index:1000;transition:top .3s;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;border-radius:0 0 8px 0}.skip-link:focus{top:0}
 @media(pointer:fine){html{scrollbar-color:var(--accent-mist) #0a0608}::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#0a0608}::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--accent-deep),var(--accent));border-radius:8px;border:2px solid #0a0608}::-webkit-scrollbar-thumb:hover{background:var(--accent)}}
-h2,h3{text-wrap:balance}.poem .ln,.contact-head .sub,.cnote,.legal,.feat-body .it{text-wrap:pretty}
+h2,h3{text-wrap:balance}.poem .ln,.contact-head .sub,.cnote,.legal,.feat-body .it,.im-line{text-wrap:pretty}
 button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .nm{color:var(--blood-bright);font-style:italic;cursor:pointer;border-radius:3px;text-shadow:0 0 14px rgba(255,39,71,.3);transition:text-shadow var(--dur-1) var(--ease)}.nm:hover{text-shadow:0 0 20px rgba(255,39,71,.6)}.nm.ping{animation:nmPing .85s var(--ease)}
 @keyframes nmPing{0%{text-shadow:0 0 14px rgba(255,39,71,.3)}25%{text-shadow:0 0 30px rgba(255,39,71,.95),0 0 6px #fff}50%{text-shadow:0 0 8px rgba(255,39,71,.4)}75%{text-shadow:0 0 26px rgba(255,39,71,.85)}100%{text-shadow:0 0 14px rgba(255,39,71,.3)}}
 .dag{color:var(--bone-faint)}
+.ln-blood{display:inline-block;width:clamp(48px,9vw,84px);height:auto;vertical-align:middle;margin-left:10px;transform:rotate(6deg);filter:drop-shadow(0 2px 8px rgba(124,11,27,.6)) saturate(1.1)}
+/* INSIDER tag — shown only after the ritual is won */
+.insider-tag{font-family:var(--f-mono);font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;color:#ffd24a;border:1px solid rgba(255,210,120,.55);background:rgba(255,210,120,.08);padding:3px 7px 3px 9px;border-radius:999px;margin-left:8px;vertical-align:middle;box-shadow:0 0 10px -2px rgba(255,210,120,.5);animation:authPulse 2.6s ease-in-out infinite}
 body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;transform:translateZ(0);background:radial-gradient(58% 48% at 22% 18%, var(--accent-glow), transparent 62%),radial-gradient(52% 44% at 82% 72%, var(--accent-mist), transparent 62%),radial-gradient(42% 42% at 50% 104%, rgba(255,45,126,.08), transparent 62%),radial-gradient(46% 40% at 8% 90%, rgba(52,227,214,.03), transparent 60%),radial-gradient(80% 50% at 50% 120%, var(--accent-faint), transparent 70%);}
 body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.012;transform:translateZ(0);background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
@@ -225,10 +231,10 @@ body.blood-revealed .blood-extra{opacity:.96;transform:rotate(var(--rot,0deg)) s
 .ekg path{stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;fill:none;stroke-dasharray:100;stroke-dashoffset:100;filter:drop-shadow(0 0 4px var(--accent-glow));animation:ekgDraw calc(2.6s / var(--motion-scale,1)) var(--ease) infinite;animation-play-state:paused}
 [data-reveal].in .ekg path{animation-play-state:running}
 @keyframes ekgDraw{0%{stroke-dashoffset:100;opacity:0}12%{opacity:1}55%{stroke-dashoffset:0;opacity:1}78%{opacity:1}100%{stroke-dashoffset:0;opacity:0}}
-.ticket-head h2,.listen-head h2,.singles-head h3,.contact-head h3,.feat-body h3{background:linear-gradient(180deg,#fff 0%,var(--bone) 55%,#c9b6ac 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ticket-head h2,.listen-head h2,.singles-head h3,.contact-head h3,.feat-body h3,.im-title{background:linear-gradient(180deg,#fff 0%,var(--bone) 55%,#c9b6ac 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .feat-body h3{-webkit-text-stroke:1px rgba(124,11,27,.75)}
 @supports not ((background-clip:text) or (-webkit-background-clip:text)){
-  .wordmark,.ticket-head h2,.listen-head h2,.singles-head h3,.contact-head h3,.feat-body h3,.alb-title,.db-title{color:var(--bone)!important;background:none!important;-webkit-text-stroke:0!important}
+  .wordmark,.ticket-head h2,.listen-head h2,.singles-head h3,.contact-head h3,.feat-body h3,.alb-title,.db-title,.im-title{color:var(--bone)!important;background:none!important;-webkit-text-stroke:0!important}
   .wordmark::before,.wordmark::after{display:none!important}
 }
 .art-drop{position:relative;z-index:1;display:none;justify-content:center;padding:14px clamp(18px,5vw,40px) 2px}
@@ -252,7 +258,7 @@ body.rewards .art-drop{display:flex}
 .poem .dead{color:var(--bone-faint);text-decoration:line-through;text-decoration-color:var(--blood-deep);text-decoration-thickness:1px}
 .poem .teeth{color:var(--blood-bright);font-style:italic;text-shadow:0 0 16px rgba(255,39,71,.3)}
 .poem .redline{color:var(--bone);text-shadow:0 0 20px rgba(209,20,48,.25)}
-/* featured track — fused into the intro ticket as a perforated stub */
+/* featured track — fused into the intro ticket as its tear-off stub. */
 .ticket-stub{grid-column:1/-1;position:relative;border-top:1px dashed var(--line);padding-top:clamp(16px,3vw,24px);display:grid;grid-template-columns:1fr;gap:clamp(16px,3vw,28px)}
 .ticket-stub .stub-notch{position:absolute;top:-7px;width:14px;height:14px;border-radius:50%;background:var(--ink);border:1px solid var(--edge)}
 .ticket-stub .stub-notch.l{left:8%}.ticket-stub .stub-notch.r{right:8%}
@@ -720,6 +726,22 @@ body.rewards .np-dl{display:grid}
 .np-queue .qn{font-family:var(--f-mono);font-size:.6rem;color:var(--bone-faint);width:16px;text-align:center;flex:none}
 .np-queue .qt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .np-queue .qd{font-size:.62rem;color:var(--bone-faint);font-variant-numeric:tabular-nums;flex:none}
+/* ---- INSIDER reward popup ---- */
+#insiderModal{position:fixed;inset:0;z-index:470;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(5,2,3,.82);-webkit-backdrop-filter:blur(10px) saturate(1.3);backdrop-filter:blur(10px) saturate(1.3);opacity:0;visibility:hidden;transition:opacity .45s var(--ease),visibility .45s}
+#insiderModal.show{opacity:1;visibility:visible}
+.im-card{position:relative;max-width:440px;width:100%;background:var(--glass);border:var(--panel-edge);border-radius:var(--rad);box-shadow:var(--panel-shadow);padding:clamp(26px,6vw,42px) clamp(22px,5vw,38px) clamp(22px,5vw,34px);text-align:center;transform:translateY(14px) scale(.97);transition:transform .45s var(--ease-soft);overflow:hidden}
+#insiderModal.show .im-card{transform:none}
+.im-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.im-blood{position:absolute;right:-24px;top:-18px;width:120px;opacity:.4;transform:rotate(24deg);filter:drop-shadow(0 4px 12px rgba(124,11,27,.55));pointer-events:none}
+.im-coin{width:64px;height:64px;margin:0 auto 12px;filter:drop-shadow(0 6px 16px rgba(255,190,90,.45));animation:railFloat 5s ease-in-out infinite}
+.im-title{font-family:var(--f-disp);font-weight:800;font-size:clamp(1.5rem,6vw,2.1rem);line-height:1.05}
+.im-line{font-family:var(--f-serif);font-style:italic;font-size:clamp(1rem,3.4vw,1.15rem);color:var(--bone-dim);margin-top:12px;line-height:1.55}
+.im-line b{color:var(--bone);font-style:normal;font-family:var(--f-body);font-weight:700;letter-spacing:.06em}
+.im-k{margin-top:18px;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent)}
+.im-reward{margin-top:10px;display:flex;align-items:flex-start;justify-content:center;gap:10px;font-size:.85rem;color:var(--bone-dim);line-height:1.5;text-align:left}
+.im-reward svg{width:16px;height:16px;flex:none;color:var(--accent);margin-top:2px}
+.im-reward b{color:var(--bone)}
+.im-btn{margin-top:22px}
 #puzzle{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2vh,18px);padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));overflow:hidden;opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility .5s,transform .8s var(--ease-soft)}
 #puzzle.show{opacity:1;visibility:visible}
 .pz-scene{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
@@ -915,10 +937,10 @@ body.midnight .wordmark::before{opacity:.65}
    TRACK ESSENCE — MOOD ACCENTS (LOCKED)
    heavy = blood red · mixed = moonlit silver · soft = cool blue
    ================================================================ */
-body[data-mood="heavy"]{--accent:#ff2747;--accent-deep:#7c0b1b;--accent-2:#ff6a3d;--accent-glow:rgba(255,39,71,.5);--accent-soft:#ff9db4;--on-accent:#ffffff;--accent-line:rgba(255,39,71,.22);--accent-line-strong:rgba(255,39,71,.55);--accent-tint:rgba(255,39,71,.07);--accent-tint-2:rgba(255,39,71,.13);--accent-mist:rgba(255,39,71,.18);--accent-faint:rgba(209,20,48,.08);--accent-edge:rgba(255,120,140,.14);--motion-scale:1.14;--motion-ease:cubic-bezier(.36,.07,.19,.97)}
-body[data-mood="mixed"]{--accent:#dfe9ee;--accent-deep:#5f7078;--accent-2:#aebfc7;--accent-glow:rgba(223,233,238,.42);--accent-soft:#f4f9fb;--on-accent:#101418;--accent-line:rgba(223,233,238,.24);--accent-line-strong:rgba(223,233,238,.55);--accent-tint:rgba(223,233,238,.07);--accent-tint-2:rgba(223,233,238,.13);--accent-mist:rgba(223,233,238,.16);--accent-faint:rgba(223,233,238,.08);--accent-edge:rgba(223,233,238,.14);--motion-scale:1.04;--motion-ease:cubic-bezier(.34,1.45,.5,1)}
-body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff;--accent-glow:rgba(41,195,255,.45);--accent-soft:#9adfff;--on-accent:#04121c;--accent-line:rgba(41,195,255,.24);--accent-line-strong:rgba(41,195,255,.55);--accent-tint:rgba(41,195,255,.07);--accent-tint-2:rgba(41,195,255,.13);--accent-mist:rgba(41,195,255,.16);--accent-faint:rgba(41,195,255,.08);--accent-edge:rgba(120,220,255,.14);--motion-scale:.9;--motion-ease:cubic-bezier(.22,.61,.36,1)}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}[data-reveal]{opacity:1;transform:none}#preloader{display:none}.wordmark,.socials{opacity:1!important;transform:none!important}.wordmark::before,.wordmark::after{display:none!important}.photo{opacity:.97;transition:none;animation:none!important}.blood>i{opacity:var(--o,.8);transform:scale(1)}.pz-rune{opacity:.12;animation:none}.pz-ash span{display:none}.pz-drips{display:none}.pz-mist i{animation:none}.pz-arena{animation:none}.pz-coinbg{animation:none}.wcoin{animation:none}.pz-stage.free .pz-hand{opacity:0}.pz-stage.free .gate{opacity:1}.pz-stage.free .gate-grid,.pz-stage.free .gate-wall{opacity:1}.pz-stage.free .gate-ring{opacity:1}.pz-stage.free .pz-btn{top:42%;width:30%}.pz-stage.unlocked .gate-light{opacity:1;transform:translate(-50%,-50%) scale(1)}.pz-stage.unlocked .gate-shutter{clip-path:circle(0% at 50% 50%)}.pz-stage.sealed .gate-light{opacity:.26}.pz-stage.sealed .gate-shutter{clip-path:circle(40% at 50% 50%)}.coin-orbit .coin{opacity:1}.beam,.beam.b2{animation:none}.now-playing.open .np-art img{animation:none}.mp-thumb.spin{animation:none}.np-sheen{display:none}.blood-splatter{opacity:.7!important}.ekg path{animation:none;stroke-dashoffset:0;opacity:.5}#puzzle.pz-fall{transition:none;transform:none}.np-stage.enter-l,.np-stage.enter-r{animation:none!important}.rail-art{animation:none!important}}
+body[data-mood="heavy"]{--accent:#ff2747;--accent-deep:#7c0b1b;--accent-2:#ff6a3d;--accent-glow:rgba(255,39,71,.5);--accent-soft:#ff9db4;--on-accent:#ffffff;--accent-line:rgba(255,39,71,.22);--accent-line-strong:rgba(255,39,71,.55);--accent-tint:rgba(255,39,71,.07);--accent-tint-2:rgba(255,39,71,.13);--accent-mist:rgba(255,39,71,.18);--accent-faint:rgba(209,20,48,.08);--accent-edge:rgba(255,120,140,.14);--emb1:#ff7a1a;--emb2:#ffb24d;--emb3:#ff2d7e;--emb4:#ff86b6;--motion-scale:1.14;--motion-ease:cubic-bezier(.36,.07,.19,.97)}
+body[data-mood="mixed"]{--accent:#dfe9ee;--accent-deep:#5f7078;--accent-2:#aebfc7;--accent-glow:rgba(223,233,238,.42);--accent-soft:#f4f9fb;--on-accent:#101418;--accent-line:rgba(223,233,238,.24);--accent-line-strong:rgba(223,233,238,.55);--accent-tint:rgba(223,233,238,.07);--accent-tint-2:rgba(223,233,238,.13);--accent-mist:rgba(223,233,238,.16);--accent-faint:rgba(223,233,238,.08);--accent-edge:rgba(223,233,238,.14);--emb1:#dfe9ee;--emb2:#aebfc7;--emb3:#f4f9fb;--emb4:#9fb0bb;--motion-scale:1.04;--motion-ease:cubic-bezier(.34,1.45,.5,1)}
+body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff;--accent-glow:rgba(41,195,255,.45);--accent-soft:#9adfff;--on-accent:#04121c;--accent-line:rgba(41,195,255,.24);--accent-line-strong:rgba(41,195,255,.55);--accent-tint:rgba(41,195,255,.07);--accent-tint-2:rgba(41,195,255,.13);--accent-mist:rgba(41,195,255,.16);--accent-faint:rgba(41,195,255,.08);--accent-edge:rgba(120,220,255,.14);--emb1:#29c3ff;--emb2:#6a9bff;--emb3:#9adfff;--emb4:#7fb4ff;--motion-scale:.9;--motion-ease:cubic-bezier(.22,.61,.36,1)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}[data-reveal]{opacity:1;transform:none}#preloader{display:none}.wordmark,.socials{opacity:1!important;transform:none!important}.wordmark::before,.wordmark::after{display:none!important}.photo{opacity:.97;transition:none;animation:none!important}.blood>i{opacity:var(--o,.8);transform:scale(1)}.pz-rune{opacity:.12;animation:none}.pz-ash span{display:none}.pz-drips{display:none}.pz-mist i{animation:none}.pz-arena{animation:none}.pz-coinbg{animation:none}.wcoin{animation:none}.pz-stage.free .pz-hand{opacity:0}.pz-stage.free .gate{opacity:1}.pz-stage.free .gate-grid,.pz-stage.free .gate-wall{opacity:1}.pz-stage.free .gate-ring{opacity:1}.pz-stage.free .pz-btn{top:42%;width:30%}.pz-stage.unlocked .gate-light{opacity:1;transform:translate(-50%,-50%) scale(1)}.pz-stage.unlocked .gate-shutter{clip-path:circle(0% at 50% 50%)}.pz-stage.sealed .gate-light{opacity:.26}.pz-stage.sealed .gate-shutter{clip-path:circle(40% at 50% 50%)}.coin-orbit .coin{opacity:1}.beam,.beam.b2{animation:none}.now-playing.open .np-art img{animation:none}.mp-thumb.spin{animation:none}.np-sheen{display:none}.blood-splatter{opacity:.7!important}.ekg path{animation:none;stroke-dashoffset:0;opacity:.5}#puzzle.pz-fall{transition:none;transform:none}.np-stage.enter-l,.np-stage.enter-r{animation:none!important}.rail-art{animation:none!important}.im-coin{animation:none!important}}
 </style>
 </head>
 <body class="loading">
@@ -943,7 +965,7 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
       <span class="coin-orbit o2" aria-hidden="true"></span>
       <span class="brand-key-hint" id="brandKeyHint" aria-hidden="true"></span>
     </span>
-    <a class="brand-name" href="#top"><span class="bn-main">Nilouverse<span class="bn-dot">.</span></span><span class="bn-sub">independent nu-metal</span></a>
+    <a class="brand-name" href="#top"><span class="bn-main">Nilouverse<span class="bn-dot">.</span><span class="insider-tag" id="insiderTag" hidden>INSIDER</span></span><span class="bn-sub">independent nu-metal</span></a>
   </div>
   <nav class="topnav">
     <a class="nav-link" href="#intro">Intro</a>
@@ -1011,7 +1033,7 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
         <p class="ln" data-reveal style="--d:.25s">The gentle thing shows its <span class="teeth">teeth, horns.</span></p>
         <p class="ln" data-reveal style="--d:.35s">And when the riff pins you to the wall before you've finished deciding if you liked it, a shadow looms, bending the light the wrong way—</p>
         <p class="ln redline" data-reveal style="--d:.45s">a red that no lamp in the room is casting.</p>
-        <p class="ln" data-reveal style="--d:.55s"><span class="dag" aria-hidden="true">†</span> <span class="nm" id="introName" role="button" tabindex="0">NilouZila</span> welcomes you.</p>
+        <p class="ln" data-reveal style="--d:.55s"><span class="dag" aria-hidden="true">†</span> <span class="nm" id="introName" role="button" tabindex="0">NilouZila</span> <span id="introWelcome">welcomes you.</span><img class="ln-blood" id="introBlood" src="art/blood.png" alt="" aria-hidden="true" hidden></p>
       </div>
 
       <!-- featured track, fused into the intro ticket as its tear-off stub. -->
@@ -1296,7 +1318,7 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
   <div class="np-extra">
     <div class="np-func">
       <button class="fav" id="npFav" aria-label="favorite this track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></button>
-      <button id="npShare" aria-label="copy youtube link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button>
+      <button id="npShare" aria-label="copy song link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button>
       <a id="npDownload" class="np-dl" download aria-label="download track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a>
     </div>
     <div class="np-yt">
@@ -1311,6 +1333,19 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
   <div class="np-queue-wrap">
     <p class="np-queue-k">up next</p>
     <ol class="np-queue" id="npQueue"></ol>
+  </div>
+</div>
+
+<!-- INSIDER reward popup — shown once, right after the ritual is won -->
+<div id="insiderModal" role="dialog" aria-modal="true" aria-label="Nilouverse Insider">
+  <div class="im-card">
+    <img class="im-blood" src="art/blood.png" alt="" aria-hidden="true">
+    <img class="im-coin" src="art/coin.png" alt="" aria-hidden="true">
+    <h3 class="im-title">Congratulations!</h3>
+    <p class="im-line">You are now a <b>Nilouverse Insider</b> — a prize for uncovering the secrets and solving the puzzle.</p>
+    <p class="im-k">Your rewards:</p>
+    <p class="im-reward"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg><span><b>Download feature unlocked</b> — high-quality MP3 tracks, directly from the website.</span></p>
+    <button class="cbtn im-btn" id="imClose" type="button"><span class="tri"></span>claim it †</button>
   </div>
 </div>
 
@@ -1365,6 +1400,30 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
   window.__pf=function(u){ var l=document.createElement('link'); l.rel='prefetch'; l.href=u; document.head.appendChild(l); };
   window.__ric=window.requestIdleCallback||function(f){ setTimeout(f,200); };
 })();
+/* ---- INSIDER state: tag next to the logo + the intro line flip ---- */
+(function(){
+  var tag=document.getElementById('insiderTag'),wel=document.getElementById('introWelcome'),bl=document.getElementById('introBlood');
+  function pWon(){try{return localStorage.getItem('nv_puzzle_won')==='1';}catch(e){return false;}}
+  function apply(){ var on=pWon();
+    if(tag)tag.hidden=!on;
+    if(wel)wel.textContent=on?'watches you!':'welcomes you.';
+    if(bl)bl.hidden=!on;
+  }
+  window.__applyInsider=apply;
+  apply();
+})();
+/* ---- INSIDER reward popup ---- */
+(function(){
+  var modal=document.getElementById('insiderModal'),btn=document.getElementById('imClose');
+  if(!modal)return;
+  function seenFlag(){try{return localStorage.getItem('nv_insider_seen')==='1';}catch(e){return false;}}
+  function markSeen(){try{localStorage.setItem('nv_insider_seen','1');}catch(e){}}
+  window.__showInsider=function(){ if(seenFlag()||modal.classList.contains('show'))return; modal.classList.add('show'); markSeen(); };
+  function close(){ modal.classList.remove('show'); }
+  if(btn)btn.addEventListener('click',close);
+  modal.addEventListener('click',function(e){ if(e.target===modal)close(); });
+  addEventListener('keydown',function(e){ if(e.key==='Escape'&&modal.classList.contains('show'))close(); });
+})();
 (function(){
   var KEY='nv_lore_v1';
   var SECRETS=['name','disc','ember'];
@@ -1411,8 +1470,10 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
   var box=document.getElementById('embers'); if(!box)return;
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce)return;
+  /* embers ride the mood accent via live CSS vars (--emb1..4); existing
+     embers recolor instantly when the track mood changes. */
+  var cols=['var(--emb1)','var(--emb2)','var(--emb3)','var(--emb4)','var(--emb1)'];
   window.__ric(function(){
-    var cols=['#ff7a1a','#ffb24d','#ff2d7e','#ff86b6','#ff7a1a'];
     function spawn(burst){ var s=document.createElement('span'); var size=(Math.random()*2+1.4).toFixed(1);
       s.style.left=(Math.random()*100).toFixed(2)+'%'; s.style.width=size+'px'; s.style.height=size+'px';
       s.style.setProperty('--c', cols[Math.floor(Math.random()*cols.length)]);
@@ -1575,7 +1636,7 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
     nowPlaying=$('nowPlaying'),npStage=$('npStage'),npArt=$('npArt'),npDisc=$('npDisc'),npBar=$('npBar'),npFill=$('npFill'),npFullTitle=$('npFullTitle'),npSubFull=$('npSubFull'),npCur=$('npCur'),npDur=$('npDur'),npTimes=$('npTimes'),npPlay=$('npPlay'),npPrev=$('npPrev'),npNext=$('npNext'),npIcoPlay=$('npIcoPlay'),npIcoPause=$('npIcoPause'),npShuffle=$('npShuffle'),npRepeat=$('npRepeat'),npRepeatLbl=$('npRepeatLbl'),npViews=$('npViews'),npLikes=$('npLikes'),npComments=$('npComments'),npLike=$('npLike'),npComment=$('npComment'),npClose=$('npClose'),npVol=$('npVol'),npDownload=$('npDownload'),npFav=$('npFav'),npShare=$('npShare'),npQueue=$('npQueue'),yourPlays=$('yourPlays'),
     featStats=$('featStats'),fViews=$('fViews'),fLikes=$('fLikes'),singlesGrid=$('singlesGrid'),rankNote=$('rankNote'),recentWrap=$('recentWrap'),recentRow=$('recentRow');
   var audio=new Audio(); audio.preload='metadata';
-  var cur=-1, shuffle=false, repeat=0, remainMode=false;
+  var cur=-1, shuffle=false, repeat=0, remainMode=false, deepLink=false, unlockArmed=false;
   var RECENT_KEY='nv_recent', FAVS_KEY='nv_favs', PLAYS_KEY='nv_plays';
   var FAVS=new Set(), PLAYS={};
   try{ FAVS=new Set(JSON.parse(localStorage.getItem(FAVS_KEY)||'[]')); }catch(e){}
@@ -1587,6 +1648,7 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
   function fmtT(s){ s=Math.max(0,Math.round(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
   function fmtN(n){ if(!n&&n!==0)return '—'; n=Number(n); if(n>=1e9)return (n/1e9).toFixed(1)+'B'; if(n>=1e6)return (n/1e6).toFixed(1)+'M'; if(n>=1e3)return (n/1e3).toFixed(1)+'K'; return String(n); }
   function watchUrl(id){ return 'https://www.youtube.com/watch?v='+id; }
+  function siteUrl(slug){ return location.origin+location.pathname+'#t='+slug; }
   function totalPlays(){ var n=0; for(var k in PLAYS)n+=PLAYS[k]; return n; }
   function paintYourPlays(){ if(yourPlays)yourPlays.textContent=totalPlays(); }
   function paintFavs(){ rows.forEach(function(r,i){ r.classList.toggle('faved',FAVS.has(i)); }); if(npFav)npFav.classList.toggle('on',cur>=0&&FAVS.has(cur)); }
@@ -1618,6 +1680,14 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
   function toggleRemain(){ remainMode=!remainMode; syncTime(); }
   if(npTimes)npTimes.addEventListener('click',function(e){ e.stopPropagation(); toggleRemain(); });
   if(mpTimes)mpTimes.addEventListener('click',function(e){ e.stopPropagation(); toggleRemain(); });
+  /* deep links (#t=slug): open the FULL player and try to autoplay.
+     If the browser blocks first-gesture audio, the first tap/keypress
+     anywhere starts playback (one-time unlock arm). */
+  function armUnlock(){ if(unlockArmed)return; unlockArmed=true;
+    var f=function(){ if(cur>=0&&audio.paused){ audio.play().then(function(){ live(true); }).catch(function(){}); } };
+    addEventListener('pointerdown',f,{once:true});
+    addEventListener('keydown',f,{once:true});
+  }
   function nextIndex(auto){ if(shuffle){ var n; do{ n=Math.floor(Math.random()*TRACKS.length);}while(n===cur&&TRACKS.length>1); return n; }
     var n=cur+1; if(n>=TRACKS.length){ if(repeat===1)return 0; if(auto)return -1; return TRACKS.length-1; } return n; }
   function prevIndex(){ if(cur<=0){ return repeat===1? TRACKS.length-1 : 0; } return cur-1; }
@@ -1676,7 +1746,8 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
       PLAYS[i]=(PLAYS[i]||0)+1; savePlays(); paintYourPlays();
       if('mediaSession' in navigator){ try{ navigator.mediaSession.metadata=new MediaMetadata({title:TRACKS[i].t,artist:'Nilouverse Music',album:'DOWN',artwork:[{src:'art/cdown.jpg',sizes:'1200x1200',type:'image/jpeg'}]}); }catch(e){} }
       prefetchNext(nextIndex(false));
-    }).catch(function(){ live(false); npSub.textContent='press play to start'; });
+    }).catch(function(){ live(false); npSub.textContent='press play to start';
+      if(deepLink){ nowPlaying.classList.add('open'); armUnlock(); } });
     updateMiniStats();
   }
   function loadTrack(i,dir){
@@ -1712,7 +1783,8 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
   npShuffle.addEventListener('click',function(){ shuffle=!shuffle; npShuffle.classList.toggle('on',shuffle); renderQueue(); });
   npRepeat.addEventListener('click',function(){ repeat=(repeat+1)%3; npRepeat.classList.toggle('on',repeat!==0); npRepeatLbl.textContent= repeat===2?'1':''; });
   if(npFav) npFav.addEventListener('click',function(){ if(cur<0)return; if(FAVS.has(cur))FAVS.delete(cur); else FAVS.add(cur); saveFavs(); paintFavs(); });
-  if(npShare) npShare.addEventListener('click',function(){ if(cur<0)return; var url='https://youtu.be/'+TRACKS[cur].yt;
+  /* share = in-site deep link (#t=slug), not the YouTube url */
+  if(npShare) npShare.addEventListener('click',function(){ if(cur<0)return; var url=siteUrl(TRACKS[cur].s);
     if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(function(){ if(window.__toastNow)window.__toastNow('link copied'); },function(){ window.location.href=url; }); } else { window.open(url,'_blank'); } });
   if(npVol){ npVol.addEventListener('input',function(){ setVol(+npVol.value); }); }
   mpRow.addEventListener('click',function(e){ if(e.target.closest('.mp-ctl')||e.target.closest('.mp-close')||e.target.closest('.mp-bar')||e.target.closest('.mp-times'))return; nowPlaying.classList.add('open'); setVizOn(!audio.paused); var nx=npQueue&&npQueue.querySelector('li.next'); if(nx){try{nx.scrollIntoView({block:'nearest'});}catch(_){}} });
@@ -1802,7 +1874,8 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
     npDisc.addEventListener('pointermove',function(e){ var r=npDisc.getBoundingClientRect(); ry=((e.clientX-r.left)/r.width-.5)*8; rx=((e.clientY-r.top)/r.height-.5)*-8; if(raf)return; raf=requestAnimationFrame(function(){ npDisc.style.transform='rotateX('+rx.toFixed(2)+'deg) rotateY('+ry.toFixed(2)+'deg)'; raf=null; }); });
     npDisc.addEventListener('pointerleave',function(){ npDisc.style.transform=''; });
   })();
-  (function(){ try{ var m=location.hash.match(/^#t=([\w-]+)/); if(m){ for(var i=0;i<TRACKS.length;i++){ if(TRACKS[i].s===m[1]){ loadTrack(i); break; } } } }catch(e){} })();
+  /* deep link entry: #t=slug → load track + open the FULL player + autoplay attempt */
+  (function(){ try{ var m=location.hash.match(/^#t=([\w-]+)/); if(m){ for(var i=0;i<TRACKS.length;i++){ if(TRACKS[i].s===m[1]){ deepLink=true; loadTrack(i); nowPlaying.classList.add('open'); break; } } } }catch(e){} })();
 })();
 /* ================================================================
    YOUTUBE EMBED MECHANISM — VERIFIED WORKING 2026-08-11
@@ -2072,6 +2145,7 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
     freed=true; puzzleWon=true; setPWon(); stopLoop(); stage.classList.add('free'); buzz([25,45,25]); rewardSound();
     if(window.__unlockDownloads)window.__unlockDownloads();
     if(window.__bloodFlood)window.__bloodFlood();
+    if(window.__applyInsider)window.__applyInsider();
     px(stage.offsetWidth/2,stage.offsetHeight*0.42,['#ffd24a','#ff2747','#d8c2ff','#e8dccb'],26,72);
     popup('the key is yours',stage.offsetWidth/2,stage.offsetHeight*0.42,'gd');
     ov.classList.add('seal-paid'); applyDoorState();
@@ -2079,6 +2153,8 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
     setTimeout(function(){ ov.classList.add('pz-shake'); buzz([18,30,18]); },650);
     setTimeout(function(){ ov.classList.add('pz-fall'); }, reduce?650:1150);
     setTimeout(function(){ closePuzzle(); ov.classList.remove('pz-shake','pz-fall'); }, reduce?900:2050);
+    /* the Insider popup opens right after the game closes — once ever */
+    setTimeout(function(){ if(window.__showInsider)window.__showInsider(); }, reduce?1200:2450);
   }
   function attempt(){ if(busy)return;
     if(!freed){ banner(ERR_NOCRED); shakeAuth(); buzz([30,40,30]); return; }
