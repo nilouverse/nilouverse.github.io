@@ -1661,7 +1661,7 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
     featStats=$('featStats'),fViews=$('fViews'),fLikes=$('fLikes'),singlesGrid=$('singlesGrid'),rankNote=$('rankNote'),recentWrap=$('recentWrap'),recentRow=$('recentRow');
   var audio=new Audio(); audio.preload='metadata';
   window.__audio=audio; window.__TRACKS=TRACKS; window.__getCur=function(){return cur;};
-  var cur=-1, shuffle=false, repeat=0, remainMode=false, deepLink=false, unlockArmed=false;
+  var cur=-1, shuffle=false, repeat=0, remainMode=false, deepLink=false, unlockArmed=false, everPlayed=false;
   var RECENT_KEY='nv_recent', FAVS_KEY='nv_favs', PLAYS_KEY='nv_plays';
   var FAVS=new Set(), PLAYS={};
   try{ FAVS=new Set(JSON.parse(localStorage.getItem(FAVS_KEY)||'[]')); }catch(e){}
@@ -1772,7 +1772,7 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
       if('mediaSession' in navigator){ try{ navigator.mediaSession.metadata=new MediaMetadata({title:TRACKS[i].t,artist:'Nilouverse Music',album:'DOWN',artwork:[{src:'art/cdown.jpg',sizes:'1200x1200',type:'image/jpeg'}]}); }catch(e){} }
       prefetchNext(nextIndex(false));
     }).catch(function(){ live(false); npSub.textContent='press play to start';
-      if(deepLink){ nowPlaying.classList.add('open'); armUnlock(); } });
+      if(deepLink&&!everPlayed){ nowPlaying.classList.add('open'); armUnlock(); } });
     updateMiniStats();
   }
   function loadTrack(i,dir){
@@ -1812,7 +1812,7 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
   if(npShare) npShare.addEventListener('click',function(){ if(cur<0)return; var url=siteUrl(TRACKS[cur].s);
     if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(function(){ if(window.__toastNow)window.__toastNow('link copied'); },function(){ window.location.href=url; }); } else { window.open(url,'_blank'); } });
   if(npVol){ npVol.addEventListener('input',function(){ setVol(+npVol.value); }); }
-  mpRow.addEventListener('click',function(e){ if(e.target.closest('.mp-ctl')||e.target.closest('.mp-close')||e.target.closest('.mp-bar')||e.target.closest('.mp-times'))return; nowPlaying.classList.add('open'); setVizOn(!audio.paused); var nx=npQueue&&npQueue.querySelector('li.next'); if(nx){try{nx.scrollIntoView({block:'nearest'});}catch(_){}} });
+  mpRow.addEventListener('click',function(e){ if(!e.target.closest('.mp-thumb')&&!e.target.closest('.mp-info'))return; nowPlaying.classList.add('open'); setVizOn(!audio.paused); var nx=npQueue&&npQueue.querySelector('li.next'); if(nx){try{nx.scrollIntoView({block:'nearest'});}catch(_){}} });
   npClose.addEventListener('click',function(){ nowPlaying.classList.remove('open'); setVizOn(false); });
   mpClose.addEventListener('click',function(e){ e.stopPropagation(); stopAll(); });
   function addSwipeX(el,onNext,onPrev,ignore){ var sx=null,sy=null;
@@ -1841,7 +1841,7 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
   });
   audio.addEventListener('ended',function(){ if(repeat===2){ loadTrack(cur); } else { var n=nextIndex(true); if(n>=0) loadTrack(n,1); else live(false); } });
   audio.addEventListener('pause',function(){ live(false); setVizOn(false); });
-  audio.addEventListener('play',function(){ live(true); if(actx&&actx.state==='suspended'){ actx.resume().catch(function(){}); } setVizOn(nowPlaying.classList.contains('open')); });
+  audio.addEventListener('play',function(){ live(true); everPlayed=true; deepLink=false; if(actx&&actx.state==='suspended'){ actx.resume().catch(function(){}); } setVizOn(nowPlaying.classList.contains('open')); });
   audio.addEventListener('waiting',function(){ document.body.classList.add('buffering'); });
   audio.addEventListener('playing',function(){ document.body.classList.remove('buffering'); });
   audio.addEventListener('canplay',function(){ document.body.classList.remove('buffering'); });
