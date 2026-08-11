@@ -946,7 +946,8 @@ body.hero-off .embers span,body.hero-off .beam,body.hero-off .beam.b2,body.hero-
 body.fx-off .embers span,body.fx-off .beam,body.fx-off .beam.b2,body.fx-off .inkpulse,body.fx-off .eq i{animation-play-state:paused}
 body.fx-low .embers,body.fx-low .beam,body.fx-low .beam.b2{display:none}
 .fault-bar{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(8px);z-index:95;width:min(92vw,420px);background:rgba(12,6,8,.96);border:1px solid var(--accent-line-strong);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;opacity:0;transition:opacity .3s var(--ease),transform .3s var(--ease);box-shadow:0 18px 40px -20px rgba(0,0,0,.9)}
-body.np-open .fault-bar{bottom:auto;top:calc(14px + env(safe-area-inset-top))}
+body.np-open .fault-bar{bottom:auto;top:50%;transform:translate(-50%,-50%) translateY(8px)}
+body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
 .fault-bar.show{opacity:1;transform:translateX(-50%)}
 .fault-msg{font-family:var(--f-body);font-weight:500;font-size:.85rem;letter-spacing:.02em;color:var(--accent-soft);line-height:1.5}
 .fault-btn{appearance:none;cursor:pointer;align-self:flex-start;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--bone-dim);background:var(--accent-tint);border:1px solid var(--accent-line);border-radius:999px;padding:8px 14px;transition:var(--dur-1) var(--ease)}
