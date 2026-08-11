@@ -10,10 +10,11 @@
 <meta name="author" content="Nilouverse" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://nilouverse.github.io/" />
-<meta property="og:type" content="website" /><meta property="og:site_name" content="Nilouverse" /><meta property="og:title" content="Nilouverse Music" /><meta property="og:description" content="The official website for Nilouverse Music." /><meta property="og:url" content="https://nilouverse.github.io/" /><meta property="og:image" content="https://nilouverse.github.io/art/adown.png" /><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="1200" /><meta property="og:locale" content="en_US" />
+<link rel="sitemap" type="application/xml" title="Nilouverse" href="sitemap.xml">
+<meta property="og:type" content="website" /><meta property="og:site_name" content="Nilouverse" /><meta property="og:title" content="Nilouverse Music" /><meta property="og:description" content="The official website for Nilouverse Music." /><meta property="og:url" content="https://nilouverse.github.io/" /><meta property="og:image" content="https://nilouverse.github.io/art/adown.png" /><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="1200" /><meta property="og:locale" content="en_US" /><meta property="og:updated_time" content="2026-08-11" />
 <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="Nilouverse Music" /><meta name="twitter:description" content="The official website for Nilouverse Music." /><meta name="twitter:image" content="https://nilouverse.github.io/art/adown.png" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"MusicGroup","name":"Nilouverse","url":"https://nilouverse.github.io/","logo":"https://nilouverse.github.io/art/button.png","image":"https://nilouverse.github.io/art/adown.png","genre":["Nu Metal","Alternative Metal"],"sameAs":["https://audiomack.com/nilouversemusic","https://youtube.com/@nilouversemusic","https://instagram.com/nilouversemusic","https://t.me/nilouversemusic"],"album":{"@type":"MusicAlbum","name":"DOWN","datePublished":"2026-07-17"}}
+{"@context":"https://schema.org","@type":"MusicGroup","name":"Nilouverse","url":"https://nilouverse.github.io/","logo":"https://nilouverse.github.io/art/button.png","image":"https://nilouverse.github.io/art/adown.png","genre":["Nu Metal","Alternative Metal"],"sameAs":["https://audiomack.com/nilouversemusic","https://youtube.com/@nilouversemusic","https://instagram.com/nilouversemusic","https://t.me/nilouversemusic"],"dateModified":"2026-08-11","album":{"@type":"MusicAlbum","name":"DOWN","datePublished":"2026-07-17"}}
 </script>
 <link rel="preload" as="image" href="art/hero.webp" fetchpriority="high">
 <link rel="preload" as="image" href="art/button.png">
@@ -1254,7 +1255,7 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
     <div class="mp-info" id="mpInfo">
       <b id="mpTitle">—</b><i id="mpArtist">Nilouverse Music</i>
     </div>
-    <span class="mp-times" id="mpTimes" title=""><span id="mpCur">0:00</span>/<span id="mpDur">0:00</span></span>
+    <span class="mp-times" id="mpTimes"><span id="mpCur">0:00</span>/<span id="mpDur">0:00</span></span>
     <div class="mp-ctl">
       <button class="mp-btn" id="mpPrev" aria-label="previous"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM18 6l-8 6 8 6z"/></svg></button>
       <button class="mp-btn main beat-pulse" id="mpPlay" aria-label="play / pause"><svg id="mpIcoPlay" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg><svg id="mpIcoPause" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
@@ -2192,7 +2193,12 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
   window.addEventListener('load',function(){
     var pf=function(u){ var l=document.createElement('link'); l.rel='prefetch'; l.href=u; document.head.appendChild(l); };
     ['art/acdown.jpg','art/ablank.png','art/adown.png'].forEach(pf);
-    if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(function(){}); }
+    /* SHELL REMOVED by owner request: no service worker, no stale caches.
+       The site updates daily — everyone (humans, headless bots) must always
+       get the fresh build. Also purge any SW/caches left by older versions
+       so returning visitors escape the old shell automatically. */
+    if('serviceWorker' in navigator&&navigator.serviceWorker.getRegistrations){ navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ r.unregister(); }); }).catch(function(){}); }
+    if(window.caches&&caches.keys){ caches.keys().then(function(ks){ ks.forEach(function(k){ caches.delete(k); }); }).catch(function(){}); }
   });
 })();
 </script>
