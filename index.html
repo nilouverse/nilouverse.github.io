@@ -301,8 +301,8 @@ body.rewards .art-drop{display:flex}
 @media(min-width:820px){.ticket{grid-template-columns:.85fr 1.15fr;align-items:start;background-image:var(--glass),repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 14px);background-size:auto,1px 100%;background-position:0 0,calc(42%) 0;background-repeat:no-repeat,no-repeat}.ticket-head{position:sticky;top:98px}}
 .listen{position:relative;z-index:1;padding:clamp(28px,5vh,60px) clamp(18px,5vw,48px);overflow:hidden;content-visibility:auto;contain-intrinsic-size:auto 1000px;contain:layout style}
 .listen::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent,var(--accent-line-strong),transparent) top/100% 1px no-repeat,radial-gradient(60% 40% at 80% 0%,var(--accent-faint),transparent 60%),radial-gradient(50% 40% at 10% 100%,rgba(52,227,214,.05),transparent 60%);opacity:.72;transition:opacity .8s var(--ease)}
-.listen::after{content:"SIDE A";position:absolute;top:6%;right:-1.5%;z-index:0;font-family:var(--f-logo);font-size:clamp(5.5rem,17vw,13rem);line-height:1;color:transparent;-webkit-text-stroke:1px var(--accent-faint);pointer-events:none;user-select:none;opacity:.75;transition:opacity .8s var(--ease)}
-.vault::after{content:"SIDE B";position:absolute;top:-2%;left:-1.5%;z-index:0;font-family:var(--f-logo);font-size:clamp(5.5rem,17vw,13rem);line-height:1;color:transparent;-webkit-text-stroke:1px var(--accent-faint);pointer-events:none;user-select:none;opacity:.75;transition:opacity .8s var(--ease)}
+.listen::after{content:attr(data-ghost);position:absolute;top:6%;right:-1.5%;z-index:0;font-family:var(--f-logo);font-size:clamp(5.5rem,17vw,13rem);line-height:1;color:transparent;-webkit-text-stroke:1px var(--accent-faint);pointer-events:none;user-select:none;opacity:.75;transition:opacity .8s var(--ease)}
+.vault::after{content:attr(data-ghost);position:absolute;top:-2%;left:-1.5%;z-index:0;font-family:var(--f-logo);font-size:clamp(5.5rem,17vw,13rem);line-height:1;color:transparent;-webkit-text-stroke:1px var(--accent-faint);pointer-events:none;user-select:none;opacity:.75;transition:opacity .8s var(--ease)}
 body.depth-1 .listen::before,body.depth-2 .listen::before,body.depth-3 .listen::before{opacity:1}
 body.depth-2 .listen::after,body.depth-2 .vault::after{opacity:1}
 .listen-inner{position:relative;z-index:1;max-width:1240px;margin:0 auto}
@@ -661,7 +661,8 @@ body.depth-3 .contact::before{opacity:1}
 .np-disc::before{content:"";position:absolute;inset:4%;z-index:0;border-radius:50%;pointer-events:none;background:radial-gradient(circle,transparent 52%,var(--accent-glow) 70%,transparent 78%);opacity:.35;transition:opacity .6s var(--ease)}
 /* np-art: NO transform transition — the JS bass-scale must apply instantly,
    otherwise it fights the transition and reads as lag/wink. */
-.np-art{position:relative;aspect-ratio:1/1;border-radius:50%;overflow:hidden;border:1px solid var(--accent-deep);box-shadow:0 30px 70px -30px var(--accent-glow),inset 0 0 80px -20px rgba(255,255,255,.08);flex:none;transition:border-color .6s var(--ease),box-shadow .6s var(--ease)}
+.np-art{position:relative;aspect-ratio:1/1;border-radius:50%;overflow:hidden;border:1px solid var(--accent-deep);box-shadow:0 30px 70px -30px var(--accent-glow),inset 0 0 80px -20px rgba(255,255,255,.08);flex:none;transition:border-color .6s var(--ease),box-shadow:.6s var(--ease);cursor:pointer}
+.np-art:active{filter:brightness(1.12)}
 .now-playing.open .np-art img{animation:thumbSpin 5.5s linear infinite}
 .now-playing.v-paused .np-art img{animation-play-state:paused}
 .np-art img{width:100%;height:100%;object-fit:cover}
@@ -697,8 +698,8 @@ body.depth-3 .contact::before{opacity:1}
 .np-func svg{width:16px;height:16px}
 .np-func .fav.on{color:var(--accent)}
 .np-func .fav.on svg path{fill:var(--accent)}
-.np-dl{display:none}
-body.rewards .np-dl{display:grid}
+.np-func .np-dl{display:none}
+body.rewards .np-func .np-dl{display:grid}
 .np-yt{display:flex;gap:12px;align-items:center;padding:9px 16px;border:1px solid var(--accent-line);border-radius:999px;background:var(--accent-tint);flex:1 1 auto;min-width:0;justify-content:center}
 .np-yt-logo{width:17px;height:17px;color:var(--accent);flex:none}
 .np-stats{display:flex;gap:14px;align-items:center;font-size:.72rem;color:var(--bone-dim);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -907,7 +908,7 @@ body.rewards .np-dl{display:grid}
 @keyframes conPulse{0%,100%{opacity:.3}50%{opacity:1}}
 .foot{position:relative;z-index:1;padding:clamp(22px,4vw,36px) clamp(18px,5vw,46px) clamp(16px,3vw,24px);border-top:0;background:rgba(7,4,5,.55);content-visibility:auto;contain-intrinsic-size:auto 240px;contain:layout style;overflow:hidden;transition:padding-bottom .45s var(--ease-soft)}
 body.mini-on .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
-.foot::before{content:"NILOUVERSE";position:absolute;bottom:-22%;left:50%;transform:translateX(-50%);font-family:var(--f-logo);font-size:clamp(4rem,15vw,10rem);font-weight:700;line-height:1;color:transparent;-webkit-text-stroke:1px var(--accent-faint);pointer-events:none;z-index:0;white-space:nowrap;letter-spacing:.02em;user-select:none;opacity:.85}
+.foot::before{content:none}
 .foot-line{position:absolute;top:-1px;left:0;right:0;height:1px;background:var(--seam);opacity:.5}
 .foot-inner{position:relative;max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(14px,3vw,20px);z-index:1}
 .foot-row{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -956,6 +957,42 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
 .fault-email{flex:1;min-width:140px;background:rgba(8,5,6,.5);border:1px solid var(--accent-line);border-radius:10px;color:var(--bone);font-family:var(--f-body);font-size:.8rem;padding:10px 12px}
 .fault-email:focus{outline:none;border-color:var(--accent)}
 .fault-send{padding:10px 16px}
+/* ---- ritual redesign: clarity pass ---- */
+#puzzle .pz-close{z-index:30}
+#puzzle .hud{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.22em;color:var(--bone-dim);text-shadow:none}
+#puzzle .px-pop{font-family:var(--f-egg);font-size:1.05rem;letter-spacing:.06em;text-shadow:0 0 12px rgba(0,0,0,.85),2px 2px 0 #000}
+#puzzle .wcoin{display:none}
+#puzzle .fpos:not(.cleared) .tap-hint{opacity:0}
+#puzzle .fpos.claw .tap-hint{opacity:1;width:34px;height:34px;top:-24px}
+#puzzle .fpos.claw{filter:drop-shadow(0 0 18px rgba(255,122,26,.95)) brightness(1.2)}
+#puzzle .fpos.claw .finger{animation:clawPulse .5s var(--ease) infinite}
+@keyframes clawPulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px) scale(1.03)}}
+.pz-stage.recoil{animation:recoilFlash .45s var(--ease)}
+@keyframes recoilFlash{0%{box-shadow:inset 0 0 0 0 rgba(255,39,71,0)}30%{box-shadow:inset 0 0 60px 6px rgba(255,39,71,.5)}100%{box-shadow:inset 0 0 0 0 rgba(255,39,71,0)}}
+.fpips,.wpips{display:inline-flex;gap:6px;vertical-align:middle}
+.fpips{margin-left:10px}.wpips{margin-right:10px}
+.fpips i,.wpips i{width:8px;height:8px;transform:rotate(45deg);background:#1a0d10;box-shadow:0 0 0 1px rgba(124,11,27,.5);transition:background .3s var(--ease),box-shadow .3s var(--ease)}
+.fpips i.on{background:radial-gradient(circle at 35% 30%,#ffd7a0,#d11430 65%,#7c0b1b);box-shadow:0 0 8px rgba(255,90,60,.7)}
+.wpips i.on{background:var(--blood-bright);box-shadow:0 0 8px rgba(255,39,71,.8)}
+.pz-auth.locked{filter:grayscale(.6) brightness(.8)}
+.pz-auth.ready{animation:authReady 1.6s ease-in-out infinite}
+@keyframes authReady{0%,100%{box-shadow:0 0 0 2px rgba(255,122,26,.6),0 0 18px rgba(255,122,26,.25)}50%{box-shadow:0 0 0 2px rgba(255,122,26,.8),0 0 30px rgba(255,122,26,.5)}}
+.rite-how{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,2.4vh,20px);background:rgba(5,2,3,.93);opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s;padding:20px;text-align:center}
+.rite-how.show{opacity:1;visibility:visible}
+.rh-title{font-family:var(--f-disp);font-weight:800;font-size:clamp(1.2rem,4.6vw,1.7rem);color:var(--bone);letter-spacing:.04em}
+.rh-steps{display:flex;flex-direction:column;gap:14px;max-width:340px}
+.rh-step{display:flex;align-items:center;gap:14px;text-align:left}
+.rh-step p{font-family:var(--f-body);font-size:.82rem;line-height:1.45;color:var(--bone-dim);letter-spacing:.02em}
+.rh-ico{flex:none;width:44px;height:44px;position:relative;display:grid;place-items:center;border:1px solid var(--accent-line);border-radius:12px;background:var(--accent-tint)}
+.rh-ico i{position:relative;width:14px;height:22px;border-radius:8px 8px 6px 6px;background:linear-gradient(180deg,#3a2a30,#241712);box-shadow:0 0 0 1px rgba(239,230,221,.25)}
+.rh-wait i::after{content:"";position:absolute;inset:-8px;border:1.5px solid var(--ember);border-radius:50%;animation:tapRing 1.2s steps(4) infinite}
+.rh-tap i::after{content:"";position:absolute;left:50%;top:-12px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--ember);box-shadow:0 0 10px var(--ember);animation:rhTap .9s var(--ease) infinite}
+@keyframes rhTap{0%{transform:translateY(-6px);opacity:0}40%{transform:translateY(2px);opacity:1}100%{transform:translateY(2px);opacity:0}}
+.rh-no i{opacity:.5}
+.rh-no::after{content:"";position:absolute;width:26px;height:26px;border-radius:50%;border:2px solid var(--blood-bright);background:linear-gradient(45deg,transparent 44%,var(--blood-bright) 44% 56%,transparent 56%)}
+.rh-begin{margin-top:4px}
+.rh-help{position:absolute;top:14px;left:14px;z-index:21;width:34px;height:34px;border-radius:50%;border:1px solid var(--accent-line);background:var(--accent-tint);color:var(--bone-dim);font-family:var(--f-body);font-weight:700;font-size:.9rem;cursor:pointer;transition:var(--dur-1) var(--ease)}
+.rh-help:hover{color:var(--bone);border-color:var(--accent-line-strong)}
 </style>
 </head>
 <body class="loading">
@@ -1077,14 +1114,14 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
     </div>
   </section>
 
-  <section class="listen" id="listen">
+  <section class="listen" id="listen" data-ghost="NILOU">
     <div class="listen-inner">
       <div class="listen-head" data-reveal>
         <p class="eyebrow"><span class="ln"></span>[ 02 ] — The Listen Room<svg class="ekg" viewBox="0 0 60 18" width="60" height="18" aria-hidden="true"><path d="M1 9h16l4-6 6 13 4-7h28" pathLength="100"/></svg></p>
         <h2>Listen<span class="per">.</span></h2>
       </div>
 
-      <section class="vault" id="album" data-reveal>
+      <section class="vault" id="album" data-reveal data-ghost="VERSE">
         <!-- "the shelf" eyebrow removed by owner request 2026-08-11. Keep it gone. -->
         <div class="releases-head" data-reveal>
           <span class="shelf-label">Releases<span class="per">.</span></span>
@@ -1321,7 +1358,7 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
   <div class="np-stage" id="npStage">
     <div class="np-disc" id="npDisc">
       <canvas id="vizCanvas" width="400" height="400" aria-hidden="true"></canvas>
-      <div class="np-art" id="npArt"><img src="art/cdown.jpg" width="340" height="340" alt=""><span class="np-sheen" aria-hidden="true"></span></div>
+      <div class="np-art" id="npArt" role="button" tabindex="0" aria-label="play / pause"><img src="art/cdown.jpg" width="340" height="340" alt=""><span class="np-sheen" aria-hidden="true"></span></div>
     </div>
     <div class="np-title" id="npFullTitle">—</div>
     <div class="np-sub" id="npSubFull">Nilouverse Music — DOWN</div>
@@ -1390,6 +1427,16 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
   </div>
   <button class="pz-close" id="pzClose" type="button" aria-label="close the threshold">✕</button>
   <p class="pz-titlebar"><span class="tb-gem"></span>† the backdoor †</p>
+  <div class="rite-how" id="riteHow" role="dialog" aria-modal="true" aria-label="how the ritual works">
+    <p class="rh-title">How to play</p>
+    <div class="rh-steps">
+      <div class="rh-step"><span class="rh-ico rh-wait" aria-hidden="true"><i></i></span><p>Wait. One finger will glow.</p></div>
+      <div class="rh-step"><span class="rh-ico rh-tap" aria-hidden="true"><i></i></span><p>Tap the glowing finger.</p></div>
+      <div class="rh-step"><span class="rh-ico rh-no" aria-hidden="true"><i></i></span><p>Don't tap the others. 3 wrong taps and you start over.</p></div>
+    </div>
+    <button class="cbtn rh-begin" id="rhBegin" type="button"><span class="tri"></span>Start</button>
+  </div>
+  <button class="rh-help" id="rhHelp" type="button" aria-label="how to play">?</button>
   <div class="pz-arena" id="pzArena">
     <span class="pz-rune" aria-hidden="true"></span>
     <span class="pz-coinbg" aria-hidden="true"></span>
@@ -1801,6 +1848,8 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
   if(listMore) listMore.addEventListener('click',function(){ var open=app.classList.toggle('list-open'); listMore.setAttribute('aria-expanded',String(open)); });
   mpPlay.addEventListener('click',function(e){ e.stopPropagation(); togglePlay(); });
   npPlay.addEventListener('click',function(){ togglePlay(); });
+  npArt.addEventListener('click',function(){ togglePlay(); });
+  npArt.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); e.stopPropagation(); togglePlay(); } });
   mpPrev.addEventListener('click',function(e){ e.stopPropagation(); loadTrack(prevIndex(),-1); });
   npPrev.addEventListener('click',function(){ loadTrack(prevIndex(),-1); });
   mpNext.addEventListener('click',function(e){ e.stopPropagation(); var n=nextIndex(false); if(n>=0) loadTrack(n,1); });
@@ -2363,6 +2412,33 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
       .then(function(r){ if(!r.ok)throw 0; form.hidden=true; msg.textContent='Feedback delivered to the support team successfully.'; hideT=setTimeout(hide,4000); })
       .catch(function(){ msg.textContent='the line is dead — try again †'; });
   });
+})();
+/* ---- random ghost words ---- */
+(function(){
+  var GHOSTS=[["NILOU","VERSE"],["PLAY","LOUD"],["XERO","TRUE"],["CAN'T","ESCAPE"],["BLACK","BLOOD"],["RED","INK"],["HAHAHAHA","HAHAHA"]];
+  var l=document.querySelector('.listen'),v=document.querySelector('.vault');
+  if(l&&v){ var p=GHOSTS[(Math.random()*GHOSTS.length)|0]; l.setAttribute('data-ghost',p[0]); v.setAttribute('data-ghost',p[1]); }
+})();
+/* ---- ritual clarity layer: pips + onboarding ---- */
+(function(){
+  var ov=document.getElementById('puzzle'); if(!ov)return;
+  var stage=document.getElementById('pzStage');
+  var hudTop=ov.querySelector('.hud-top'),hudBot=ov.querySelector('.hud-bot');
+  var fp=null,wp=null;
+  if(hudTop&&!ov.querySelector('.fpips')){ fp=document.createElement('span'); fp.className='fpips'; for(var i=0;i<5;i++)fp.appendChild(document.createElement('i')); hudTop.appendChild(fp); }
+  if(hudBot&&!ov.querySelector('.wpips')){ wp=document.createElement('span'); wp.className='wpips'; for(var j=0;j<3;j++)wp.appendChild(document.createElement('i')); hudBot.insertBefore(wp,hudBot.firstChild); }
+  function syncF(){ if(!fp)return; var n=ov.querySelectorAll('.fpos.cleared').length; Array.prototype.forEach.call(fp.children,function(el,k){ el.classList.toggle('on',k<n); }); }
+  function syncW(){ if(!wp)return; var n=ov.querySelectorAll('.wcoin.off').length; Array.prototype.forEach.call(wp.children,function(el,k){ el.classList.toggle('on',k<n); }); }
+  syncF(); syncW();
+  if('MutationObserver' in window){ var mo=new MutationObserver(function(){ syncF(); syncW(); }); mo.observe(stage,{subtree:true,childList:true,attributes:true,attributeFilter:['class']}); }
+  var how=document.getElementById('riteHow'),begin=document.getElementById('rhBegin'),help=document.getElementById('rhHelp');
+  function seen(){ try{return sessionStorage.getItem('nv_rite_seen')==='1';}catch(e){return true;} }
+  function showHow(){ if(how)how.classList.add('show'); }
+  function hideHow(){ if(how)how.classList.remove('show'); }
+  if(begin)begin.addEventListener('click',function(){ try{sessionStorage.setItem('nv_rite_seen','1');}catch(e){} hideHow(); });
+  if(help)help.addEventListener('click',showHow);
+  if('MutationObserver' in window){ var mo2=new MutationObserver(function(){ if(ov.classList.contains('show')&&!seen())showHow(); else if(!ov.classList.contains('show'))hideHow(); }); mo2.observe(ov,{attributes:true,attributeFilter:['class']}); }
+  if(ov.classList.contains('show')&&!seen())showHow();
 })();
 </script>
 </body>
