@@ -2332,16 +2332,19 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
     clearTimeout(hideT); form.hidden=true; bar.hidden=false;
     requestAnimationFrame(function(){ bar.classList.add('show'); }); }
   function hide(){ bar.classList.remove('show'); clearTimeout(hideT); hideT=setTimeout(function(){ bar.hidden=true; },350); }
+  var offT=null;
+  function offlineSoon(){ clearTimeout(offT); offT=setTimeout(function(){ if(!navigator.onLine)show('offline'); },2500); }
   audio.addEventListener('error',function(){
-    if(!navigator.onLine)return show('offline');
+    if(!navigator.onLine)return offlineSoon();
     var err=audio.error; if(!err)return show('unknown');
-    if(err.code===2)return show('offline');
+    if(err.code===2)return navigator.onLine?show('slow'):offlineSoon();
     if(err.code===3)return show('decode');
     if(err.code===4){ fetch(audio.currentSrc||audio.src,{method:'HEAD'}).then(function(r){ show(r.status===404?'missing':'decode'); }).catch(function(){ show('missing'); }); return; }
     show('unknown');
   });
-  addEventListener('offline',function(){ show('offline'); });
-  audio.addEventListener('waiting',function(){ clearTimeout(waitT); waitT=setTimeout(function(){ if(!audio.paused)show('slow'); },8000); });
+  addEventListener('offline',function(){ offlineSoon(); });
+  addEventListener('online',function(){ clearTimeout(offT); if(curReason==='offline')hide(); });
+  audio.addEventListener('waiting',function(){ clearTimeout(waitT); waitT=setTimeout(function(){ if(!audio.paused)show('slow'); },20000); });
   audio.addEventListener('playing',function(){ clearTimeout(waitT); hide(); });
   btn.addEventListener('click',function(){ form.hidden=!form.hidden; if(!form.hidden)email.focus(); });
   form.addEventListener('submit',function(e){
