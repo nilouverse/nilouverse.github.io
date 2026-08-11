@@ -945,9 +945,10 @@ body[data-mood="soft"]{--accent:#29c3ff;--accent-deep:#0a4d7c;--accent-2:#6a9bff
 body.hero-off .embers span,body.hero-off .beam,body.hero-off .beam.b2,body.hero-off .inkpulse,body.hero-off .wordmark::before,body.hero-off .sc-mouse::after,body.hero-off .sc-chev{animation-play-state:paused}
 body.fx-off .embers span,body.fx-off .beam,body.fx-off .beam.b2,body.fx-off .inkpulse,body.fx-off .eq i{animation-play-state:paused}
 body.fx-low .embers,body.fx-low .beam,body.fx-low .beam.b2{display:none}
-.fault-bar{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(8px);z-index:66;width:min(92vw,420px);background:rgba(12,6,8,.96);border:1px solid var(--accent-line-strong);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;opacity:0;transition:opacity .3s var(--ease),transform .3s var(--ease);box-shadow:0 18px 40px -20px rgba(0,0,0,.9)}
+.fault-bar{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(8px);z-index:95;width:min(92vw,420px);background:rgba(12,6,8,.96);border:1px solid var(--accent-line-strong);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;opacity:0;transition:opacity .3s var(--ease),transform .3s var(--ease);box-shadow:0 18px 40px -20px rgba(0,0,0,.9)}
+body.np-open .fault-bar{bottom:auto;top:calc(14px + env(safe-area-inset-top))}
 .fault-bar.show{opacity:1;transform:translateX(-50%)}
-.fault-msg{font-family:var(--f-serif);font-style:italic;font-size:.85rem;color:var(--accent-soft);line-height:1.4}
+.fault-msg{font-family:var(--f-body);font-weight:500;font-size:.85rem;letter-spacing:.02em;color:var(--accent-soft);line-height:1.5}
 .fault-btn{appearance:none;cursor:pointer;align-self:flex-start;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--bone-dim);background:var(--accent-tint);border:1px solid var(--accent-line);border-radius:999px;padding:8px 14px;transition:var(--dur-1) var(--ease)}
 .fault-btn:hover{color:var(--bone);border-color:var(--accent-line-strong)}
 .fault-form{display:flex;gap:8px;flex-wrap:wrap}
@@ -2321,6 +2322,8 @@ body.fx-low .embers,body.fx-low .beam,body.fx-low .beam.b2{display:none}
   var bar=document.getElementById('faultBar'),msg=document.getElementById('faultMsg'),btn=document.getElementById('faultBtn'),form=document.getElementById('faultForm'),email=document.getElementById('faultEmail');
   if(!bar||!window.__audio)return;
   var audio=window.__audio;
+  var np=document.getElementById('nowPlaying');
+  if(np&&'MutationObserver' in window){ var mo=new MutationObserver(function(){ document.body.classList.toggle('np-open',np.classList.contains('open')); }); mo.observe(np,{attributes:true,attributeFilter:['class']}); document.body.classList.toggle('np-open',np.classList.contains('open')); }
   var REASONS={missing:"track file is missing (404)",offline:"no connection / offline",slow:"network too slow / load timeout",decode:"file won't decode / unsupported by browser",unknown:"unknown / internal fault"};
   var curReason=null,cool={},waitT=null,hideT=null;
   function show(reason){ if(cool[reason]&&Date.now()-cool[reason]<45000)return; cool[reason]=Date.now(); curReason=reason;
