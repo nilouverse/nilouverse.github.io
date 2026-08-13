@@ -2117,6 +2117,9 @@ if(nowPlaying.classList.contains('open')&&window.__scrollQueue){ window.__scroll
     var width=actx.createGain();width.gain.value=1.08;
     var mTL=actx.createGain(),mTR=actx.createGain(),sTL=actx.createGain(),sTR=actx.createGain();
     sTR.gain.value=-1;
+    goldLow=actx.createBiquadFilter(); goldLow.type='lowshelf'; goldLow.frequency.value=90; goldLow.gain.value=0;
+    goldHigh=actx.createBiquadFilter(); goldHigh.type='highshelf'; goldHigh.frequency.value=9000; goldHigh.gain.value=0;
+    goldGain=actx.createGain(); goldGain.gain.value=1;
     makeup.connect(goldLow); goldLow.connect(goldHigh); goldHigh.connect(goldGain); goldGain.connect(split);
     split.connect(mL,0);split.connect(mR,1);split.connect(sL,0);split.connect(sR,1);
     mL.connect(mid);mR.connect(mid);sL.connect(side);sR.connect(side);
@@ -2127,9 +2130,6 @@ if(nowPlaying.classList.contains('open')&&window.__scrollQueue){ window.__scroll
     engWidth=width;
     eqDry.connect(sum); eqWet.connect(sum);
     trimGain=actx.createGain(); trimGain.gain.value=1;
-    goldLow=actx.createBiquadFilter(); goldLow.type='lowshelf'; goldLow.frequency.value=90; goldLow.gain.value=0;
-    goldHigh=actx.createBiquadFilter(); goldHigh.type='highshelf'; goldHigh.frequency.value=9000; goldHigh.gain.value=0;
-    goldGain=actx.createGain(); goldGain.gain.value=1;
     sum.connect(trimGain); trimGain.connect(analyser); sum.connect(liveAna); analyser.connect(actx.destination);
     goldApply();
     engSub=sub; engMud=mud; engBite=bite; engPres=pres; engAir=air; engGlue=glue;
