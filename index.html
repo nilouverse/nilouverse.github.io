@@ -2103,7 +2103,7 @@ if(nowPlaying.classList.contains('open')&&window.__scrollQueue){ window.__scroll
     eqDry.gain.value=eqOn?0:1; eqWet.gain.value=eqOn?1:0;
     var sum=actx.createGain();
     analyser=actx.createAnalyser(); analyser.fftSize=128; analyser.smoothingTimeConstant=.9;
-    liveAna=actx.createAnalyser(); liveAna.fftSize=2048; liveAna.smoothingTimeConstant=.82; liveData=new Uint8Array(liveAna.frequencyBinCount);
+    liveAna=actx.createAnalyser(); liveAna.fftSize=2048; liveAna.smoothingTimeConstant=.82; liveAna.minDecibels=-85; liveAna.maxDecibels=-15; liveData=new Uint8Array(liveAna.frequencyBinCount);
     hp.connect(sub); sub.connect(mud); mud.connect(bite); bite.connect(pres); pres.connect(air); air.connect(glue); glue.connect(peak); peak.connect(makeup);
     /* M/S WIDENER — "the width breathes".
        side high-passed @120Hz => subs stay mono (one fist, punchier on phones).
@@ -2224,11 +2224,11 @@ if(nowPlaying.classList.contains('open')&&window.__scrollQueue){ window.__scroll
      Hysteresis + 2.5s dwell = a few musical switches per song, never flicker.
      Opacity/var writes only; the loop dies when paused or reduced; rAF
      auto-suspends when the tab is hidden. */
-  var liveAna=null,liveData=null,liveRAF=null,liveLast=0,pulseS=0,glowQ=-1,intS=.5,regime=null,pendRegime=null,pendSince=0,regimeCheck=0;
+  var liveAna=null,liveData=null,liveRAF=null,liveLast=0,pulseS=0,glowQ=-1,intS=.5,slowAll=.25,regime=null,pendRegime=null,pendSince=0,regimeCheck=0;
   function lband(a,b,bw){var s=0,n=0,i0=Math.max(1,Math.round(a/bw)),i1=Math.min(liveData.length-1,Math.round(b/bw));for(var i=i0;i<=i1;i++){s+=liveData[i];n++;}return n?s/n/255:0;}
   function liveEngine(on){
     if(reduce)return;
-    if(on){ if(liveAna){ regime=document.body.dataset.mood||'mixed'; pendRegime=null; pulseS=0; document.body.classList.add('pulse-live'); if(!liveRAF){liveLast=0;liveRAF=requestAnimationFrame(liveFrame);} } }
+    if(on){ if(liveAna){ regime=document.body.dataset.mood||'mixed'; pendRegime=null; pulseS=0; slowAll=.25; document.body.classList.add('pulse-live'); if(!liveRAF){liveLast=0;liveRAF=requestAnimationFrame(liveFrame);} } }
     else{ if(liveRAF){cancelAnimationFrame(liveRAF);liveRAF=null;} document.body.classList.remove('pulse-live'); document.body.style.setProperty('--pulse','0'); }
   }
   function liveFrame(t){
@@ -2237,22 +2237,25 @@ if(nowPlaying.classList.contains('open')&&window.__scrollQueue){ window.__scroll
     if(!liveAna||!actx||!liveData)return;
     liveAna.getByteFrequencyData(liveData);
     var bw=actx.sampleRate/2048;
-    var sub=lband(35,120,bw),wall=lband(140,900,bw),pres=lband(1400,4200,bw),all=lband(60,8000,bw);
+    var sub=lband(35,120,bw),all=lband(60,8000,bw);
     /* heartbeat: fast attack, slow release */
     var tgt=Math.max(0,Math.min(1,(sub-.26)*2.4));
     pulseS+=(tgt-pulseS)*(tgt>pulseS?.5:.12);
     document.body.style.setProperty('--pulse',pulseS.toFixed(3));
-    /* intensity + glow strength (quantized writes) */
-    var I=Math.max(0,Math.min(1,wall*.62+sub*.3+all*.25+pres*.1-.12));
-    intS+=(I-intS)*.08;
-    var g=Math.round((.25+intS*.75)*20)/20;
+    /* glow follows current energy (quantized writes) */
+    var g=Math.round((.25+all*.75)*20)/20;
     if(g!==glowQ){glowQ=g;document.body.style.setProperty('--live-glow',g);}
-    /* regime: growl=heavy / dramatic=mixed / soft=soft, with dwell */
+    /* regime = energy vs the track's OWN slow baseline (self-normalizing,
+       immune to overall loudness & analyser saturation):
+       louder-than-own-average => heavy · quieter => soft · else base essence.
+       Fail-safe: if the analyser reads ~zero, keep the base essence (never blue-drift). */
+    slowAll+=(all-slowAll)*.02;
     if(t-regimeCheck>500){regimeCheck=t;
-      var vocal=pres/(all+.001),want;
-      if(intS>.60)want='heavy';
-      else if(intS<.34)want='soft';
-      else want=vocal>.52?'mixed':(intS>.5?'heavy':'mixed');
+      var ratio=all/(slowAll+.001),base=(cur>=0&&TRACKS[cur].mood)||'mixed',want;
+      if(all<.05)want=base;
+      else if(ratio>1.18)want='heavy';
+      else if(ratio<0.82)want='soft';
+      else want=base;
       if(want===regime){pendRegime=null;}
       else if(want!==pendRegime){pendRegime=want;pendSince=t;}
       else if(t-pendSince>2500){regime=want;pendRegime=null;setMood(regime);}
