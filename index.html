@@ -2224,11 +2224,11 @@ if(nowPlaying.classList.contains('open')&&window.__scrollQueue){ window.__scroll
      Hysteresis + 2.5s dwell = a few musical switches per song, never flicker.
      Opacity/var writes only; the loop dies when paused or reduced; rAF
      auto-suspends when the tab is hidden. */
-  var liveAna=null,liveData=null,liveRAF=null,liveLast=0,pulseS=0,glowQ=-1,intS=.5,slowAll=.25,regime=null,pendRegime=null,pendSince=0,regimeCheck=0;
+  var liveAna=null,liveData=null,liveRAF=null,liveLast=0,pulseS=0,glowQ=-1,intS=.5,regime=null,pendRegime=null,pendSince=0,regimeCheck=0;
   function lband(a,b,bw){var s=0,n=0,i0=Math.max(1,Math.round(a/bw)),i1=Math.min(liveData.length-1,Math.round(b/bw));for(var i=i0;i<=i1;i++){s+=liveData[i];n++;}return n?s/n/255:0;}
   function liveEngine(on){
     if(reduce)return;
-    if(on){ if(liveAna){ regime=document.body.dataset.mood||'mixed'; pendRegime=null; pulseS=0; slowAll=.25; document.body.classList.add('pulse-live'); if(!liveRAF){liveLast=0;liveRAF=requestAnimationFrame(liveFrame);} } }
+    if(on){ if(liveAna){ regime=document.body.dataset.mood||'mixed'; pendRegime=null; pulseS=0; document.body.classList.add('pulse-live'); if(!liveRAF){liveLast=0;liveRAF=requestAnimationFrame(liveFrame);} } }
     else{ if(liveRAF){cancelAnimationFrame(liveRAF);liveRAF=null;} document.body.classList.remove('pulse-live'); document.body.style.setProperty('--pulse','0'); }
   }
   function liveFrame(t){
@@ -2245,21 +2245,7 @@ if(nowPlaying.classList.contains('open')&&window.__scrollQueue){ window.__scroll
     /* glow follows current energy (quantized writes) */
     var g=Math.round((.25+all*.75)*20)/20;
     if(g!==glowQ){glowQ=g;document.body.style.setProperty('--live-glow',g);}
-    /* regime = energy vs the track's OWN slow baseline (self-normalizing,
-       immune to overall loudness & analyser saturation):
-       louder-than-own-average => heavy · quieter => soft · else base essence.
-       Fail-safe: if the analyser reads ~zero, keep the base essence (never blue-drift). */
-    slowAll+=(all-slowAll)*.02;
-    if(t-regimeCheck>500){regimeCheck=t;
-      var ratio=all/(slowAll+.001),base=(cur>=0&&TRACKS[cur].mood)||'mixed',want;
-      if(all<.05)want=base;
-      else if(ratio>1.18)want='heavy';
-      else if(ratio<0.82)want='soft';
-      else want=base;
-      if(want===regime){pendRegime=null;}
-      else if(want!==pendRegime){pendRegime=want;pendSince=t;}
-      else if(t-pendSince>2500){regime=want;pendRegime=null;setMood(regime);}
-    }
+    /* live regime switching removed by owner request — mood stays per-track essence. */
     /* STABLE VOLUME: slow EMA of broadband energy + a 2s trim ride.
        Too slow to touch in-song dynamics; only balances between moments/tracks. */
     svEma+=(all-svEma)*.02;
