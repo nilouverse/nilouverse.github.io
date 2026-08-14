@@ -3246,8 +3246,6 @@ if(nowPlaying.classList.contains('open')&&window.__scrollQueue){ window.__scroll
   modal.addEventListener('click',function(e){ if(e.target===modal)close(); });
   addEventListener('keydown',function(e){ if(e.key==='Escape'&&modal.classList.contains('show'))close(); });
 })();
-</script>
-<script>
 
 (function(){
   var btn=document.getElementById('heroListen'); if(!btn||!window.__TRACKS||!window.__audio)return;
@@ -3698,6 +3696,336 @@ if(nowPlaying.classList.contains('open')&&window.__scrollQueue){ window.__scroll
   if (init) resumeAvailable = true;
 
   paint();
+})();
+
+(function(){
+  var audio = window.__audio;
+  var tracks = window.__TRACKS;
+
+  if (!audio || !tracks || !window.__loadTrack || !window.__getCur) return;
+
+  var npVideo = document.getElementById('npVideo');
+  var npPlay = document.getElementById('npPlay');
+  var npNext = document.getElementById('npNext');
+  var npPrev = document.getElementById('npPrev');
+  var npIcoPlay = document.getElementById('npIcoPlay');
+  var npIcoPause = document.getElementById('npIcoPause');
+  var nowPlaying = document.getElementById('nowPlaying');
+  var modeVideo = document.getElementById('npModeVideo');
+  var modeAudio = document.getElementById('npModeAudio');
+  var mpNext = document.getElementById('mpNext');
+  var mpPrev = document.getElementById('mpPrev');
+
+  if (!npVideo || !npPlay || !npNext || !npPrev || !nowPlaying) return;
+
+  var DOWN_I = -1;
+  for (var i = 0; i < tracks.length; i++) {
+    if (tracks[i].s === 'down') {
+      DOWN_I = i;
+      break;
+    }
+  }
+
+  var timers = [];
+
+  function videoMode() {
+    return document.body.classList.contains('np-video');
+  }
+
+  function npOpen() {
+    return nowPlaying.classList.contains('open');
+  }
+
+  function player() {
+    return npVideo.__ytPlayer || null;
+  }
+
+  function state() {
+    var p = player();
+    if (!p || !p.getPlayerState) return -1;
+    try {
+      return p.getPlayerState();
+    } catch(e) {
+      return -1;
+    }
+  }
+
+  function activeState() {
+    var s = state();
+    return s === 1 || s === 3;
+  }
+
+  function paint() {
+    if (!videoMode()) return;
+
+    var on = activeState();
+
+    if (npIcoPlay && npIcoPause) {
+      npIcoPlay.style.display = on ? 'none' : 'block';
+      npIcoPause.style.display = on ? 'block' : 'none';
+    }
+
+    nowPlaying.classList.toggle('v-paused', !on);
+  }
+
+  function paintAudio() {
+    var on = (window.__getCur() >= 0 && !audio.paused && !audio.ended);
+
+    if (npIcoPlay && npIcoPause) {
+      npIcoPlay.style.display = on ? 'none' : 'block';
+      npIcoPause.style.display = on ? 'block' : 'none';
+    }
+
+    nowPlaying.classList.toggle('v-paused', !on);
+  }
+
+  function pauseLocal() {
+    try {
+      if (!audio.paused) audio.pause();
+    } catch(e) {}
+  }
+
+  function pushTimer(iv) {
+    timers.push(iv);
+    if (timers.length > 8) clearInterval(timers.shift());
+  }
+
+  function ensureUnmuted(ms) {
+    var end = Date.now() + (ms || 2500);
+
+    var iv = setInterval(function(){
+      var p = player();
+
+      if (p && p.unMute) {
+        try {
+          p.unMute();
+          if (p.setVolume) p.setVolume(100);
+        } catch(e) {}
+      }
+
+      if (Date.now() > end) clearInterval(iv);
+    }, 160);
+
+    pushTimer(iv);
+  }
+
+  function ensureMounted() {
+    if (!npVideo.__ytPlayer && !npVideo.__pipedFrame) {
+      try {
+        npVideo.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+      } catch(e) {}
+    }
+
+    return player();
+  }
+
+  function playVideoNow() {
+    var p = player();
+    if (!p || !p.playVideo) return false;
+
+    try {
+      if (p.unMute) p.unMute();
+      if (p.setVolume) p.setVolume(100);
+      p.playVideo();
+    } catch(e) {}
+
+    setTimeout(paint, 120);
+    return true;
+  }
+
+  function playVideo() {
+    ensureMounted();
+    ensureUnmuted(2500);
+
+    if (playVideoNow()) return;
+
+    var attempts = 0;
+
+    var iv = setInterval(function(){
+      attempts++;
+
+      if (playVideoNow()) {
+        clearInterval(iv);
+      } else if (attempts > 20) {
+        clearInterval(iv);
+      }
+    }, 180);
+
+    pushTimer(iv);
+  }
+
+  function pauseVideo() {
+    var p = player();
+    if (!p || !p.pauseVideo) return;
+
+    try {
+      p.pauseVideo();
+    } catch(e) {}
+
+    setTimeout(paint, 80);
+  }
+
+  function toggleVideo() {
+    if (activeState()) pauseVideo();
+    else playVideo();
+  }
+
+  function ensureCurrentVideo() {
+    var cur = window.__getCur();
+
+    if (cur < 0 && DOWN_I >= 0) {
+      window.__loadTrack(DOWN_I);
+      return false;
+    }
+
+    return cur >= 0;
+  }
+
+  audio.addEventListener('play', function(){
+    if (videoMode() && npOpen()) pauseLocal();
+  }, true);
+
+  audio.addEventListener('playing', function(){
+    if (videoMode() && npOpen()) pauseLocal();
+  }, true);
+
+  audio.addEventListener('pause', function(){
+    if (videoMode() && npOpen()) setTimeout(paint, 0);
+  });
+
+  npPlay.addEventListener('click', function(e){
+    if (!videoMode() || !npOpen()) return;
+
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (!ensureCurrentVideo()) return;
+
+    toggleVideo();
+  }, true);
+
+  npNext.addEventListener('click', function(e){
+    if (!videoMode() || !npOpen()) return;
+
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (mpNext) mpNext.click();
+
+    ensureUnmuted(3000);
+    setTimeout(paint, 350);
+  }, true);
+
+  npPrev.addEventListener('click', function(e){
+    if (!videoMode() || !npOpen()) return;
+
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (mpPrev) mpPrev.click();
+
+    ensureUnmuted(3000);
+    setTimeout(paint, 350);
+  }, true);
+
+  addEventListener('keydown', function(e){
+    if (!videoMode() || !npOpen()) return;
+
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+
+    if (e.code === 'Space') {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleVideo();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (mpNext) mpNext.click();
+
+      ensureUnmuted(3000);
+      setTimeout(paint, 350);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (mpPrev) mpPrev.click();
+
+      ensureUnmuted(3000);
+      setTimeout(paint, 350);
+    }
+  }, true);
+
+  if (modeVideo) {
+    modeVideo.addEventListener('click', function(){
+      setTimeout(function(){
+        if (!videoMode() || !npOpen()) return;
+
+        pauseLocal();
+        ensureCurrentVideo();
+        ensureMounted();
+        ensureUnmuted(3500);
+        playVideo();
+        paint();
+      }, 90);
+    });
+  }
+
+  if (modeAudio) {
+    modeAudio.addEventListener('click', function(){
+      setTimeout(function(){
+        if (!videoMode()) paintAudio();
+      }, 90);
+    });
+  }
+
+  var poll = null;
+
+  function startPoll() {
+    if (poll) return;
+
+    poll = setInterval(function(){
+      if (videoMode() && npOpen()) paint();
+      else stopPoll();
+    }, 450);
+  }
+
+  function stopPoll() {
+    if (poll) {
+      clearInterval(poll);
+      poll = null;
+    }
+  }
+
+  function checkPoll() {
+    if (videoMode() && npOpen()) startPoll();
+    else stopPoll();
+  }
+
+  if ('MutationObserver' in window) {
+    var bmo = new MutationObserver(checkPoll);
+    bmo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    var nmo = new MutationObserver(checkPoll);
+    nmo.observe(nowPlaying, { attributes: true, attributeFilter: ['class'] });
+
+    var vmo = new MutationObserver(function(){
+      if (videoMode() && npOpen()) {
+        ensureUnmuted(2500);
+        paint();
+      }
+    });
+
+    vmo.observe(npVideo, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
+
+  checkPoll();
 })();
 </script>
 </body>
