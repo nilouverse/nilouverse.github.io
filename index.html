@@ -692,6 +692,15 @@ body.depth-3 .contact::before{opacity:1}
 .np-blood{position:absolute;aspect-ratio:1.86;background:url('art/blood.png') center/contain no-repeat;transform:rotate(var(--r,0deg)) scaleX(var(--f,1));pointer-events:none;filter:saturate(1.1) drop-shadow(0 1px 4px rgba(90,0,0,.55))}
 .btn-blood{position:absolute;left:50%;top:50%;width:210%;aspect-ratio:1.86;transform:translate(-50%,-50%) rotate(-10deg);background:url('art/blood.png') center/contain no-repeat;pointer-events:none;opacity:.75;filter:saturate(1.15) drop-shadow(0 2px 6px rgba(124,11,27,.55));z-index:0}
 .mp-btn .btn-blood{width:235%;opacity:.6}
+
+/* fullsize play button blood only while a heavy track is actually playing */
+.np-btn.main .btn-blood{opacity:0;transition:opacity .45s var(--ease)}
+body[data-mood="heavy"].beat-live .np-btn.main .btn-blood,
+body[data-mood="heavy"].broadcast-live .np-btn.main .btn-blood{opacity:.75}
+
+@media(prefers-reduced-motion:reduce){
+  .np-btn.main .btn-blood{transition:none}
+}
 .np-btn svg,.mp-btn svg{position:relative;z-index:1}
 .np-art::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle,rgba(10,6,8,.94) 0 6.5%,transparent 7%),repeating-radial-gradient(circle,rgba(0,0,0,.14) 0 1.2px,transparent 1.2px 5.5px)}
 .np-art::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2;background:linear-gradient(125deg,rgba(255,255,255,.20),rgba(255,255,255,.05) 26%,transparent 46%);opacity:.9}
