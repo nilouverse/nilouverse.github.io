@@ -4027,6 +4027,287 @@ if(nowPlaying.classList.contains('open')&&window.__scrollQueue){ window.__scroll
 
   checkPoll();
 })();
+
+(function(){
+  var audio = window.__audio;
+  var tracks = window.__TRACKS;
+
+  if (!audio || !tracks || !window.__loadTrack || !window.__getCur) return;
+
+  var npVideo = document.getElementById('npVideo');
+  var modeVideo = document.getElementById('npModeVideo');
+  var modeAudio = document.getElementById('npModeAudio');
+  var nowPlaying = document.getElementById('nowPlaying');
+
+  if (!npVideo || !modeVideo || !modeAudio || !nowPlaying) return;
+
+  var DOWN_I = -1;
+  for (var i = 0; i < tracks.length; i++) {
+    if (tracks[i].s === 'down') {
+      DOWN_I = i;
+      break;
+    }
+  }
+
+  var syncTimers = [];
+
+  function videoMode() {
+    return document.body.classList.contains('np-video');
+  }
+
+  function npOpen() {
+    return nowPlaying.classList.contains('open');
+  }
+
+  function pushSyncTimer(iv) {
+    syncTimers.push(iv);
+    if (syncTimers.length > 8) clearInterval(syncTimers.shift());
+  }
+
+  function ytPlayer() {
+    return npVideo.__ytPlayer || null;
+  }
+
+  function playAudioCurrent() {
+    var cur = window.__getCur();
+
+    if (cur < 0) {
+      if (DOWN_I >= 0) window.__loadTrack(DOWN_I);
+      return;
+    }
+
+    try {
+      var p = audio.play();
+      if (p && p.catch) p.catch(function(){});
+    } catch(e) {}
+  }
+
+  function seekAudio(t) {
+    if (window.__getCur() < 0) {
+      playAudioCurrent();
+      return;
+    }
+
+    var done = false;
+
+    function doSeek() {
+      if (done) return;
+      done = true;
+
+      try {
+        if (audio.duration && isFinite(audio.duration)) {
+          t = Math.min(t, Math.max(0, audio.duration - 1.25));
+        }
+
+        audio.currentTime = t;
+
+        var p = audio.play();
+        if (p && p.catch) p.catch(function(){});
+      } catch(e) {}
+    }
+
+    if (audio.readyState >= 1) {
+      doSeek();
+    } else {
+      audio.addEventListener('loadedmetadata', doSeek, { once: true });
+    }
+  }
+
+  function syncSeekVideo(t) {
+    var attempts = 0;
+
+    var iv = setInterval(function(){
+      attempts++;
+
+      var p = ytPlayer();
+
+      if (p && p.seekTo) {
+        try {
+          if (p.unMute) p.unMute();
+          if (p.setVolume) p.setVolume(100);
+
+          if (p.getCurrentTime) {
+            var ct = p.getCurrentTime();
+            if (isFinite(ct) && Math.abs(ct - t) < 1.5) {
+              clearInterval(iv);
+              return;
+            }
+          }
+
+          var d = p.getDuration ? p.getDuration() : 0;
+          if (d && isFinite(d) && t > d) t = Math.max(0, d - 1);
+
+          p.seekTo(t, true);
+
+          if (p.playVideo) p.playVideo();
+        } catch(e) {}
+
+        clearInterval(iv);
+      } else if (attempts > 30) {
+        clearInterval(iv);
+      }
+    }, 120);
+
+    pushSyncTimer(iv);
+  }
+
+  window.__nvPendingVideoSeek = null;
+
+  function patchYT() {
+    if (!window.YT || !window.YT.Player || window.YT.__nvVideoSyncPatched) return;
+
+    var Orig = window.YT.Player;
+    window.YT.__nvVideoSyncPatched = true;
+
+    window.YT.Player = function(host, opts) {
+      opts = opts || {};
+
+      try {
+        if (host && host.parentNode && host.parentNode.id === 'npVideo') {
+          var ev = opts.events || {};
+          var origReady = ev.onReady;
+
+          ev.onReady = function(e) {
+            var t = window.__nvPendingVideoSeek;
+
+            if (t != null && e && e.target && e.target.seekTo) {
+              try {
+                if (e.target.unMute) e.target.unMute();
+                if (e.target.setVolume) e.target.setVolume(100);
+
+                var d = e.target.getDuration ? e.target.getDuration() : 0;
+                if (d && isFinite(d) && t > d) t = Math.max(0, d - 1);
+
+                e.target.seekTo(t, true);
+
+                if (e.target.playVideo) e.target.playVideo();
+              } catch(err) {}
+
+              window.__nvPendingVideoSeek = null;
+            }
+
+            if (origReady) origReady.apply(this, arguments);
+          };
+
+          opts.events = ev;
+        }
+      } catch(e) {}
+
+      return new Orig(host, opts);
+    };
+
+    window.YT.Player.prototype = Orig.prototype;
+
+    for (var k in Orig) {
+      if (!(k in window.YT.Player)) {
+        try {
+          window.YT.Player[k] = Orig[k];
+        } catch(e) {}
+      }
+    }
+  }
+
+  function hookYT() {
+    patchYT();
+
+    if (window.YT && window.YT.Player) return;
+
+    var prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = function(){
+      if (prev) prev();
+      patchYT();
+    };
+  }
+
+  hookYT();
+
+  document.addEventListener('pointerdown', patchYT, true);
+  document.addEventListener('click', patchYT, true);
+
+  var syncVideoOnSwitch = false;
+  var pendingVideoTime = null;
+
+  modeVideo.addEventListener('click', function(){
+    if (videoMode()) {
+      syncVideoOnSwitch = false;
+      return;
+    }
+
+    syncVideoOnSwitch = true;
+    pendingVideoTime = null;
+
+    var cur = window.__getCur();
+
+    if (cur >= 0) {
+      try {
+        if (isFinite(audio.currentTime)) {
+          pendingVideoTime = audio.currentTime;
+          window.__nvPendingVideoSeek = pendingVideoTime;
+
+          setTimeout(function(){
+            if (window.__nvPendingVideoSeek === pendingVideoTime) {
+              window.__nvPendingVideoSeek = null;
+            }
+          }, 6000);
+        }
+      } catch(e) {}
+    }
+  }, true);
+
+  modeVideo.addEventListener('click', function(){
+    if (!syncVideoOnSwitch) return;
+
+    var t = pendingVideoTime;
+
+    setTimeout(function(){
+      if (t != null) syncSeekVideo(t);
+      pendingVideoTime = null;
+      syncVideoOnSwitch = false;
+    }, 120);
+  });
+
+  var syncAudioOnSwitch = false;
+  var pendingAudioTime = null;
+  var hasPendingAudioTime = false;
+
+  modeAudio.addEventListener('click', function(){
+    if (!videoMode()) {
+      syncAudioOnSwitch = false;
+      return;
+    }
+
+    syncAudioOnSwitch = true;
+    hasPendingAudioTime = false;
+    pendingAudioTime = null;
+
+    var p = ytPlayer();
+
+    if (p && p.getCurrentTime) {
+      try {
+        pendingAudioTime = p.getCurrentTime();
+        hasPendingAudioTime = true;
+      } catch(e) {}
+    }
+  }, true);
+
+  modeAudio.addEventListener('click', function(){
+    if (!syncAudioOnSwitch) return;
+
+    setTimeout(function(){
+      if (videoMode()) return;
+
+      if (hasPendingAudioTime && pendingAudioTime != null) {
+        seekAudio(pendingAudioTime);
+      } else {
+        playAudioCurrent();
+      }
+
+      pendingAudioTime = null;
+      hasPendingAudioTime = false;
+      syncAudioOnSwitch = false;
+    }, 120);
+  });
+})();
 </script>
 </body>
 </html>
