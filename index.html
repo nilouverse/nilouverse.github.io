@@ -2559,37 +2559,41 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
     var id=card.getAttribute('data-yt'); if(!id)return;
     if(card.__ytPlayer){ try{card.__ytPlayer.playVideo();}catch(e){} return; }
     if(card.__pipedFrame){ return; }
+    /* REENTRANCY GUARD — synthetic clicks must never spawn parallel mounts. */
+    if(card.__mounting){ return; }
     if(activeCard&&activeCard!==card)teardown(activeCard);
     activeCard=card; card.classList.add('mounting');
     var hi=0, done=false, wd=null, alive=true;
-    card.__cancel=function(){ alive=false; if(wd){clearTimeout(wd);wd=null;} };
+    card.__mounting=true;
+    card.__cancel=function(){ alive=false; card.__mounting=false; if(wd){clearTimeout(wd);wd=null;} };
     function clearWd(){ if(wd){clearTimeout(wd);wd=null;} }
-    function failHost(){ if(!alive)return; clearWd(); killPlayer(card); card.classList.add('mounting'); hi++; if(hi<HOSTS.length) tryHost(); else piped(0); }
+    function endMount(){ card.__mounting=false; }
+    function failHost(){ if(!alive)return; if(card.__pipedFrame){ endMount(); return; } clearWd(); killPlayer(card); card.classList.add('mounting'); hi++; if(hi<HOSTS.length) tryHost(); else piped(0); }
     function tryHost(){
       if(!alive)return;
       var host=document.createElement('div'); card.appendChild(host);
+      wd=setTimeout(function(){ if(!done) failHost(); },4000);
       loadAPI().then(function(){
         if(!alive||activeCard!==card)return;
         card.__ytPlayer=new YT.Player(host,{ videoId:id, host:HOSTS[hi],
           playerVars:{autoplay:1,playsinline:1,rel:0,iv_load_policy:3,modestbranding:1},
           events:{
-            onReady:function(e){ if(!alive)return; card.classList.add('mounted'); card.classList.remove('mounting'); try{e.target.playVideo();}catch(_){} },
+            onReady:function(e){ if(!alive)return; done=true; clearWd(); endMount(); card.classList.add('mounted'); card.classList.remove('mounting'); try{e.target.playVideo();}catch(_){} },
             onStateChange:function(e){ if(e.data===1){ done=true; clearWd(); } },
             onError:function(){ failHost(); }
           }});
-        wd=setTimeout(function(){ if(!done) failHost(); },8000);
       });
     }
     function piped(pi){
       if(!alive)return;
-      if(pi>=PIPED.length){ card.classList.remove('mounting'); return; }
+      if(pi>=PIPED.length){ card.classList.remove('mounting'); endMount(); return; }
       var f=document.createElement('iframe');
       f.src=PIPED[pi]+'/embed/'+id+'?autoplay=1';
       f.setAttribute('allow','autoplay; fullscreen; encrypted-media; picture-in-picture');
       f.setAttribute('allowfullscreen','');
       f.setAttribute('loading','eager');
       f.title='video player';
-      f.onload=function(){ if(!alive)return; card.classList.add('mounted'); card.classList.remove('mounting'); card.__pipedFrame=true; };
+      f.onload=function(){ if(!alive)return; done=true; clearWd(); endMount(); card.classList.add('mounted'); card.classList.remove('mounting'); card.__pipedFrame=true; };
       f.onerror=function(){ if(!alive)return; if(f.parentNode)f.parentNode.removeChild(f); piped(pi+1); };
       card.appendChild(f);
     }
@@ -3514,10 +3518,14 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
     var end = Date.now() + (ms || 2500);
     var iv = setInterval(function(){
       var p = player();
-      if (p && p.unMute) {
+      if (p && p.unMute && p.getPlayerState) {
         try {
-          p.unMute();
-          if (p.setVolume) p.setVolume(100);
+          if (p.getPlayerState() === 1) {
+            p.unMute();
+            if (p.setVolume) p.setVolume(100);
+            clearInterval(iv);
+            return;
+          }
         } catch(e) {}
       }
       if (Date.now() > end) clearInterval(iv);
