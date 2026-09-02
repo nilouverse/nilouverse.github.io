@@ -1160,7 +1160,7 @@ body.np-open .fault-bar.show{transform:translate(-50%,-50%)}
 }
 
 .eyebrow,.side-tag{flex-wrap:nowrap;white-space:nowrap;overflow:hidden}
-.eyebrow .ln,.side-tag .ln{flex:none}
+.eyebrow .ln,.side-tag .ln{flex-none}
 .ticket-head h2,.listen-head h2{font-size:clamp(1.5rem,5vw,2.6rem)}
 .listen-head{margin-bottom:clamp(12px,3vw,20px)}
 
@@ -2469,7 +2469,7 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
           }
         };
         art.onerror=function(){ rej(new Error('art')); };
-        art.src=TRACKS[i].art||'art/cdown.webp';
+        art.src='art/cdown.webp';
       }catch(e){ rej(e); }
     });
   }
