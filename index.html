@@ -43,7 +43,7 @@
 
 --emb1:#ff7a1a;--emb2:#ffb24d;--emb3:#ff2d7e;--emb4:#ff86b6;
 --panel-edge:1px solid var(--accent-line);--panel-shadow:0 24px 70px -38px rgba(0,0,0,.9),inset 0 1px 0 var(--accent-edge),inset 0 -1px 0 rgba(255,255,255,.04);
---glass:linear-gradient(158deg,var(--accent-tint-2),rgba(24,9,14,.82) 38%,rgba(9,4,6,.94) 80%);--glass-blur:blur(20px) saturate(1.6);--coin2:20px;--cut:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);--cut-sm:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);--seam:linear-gradient(90deg,transparent,var(--accent-line-strong) 18%,var(--accent-glow) 50%,var(--accent-line-strong) 82%,transparent);--art-hero:url('art/hero.jpg');--art-cover:url('art/cdown.webp');--art-album:url('art/adown.webp');--art-deluxe:url('art/ablank.webp');--art-single:url('art/acdown.webp');--art-trees:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'><path fill='%23040209' d='M0,320 L0,210 L30,150 L55,235 L95,120 L130,250 L170,170 L210,90 L250,240 L300,140 L340,250 L380,60 L420,250 L470,160 L520,250 L560,110 L610,240 L660,180 L700,70 L740,250 L800,150 L850,250 L900,100 L950,240 L1000,170 L1050,80 L1100,250 L1150,150 L1200,240 L1250,120 L1300,250 L1350,160 L1400,210 L1440,250 L1440,320 Z'/></svg>");--beat:.63s;
+--glass:linear-gradient(158deg,var(--accent-tint-2),rgba(24,9,14,.82) 38%,rgba(9,4,6,.94) 80%);--glass-blur:blur(20px) saturate(1.6);--coin2:20px;--cut:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);--cut-sm:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);--seam:linear-gradient(90deg,transparent,var(--accent-line-strong) 18%,var(--accent-glow) 50%,var(--accent-line-strong) 82%,transparent);--art-hero:url('art/hero.jpg');--art-cover:url('art/cdown.webp');--art-album:url('art/adown.webp');--art-deluxe:url('art/ablank.webp');--art-bloodbath:url('art/bloodbath.webp');--art-single:url('art/acdown.webp');--art-trees:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'><path fill='%23040209' d='M0,320 L0,210 L30,150 L55,235 L95,120 L130,250 L170,170 L210,90 L250,240 L300,140 L340,250 L380,60 L420,250 L470,160 L520,250 L560,110 L610,240 L660,180 L700,70 L740,250 L800,150 L850,250 L900,100 L950,240 L1000,170 L1050,80 L1100,250 L1150,150 L1200,240 L1250,120 L1300,250 L1350,160 L1400,210 L1440,250 L1440,320 Z'/></svg>");--beat:.63s;
 --motion-scale:1;--motion-ease:var(--ease);--glow-boost:1;}
 [hidden]{display:none!important}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -371,7 +371,7 @@ body.depth-2 .listen::after,body.depth-2 .vault::after{opacity:1}
 .deck-down{display:flex;flex-direction:column}
 .deck::before{content:"";position:absolute;inset:0;background-size:cover;background-position:center 30%;pointer-events:none}
 .deck-down::before{background-image:var(--art-cover);opacity:.10;filter:saturate(1.1)}
-.deck-blood::before{background-image:var(--art-deluxe);opacity:.14;filter:grayscale(.7) brightness(.55)}
+.deck-blood::before{background-image:var(--art-bloodbath);opacity:.12;filter:saturate(1.1)}
 .deck::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,var(--accent-edge),transparent 18%,transparent 82%,rgba(10,4,7,.35))}
 .deck>*{position:relative;z-index:1}
 .pulse-glow{position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:.35;box-shadow:0 0 64px -22px var(--accent-glow),inset 0 0 34px var(--accent-mist);animation:authPulse calc(3.2s / var(--motion-scale,1)) ease-in-out infinite}
@@ -1392,9 +1392,9 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
               <span class="rail-cap">Down<span class="rail-sub">the debut lp · out now</span></span>
               <span class="rail-bar" aria-hidden="true"></span>
             </button>
-            <button class="rail-item sealed" type="button" data-album="blood" role="tab" aria-selected="false" aria-label="BLOODBATH EDITION — sealed">
-              <span class="rail-art"><span class="seal-dot" aria-hidden="true"></span><img src="art/ablank.webp" width="400" height="400" alt="" draggable="false" decoding="async" loading="lazy"></span>
-              <span class="rail-cap">Bloodbath Edition<span class="rail-sub">incoming</span></span>
+            <button class="rail-item" type="button" data-album="blood" role="tab" aria-selected="false" aria-label="BLOODBATH EDITION — the second pressing, out now">
+              <span class="rail-art"><img src="art/bloodbath.webp" width="400" height="400" alt="" draggable="false" decoding="async" loading="lazy"></span>
+              <span class="rail-cap">Bloodbath Edition<span class="rail-sub">the second pressing · out now</span></span>
               <span class="rail-bar" aria-hidden="true"></span>
             </button>
           </div>
@@ -1487,23 +1487,71 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
               <article class="deck deck-blood album-panel" data-album-panel="blood">
                 <span class="pulse-glow" aria-hidden="true"></span>
                 <div class="blood-splatter" style="left:-30px;bottom:-18px;width:clamp(100px,16vw,190px);--rot:10deg" aria-hidden="true"><img src="art/blood.webp" alt="" draggable="false" decoding="async" loading="lazy"></div>
-                <div class="db-grid">
-                  <div class="db-holder" id="dbHolder">
-                    <div class="dlx-stack" id="dlxStack" role="button" tabindex="0" aria-label="sealed edition">
-                      <div class="dlx-case"></div>
-                      <div class="dlx-scanlines"></div>
-                      <span class="dlx-title glitch" data-text="DOWN — BLOODBATH EDITION" aria-hidden="true">DOWN — BLOODBATH EDITION</span>
-                      <span class="dlx-egg" id="dlxEgg" aria-hidden="true">the lock is too strong. † not yet Paul :)</span>
-                    </div>
-                    <span class="dlx-lock" aria-hidden="true">[ locked ]</span>
+                <div class="alb-hero">
+                  <div class="alb-art">
+                    <img src="art/bloodbath.webp" width="600" height="600" alt="BLOODBATH EDITION — album art" loading="lazy" decoding="async">
                   </div>
-                  <div class="db-info">
-                    <p class="eyebrow"><span class="ln"></span>incoming<svg class="ekg" viewBox="0 0 60 18" width="60" height="18" aria-hidden="true"><path d="M1 9h16l4-6 6 13 4-7h28" pathLength="100"/></svg></p>
-                    <h3 class="db-title">BLOODBATH EDITION</h3>
-                    <p class="db-note">the second pressing. sealed until...</p>
-                    <div class="dlx-cta">
-                      <a class="pill pill-tg" href="https://t.me/nilouversemusic" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M21 4 3 11l5 2 2 6 3-3 5 3 3-15z"/><path d="m8 13 9-6-6 8"/></svg>notify me on telegram</a>
-                      <span class="dlx-when">no date.</span>
+                  <div class="alb-meta">
+                    <p class="alb-k">the second pressing · out now</p>
+                    <h3 class="alb-title">BLOODBATH EDITION</h3>
+                    <p class="alb-fans">19 tracks · for the ones who stayed</p>
+                    <div class="deck-tabs" role="tablist">
+                      <button class="au-tab active" data-tab="am" role="tab" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 18V6l8-2v12"/><circle cx="7" cy="18" r="3"/><circle cx="15" cy="16" r="3"/></svg>Audio</button>
+                      <button class="au-tab" data-tab="yt" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2 15 12l-5 2.8z" fill="currentColor" stroke="none"/></svg>YouTube</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="deck-panel active" data-panel="am">
+                  <div class="app" id="playerAppBlood">
+                    <ol class="pl-list" id="plListBlood">
+                      <li class="pl-row" data-i="10" data-slug="bb-true-intro" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">01</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">!True (Intro)</span><span class="stats-mini hidden" data-stat-row="10"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/!True (Intro).mp3" download aria-label="Download !True (Intro)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">4:32</span></li>
+                      <li class="pl-row" data-i="11" data-slug="bb-devastate" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">02</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Devastate</span><span class="stats-mini hidden" data-stat-row="11"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Devastate .mp3" download aria-label="Download Devastate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:20</span></li>
+                      <li class="pl-row" data-i="12" data-slug="bb-down" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">03</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Down</span><span class="stats-mini hidden" data-stat-row="12"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Down.mp3" download aria-label="Download Down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:59</span></li>
+                      <li class="pl-row" data-i="13" data-slug="bb-its-over" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">04</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">It's Over</span><span class="stats-mini hidden" data-stat-row="13"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/It's Over.mp3" download aria-label="Download It's Over"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">2:51</span></li>
+                      <li class="pl-row" data-i="14" data-slug="bb-its-fine" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">05</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">It's Fine</span><span class="stats-mini hidden" data-stat-row="14"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/It's Fine.mp3" download aria-label="Download It's Fine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:55</span></li>
+                      <li class="pl-row" data-i="15" data-slug="bb-better-left-alone" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">06</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Better Left Alone</span><span class="stats-mini hidden" data-stat-row="15"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Better Left Alone.mp3" download aria-label="Download Better Left Alone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:44</span></li>
+                      <li class="pl-row" data-i="16" data-slug="bb-cant-escape" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">07</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Can't Escape</span><span class="stats-mini hidden" data-stat-row="16"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Can't Escape.mp3" download aria-label="Download Can't Escape"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:35</span></li>
+                      <li class="pl-row" data-i="17" data-slug="bb-failure" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">08</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Failure</span><span class="stats-mini hidden" data-stat-row="17"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Failure.mp3" download aria-label="Download Failure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:01</span></li>
+                      <li class="pl-row" data-i="18" data-slug="bb-let-it-go" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">09</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Let It Go</span><span class="stats-mini hidden" data-stat-row="18"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Let It Go.mp3" download aria-label="Download Let It Go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:36</span></li>
+                      <li class="pl-row" data-i="19" data-slug="bb-red" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">10</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Red</span><span class="stats-mini hidden" data-stat-row="19"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Red.mp3" download aria-label="Download Red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:47</span></li>
+                      <li class="pl-row" data-i="20" data-slug="bb-sidewalk-poetry" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">11</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Sidewalk Poetry</span><span class="stats-mini hidden" data-stat-row="20"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Sidewalk Poetry.mp3" download aria-label="Download Sidewalk Poetry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">5:58</span></li>
+                      <li class="pl-row" data-i="21" data-slug="bb-re-xero" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">12</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Re-Xero</span><span class="stats-mini hidden" data-stat-row="21"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Re-Xero.mp3" download aria-label="Download Re-Xero"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">4:43</span></li>
+                      <li class="pl-row" data-i="22" data-slug="bb-black-blood" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">13</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Black Blood</span><span class="stats-mini hidden" data-stat-row="22"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Black Blood.mp3" download aria-label="Download Black Blood"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:33</span></li>
+                      <li class="pl-row" data-i="23" data-slug="bb-shameless" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">14</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Shameless</span><span class="stats-mini hidden" data-stat-row="23"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Shameless.mp3" download aria-label="Download Shameless"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">4:07</span></li>
+                      <li class="pl-row" data-i="24" data-slug="bb-meant-to-throw-away" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">15</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Meant to Throw Away</span><span class="stats-mini hidden" data-stat-row="24"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Meant to Throw Away.mp3" download aria-label="Download Meant to Throw Away"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">4:22</span></li>
+                      <li class="pl-row" data-i="25" data-slug="bb-abandoned" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">16</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Abandoned</span><span class="stats-mini hidden" data-stat-row="25"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Abandoned.mp3" download aria-label="Download Abandoned"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:44</span></li>
+                      <li class="pl-row" data-i="26" data-slug="bb-enemy" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">17</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Enemy</span><span class="stats-mini hidden" data-stat-row="26"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Enemy.mp3" download aria-label="Download Enemy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:49</span></li>
+                      <li class="pl-row" data-i="27" data-slug="bb-better-left-alone-ext" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">18</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">Better Left Alone (Extended)</span><span class="stats-mini hidden" data-stat-row="27"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/Better Left Alone (Extended).mp3" download aria-label="Download Better Left Alone (Extended)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">4:17</span></li>
+                      <li class="pl-row" data-i="28" data-slug="bb-xero-outro" data-yt="J85KUlsWypQ"><span class="idx"><span class="n">19</span><span class="req"><i></i><i></i><i></i></span></span><span class="tt">!Xero (Outro)</span><span class="stats-mini hidden" data-stat-row="28"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><b>—</b></span><a class="dl-mini" href="Down/!Xero (Outro).mp3" download aria-label="Download !Xero (Outro)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg></a><span class="du">3:32</span></li>
+                    </ol>
+                    <button class="list-more" id="listMoreBlood" type="button" aria-expanded="false" aria-label="show all tracks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+                  </div>
+                </div>
+
+                <div class="deck-panel" data-panel="yt">
+                  <p class="shelf-label vid-k">Videos<span class="per">.</span></p>
+                  <div class="trail-wrap">
+                    <div class="trail" id="trailYtBlood">
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="10" role="button" tabindex="0" aria-label="Watch !True (Intro) on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">4:32</span><span class="rc-body"><b>!True (Intro)</b><i>track 01</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="11" role="button" tabindex="0" aria-label="Watch Devastate on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:20</span><span class="rc-body"><b>Devastate</b><i>track 02</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="12" role="button" tabindex="0" aria-label="Watch Down on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:59</span><span class="rc-body"><b>Down</b><i>track 03</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="13" role="button" tabindex="0" aria-label="Watch It's Over on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">2:51</span><span class="rc-body"><b>It's Over</b><i>track 04</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="14" role="button" tabindex="0" aria-label="Watch It's Fine on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:55</span><span class="rc-body"><b>It's Fine</b><i>track 05</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="15" role="button" tabindex="0" aria-label="Watch Better Left Alone on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:44</span><span class="rc-body"><b>Better Left Alone</b><i>track 06</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="16" role="button" tabindex="0" aria-label="Watch Can't Escape on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:35</span><span class="rc-body"><b>Can't Escape</b><i>track 07</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="17" role="button" tabindex="0" aria-label="Watch Failure on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:01</span><span class="rc-body"><b>Failure</b><i>track 08</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="18" role="button" tabindex="0" aria-label="Watch Let It Go on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:36</span><span class="rc-body"><b>Let It Go</b><i>track 09</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="19" role="button" tabindex="0" aria-label="Watch Red on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:47</span><span class="rc-body"><b>Red</b><i>track 10</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="20" role="button" tabindex="0" aria-label="Watch Sidewalk Poetry on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">5:58</span><span class="rc-body"><b>Sidewalk Poetry</b><i>track 11</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="21" role="button" tabindex="0" aria-label="Watch Re-Xero on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">4:43</span><span class="rc-body"><b>Re-Xero</b><i>track 12</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="22" role="button" tabindex="0" aria-label="Watch Black Blood on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:33</span><span class="rc-body"><b>Black Blood</b><i>track 13</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="23" role="button" tabindex="0" aria-label="Watch Shameless on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">4:07</span><span class="rc-body"><b>Shameless</b><i>track 14</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="24" role="button" tabindex="0" aria-label="Watch Meant to Throw Away on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">4:22</span><span class="rc-body"><b>Meant to Throw Away</b><i>track 15</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="25" role="button" tabindex="0" aria-label="Watch Abandoned on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:44</span><span class="rc-body"><b>Abandoned</b><i>track 16</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="26" role="button" tabindex="0" aria-label="Watch Enemy on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:49</span><span class="rc-body"><b>Enemy</b><i>track 17</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="27" role="button" tabindex="0" aria-label="Watch Better Left Alone (Extended) on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">4:17</span><span class="rc-body"><b>Better Left Alone (Extended)</b><i>track 18</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
+                      <article class="rcard vcard" data-yt="J85KUlsWypQ" data-i="28" role="button" tabindex="0" aria-label="Watch !Xero (Outro) on YouTube"><img class="rc-poster" src="https://i.ytimg.com/vi/J85KUlsWypQ/mqdefault.jpg" srcset="https://i.ytimg.com/vi/J85KUlsWypQ/hqdefault.jpg 2x" width="320" height="180" alt="" loading="lazy" decoding="async"><span class="rc-dur">3:32</span><span class="rc-body"><b>!Xero (Outro)</b><i>track 19</i></span><span class="rc-play" aria-hidden="true"><span class="yt-play-ico"></span></span></article>
                     </div>
                   </div>
                 </div>
@@ -1997,11 +2045,32 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
     {t:'Black Blood',d:213,s:'black-blood',yt:'vf8PtUU66vs',bpm:96,mood:'heavy'},
     {t:"It's Over",d:182,s:'its-over',yt:'3or51wqfiw0',bpm:82,mood:'mixed'},
     {t:'Let It Go',d:216,s:'let-it-go',yt:'HY6o-m_NjCk',bpm:90,mood:'soft'},
-    {t:'True (Outro)',d:362,s:'true-outro',yt:'k-s2e1m7YHE',bpm:70,mood:'soft'}
+    {t:'True (Outro)',d:362,s:'true-outro',yt:'k-s2e1m7YHE',bpm:70,mood:'soft'},
+    {t:'!True (Intro)',d:272,s:'bb-true-intro',f:'!True (Intro).mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:92,mood:'mixed',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Devastate',d:200,s:'bb-devastate',f:'Devastate .mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:98,mood:'heavy',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Down',d:239,s:'bb-down',f:'Down.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:95,mood:'mixed',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:"It's Over",d:171,s:'bb-its-over',f:"It's Over.mp3",folder:'Down/',yt:'J85KUlsWypQ',bpm:82,mood:'mixed',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:"It's Fine",d:235,s:'bb-its-fine',f:"It's Fine.mp3",folder:'Down/',yt:'J85KUlsWypQ',bpm:88,mood:'mixed',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Better Left Alone',d:224,s:'bb-better-left-alone',f:'Better Left Alone.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:84,mood:'soft',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:"Can't Escape",d:215,s:'bb-cant-escape',f:"Can't Escape.mp3",folder:'Down/',yt:'J85KUlsWypQ',bpm:90,mood:'soft',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Failure',d:181,s:'bb-failure',f:'Failure.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:100,mood:'heavy',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Let It Go',d:216,s:'bb-let-it-go',f:'Let It Go.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:90,mood:'soft',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Red',d:227,s:'bb-red',f:'Red.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:94,mood:'mixed',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Sidewalk Poetry',d:358,s:'bb-sidewalk-poetry',f:'Sidewalk Poetry.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:86,mood:'soft',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Re-Xero',d:283,s:'bb-re-xero',f:'Re-Xero.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:93,mood:'mixed',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Black Blood',d:213,s:'bb-black-blood',f:'Black Blood.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:96,mood:'heavy',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Shameless',d:247,s:'bb-shameless',f:'Shameless.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:97,mood:'heavy',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Meant to Throw Away',d:262,s:'bb-meant-to-throw-away',f:'Meant to Throw Away.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:85,mood:'soft',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Abandoned',d:224,s:'bb-abandoned',f:'Abandoned.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:84,mood:'soft',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Enemy',d:229,s:'bb-enemy',f:'Enemy.mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:91,mood:'mixed',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'Better Left Alone (Extended)',d:257,s:'bb-better-left-alone-ext',f:'Better Left Alone (Extended).mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:84,mood:'soft',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1},
+    {t:'!Xero (Outro)',d:212,s:'bb-xero-outro',f:'!Xero (Outro).mp3',folder:'Down/',yt:'J85KUlsWypQ',bpm:90,mood:'mixed',al:'BLOODBATH EDITION',art:'art/bloodbath.webp',bb:1}
   ];
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var app=document.getElementById('playerApp'); if(!app)return;
-  var rows=Array.prototype.slice.call(app.querySelectorAll('.pl-row'));
+  var rows=Array.prototype.slice.call(document.querySelectorAll('.pl-list .pl-row'));
+  var appB=document.getElementById('playerAppBlood'); var apps=[app,appB].filter(Boolean);
+  function trackSrc(t){ return t.f ? (t.folder||'down/')+t.f : 'down/'+t.s+'.mp3'; }
   function $(id){return document.getElementById(id);}
   var npTitle=$('npTitle'),npSub=$('npSub'),albumPlay=$('albumPlay'),shufflePlay=$('shufflePlay'),listMore=$('listMore'),
     mini=$('miniPlayer'),mpRow=$('mpRow'),mpBar=$('mpBar'),mpFill=$('mpFill'),mpTitle=$('mpTitle'),mpThumb=$('mpThumb'),mpCur=$('mpCur'),mpDur=$('mpDur'),mpPlay=$('mpPlay'),mpPrev=$('mpPrev'),mpNext=$('mpNext'),mpIcoPlay=$('mpIcoPlay'),mpIcoPause=$('mpIcoPause'),mpClose=$('mpClose'),mpInfo=$('mpInfo'),mpTimes=$('mpTimes'),
@@ -2015,7 +2084,7 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
   try{ FAVS=new Set(JSON.parse(localStorage.getItem(FAVS_KEY)||'[]')); }catch(e){}
   try{ PLAYS=JSON.parse(localStorage.getItem(PLAYS_KEY)||'{}'); }catch(e){}
   function pWon(){ try{return localStorage.getItem('nv_puzzle_won')==='1';}catch(e){return false;} }
-  function unlockDownloads(){ app.classList.add('rewards-unlocked'); document.body.classList.add('rewards'); }
+  function unlockDownloads(){ apps.forEach(function(a){a.classList.add('rewards-unlocked');}); document.body.classList.add('rewards'); }
   if(pWon()) unlockDownloads();
   window.__unlockDownloads=unlockDownloads;
   function fmtT(s){ s=Math.max(0,Math.round(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
@@ -2035,7 +2104,7 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
   function savePlays(){ try{ localStorage.setItem(PLAYS_KEY,JSON.stringify(PLAYS)); }catch(e){} }
   paintYourPlays(); paintFavs();
   function setRows(){ rows.forEach(function(r,i){ r.classList.toggle('on',i===cur); r.classList.toggle('playing',i===cur&&!audio.paused); }); }
-  function live(on){ app.classList.toggle('live',on);
+  function live(on){ apps.forEach(function(a){a.classList.toggle('live',on);});
     mpIcoPlay.style.display=on?'none':'block'; mpIcoPause.style.display=on?'block':'none';
     npIcoPlay.style.display=on?'none':'block'; npIcoPause.style.display=on?'block':'none';
     mpThumb.classList.toggle('spin',on);
@@ -2054,7 +2123,7 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
     tuneEngine(mood); }
   var preAudio=null,preIdx=-1;
   var preFine=matchMedia('(hover:hover) and (pointer:fine)').matches;
-  function prefetchNext(n){ if(n<0||n===preIdx||n===cur)return; if(!preAudio)preAudio=new Audio(); try{ preAudio.src='down/'+TRACKS[n].s+'.mp3'; preAudio.preload=preFine?'auto':'metadata'; preIdx=n; }catch(e){} }
+  function prefetchNext(n){ if(n<0||n===preIdx||n===cur)return; if(!preAudio)preAudio=new Audio(); try{ preAudio.src=trackSrc(TRACKS[n]); preAudio.preload=preFine?'auto':'metadata'; preIdx=n; }catch(e){} }
   function pushRecent(i){ try{ var arr=JSON.parse(localStorage.getItem(RECENT_KEY)||'[]'); arr=arr.filter(function(x){return x!==i;}); arr.unshift(i); arr=arr.slice(0,8); localStorage.setItem(RECENT_KEY,JSON.stringify(arr)); renderRecent(); }catch(e){} }
   function renderRecent(){ try{ var arr=JSON.parse(localStorage.getItem(RECENT_KEY)||'[]'); if(!arr.length){ recentWrap.hidden=true; recentRow.innerHTML=''; return; } recentWrap.hidden=false; recentRow.innerHTML=arr.map(function(i){ return '<button class="recent-chip" data-i="'+i+'">↺ '+TRACKS[i].t+'</button>'; }).join(''); recentRow.querySelectorAll('.recent-chip').forEach(function(ch){ ch.addEventListener('click',function(){ loadTrack(+ch.getAttribute('data-i')); }); }); }catch(e){} }
   function updateMiniStats(){ if(cur<0||!TRACKS[cur]._v){ npViews.textContent=npLikes.textContent=npComments.textContent='—'; return; }
@@ -2266,23 +2335,26 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
     ensureViz();
     cur=i;
     setMood(TRACKS[i].mood||'mixed');
-    npTitle.textContent=TRACKS[i].t; npSub.textContent='Nilouverse Music — DOWN';
-    npFullTitle.textContent=TRACKS[i].t; npSubFull.textContent='Nilouverse Music — DOWN';
+    var al=TRACKS[i].al||'DOWN'; var artUrl=TRACKS[i].art||'art/cdown.webp';
+    npTitle.textContent=TRACKS[i].t; npSub.textContent='Nilouverse Music — '+al;
+    npFullTitle.textContent=TRACKS[i].t; npSubFull.textContent='Nilouverse Music — '+al;
+    if(plArt)plArt.src=artUrl; if(mpThumb)mpThumb.src=artUrl;
+    var npi=document.querySelector('.np-cover img'); if(npi)npi.src=artUrl;
     mpTitle.textContent=TRACKS[i].t;
     mpDur.textContent=fmtT(TRACKS[i].d); npDur.textContent=fmtT(TRACKS[i].d);
     mpCur.textContent=curTxt(); npCur.textContent=curTxt(); mpFill.style.transform='scaleX(0)'; npFill.style.transform='scaleX(0)';
     var w=watchUrl(TRACKS[i].yt); npLike.href=w; npComment.href=w;
     var nw=document.getElementById('npWatch'),nl=document.getElementById('npYtLogo'); if(nw)nw.href=w; if(nl)nl.href=w;
     if(npVideoMode)videoMount(TRACKS[i].yt);
-    if(npDownload) npDownload.href='down/'+TRACKS[i].s+'.mp3';
+    if(npDownload) npDownload.href=trackSrc(TRACKS[i]);
     mini.classList.add('show'); document.body.classList.add('mini-on');
     if(mpInfo&&!reduce){ mpInfo.classList.remove('swap'); void mpInfo.offsetWidth; mpInfo.classList.add('swap'); }
     setBeat(); paintFavs(); renderQueue();
     try{ history.replaceState(null,'','#t='+TRACKS[i].s); }catch(e){}
-    audio.src='down/'+TRACKS[i].s+'.mp3';
+    audio.src=trackSrc(TRACKS[i]);
     audio.play().then(function(){ live(true); pushRecent(i);
       PLAYS[i]=(PLAYS[i]||0)+1; savePlays(); paintYourPlays();
-      if('mediaSession' in navigator){ try{ navigator.mediaSession.metadata=new MediaMetadata({title:TRACKS[i].t,artist:'Nilouverse Music',album:'DOWN',artwork:[{src:'art/cdown.webp',sizes:'1200x1200',type:'image/jpeg'}]}); }catch(e){} }
+      if('mediaSession' in navigator){ try{ navigator.mediaSession.metadata=new MediaMetadata({title:TRACKS[i].t,artist:'Nilouverse Music',album:al,artwork:[{src:artUrl,sizes:'1200x1200',type:'image/webp'}]}); }catch(e){} }
       prefetchNext(peekNext());
     }).catch(function(){ live(false); npSub.textContent='press play to start';
       if(deepLink&&!everPlayed){ nowPlaying.classList.add('open'); armUnlock(); } });
@@ -2334,10 +2406,13 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
       root.addEventListener('click',function(e){ if(sup){ sup=false; e.preventDefault(); e.stopPropagation(); } },true);
     }
     bindHold(document.getElementById('plList'),'.pl-row');
+    bindHold(document.getElementById('plListBlood'),'.pl-row');
     bindHold(singlesGrid,'.chart-row');
     bindHold(npQueue,'li');
   })();
   if(listMore) listMore.addEventListener('click',function(){ var open=app.classList.toggle('list-open'); listMore.setAttribute('aria-expanded',String(open)); });
+  var listMoreB=document.getElementById('listMoreBlood');
+  if(listMoreB&&appB) listMoreB.addEventListener('click',function(){ var open=appB.classList.toggle('list-open'); listMoreB.setAttribute('aria-expanded',String(open)); });
   mpPlay.addEventListener('click',function(e){ e.stopPropagation(); togglePlay(); });
   npPlay.addEventListener('click',function(){ togglePlay(); });
   npArt.addEventListener('click',function(){ togglePlay(); });
@@ -2389,12 +2464,12 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
             x.fillText(t,W/2,W*0.90);
             x.fillStyle='rgba(239,230,221,.6)';
             x.font='400 34px "Space Grotesk"';
-            x.fillText('D O W N  ·  the debut lp',W/2,W*0.955);
+            x.fillText((TRACKS[i].al==='BLOODBATH EDITION')?'B L O O D B A T H  ·  E D I T I O N':'D O W N  ·  the debut lp',W/2,W*0.955);
             c.toBlob(function(b){ if(b)res(b); else rej(new Error('blob')); },'image/png');
           }
         };
         art.onerror=function(){ rej(new Error('art')); };
-        art.src='art/cdown.webp';
+        art.src=TRACKS[i].art||'art/cdown.webp';
       }catch(e){ rej(e); }
     });
   }
@@ -2495,20 +2570,21 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
   function getCachedStats(){ try{ var raw=localStorage.getItem(YT_STATS_KEY); if(!raw)return null; var parsed=JSON.parse(raw); if(!parsed||!parsed.ts||!Array.isArray(parsed.items))return null; if(Date.now()-parsed.ts>YT_STATS_TTL)return null; return parsed; }catch(e){ return null; } }
   function saveCachedStats(items){ try{ localStorage.setItem(YT_STATS_KEY,JSON.stringify({ts:Date.now(),items:items})); }catch(e){} }
   function applyStats(items){ if(!items||!items.length)return;
-    rows.forEach(function(r){ var m=r.querySelector('.stats-mini'); if(m)m.classList.remove('hidden'); });
+    rows.forEach(function(r){ var ri=+r.getAttribute('data-i'); if(TRACKS[ri]&&TRACKS[ri].bb)return; var m=r.querySelector('.stats-mini'); if(m)m.classList.remove('hidden'); });
     items.forEach(function(item){ var idx=-1; for(var k=0;k<TRACKS.length;k++){ if(TRACKS[k].yt===item.id){ idx=k; break; } } if(idx<0)return;
       var st=item.statistics||{}; var v=fmtN(st.viewCount), l=fmtN(st.likeCount), c=fmtN(st.commentCount);
       var mini=app.querySelector('.pl-row[data-i="'+idx+'"] .stats-mini b'); if(mini) mini.textContent=v;
       TRACKS[idx]._v=v; TRACKS[idx]._l=l; TRACKS[idx]._c=c; TRACKS[idx]._i=idx; TRACKS[idx]._rawV=Number(st.viewCount||0); TRACKS[idx]._rawL=Number(st.likeCount||0); });
     var down=TRACKS.filter(function(t){return t.s==='down';})[0];
     if(down&&down._v&&featStats){ featStats.classList.add('show'); fViews.textContent=down._v; fLikes.textContent=down._l; }
-    var ranked=TRACKS.filter(function(t){return t.s!=='xero-intro';}).map(function(t){ t._score=(t._rawV||0)+(t._rawL||0)*10; return t; }).sort(function(a,b){ return b._score-a._score; });
+    var ranked=TRACKS.filter(function(t){return t.s!=='xero-intro'&&!t.bb;}).map(function(t){ t._score=(t._rawV||0)+(t._rawL||0)*10; return t; }).sort(function(a,b){ return b._score-a._score; });
     renderTop(ranked);
     updateMiniStats();
   }
   function fetchStats(){ if(!YT_API_KEY)return;
     var cached=getCachedStats(); if(cached){ applyStats(cached.items); return; }
-    var ids=TRACKS.map(function(t){return t.yt;}).join(',');
+    var idsU=[]; TRACKS.forEach(function(t){ if(idsU.indexOf(t.yt)<0)idsU.push(t.yt); });
+    var ids=idsU.join(',');
     var url='https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id='+ids+'&key='+YT_API_KEY;
     fetch(url).then(function(r){return r.json();}).then(function(data){
       if(!data.items)return;
@@ -2534,7 +2610,8 @@ body[data-mood="heavy"] .np-cover i:nth-of-type(4){opacity:.7 !important}
     var card=t.closest('.trail .vcard'); if(!card)return;
     e.preventDefault(); e.stopImmediatePropagation();
     var id=card.getAttribute('data-yt'); if(!id)return;
-    if(window.__playVideo)window.__playVideo(id,findTrack(id));
+    var di=card.getAttribute('data-i');
+    if(window.__playVideo)window.__playVideo(id, di!=null?parseInt(di,10):findTrack(id));
   }
   document.addEventListener('click',hijack,true);
   document.addEventListener('keydown',function(e){ if(e.key!=='Enter'||e.key!==' ')return; hijack(e); },true);
